@@ -1,0 +1,36 @@
+
+#snr-template--23876058939495__room .snr__stage { position: relative; }
+#snr-template--23876058939495__room .snr__img { border-radius: calc(var(--r) * 1.4); box-shadow: 0 60px 100px -60px rgba(20, 22, 40, .6); }
+#snr-template--23876058939495__room .sn-wrap--wide .snr__img, #snr-template--23876058939495__room.snr .sn-wrap--wide { border-radius: calc(var(--r) * 1.2); }
+#snr-template--23876058939495__room .snr__spot { position: absolute; z-index: 3; left: var(--x); top: var(--y); }
+#snr-template--23876058939495__room .snr__dot { position: relative; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: block; color: #fff; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .35)); transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+#snr-template--23876058939495__room .snr__dot svg { width: 100%; height: 100%; overflow: visible; }
+#snr-template--23876058939495__room .snr__dot .a { fill: none; stroke: #fff; stroke-width: 1.2; stroke-dasharray: 3 4; transform-origin: 22px 22px; animation: sn-spin 9s linear infinite; }
+#snr-template--23876058939495__room .snr__dot .b { fill: color-mix(in srgb, #fff 92%, transparent); transition: r .4s, fill .4s; }
+#snr-template--23876058939495__room .snr__dot .c { stroke: var(--c-ink); stroke-width: 1.6; stroke-linecap: round; transform-origin: 22px 22px; transform: scale(.55); transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
+#snr-template--23876058939495__room .snr__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid #fff; animation: snr-ping 2.6s ease-out infinite; animation-delay: calc(var(--i) * .5s); }
+@keyframes snr-ping { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.7); opacity: 0; } }
+#snr-template--23876058939495__room .snr__spot.is-on .snr__dot, #snr-template--23876058939495__room .snr__dot:hover { transform: scale(1.15); }
+#snr-template--23876058939495__room .snr__spot.is-on .snr__dot .b { r: 13; fill: var(--ac); }
+#snr-template--23876058939495__room .snr__spot.is-on .snr__dot .c { stroke: #fff; transform: scale(.75) rotate(45deg); }
+#snr-template--23876058939495__room .snr__pop { position: absolute; top: -30px; left: 34px; width: 300px; display: grid; grid-template-columns: 80px 1fr; gap: 14px; padding: 12px; border-radius: calc(var(--r) * .8); color: var(--c-ink); --tx: var(--c-ink); --ac: var(--c-accent); --soft: var(--c-ink-soft); --mute: color-mix(in srgb, var(--c-ink) 50%, transparent); background: color-mix(in srgb, var(--c-surface) 88%, transparent); opacity: 0; visibility: hidden; transform: translateX(-10px) scale(.94); transform-origin: 0 50%; transition: opacity .4s, transform .55s cubic-bezier(.3, 1.4, .5, 1), visibility .4s; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .5); }
+#snr-template--23876058939495__room .snr__pop--l { left: auto; right: 34px; transform-origin: 100% 50%; transform: translateX(10px) scale(.94); }
+#snr-template--23876058939495__room .snr__spot.is-on .snr__pop { opacity: 1; visibility: visible; transform: none; }
+#snr-template--23876058939495__room .snr__pimg { aspect-ratio: 4 / 5; border-radius: calc(var(--r) * .45); }
+#snr-template--23876058939495__room .snr__pinfo { display: grid; align-content: center; gap: 6px; }
+#snr-template--23876058939495__room .snr__pt { font: 400 1.1rem/1.2 var(--f-head); }
+#snr-template--23876058939495__room .snr__pp { font-size: 14px; }
+#snr-template--23876058939495__room .snr__pinfo .sn-link { justify-self: start; font-size: 11px; }
+#snr-template--23876058939495__room .snr__bar { position: absolute; z-index: 4; left: 50%; bottom: 22px; translate: -50% 0; display: flex; align-items: center; gap: 20px; padding: 10px 10px 10px 14px; border-radius: 999px; color: var(--c-ink); background: color-mix(in srgb, var(--c-surface) 85%, transparent); --tx: var(--c-ink); --bg: var(--c-surface); --ac: var(--c-accent); white-space: nowrap; }
+#snr-template--23876058939495__room .snr__thumbs { display: flex; }
+#snr-template--23876058939495__room .snr__thumbs .sn-media { width: 40px; height: 40px; border-radius: 50%; margin-left: -10px; box-shadow: 0 0 0 2px #fff; }
+#snr-template--23876058939495__room .snr__thumbs .sn-media:first-child { margin-left: 0; }
+#snr-template--23876058939495__room .snr__sum { display: grid; }
+#snr-template--23876058939495__room .snr__sum small { font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--c-ink-soft); }
+#snr-template--23876058939495__room .snr__sum b { font: 400 1.25rem/1.1 var(--f-head); }
+@media (max-width: 749px) {
+  #snr-template--23876058939495__room .snr__pop { width: 230px; grid-template-columns: 64px 1fr; }
+  #snr-template--23876058939495__room .snr__bar { position: static; translate: none; margin: 16px 0 0; width: 100%; flex-wrap: wrap; justify-content: space-between; border-radius: calc(var(--r) * .9); padding: 14px; }
+  #snr-template--23876058939495__room .snr__bar .sn-btn { flex: 1 1 100%; }
+  #snr-template--23876058939495__room .snr__thumbs { display: none; }
+}
