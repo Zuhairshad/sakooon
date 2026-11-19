@@ -1,0 +1,83 @@
+
+.snms { padding-top: 0; }
+.snms .snms__top { position: relative; isolation: isolate; overflow: visible; padding: clamp(80px, 9vw, 130px) 0 clamp(50px, 6vw, 80px); background: #161B29; color: #F4EEE4; --tx: #F4EEE4; --soft: color-mix(in srgb, #F4EEE4 72%, transparent); --ac: #E3C793; --line2: rgba(255,255,255,.24); --line: rgba(255,255,255,.14); }
+.snms .snms__top .sn-silk { overflow: hidden; }
+.snms .snms__tin { position: relative; z-index: 2; display: grid; justify-items: center; gap: 22px; text-align: center; }
+.snms .snms__form { position: relative; width: min(720px, 100%); }
+.snms .snms__field { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 22px; border-radius: 999px; background: color-mix(in srgb, #fff 10%, transparent); border: 1px solid rgba(255,255,255,.24); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: border-color .4s, box-shadow .4s; }
+.snms .snms__field:focus-within { border-color: var(--ac); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 18%, transparent), 0 0 60px color-mix(in srgb, var(--ac) 20%, transparent); }
+.snms .snms__field .icon { width: 20px; height: 20px; color: var(--ac); flex: none; }
+.snms .snms__field input[type="search"] { flex: 1; min-width: 0; border: 0; background: none; outline: none; color: #fff; font-size: 17px; padding: 10px 4px; }
+.snms .snms__field input::placeholder { color: rgba(255,255,255,.55); }
+.snms .snms__field input::-webkit-search-cancel-button { filter: invert(1); }
+.snms .snms__pres { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 10px); text-align: left; border-radius: calc(var(--r) * 1.1); background: var(--c-surface); color: var(--c-ink); --tx: var(--c-ink); --soft: var(--c-ink-soft); --ac: var(--c-accent); box-shadow: 0 40px 80px -30px rgba(0,0,0,.5); }
+.snms .snms__pres:empty { display: none; }
+.snms .snms__pres:not(:empty) { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; padding: 22px; animation: sn-acc-in .5s cubic-bezier(.2, .7, .2, 1); }
+.snms .snms__pres ul { display: grid; gap: 6px; margin-top: 10px; }
+.snms .snms__pres a { display: flex; align-items: center; gap: 12px; padding: 6px; border-radius: 10px; font-size: 14px; transition: background .3s; }
+.snms .snms__pres a:hover { background: color-mix(in srgb, var(--c-accent) 10%, transparent); }
+.snms .snms__pres .snps__img { width: 44px; height: 54px; flex: none; border-radius: 8px; overflow: hidden; background: color-mix(in srgb, var(--c-ink) 6%, transparent); }
+.snms .snms__pres .snps__img img { width: 100%; height: 100%; object-fit: cover; }
+.snms .snms__pres b { display: block; font-weight: 500; } .snms .snms__pres small { color: var(--c-ink-soft); }
+.snms .snms__pres .snps__all { grid-column: 1 / -1; justify-self: start; padding: 6px 0; }
+.snms .snms__sugs { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.snms .snms__sugs > span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); margin-right: 4px; }
+.snms .snms__sugs .sn-chip { border-color: rgba(255,255,255,.24); color: #fff; }
+.snms .snms__sugs .sn-chip:hover { background: var(--ac); color: #161B29; border-color: var(--ac); }
+.snms .snms__body { padding-top: clamp(30px, 4vw, 50px); }
+.snms .snms__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--line); }
+.snms .snms__count { font-size: 14px; color: var(--soft); }
+.snms .snms__types { display: flex; flex-wrap: wrap; gap: 6px; }
+.snms .snms__sort { margin-left: auto; }
+.snms .snms__sort .sn-select { min-height: 44px; padding-block: 8px; border-radius: 999px; font-size: 13px; }
+.snms .snms__layout.has-f { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px; align-items: start; }
+.snms .snms__fsum { display: none; }
+.snms .snms__main { position: relative; min-width: 0; }
+.snms.is-loading .snms__grid { opacity: .35; filter: blur(3px); }
+.snms .snms__grid { transition: opacity .4s, filter .4s; row-gap: 36px; }
+.snms .snms__doc { align-self: start; display: grid; gap: 10px; align-content: start; padding: 16px 16px 20px; transition: transform .6s cubic-bezier(.3, 1.2, .4, 1); }
+.snms .snms__doc:hover { transform: translateY(-6px); }
+.snms .snms__dimg { border-radius: calc(var(--r) * .7); }
+.snms .snms__dic { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--ac) 14%, transparent); color: var(--ac); }
+.snms .snms__dic .icon { width: 22px; height: 22px; }
+.snms .snms__doc small { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ac); }
+.snms .snms__doc p { font-size: 14px; color: var(--soft); }
+.snms .snms__more { display: flex; justify-content: center; margin-top: 50px; }
+.snms .snms__none { padding-top: 30px; }
+.snms .snms__moon { position: relative; width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 35% 35%, #fff, var(--c-moon) 60%); box-shadow: 0 0 50px color-mix(in srgb, var(--c-moon) 50%, transparent); }
+.snms .snms__moon i { position: absolute; inset: -2px; border-radius: 50%; background: var(--bg); animation: snms-ph 6s ease-in-out infinite alternate; }
+@keyframes snms-ph { from { transform: translateX(20%); } to { transform: translateX(80%); } }
+.snms .snms__alt { margin: 30px 0 22px; }
+.snms .sn-fac__g { border-bottom: 1px solid var(--line); }
+.snms .sn-fac__g summary { list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 16px 0; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.snms .sn-fac__g summary::-webkit-details-marker { display: none; }
+.snms .sn-fac__g summary .icon { width: 15px; height: 15px; }
+.snms .sn-fac__n { margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: var(--ac); color: var(--ac-ink); font-style: normal; font-size: 10px; }
+.snms .sn-fac__b { padding-bottom: 16px; }
+.snms .sn-fac__list { display: grid; gap: 4px; max-height: 260px; overflow-y: auto; }
+.snms .sn-fac__opt { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 14px; cursor: pointer; }
+.snms .sn-fac__opt input { accent-color: var(--ac); width: 17px; height: 17px; }
+.snms .sn-fac__opt > i { display: none; }
+.snms .sn-fac__opt > i.sn-fac__sw { display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.snms .sn-fac__opt small { margin-left: auto; color: var(--mute); font-size: 11.5px; }
+.snms .sn-fac__rng { display: none; }
+.snms .sn-fac__pin { display: flex; align-items: center; gap: 8px; }
+.snms .sn-fac__pin label { flex: 1; display: flex; gap: 4px; align-items: center; padding: 8px 10px; border: 1px solid var(--line2); border-radius: 10px; font-size: 12px; color: var(--soft); }
+.snms .sn-fac__pin input { width: 100%; border: 0; background: none; outline: none; color: var(--tx); }
+@media (max-width: 989px) {
+  .snms .snms__layout.has-f { grid-template-columns: 1fr; gap: 10px; }
+  .snms .snms__side:not([open]) [data-sn-region] { display: none; }
+  .snms .snms__fsum { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line2); font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; list-style: none; cursor: pointer; }
+  .snms .snms__fsum::-webkit-details-marker { display: none; }
+  .snms .snms__fsum .icon { width: 16px; height: 16px; }
+  .snms .snms__grid { --cols: 2 !important; }
+  .snms .snms__pres:not(:empty) { grid-template-columns: 1fr; }
+  .snms .snms__sort { margin-left: 0; }
+}
+
+/* Mobile: the filter panel is server-rendered <details open> (desktop shows it)
+   and FacetsBehavior closes it below 990px. Hide its body until then so the
+   grid never jumps up after load (was CLS ≈ 0.5). */
+@media (max-width: 989px) {
+  .snms:not(.is-fac-ready) .snms__side > :not(summary) { display: none; }
+}
