@@ -1,0 +1,33 @@
+
+#snit-template--23876058808423__craft .snit__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(36px, 7vw, 120px); align-items: center; }
+#snit-template--23876058808423__craft.snit--right .snit__vis { order: 2; }
+#snit-template--23876058808423__craft .snit__vis { position: relative; padding: 0 12% 12% 0; }
+#snit-template--23876058808423__craft.snit--right.snit--layered .snit__vis { padding: 0 0 12% 12%; }
+#snit-template--23876058808423__craft .snit__main, #snit-template--23876058808423__craft .snit__second, #snit-template--23876058808423__craft .snit__stat { will-change: transform; }
+#snit-template--23876058808423__craft .snit__img { border-radius: calc(var(--r) * 1.3); box-shadow: 0 50px 90px -60px rgba(20, 22, 40, .6); }
+#snit-template--23876058808423__craft .snit__second { position: absolute; right: 0; bottom: 0; width: 42%; z-index: 2; }
+#snit-template--23876058808423__craft.snit--right .snit__second { right: auto; left: 0; }
+#snit-template--23876058808423__craft .snit__img2 { border-radius: var(--r); border: 8px solid var(--bg); box-shadow: 0 40px 70px -40px rgba(20, 22, 40, .6); }
+#snit-template--23876058808423__craft .snit__stat { position: absolute; z-index: 3; left: -26px; top: 12%; display: grid; gap: 2px; padding: 18px 24px; border-radius: var(--r); }
+#snit-template--23876058808423__craft.snit--right .snit__stat { left: auto; right: -26px; }
+#snit-template--23876058808423__craft .snit__stat b { font: 300 clamp(2rem, 3.4vw, 3rem)/1 var(--f-head); color: var(--ac); }
+#snit-template--23876058808423__craft .snit__stat span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+#snit-template--23876058808423__craft .snit__ring { position: absolute; z-index: 3; right: 4%; top: -40px; width: 120px; height: 120px; display: grid; place-items: center; border-radius: 50%; background: var(--tx); color: var(--bg); }
+#snit-template--23876058808423__craft.snit--right .snit__ring { right: auto; left: 4%; }
+#snit-template--23876058808423__craft .snit__ring svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: snit-spin 24s linear infinite; }
+#snit-template--23876058808423__craft .snit__ring text { font: 600 14px var(--f-body); letter-spacing: .3em; text-transform: uppercase; fill: currentColor; }
+#snit-template--23876058808423__craft .snit__ring .icon { width: 26px; height: 26px; color: var(--ac); }
+@keyframes snit-spin { to { transform: rotate(360deg); } }
+#snit-template--23876058808423__craft .snit__copy { display: grid; gap: 24px; }
+#snit-template--23876058808423__craft .snit__copy .sn-head { margin: 0; }
+#snit-template--23876058808423__craft .snit__pts { display: grid; gap: 12px; }
+#snit-template--23876058808423__craft .snit__pts li { display: flex; align-items: center; gap: 14px; font-size: 15.5px; }
+#snit-template--23876058808423__craft .snit__pts i { width: 28px; height: 28px; flex: none; border-radius: 50%; display: grid; place-items: center; border: 1px dashed var(--ac); color: var(--ac); }
+#snit-template--23876058808423__craft .snit__pts .icon { width: 13px; height: 13px; }
+#snit-template--23876058808423__craft .snit__btns { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 6px; }
+@media (max-width: 899px) {
+  #snit-template--23876058808423__craft .snit__grid { grid-template-columns: 1fr; }
+  #snit-template--23876058808423__craft.snit--right .snit__vis { order: 0; }
+  #snit-template--23876058808423__craft .snit__stat { left: 10px !important; right: auto !important; top: auto; bottom: 14%; padding: 12px 16px; }
+  #snit-template--23876058808423__craft .snit__ring { width: 90px; height: 90px; top: -24px; right: 10px !important; left: auto !important; }
+}
