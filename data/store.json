@@ -1,0 +1,1649 @@
+{
+ "snapshotOf": "sakooon.com",
+ "takenAt": "2026-11-19T08:44:57.752Z",
+ "products": [
+  {
+   "id": "gid://shopify/Product/10290720276583",
+   "handle": "duvet-comfort-filling-220-gsm",
+   "title": "Duvet Comfort Filling – 220 GSM Winter Duvet Insert, Single, Queen & King",
+   "vendor": "Sakooon",
+   "productType": "Duvet",
+   "tags": [
+    "220 gsm",
+    "comforter",
+    "duvet",
+    "duvet filling",
+    "duvet insert",
+    "rest easy",
+    "winter duvet"
+   ],
+   "description": "Wrap your bed in soft, plush warmth with the Sakooon Duvet Comfort Filling from our Rest Easy Collection. Its generous 220 GSM filling gives dependable winter warmth and a balanced, cloud-like loft without feeling heavy. The silky microfibre shell feels smooth and breathable, while the 100% polyester fill stays light and evenly spread. Its clean, classic white finish suits any bedroom style, from modern and minimal to elegant and traditional, and slips easily into your favourite duvet cover. Available sizes Single – 60 x 90 inches (152 x 240 cm) Queen – 90 x 95 inches (230 x 240 cm) King – 104 x 94 inches (265 x 240 cm) Why you'll love it 220 GSM filling for cosy winter warmth Plush, balanced loft that never feels heavy Silky, breathable microfibre shell Classic white that goes with any duvet cover Part of the Sakooon Rest Easy Collection Specifications Shell fabric Microfibre Filling 100% polyester Fill weight 220 GSM Season Winter Colour White Collection Rest Easy Frequently asked questions Is this a duvet cover?No. This is the duvet filling (insert) that goes inside a duvet cover. The cover is sold separately. What does 220 GSM mean?GSM is the weight of the filling per square metre. 220 GSM gives a warm, comfortable layer for winter nights without feeling bulky. Which size should I choose?Compare the measurements above with your bed and duvet cover. For a full, fluffy look, choose a filling close to the size of your duvet cover.",
+   "descriptionHtml": "<p>Wrap your bed in soft, plush warmth with the Sakooon <strong>Duvet Comfort Filling</strong> from our Rest Easy Collection. Its generous <strong>220 GSM filling</strong> gives dependable winter warmth and a balanced, cloud-like loft without feeling heavy.</p>\n\n<p>The silky <strong>microfibre shell</strong> feels smooth and breathable, while the <strong>100% polyester fill</strong> stays light and evenly spread. Its clean, classic white finish suits any bedroom style, from modern and minimal to elegant and traditional, and slips easily into your favourite duvet cover.</p>\n\n<h3>Available sizes</h3>\n<ul>\n  <li>Single – 60 x 90 inches (152 x 240 cm)</li>\n  <li>Queen – 90 x 95 inches (230 x 240 cm)</li>\n  <li>King – 104 x 94 inches (265 x 240 cm)</li>\n</ul>\n\n<h3>Why you'll love it</h3>\n<ul>\n  <li>220 GSM filling for cosy winter warmth</li>\n  <li>Plush, balanced loft that never feels heavy</li>\n  <li>Silky, breathable microfibre shell</li>\n  <li>Classic white that goes with any duvet cover</li>\n  <li>Part of the Sakooon Rest Easy Collection</li>\n</ul>\n\n<h3>Specifications</h3>\n<table>\n  <tr>\n<td><strong>Shell fabric</strong></td>\n<td>Microfibre</td>\n</tr>\n  <tr>\n<td><strong>Filling</strong></td>\n<td>100% polyester</td>\n</tr>\n  <tr>\n<td><strong>Fill weight</strong></td>\n<td>220 GSM</td>\n</tr>\n  <tr>\n<td><strong>Season</strong></td>\n<td>Winter</td>\n</tr>\n  <tr>\n<td><strong>Colour</strong></td>\n<td>White</td>\n</tr>\n  <tr>\n<td><strong>Collection</strong></td>\n<td>Rest Easy</td>\n</tr>\n</table>\n\n<h3>Frequently asked questions</h3>\n<p><strong>Is this a duvet cover?</strong><br>No. This is the duvet filling (insert) that goes inside a duvet cover. The cover is sold separately.</p>\n<p><strong>What does 220 GSM mean?</strong><br>GSM is the weight of the filling per square metre. 220 GSM gives a warm, comfortable layer for winter nights without feeling bulky.</p>\n<p><strong>Which size should I choose?</strong><br>Compare the measurements above with your bed and duvet cover. For a full, fluffy look, choose a filling close to the size of your duvet cover.</p>",
+   "createdAt": "2026-11-02T05:21:35Z",
+   "availableForSale": true,
+   "seo": {
+    "title": "220 GSM Winter Duvet Filling – Single, Queen, King | Sakooon",
+    "description": "Soft 220 GSM winter duvet filling with microfibre shell and 100% polyester fill. Single, Queen and King sizes. From Rs. 4,499, delivered across Pakistan."
+   },
+   "options": [
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "Single",
+       "swatch": null
+      },
+      {
+       "name": "Queen",
+       "swatch": null
+      },
+      {
+       "name": "King",
+       "swatch": null
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-duvet-comfort-filling-220-gsm.webp",
+    "altText": "Sakooon Duvet Comfort Filling, rolled white 220 GSM winter duvet insert on a bed",
+    "width": 900,
+    "height": 1317
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-duvet-comfort-filling-220-gsm.webp",
+      "altText": "Sakooon Duvet Comfort Filling, rolled white 220 GSM winter duvet insert on a bed",
+      "width": 900,
+      "height": 1317
+     },
+     {
+      "url": "/images/sakooon-white-bedding-bedroom.webp",
+      "altText": "Bedroom with white duvet and pillows on a king bed – Sakooon Duvet Comfort Filling",
+      "width": 1744,
+      "height": 1136
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/50942970331239",
+      "title": "Single",
+      "availableForSale": true,
+      "price": {
+       "amount": "4499.0"
+      },
+      "compareAtPrice": {
+       "amount": "5499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-duvet-comfort-filling-220-gsm.webp",
+       "altText": "Sakooon Duvet Comfort Filling, rolled white 220 GSM winter duvet insert on a bed",
+       "width": 900,
+       "height": 1317
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50942970364007",
+      "title": "Queen",
+      "availableForSale": true,
+      "price": {
+       "amount": "5999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-duvet-comfort-filling-220-gsm.webp",
+       "altText": "Sakooon Duvet Comfort Filling, rolled white 220 GSM winter duvet insert on a bed",
+       "width": 900,
+       "height": 1317
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50942970396775",
+      "title": "King",
+      "availableForSale": true,
+      "price": {
+       "amount": "6999.0"
+      },
+      "compareAtPrice": {
+       "amount": "7999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-duvet-comfort-filling-220-gsm.webp",
+       "altText": "Sakooon Duvet Comfort Filling, rolled white 220 GSM winter duvet insert on a bed",
+       "width": 900,
+       "height": 1317
+      }
+     }
+    ]
+   },
+   "collections": {
+    "nodes": [
+     {
+      "handle": "duvets",
+      "title": "Duvets"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/10290710151271",
+   "handle": "duvet-comfort-pillow-pack-of-2",
+   "title": "Duvet Comfort Pillow – Cotton Cover, Microfibre Filling, Pack of 2",
+   "vendor": "Sakooon",
+   "productType": "Pillow",
+   "tags": [
+    "bed pillow",
+    "cotton pillow",
+    "microfibre pillow",
+    "pack of 2",
+    "pillow",
+    "white pillow"
+   ],
+   "description": "Sink into cloud-like softness with the Sakooon Duvet Comfort Pillow. Each pillow has a 100% pure cotton cover that feels soft and breathable against your skin, filled with 100% polyester microfibre for plush, even support that holds its shape night after night. Light, airy and comfortable in every season, these pillows bring a calm, clutter-free look to your bedroom. Their clean white finish goes with any pillow cover, so you can refresh your bed with a new print whenever you like. What's in the pack 2 x Pillows – 20 x 30 inches (48 x 76 cm) Why you'll love it Soft, breathable 100% pure cotton cover Plush 100% polyester microfibre filling Holds its shape for lasting comfort Lightweight and comfortable in every season Clean white finish that suits any bedroom Specifications Cover fabric 100% pure cotton Filling 100% polyester microfibre Size 20 x 30 inches (48 x 76 cm) Colour White Pack 2 pillows Frequently asked questions How many pillows come in one pack?Two. Each pack includes a pair of filled pillows. Is this a pillow or a pillow cover?This is a complete filled pillow. For a fresh look, pair it with the matching pillow covers from our bed sheet sets. What size are the pillows?Each pillow measures 20 x 30 inches (48 x 76 cm), a standard size that fits most pillow covers.",
+   "descriptionHtml": "<p>Sink into cloud-like softness with the Sakooon <strong>Duvet Comfort Pillow</strong>. Each pillow has a <strong>100% pure cotton</strong> cover that feels soft and breathable against your skin, filled with <strong>100% polyester microfibre</strong> for plush, even support that holds its shape night after night.</p>\n\n<p>Light, airy and comfortable in every season, these pillows bring a calm, clutter-free look to your bedroom. Their clean white finish goes with any pillow cover, so you can refresh your bed with a new print whenever you like.</p>\n\n<h3>What's in the pack</h3>\n<ul>\n  <li>2 x Pillows – 20 x 30 inches (48 x 76 cm)</li>\n</ul>\n\n<h3>Why you'll love it</h3>\n<ul>\n  <li>Soft, breathable 100% pure cotton cover</li>\n  <li>Plush 100% polyester microfibre filling</li>\n  <li>Holds its shape for lasting comfort</li>\n  <li>Lightweight and comfortable in every season</li>\n  <li>Clean white finish that suits any bedroom</li>\n</ul>\n\n<h3>Specifications</h3>\n<table>\n  <tr>\n<td><strong>Cover fabric</strong></td>\n<td>100% pure cotton</td>\n</tr>\n  <tr>\n<td><strong>Filling</strong></td>\n<td>100% polyester microfibre</td>\n</tr>\n  <tr>\n<td><strong>Size</strong></td>\n<td>20 x 30 inches (48 x 76 cm)</td>\n</tr>\n  <tr>\n<td><strong>Colour</strong></td>\n<td>White</td>\n</tr>\n  <tr>\n<td><strong>Pack</strong></td>\n<td>2 pillows</td>\n</tr>\n</table>\n\n<h3>Frequently asked questions</h3>\n<p><strong>How many pillows come in one pack?</strong><br>Two. Each pack includes a pair of filled pillows.</p>\n<p><strong>Is this a pillow or a pillow cover?</strong><br>This is a complete filled pillow. For a fresh look, pair it with the matching pillow covers from our bed sheet sets.</p>\n<p><strong>What size are the pillows?</strong><br>Each pillow measures 20 x 30 inches (48 x 76 cm), a standard size that fits most pillow covers.</p>",
+   "createdAt": "2026-11-02T05:01:03Z",
+   "availableForSale": false,
+   "seo": {
+    "title": "Cotton Pillow Pack of 2 – Microfibre Filled | Sakooon",
+    "description": "Soft cotton pillows with 100% polyester microfibre filling, 20x30 in, pack of 2. Cloud-like comfort for every season. Rs. 2,499, delivered across Pakistan."
+   },
+   "options": [
+    {
+     "name": "Pack Size",
+     "optionValues": [
+      {
+       "name": "Pack of 1 Pillow",
+       "swatch": null
+      },
+      {
+       "name": "Pack of 2 Pillows",
+       "swatch": null
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+    "altText": "Sakooon Duvet Comfort Pillow, pack of 2 white cotton pillows with microfibre filling",
+    "width": 1264,
+    "height": 1568
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+      "altText": "Sakooon Duvet Comfort Pillow, pack of 2 white cotton pillows with microfibre filling",
+      "width": 1264,
+      "height": 1568
+     },
+     {
+      "url": "/images/sakooon-duvet-comfort-pillow-piping-detail.webp",
+      "altText": "Close-up of white cotton pillow with neat piped edges – Sakooon Duvet Comfort Pillow",
+      "width": 1600,
+      "height": 1066
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/51272455979111",
+      "title": "Pack of 1 Pillow",
+      "availableForSale": false,
+      "price": {
+       "amount": "2499.0"
+      },
+      "compareAtPrice": {
+       "amount": "6000.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Pack Size",
+        "value": "Pack of 1 Pillow"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+       "altText": "Sakooon Duvet Comfort Pillow, pack of 2 white cotton pillows with microfibre filling",
+       "width": 1264,
+       "height": 1568
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/51272456011879",
+      "title": "Pack of 2 Pillows",
+      "availableForSale": false,
+      "price": {
+       "amount": "4999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6000.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Pack Size",
+        "value": "Pack of 2 Pillows"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+       "altText": "Sakooon Duvet Comfort Pillow, pack of 2 white cotton pillows with microfibre filling",
+       "width": 1264,
+       "height": 1568
+      }
+     }
+    ]
+   },
+   "collections": {
+    "nodes": [
+     {
+      "handle": "pillows",
+      "title": "Pillows"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/10290678071399",
+   "handle": "yarn-dyed-cotton-satin-bed-sheet-set-king",
+   "title": "Yarn-Dyed Cotton Satin Bed Sheet Set – King Size with 2 Pillow Covers",
+   "vendor": "Sakooon",
+   "productType": "Bed Sheet Set",
+   "tags": [
+    "bed sheet set",
+    "checks",
+    "cotton satin",
+    "floral",
+    "king size",
+    "printed",
+    "stripes",
+    "yarn dyed"
+   ],
+   "description": "Give your bed a soft, polished finish with the Sakooon Yarn-Dyed Cotton Satin Bed Sheet Set. Yarn-dyed fabric is coloured before it is woven, which gives it rich, long-lasting colour. The smooth cotton satin finish feels gentle on the skin and has a subtle sheen that makes any bedroom look put-together. Choose from a wide range of designs, from classic checks and stripes to florals, geometrics and playful prints. Each King size bed sheet set comes with a matching pair of pillow covers, so your bed looks coordinated the moment you make it. The sheet resists wrinkles, so it stays neat with very little effort. What's in the set (3 pieces) 1 x Bed Sheet – 94 x 96 inches (King) 2 x Pillow Covers – 19 x 29 inches Why you'll love it Yarn-dyed for rich, long-lasting colour Soft, smooth cotton satin finish Wrinkle-resistant bed sheet Elegant designs that are easy to match Adds a touch of elegance to your bedroom Premium quality at great value Specifications Fabric Cotton satin, yarn-dyed Bed size King Bed sheet 94 x 96 inches Pillow covers 19 x 29 inches (2 pcs) Pieces 3 Frequently asked questions What does yarn-dyed mean?The cotton threads are dyed before the fabric is woven. This helps the colour stay rich and last longer, wash after wash. Will this sheet fit a King size bed?Yes. At 94 x 96 inches, it is made for King size beds. Check our size guide to compare it with your mattress. Is this a fitted sheet?No. This is a flat bed sheet that you tuck in around the mattress. What comes in one set?One bed sheet and two matching pillow covers in the design you choose.",
+   "descriptionHtml": "<p>Give your bed a soft, polished finish with the Sakooon <strong>Yarn-Dyed Cotton Satin Bed Sheet Set</strong>. Yarn-dyed fabric is coloured before it is woven, which gives it <strong>rich, long-lasting colour</strong>. The smooth <strong>cotton satin</strong> finish feels gentle on the skin and has a subtle sheen that makes any bedroom look put-together.</p>\n\n<p>Choose from a wide range of designs, from classic checks and stripes to florals, geometrics and playful prints. Each <strong>King size bed sheet set</strong> comes with a matching pair of pillow covers, so your bed looks coordinated the moment you make it. The sheet resists wrinkles, so it stays neat with very little effort.</p>\n\n<h3>What's in the set (3 pieces)</h3>\n<ul>\n  <li>1 x Bed Sheet – 94 x 96 inches (King)</li>\n  <li>2 x Pillow Covers – 19 x 29 inches</li>\n</ul>\n\n<h3>Why you'll love it</h3>\n<ul>\n  <li>Yarn-dyed for rich, long-lasting colour</li>\n  <li>Soft, smooth cotton satin finish</li>\n  <li>Wrinkle-resistant bed sheet</li>\n  <li>Elegant designs that are easy to match</li>\n  <li>Adds a touch of elegance to your bedroom</li>\n  <li>Premium quality at great value</li>\n</ul>\n\n<h3>Specifications</h3>\n<table>\n  <tr>\n<td><strong>Fabric</strong></td>\n<td>Cotton satin, yarn-dyed</td>\n</tr>\n  <tr>\n<td><strong>Bed size</strong></td>\n<td>King</td>\n</tr>\n  <tr>\n<td><strong>Bed sheet</strong></td>\n<td>94 x 96 inches</td>\n</tr>\n  <tr>\n<td><strong>Pillow covers</strong></td>\n<td>19 x 29 inches (2 pcs)</td>\n</tr>\n  <tr>\n<td><strong>Pieces</strong></td>\n<td>3</td>\n</tr>\n</table>\n\n<h3>Frequently asked questions</h3>\n<p><strong>What does yarn-dyed mean?</strong><br>The cotton threads are dyed before the fabric is woven. This helps the colour stay rich and last longer, wash after wash.</p>\n<p><strong>Will this sheet fit a King size bed?</strong><br>Yes. At 94 x 96 inches, it is made for King size beds. Check our size guide to compare it with your mattress.</p>\n<p><strong>Is this a fitted sheet?</strong><br>No. This is a flat bed sheet that you tuck in around the mattress.</p>\n<p><strong>What comes in one set?</strong><br>One bed sheet and two matching pillow covers in the design you choose.</p>",
+   "createdAt": "2026-11-02T04:26:10Z",
+   "availableForSale": true,
+   "seo": {
+    "title": "Yarn-Dyed Cotton Satin Bed Sheet Set King | Sakooon",
+    "description": "Yarn-dyed cotton satin bed sheet set, King size 94x96 in, with 2 pillow covers. Checks, stripes, florals and more. Rs. 2,750, delivered across Pakistan."
+   },
+   "options": [
+    {
+     "name": "Design",
+     "optionValues": [
+      {
+       "name": "Blue Polka Dot",
+       "swatch": null
+      },
+      {
+       "name": "Seashell",
+       "swatch": null
+      },
+      {
+       "name": "Navy Plaid",
+       "swatch": null
+      },
+      {
+       "name": "Blue Plaid",
+       "swatch": null
+      },
+      {
+       "name": "Aqua Stripe",
+       "swatch": null
+      },
+      {
+       "name": "Blue Floral",
+       "swatch": null
+      },
+      {
+       "name": "Red Gingham",
+       "swatch": null
+      },
+      {
+       "name": "Peach Floral",
+       "swatch": null
+      },
+      {
+       "name": "Pink Chevron",
+       "swatch": null
+      },
+      {
+       "name": "Grey Gingham",
+       "swatch": null
+      },
+      {
+       "name": "Royal Blue Geometric",
+       "swatch": null
+      }
+     ]
+    },
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "King",
+       "swatch": null
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot_6a4871fb-0649-4c2d-b69f-a89007a3cfc8.webp",
+    "altText": "Blue polka dot yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+    "width": 1024,
+    "height": 1536
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot_6a4871fb-0649-4c2d-b69f-a89007a3cfc8.webp",
+      "altText": "Blue polka dot yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-peach-floral_01f8c12b-438f-4474-8b38-361f24ce2887.webp",
+      "altText": "Peach floral yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot-2_6a86fe40-280b-482b-81b2-1e267729c69e.webp",
+      "altText": "Blue polka dot yarn-dyed cotton satin bed sheet set styled on a king bed – Sakooon",
+      "width": 1088,
+      "height": 1445
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-seashell_11507b5e-7015-4618-a3fe-cd9bad0088dd.webp",
+      "altText": "Seashell print yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-royal-blue-geometric_61c4e091-ba11-4a0f-8947-c48f1db63ec2.webp",
+      "altText": "Royal blue geometric yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-navy-plaid-2_22f019c9-8fff-49ee-89f6-fd8c6536d09b.webp",
+      "altText": "Navy plaid yarn-dyed cotton satin bed sheet set styled on a king bed – Sakooon",
+      "width": 1088,
+      "height": 1445
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-pink-chevron_d4750f1f-7dff-41af-bff3-becb3630bc51.webp",
+      "altText": "Pink chevron yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-grey-gingham_daae4f68-d687-4934-9c8c-8306a5cf9d58.webp",
+      "altText": "Grey gingham check yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-seashell-2_f4889203-7b9e-4c89-a8dd-7ba0bffbe2ce.webp",
+      "altText": "Seashell print yarn-dyed cotton satin bed sheet set styled on a king bed – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-navy-plaid_a3d13ee9-15ce-491d-ad50-ffbf734c0898.webp",
+      "altText": "Navy plaid yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1088,
+      "height": 1445
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+      "altText": "Blue plaid yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1448,
+      "height": 1086
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-aqua-stripe_272b5f25-9e6e-425b-9252-3fa3f8aa6471.webp",
+      "altText": "Aqua stripe yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1448,
+      "height": 1086
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-floral_af507a3b-7166-4428-8f2d-442fa0bca9b6.webp",
+      "altText": "Blue floral yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1448,
+      "height": 1086
+     },
+     {
+      "url": "/images/sakooon-yarn-dyed-bed-sheet-set-red-gingham_f91e9fbf-281e-4802-a65d-3382cb3cc532.webp",
+      "altText": "Red gingham check yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1448,
+      "height": 1086
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/50938036093031",
+      "title": "Blue Polka Dot / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Blue Polka Dot"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot_6a4871fb-0649-4c2d-b69f-a89007a3cfc8.webp",
+       "altText": "Blue polka dot yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036125799",
+      "title": "Seashell / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Seashell"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-seashell-2_f4889203-7b9e-4c89-a8dd-7ba0bffbe2ce.webp",
+       "altText": "Seashell print yarn-dyed cotton satin bed sheet set styled on a king bed – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036158567",
+      "title": "Navy Plaid / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Navy Plaid"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-navy-plaid_a3d13ee9-15ce-491d-ad50-ffbf734c0898.webp",
+       "altText": "Navy plaid yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1088,
+       "height": 1445
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036191335",
+      "title": "Blue Plaid / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Blue Plaid"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+       "altText": "Blue plaid yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1448,
+       "height": 1086
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036224103",
+      "title": "Aqua Stripe / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Aqua Stripe"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-aqua-stripe_272b5f25-9e6e-425b-9252-3fa3f8aa6471.webp",
+       "altText": "Aqua stripe yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1448,
+       "height": 1086
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036256871",
+      "title": "Blue Floral / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Blue Floral"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-blue-floral_af507a3b-7166-4428-8f2d-442fa0bca9b6.webp",
+       "altText": "Blue floral yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1448,
+       "height": 1086
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036289639",
+      "title": "Red Gingham / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Red Gingham"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-red-gingham_f91e9fbf-281e-4802-a65d-3382cb3cc532.webp",
+       "altText": "Red gingham check yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1448,
+       "height": 1086
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036322407",
+      "title": "Peach Floral / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Peach Floral"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-peach-floral_01f8c12b-438f-4474-8b38-361f24ce2887.webp",
+       "altText": "Peach floral yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036355175",
+      "title": "Pink Chevron / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Pink Chevron"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-pink-chevron_d4750f1f-7dff-41af-bff3-becb3630bc51.webp",
+       "altText": "Pink chevron yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036387943",
+      "title": "Grey Gingham / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Grey Gingham"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-grey-gingham_daae4f68-d687-4934-9c8c-8306a5cf9d58.webp",
+       "altText": "Grey gingham check yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50938036420711",
+      "title": "Royal Blue Geometric / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "2750.0"
+      },
+      "compareAtPrice": {
+       "amount": "3500.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Design",
+        "value": "Royal Blue Geometric"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-yarn-dyed-bed-sheet-set-royal-blue-geometric_61c4e091-ba11-4a0f-8947-c48f1db63ec2.webp",
+       "altText": "Royal blue geometric yarn-dyed cotton satin bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     }
+    ]
+   },
+   "collections": {
+    "nodes": [
+     {
+      "handle": "bed-sheets",
+      "title": "Bed Sheets"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/10287630188647",
+   "handle": "two-tone-duvet-cover-set-king",
+   "title": "Two-Tone Reversible Duvet Cover Set – King Size with Bed Sheet & 4 Pillow Covers",
+   "vendor": "Sakooon",
+   "productType": "Duvet Cover Set",
+   "tags": [
+    "bedding set",
+    "cotton satin",
+    "duvet cover set",
+    "king size",
+    "reversible",
+    "two tone"
+   ],
+   "description": "Two looks, one set. The Sakooon Two-Tone Reversible Duvet Cover Set is made from smooth cotton satin with a soft sheen. It pairs a deep shade on one side with a lighter tone on the other, so you can flip your duvet cover and change the mood of your bedroom whenever you like. This King size bedding set comes with everything you need to dress your bed in one go: a reversible duvet cover, a matching bed sheet and four pillow covers, two in each tone. Contrast piping frames every piece for a neat, tailored finish, and the sheet resists wrinkles, so your bed stays neat with very little effort. What's in the set (6 pieces) 1 x Reversible Duvet Cover – 90 x 100 inches (King) 1 x Bed Sheet – 94 x 96 inches (King) 4 x Pillow Covers – 19 x 29 inches (2 in each tone) Duvet cover only. The duvet filling is not included. Why you'll love it Reversible two-tone duvet cover for two different looks Smooth cotton satin with a soft, elegant sheen Contrast piping on every piece Wrinkle-resistant bed sheet Premium quality at great value Specifications Fabric Cotton satin Bed size King Duvet cover 90 x 100 inches Bed sheet 94 x 96 inches Pillow covers 19 x 29 inches (4 pcs) Pieces 6 Frequently asked questions Is the duvet filling included?No. This set includes the duvet cover, bed sheet and four pillow covers. Looking for a filling? Pair it with our Duvet Comfort Filling, sold separately. What does reversible mean?Each side of the duvet cover is a different colour. Use the darker side for a bold look, or flip it to the lighter side for a softer feel. Will it fit my bed?This set is made for King size beds. Check our size guide to compare your mattress and duvet measurements.",
+   "descriptionHtml": "<p>Two looks, one set. The Sakooon <strong>Two-Tone Reversible Duvet Cover Set</strong> is made from smooth <strong>cotton satin</strong> with a soft sheen. It pairs a deep shade on one side with a lighter tone on the other, so you can flip your duvet cover and change the mood of your bedroom whenever you like.</p>\n\n<p>This <strong>King size bedding set</strong> comes with everything you need to dress your bed in one go: a reversible duvet cover, a matching bed sheet and four pillow covers, two in each tone. Contrast piping frames every piece for a neat, tailored finish, and the sheet resists wrinkles, so your bed stays neat with very little effort.</p>\n\n<h3>What's in the set (6 pieces)</h3>\n<ul>\n  <li>1 x Reversible Duvet Cover – 90 x 100 inches (King)</li>\n  <li>1 x Bed Sheet – 94 x 96 inches (King)</li>\n  <li>4 x Pillow Covers – 19 x 29 inches (2 in each tone)</li>\n</ul>\n<p><em>Duvet cover only. The duvet filling is not included.</em></p>\n\n<h3>Why you'll love it</h3>\n<ul>\n  <li>Reversible two-tone duvet cover for two different looks</li>\n  <li>Smooth cotton satin with a soft, elegant sheen</li>\n  <li>Contrast piping on every piece</li>\n  <li>Wrinkle-resistant bed sheet</li>\n  <li>Premium quality at great value</li>\n</ul>\n\n<h3>Specifications</h3>\n<table>\n  <tr>\n<td><strong>Fabric</strong></td>\n<td>Cotton satin</td>\n</tr>\n  <tr>\n<td><strong>Bed size</strong></td>\n<td>King</td>\n</tr>\n  <tr>\n<td><strong>Duvet cover</strong></td>\n<td>90 x 100 inches</td>\n</tr>\n  <tr>\n<td><strong>Bed sheet</strong></td>\n<td>94 x 96 inches</td>\n</tr>\n  <tr>\n<td><strong>Pillow covers</strong></td>\n<td>19 x 29 inches (4 pcs)</td>\n</tr>\n  <tr>\n<td><strong>Pieces</strong></td>\n<td>6</td>\n</tr>\n</table>\n\n<h3>Frequently asked questions</h3>\n<p><strong>Is the duvet filling included?</strong><br>No. This set includes the duvet cover, bed sheet and four pillow covers. Looking for a filling? Pair it with our Duvet Comfort Filling, sold separately.</p>\n<p><strong>What does reversible mean?</strong><br>Each side of the duvet cover is a different colour. Use the darker side for a bold look, or flip it to the lighter side for a softer feel.</p>\n<p><strong>Will it fit my bed?</strong><br>This set is made for King size beds. Check our size guide to compare your mattress and duvet measurements.</p>",
+   "createdAt": "2026-10-30T19:22:38Z",
+   "availableForSale": true,
+   "seo": {
+    "title": "Reversible Duvet Cover Set King – Cotton Satin | Sakooon",
+    "description": "Reversible two-tone cotton satin duvet cover set, King size, with bed sheet and 4 pillow covers. Contrast piping. Rs. 8,999, delivered across Pakistan."
+   },
+   "options": [
+    {
+     "name": "Color",
+     "optionValues": [
+      {
+       "name": "Grey / White",
+       "swatch": {
+        "color": "#6b6b6b",
+        "image": {
+         "previewImage": {
+          "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white.webp"
+         }
+        }
+       }
+      },
+      {
+       "name": "Black / White",
+       "swatch": {
+        "color": "#1e2126",
+        "image": {
+         "previewImage": {
+          "url": "/images/sakooon-quilted-bed-sheet-set-black.webp"
+         }
+        }
+       }
+      },
+      {
+       "name": "Rust / Peach",
+       "swatch": {
+        "color": "#9c4a2c",
+        "image": null
+       }
+      },
+      {
+       "name": "Royal Blue / Sky Blue",
+       "swatch": {
+        "color": "#1f4fb0",
+        "image": null
+       }
+      },
+      {
+       "name": "Forest Green / Lime Green",
+       "swatch": {
+        "color": "#1f4d36",
+        "image": null
+       }
+      }
+     ]
+    },
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "King",
+       "swatch": null
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+    "altText": null,
+    "width": 1024,
+    "height": 1536
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+      "altText": null,
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
+      "altText": null,
+      "width": 1449,
+      "height": 1086
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+      "altText": null,
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-black-white_2.webp",
+      "altText": null,
+      "width": 1086,
+      "height": 1449
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white_2.webp",
+      "altText": null,
+      "width": 1024,
+      "height": 1536
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/50721413628007",
+      "title": "Grey / White / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "8999.0"
+      },
+      "compareAtPrice": {
+       "amount": "10499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Grey / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+       "altText": null,
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50721413660775",
+      "title": "Black / White / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "8999.0"
+      },
+      "compareAtPrice": {
+       "amount": "10499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Black / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+       "altText": null,
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50721413693543",
+      "title": "Rust / Peach / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "8999.0"
+      },
+      "compareAtPrice": {
+       "amount": "10499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Rust / Peach"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+       "altText": null,
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50721413726311",
+      "title": "Royal Blue / Sky Blue / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "8999.0"
+      },
+      "compareAtPrice": {
+       "amount": "10499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Royal Blue / Sky Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+       "altText": null,
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50721413759079",
+      "title": "Forest Green / Lime Green / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "8999.0"
+      },
+      "compareAtPrice": {
+       "amount": "10499.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Forest Green / Lime Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green_2.webp",
+       "altText": null,
+       "width": 1024,
+       "height": 1536
+      }
+     }
+    ]
+   },
+   "collections": {
+    "nodes": [
+     {
+      "handle": "bed-sheets",
+      "title": "Bed Sheets"
+     },
+     {
+      "handle": "duvet-covers",
+      "title": "Duvet Covers"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/10286680572007",
+   "handle": "quilted-bed-sheet-set-king",
+   "title": "Quilted Bed Sheet Set – King Size Cotton with 2 Pillow Covers",
+   "vendor": "Sakooon",
+   "productType": "Bed Sheet Set",
+   "tags": [
+    "all season",
+    "bed sheet set",
+    "cotton",
+    "embossed",
+    "king size",
+    "quilted"
+   ],
+   "description": "Bring quiet elegance to your bedroom with the Sakooon Quilted Bed Sheet Set. Made from soft cotton with ultrasonic quilting, it has a raised, embossed pattern that looks rich and stays neat, with no loose threads to pull or fray. It's light enough for summer nights and adds a cosy layer in winter, so you can use it all year round. The fabric resists wrinkles, so your bed looks freshly made with very little effort. What's in the set (3 pieces) 1 x Quilted Bed Sheet – 96 x 106 inches (King) 2 x Quilted Pillow Covers – 19 x 29 inches Why you'll love it Ultrasonic quilting with no loose threads Elegant raised, embossed pattern Lightweight and comfortable in every season Wrinkle-resistant for a neat, ready-made look A wide range of colours to match any bedroom Specifications Fabric Cotton Bed size King Bed sheet 96 x 106 inches Pillow covers 19 x 29 inches (2 pcs) Finish Ultrasonic quilted, embossed Pieces 3 Care Machine wash at 40°C. Do not bleach. Tumble dry on low. Frequently asked questions What is ultrasonic quilting?Instead of thread, the layers are joined with ultrasonic heat to create the raised pattern. That means no stitches to break and no loose threads, even after many washes. Can I use it in summer?Yes. It's lightweight enough for warm nights and adds a soft, cosy layer in winter. Will it fit my bed?At 96 x 106 inches, it's made for King size beds. Check our size guide to compare it with your mattress.",
+   "descriptionHtml": "<p>Bring quiet elegance to your bedroom with the Sakooon <strong>Quilted Bed Sheet Set</strong>. Made from soft <strong>cotton</strong> with <strong>ultrasonic quilting</strong>, it has a raised, embossed pattern that looks rich and stays neat, with no loose threads to pull or fray.</p>\n\n<p>It's light enough for summer nights and adds a cosy layer in winter, so you can use it all year round. The fabric resists wrinkles, so your bed looks freshly made with very little effort.</p>\n\n<h3>What's in the set (3 pieces)</h3>\n<ul>\n  <li>1 x Quilted Bed Sheet – 96 x 106 inches (King)</li>\n  <li>2 x Quilted Pillow Covers – 19 x 29 inches</li>\n</ul>\n\n<h3>Why you'll love it</h3>\n<ul>\n  <li>Ultrasonic quilting with no loose threads</li>\n  <li>Elegant raised, embossed pattern</li>\n  <li>Lightweight and comfortable in every season</li>\n  <li>Wrinkle-resistant for a neat, ready-made look</li>\n  <li>A wide range of colours to match any bedroom</li>\n</ul>\n\n<h3>Specifications</h3>\n<table>\n  <tr>\n<td><strong>Fabric</strong></td>\n<td>Cotton</td>\n</tr>\n  <tr>\n<td><strong>Bed size</strong></td>\n<td>King</td>\n</tr>\n  <tr>\n<td><strong>Bed sheet</strong></td>\n<td>96 x 106 inches</td>\n</tr>\n  <tr>\n<td><strong>Pillow covers</strong></td>\n<td>19 x 29 inches (2 pcs)</td>\n</tr>\n  <tr>\n<td><strong>Finish</strong></td>\n<td>Ultrasonic quilted, embossed</td>\n</tr>\n  <tr>\n<td><strong>Pieces</strong></td>\n<td>3</td>\n</tr>\n</table>\n\n<h3>Care</h3>\n<p>Machine wash at 40°C. Do not bleach. Tumble dry on low.</p>\n\n<h3>Frequently asked questions</h3>\n<p><strong>What is ultrasonic quilting?</strong><br>Instead of thread, the layers are joined with ultrasonic heat to create the raised pattern. That means no stitches to break and no loose threads, even after many washes.</p>\n<p><strong>Can I use it in summer?</strong><br>Yes. It's lightweight enough for warm nights and adds a soft, cosy layer in winter.</p>\n<p><strong>Will it fit my bed?</strong><br>At 96 x 106 inches, it's made for King size beds. Check our size guide to compare it with your mattress.</p>",
+   "createdAt": "2026-10-30T07:58:43Z",
+   "availableForSale": true,
+   "seo": {
+    "title": "Quilted Bed Sheet Set King Size – Cotton | Sakooon",
+    "description": "Ultrasonic quilted cotton bed sheet set, King size 96x106 in, with 2 pillow covers. Wrinkle-resistant, all-season. Rs. 3,999, delivered across Pakistan."
+   },
+   "options": [
+    {
+     "name": "Color",
+     "optionValues": [
+      {
+       "name": "Sage Green",
+       "swatch": null
+      },
+      {
+       "name": "Ivory",
+       "swatch": null
+      },
+      {
+       "name": "Dusty Blue",
+       "swatch": null
+      },
+      {
+       "name": "Emerald Green",
+       "swatch": null
+      },
+      {
+       "name": "Slate Grey",
+       "swatch": null
+      },
+      {
+       "name": "Blush Pink",
+       "swatch": null
+      },
+      {
+       "name": "Charcoal Grey",
+       "swatch": null
+      },
+      {
+       "name": "Rust",
+       "swatch": null
+      },
+      {
+       "name": "Butter Yellow",
+       "swatch": null
+      },
+      {
+       "name": "Periwinkle Blue",
+       "swatch": null
+      },
+      {
+       "name": "Black",
+       "swatch": {
+        "color": "#1e2126",
+        "image": null
+       }
+      }
+     ]
+    },
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "King",
+       "swatch": null
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+    "altText": "Sage green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+    "width": 1024,
+    "height": 1536
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+      "altText": "Sage green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+      "altText": "Ivory quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-black.webp",
+      "altText": "Black quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+      "altText": "Dusty blue quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+      "altText": "Emerald green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+      "altText": "Slate grey quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+      "altText": "Blush pink quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+      "altText": "Charcoal grey quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+      "altText": "Rust quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+      "altText": "Butter yellow quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+      "altText": "Periwinkle blue quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+      "width": 1024,
+      "height": 1536
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/50715209629799",
+      "title": "Sage Green / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Sage Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+       "altText": "Sage green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209662567",
+      "title": "Ivory / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Ivory"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+       "altText": "Ivory quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209728103",
+      "title": "Dusty Blue / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Dusty Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+       "altText": "Dusty blue quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209760871",
+      "title": "Emerald Green / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Emerald Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+       "altText": "Emerald green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209793639",
+      "title": "Slate Grey / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Slate Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+       "altText": "Slate grey quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209826407",
+      "title": "Blush Pink / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Blush Pink"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+       "altText": "Blush pink quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209859175",
+      "title": "Charcoal Grey / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Charcoal Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+       "altText": "Charcoal grey quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209891943",
+      "title": "Rust / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Rust"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+       "altText": "Rust quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209924711",
+      "title": "Butter Yellow / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Butter Yellow"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+       "altText": "Butter yellow quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50715209957479",
+      "title": "Periwinkle Blue / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Periwinkle Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+       "altText": "Periwinkle blue quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/50936316559463",
+      "title": "Black / King",
+      "availableForSale": true,
+      "price": {
+       "amount": "3999.0"
+      },
+      "compareAtPrice": {
+       "amount": "6999.0"
+      },
+      "selectedOptions": [
+       {
+        "name": "Color",
+        "value": "Black"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+       "altText": "Sage green quilted cotton bed sheet set, king size, with 2 pillow covers – Sakooon",
+       "width": 1024,
+       "height": 1536
+      }
+     }
+    ]
+   },
+   "collections": {
+    "nodes": [
+     {
+      "handle": "bed-sheets",
+      "title": "Bed Sheets"
+     },
+     {
+      "handle": "bed-covers",
+      "title": "Bed Covers"
+     }
+    ]
+   }
+  }
+ ],
+ "collections": [
+  {
+   "id": "gid://shopify/Collection/490362667111",
+   "handle": "bed-covers",
+   "title": "Bed Covers",
+   "description": "",
+   "descriptionHtml": "",
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "image": null,
+   "productHandles": [
+    "quilted-bed-sheet-set-king"
+   ]
+  },
+  {
+   "id": "gid://shopify/Collection/490362470503",
+   "handle": "bed-sheets",
+   "title": "Bed Sheets",
+   "description": "",
+   "descriptionHtml": "",
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "image": null,
+   "productHandles": [
+    "yarn-dyed-cotton-satin-bed-sheet-set-king",
+    "two-tone-duvet-cover-set-king",
+    "quilted-bed-sheet-set-king"
+   ]
+  },
+  {
+   "id": "gid://shopify/Collection/490362536039",
+   "handle": "duvet-covers",
+   "title": "Duvet Covers",
+   "description": "",
+   "descriptionHtml": "",
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "image": null,
+   "productHandles": [
+    "two-tone-duvet-cover-set-king"
+   ]
+  },
+  {
+   "id": "gid://shopify/Collection/490362503271",
+   "handle": "duvets",
+   "title": "Duvets",
+   "description": "",
+   "descriptionHtml": "",
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "image": null,
+   "productHandles": [
+    "duvet-comfort-filling-220-gsm"
+   ]
+  },
+  {
+   "id": "gid://shopify/Collection/490362601575",
+   "handle": "pillows",
+   "title": "Pillows",
+   "description": "",
+   "descriptionHtml": "",
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "image": null,
+   "productHandles": [
+    "duvet-comfort-pillow-pack-of-2"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "id": "gid://shopify/Page/166252806247",
+   "handle": "contact",
+   "title": "Contact",
+   "body": "",
+   "bodySummary": "",
+   "seo": {
+    "title": null,
+    "description": null
+   }
+  },
+  {
+   "id": "gid://shopify/Page/166255394919",
+   "handle": "size-guide",
+   "title": "Size Guide",
+   "body": "",
+   "bodySummary": "",
+   "seo": {
+    "title": null,
+    "description": null
+   }
+  },
+  {
+   "id": "gid://shopify/Page/166255427687",
+   "handle": "about",
+   "title": "About",
+   "body": "",
+   "bodySummary": "",
+   "seo": {
+    "title": null,
+    "description": null
+   }
+  },
+  {
+   "id": "gid://shopify/Page/166255493223",
+   "handle": "quiz",
+   "title": "Quiz",
+   "body": "",
+   "bodySummary": "",
+   "seo": {
+    "title": null,
+    "description": null
+   }
+  },
+  {
+   "id": "gid://shopify/Page/166255820903",
+   "handle": "favorites",
+   "title": "Wishlist",
+   "body": "",
+   "bodySummary": "",
+   "seo": {
+    "title": null,
+    "description": null
+   }
+  }
+ ],
+ "blogs": [
+  {
+   "handle": "news",
+   "title": "News",
+   "articles": []
+  }
+ ]
+}
