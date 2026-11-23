@@ -8,7 +8,7 @@ export default function Promise() {
       <section
         id="snft-template--23876058808423__promise"
         className="sn-s snft snft--orbit"
-        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--pt': '72px', '--pb': '72px', colorScheme: 'dark', '--n': '6' }}
+        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--ac-aa': '#E3C793', '--pt': '72px', '--pb': '72px', colorScheme: 'dark', '--n': '6' }}
         data-sn-silk-host=""
       >
         <div className="sn-silk" data-sn-silk="" data-c1="#161B29" data-c2="#2B2B45" data-c3="#E3C793" data-speed=".45" data-amp=".7" />

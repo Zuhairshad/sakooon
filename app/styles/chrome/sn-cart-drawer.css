@@ -45,6 +45,6 @@
 .snc__sum { display: flex; justify-content: space-between; align-items: baseline; }
 .snc__sum span { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); }
 .snc__sum b { font: 400 1.7rem/1 var(--f-head); }
-.snc__save { font-size: 13px; color: var(--c-signal); }
+.snc__save { font-size: 13px; color: var(--c-signal-ink); }
 .snc__links { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
 .snc__wa { color: #1f9e57; } .snc__wa .icon { width: 16px; height: 16px; }

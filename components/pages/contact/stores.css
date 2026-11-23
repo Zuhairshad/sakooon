@@ -4,7 +4,7 @@
 #snsr-template--23876058382439__stores .snsr__store { cursor: pointer; position: relative; display: grid; gap: 8px; width: 100%; padding: 22px 24px; text-align: left; border: 1px solid transparent; transition: border-color .4s, transform .6s cubic-bezier(.3, 1.2, .4, 1), box-shadow .5s, background .5s; }
 #snsr-template--23876058382439__stores .snsr__store:hover { transform: translateX(6px); }
 #snsr-template--23876058382439__stores .snsr__store.is-on { border-color: var(--ac); box-shadow: 0 30px 60px -40px rgba(20, 22, 40, .45); background: color-mix(in srgb, var(--ac) 7%, var(--card)); }
-#snsr-template--23876058382439__stores .snsr__city { font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ac); }
+#snsr-template--23876058382439__stores .snsr__city { font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ac-aa, var(--ac)); }
 #snsr-template--23876058382439__stores .snsr__addr, #snsr-template--23876058382439__stores .snsr__hrs { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--soft); }
 #snsr-template--23876058382439__stores .snsr__addr .icon, #snsr-template--23876058382439__stores .snsr__hrs .icon { width: 16px; height: 16px; flex: none; margin-top: 3px; color: var(--ac); }
 #snsr-template--23876058382439__stores .snsr__acts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 6px; }

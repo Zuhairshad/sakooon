@@ -15,6 +15,7 @@ export default function Footer() {
           '--line': 'color-mix(in srgb, #F4EEE4 14%, transparent)',
           '--line2': 'color-mix(in srgb, #F4EEE4 26%, transparent)',
           '--ac-ink': '#161B29',
+          '--ac-aa': '#E3C793',
         }}
       >
         <div className="snf__sky" aria-hidden="true">
@@ -291,9 +292,6 @@ export default function Footer() {
                 <ul>
                   <li>
                     <Link href="/pages/about">Our story</Link>
-                  </li>
-                  <li>
-                    <Link href="/blogs/news">Journal</Link>
                   </li>
                   <li>
                     <Link href="/pages/faq">FAQ</Link>

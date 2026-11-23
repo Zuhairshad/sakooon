@@ -11,7 +11,7 @@ export default function QuizMain({ picks }: { picks: Partial<Record<'1' | '2' | 
       <section
         id="snq-template--23876058251367__quiz"
         className="sn-s snqz"
-        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--pt': '120px', '--pb': '120px', colorScheme: 'dark' }}
+        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--ac-aa': '#E3C793', '--pt': '120px', '--pb': '120px', colorScheme: 'dark' }}
         data-sn-silk-host=""
       >
         <div className="sn-silk" data-sn-silk="" data-c1="#161B29" data-c2="#2B2B45" data-c3="#E3C793" data-speed=".7" data-amp=".9" />

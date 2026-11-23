@@ -8,7 +8,7 @@ export default function Reviews() {
       <section
         id="snrv-template--23876058939495__reviews"
         className="sn-s snrv snrv--sky"
-        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--pt': '120px', '--pb': '120px', colorScheme: 'dark' }}
+        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--ac-aa': '#E3C793', '--pt': '120px', '--pb': '120px', colorScheme: 'dark' }}
         data-sn-silk-host=""
       >
         <div className="sn-silk" data-sn-silk="" data-c1="#161B29" data-c2="#2B2B45" data-c3="#E3C793" data-speed=".5" data-amp=".7" />
