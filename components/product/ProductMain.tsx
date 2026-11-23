@@ -84,7 +84,6 @@ export default function ProductMain({
   product: Product;
   crumb: { handle: string; title: string } | null;
 }) {
-  const v = p.variants.find((x) => x.available) || p.variants[0];
   const specs = PRODUCT_SPECS[p.handle] || [];
   const url = `${SITE_URL}/products/${p.handle}`;
   const images = p.images.length
@@ -93,6 +92,16 @@ export default function ProductMain({
       ? [p.featuredImage]
       : [];
   const n = images.length || 1;
+  // Default to the first available variant whose photo matches the opening
+  // gallery image, so the gallery and the selected variant agree on load.
+  // Falls back to the previous "first available variant" rule when none
+  // of the variant photos match the featured image.
+  const firstImage = images[0];
+  const v =
+    (firstImage &&
+      p.variants.find((x) => x.available && x.image?.url === firstImage.url)) ||
+    p.variants.find((x) => x.available) ||
+    p.variants[0];
   const sel = v?.selectedOptions.map((s) => s.value) || [];
   const startSlide = Math.max(
     0,
