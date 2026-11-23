@@ -9,7 +9,7 @@ export default function ContactPage() {
       <Banner />
       <ContactMain />
       <Stores />
-      <Faq />
+      <Faq showContactCta={false} />
     </>
   );
 }

@@ -15,7 +15,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: u('/'), changeFrequency: 'daily', priority: 1 },
     { url: u('/collections'), changeFrequency: 'weekly', priority: 0.6 },
     { url: u('/collections/all'), changeFrequency: 'daily', priority: 0.7 },
-    ...collections.map((c) => ({ url: u(`/collections/${c.handle}`), changeFrequency: 'weekly' as const, priority: 0.7 })),
+    // Collections with no products render an empty state; skip them so the
+    // sitemap only points crawlers at pages with real content.
+    ...collections.filter((c) => c.productCount > 0).map((c) => ({ url: u(`/collections/${c.handle}`), changeFrequency: 'weekly' as const, priority: 0.7 })),
     ...products.map((p) => ({
       url: u(`/products/${p.handle}`),
       changeFrequency: 'weekly' as const,
@@ -23,7 +25,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       images: p.featuredImage ? [p.featuredImage.url] : undefined,
     })),
     ...pages.map((p) => ({ url: u(`/pages/${p.handle}`), lastModified: p.updatedAt, changeFrequency: 'monthly' as const, priority: 0.5 })),
-    ...blogs.flatMap((b) => [
+    // A blog with no published articles has no content worth indexing.
+    ...blogs.filter((b) => b.articles.length > 0).flatMap((b) => [
       { url: u(`/blogs/${b.handle}`), changeFrequency: 'weekly' as const, priority: 0.4 },
       ...b.articles.map((a) => ({ url: u(`/blogs/${b.handle}/${a.handle}`), lastModified: a.publishedAt, changeFrequency: 'monthly' as const, priority: 0.4 })),
     ]),

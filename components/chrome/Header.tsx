@@ -311,9 +311,6 @@ export default function Header() {
                           <p className="snh__colh">Duvets & covers</p>
                           <ul>
                             <li>
-                              <Link href="/collections/duvets">All-season duvets</Link>
-                            </li>
-                            <li>
                               <Link href="/collections/winter-duvets">Winter duvets</Link>
                             </li>
                             <li>
@@ -461,9 +458,6 @@ export default function Header() {
                           <p className="snh__colh">Pillows & covers</p>
                           <ul>
                             <li>
-                              <Link href="/collections/pillows">Pillows</Link>
-                            </li>
-                            <li>
                               <Link href="/collections/pillow-covers-premium">Pillow covers · Premium</Link>
                             </li>
                             <li>
@@ -582,179 +576,6 @@ export default function Header() {
                             <small>Soft</small>
                             <b>Hollow-fibre pillows</b>
                             <em>Discover →</em>
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li className="snh__li has-mega" data-snh-li="">
-                  <Link className="snh__a" href="/collections/bath-towels" aria-haspopup="true" aria-expanded="false">
-                    <span>Bath</span>
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon"
-                      aria-hidden="true"
-                    >
-                      <path d="m6 9 6 6 6-6" />
-                    </svg>
-                  </Link>
-                  <div className="snh__mega" data-snh-mega="">
-                    <div className="snh__mega-in sn-wrap">
-                      <div className="snh__cols">
-                        <div className="snh__col" style={{ '--i': '0' }}>
-                          <p className="snh__colh">Bath</p>
-                          <ul>
-                            <li>
-                              <Link href="/collections/bath-towels">Bath towels</Link>
-                            </li>
-                            <li>
-                              <Link href="/collections/bath-sheets">Bath sheets</Link>
-                            </li>
-                            <li>
-                              <Link href="/collections/hand-towels">Hand towels</Link>
-                            </li>
-                            <li>
-                              <Link href="/collections/towel-sets">Towel sets</Link>
-                            </li>
-                          </ul>
-                        </div>
-                        <Link className="sn-link snh__all" href="/collections/bath-towels">
-                          Shop all Bath
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.7"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="icon"
-                            aria-hidden="true"
-                          >
-                            <path d="M5 12h14M13 6l6 6-6 6" />
-                          </svg>
-                        </Link>
-                      </div>
-                      <div className="snh__feats" style={{ '--n': '1' }}>
-                        <Link className="snh__feat" href="/collections/bath-towels" style={{ '--i': '0' }}>
-                          <div className="sn-media ">
-                            <svg
-                              className="sn-art "
-                              viewBox="0 0 600 750"
-                              preserveAspectRatio="xMidYMid slice"
-                              aria-hidden="true"
-                              focusable="false"
-                            >
-                              <defs>
-                                <linearGradient id="bgtw" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="0" stopColor="#EAF0EC" />
-                                  <stop offset="1" stopColor="#DAE2DA" />
-                                </linearGradient>
-                                <radialGradient id="gltw" cx="50%" cy="30%" r="60%">
-                                  <stop offset="0" stopColor="#fff" stopOpacity=".7" />
-                                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                                </radialGradient>
-                              </defs>
-                              <rect width="600" height="750" fill="url(#bgtw)" />
-                              <rect width="600" height="750" fill="url(#gltw)" />
-                              <circle cx="300" cy="300" r="210" fill="#FFFDF9" opacity=".55" />
-                              <ellipse cx="300" cy="640" rx="200" ry="20" fill="#1B2130" opacity="0.2" />
-                              <rect x="150" y="514" width="300" height="78" rx="30" fill="#1B2130" />
-                              <path d="M166 574h268M166 566h268" stroke="#A8834F" strokeWidth="3" opacity=".9" />
-                              <circle cx="170" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="185" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="201" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="216" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="231" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="246" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="262" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="277" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="292" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="308" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="323" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="338" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="354" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="369" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="384" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="399" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="415" cy="532" r="1.5" fill="#2C3447" />
-                              <circle cx="430" cy="532" r="1.5" fill="#2C3447" />
-                              <rect x="154" y="440" width="292" height="78" rx="30" fill="#E8E0D2" />
-                              <path d="M170 500h260M170 492h260" stroke="#D3C7B4" strokeWidth="3" opacity=".9" />
-                              <circle cx="174" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="189" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="204" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="218" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="233" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="248" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="263" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="278" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="293" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="307" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="322" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="337" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="352" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="367" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="382" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="396" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="411" cy="458" r="1.5" fill="#D3C7B4" />
-                              <circle cx="426" cy="458" r="1.5" fill="#D3C7B4" />
-                              <rect x="158" y="366" width="284" height="78" rx="30" fill="#FFFDF9" />
-                              <path d="M174 426h252M174 418h252" stroke="#E2D8C8" strokeWidth="3" opacity=".9" />
-                              <circle cx="178" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="192" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="207" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="221" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="235" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="250" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="264" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="278" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="293" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="307" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="322" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="336" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="350" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="365" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="379" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="393" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="408" cy="384" r="1.5" fill="#E2D8C8" />
-                              <circle cx="422" cy="384" r="1.5" fill="#E2D8C8" />
-                              <rect x="162" y="292" width="276" height="78" rx="30" fill="#B3C2A7" />
-                              <path d="M178 352h244M178 344h244" stroke="#9DAE91" strokeWidth="3" opacity=".9" />
-                              <circle cx="182" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="196" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="210" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="224" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="238" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="251" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="265" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="279" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="293" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="307" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="321" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="335" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="349" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="362" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="376" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="390" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="404" cy="310" r="1.5" fill="#9DAE91" />
-                              <circle cx="418" cy="310" r="1.5" fill="#9DAE91" />
-                              <path d="M420 306 q30 -60 70 -70" stroke="#7E946F" strokeWidth="3" fill="none" />
-                              <ellipse cx="440" cy="281" rx="10" ry="5" fill="#9DAE91" transform="rotate(-35 440 281)" />
-                              <ellipse cx="454" cy="271" rx="10" ry="5" fill="#9DAE91" transform="rotate(-35 454 271)" />
-                              <ellipse cx="468" cy="261" rx="10" ry="5" fill="#9DAE91" transform="rotate(-35 468 261)" />
-                              <ellipse cx="482" cy="251" rx="10" ry="5" fill="#9DAE91" transform="rotate(-35 482 251)" />
-                            </svg>
-                          </div>
-                          <span className="snh__feat-t">
-                            <small>600 GSM</small>
-                            <b>Spa Towels</b>
-                            <em>Shop now →</em>
                           </span>
                         </Link>
                       </div>
@@ -924,10 +745,7 @@ export default function Header() {
               <Link className="sn-chip" href="/search?q=Duvet" style={{ '--i': '2' }}>
                 Duvet
               </Link>
-              <Link className="sn-chip" href="/search?q=Bath+towels" style={{ '--i': '3' }}>
-                Bath towels
-              </Link>
-              <Link className="sn-chip" href="/search?q=Pillow+covers" style={{ '--i': '4' }}>
+              <Link className="sn-chip" href="/search?q=Pillow+covers" style={{ '--i': '3' }}>
                 Pillow covers
               </Link>
             </div>
@@ -1059,9 +877,6 @@ export default function Header() {
               </summary>
               <ul>
                 <li>
-                  <Link href="/collections/duvets">All-season duvets</Link>
-                </li>
-                <li>
                   <Link href="/collections/winter-duvets">Winter duvets</Link>
                 </li>
                 <li>
@@ -1087,9 +902,6 @@ export default function Header() {
               </summary>
               <ul>
                 <li>
-                  <Link href="/collections/pillows">Pillows</Link>
-                </li>
-                <li>
                   <Link href="/collections/pillow-covers-premium">Pillow covers · Premium</Link>
                 </li>
                 <li>
@@ -1101,31 +913,6 @@ export default function Header() {
                 <li>
                   <Link className="snm__all" href="/collections/pillows">
                     Shop all Pillows →
-                  </Link>
-                </li>
-              </ul>
-            </details>
-            <details className="snm__d" style={{ '--i': '3' }}>
-              <summary>
-                <span>Bath</span>
-                <i />
-              </summary>
-              <ul>
-                <li>
-                  <Link href="/collections/bath-towels">Bath towels</Link>
-                </li>
-                <li>
-                  <Link href="/collections/bath-sheets">Bath sheets</Link>
-                </li>
-                <li>
-                  <Link href="/collections/hand-towels">Hand towels</Link>
-                </li>
-                <li>
-                  <Link href="/collections/towel-sets">Towel sets</Link>
-                </li>
-                <li>
-                  <Link className="snm__all" href="/collections/bath-towels">
-                    Shop all Bath →
                   </Link>
                 </li>
               </ul>
