@@ -35,6 +35,15 @@
 .snms .snms__main { position: relative; min-width: 0; }
 .snms.is-loading .snms__grid { opacity: .35; filter: blur(3px); }
 .snms .snms__grid { transition: opacity .4s, filter .4s; row-gap: 36px; }
+/* Sparse grids (1-2 products, e.g. a thin collection): equal-fraction columns
+   stretch a lone card across the whole row and leave it isolated in a huge
+   field. Cap the card width and pack from the start so a short result set
+   reads as a deliberate, tightly-grouped layout instead of a layout bug. */
+.snms .snms__grid:has(> :nth-child(1):nth-last-child(1)),
+.snms .snms__grid:has(> :nth-child(1):nth-last-child(2)) {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 340px));
+  justify-content: start;
+}
 .snms .snms__doc { align-self: start; display: grid; gap: 10px; align-content: start; padding: 16px 16px 20px; transition: transform .6s cubic-bezier(.3, 1.2, .4, 1); }
 .snms .snms__doc:hover { transform: translateY(-6px); }
 .snms .snms__dimg { border-radius: calc(var(--r) * .7); }
