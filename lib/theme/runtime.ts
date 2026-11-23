@@ -73,6 +73,27 @@ function split(el: El) {
   })(el);
 }
 
+/* ---------------- shared disconnect watcher ---------------- */
+// One MutationObserver, shared by every host that needs cleanup when it
+// leaves the DOM (client-side navigation unmounts a page's sections without
+// ever calling back into this module), instead of a per-host observer.
+const disconnectWatchers = new Map<El, () => void>();
+let domObserver: MutationObserver | null = null;
+function onDisconnect(host: El, cb: () => void) {
+  disconnectWatchers.set(host, cb);
+  if (!domObserver) {
+    domObserver = new MutationObserver(() => {
+      disconnectWatchers.forEach((fn, h) => {
+        if (!h.isConnected) {
+          disconnectWatchers.delete(h);
+          fn();
+        }
+      });
+    });
+    domObserver.observe(document.documentElement, { childList: true, subtree: true });
+  }
+}
+
 let io: IntersectionObserver | null = null;
 function reveal(scope: ParentNode) {
   if (!io && 'IntersectionObserver' in window)
@@ -92,6 +113,7 @@ function rail(scope: ParentNode) {
     r.setAttribute('data-sn-rail-on', '');
     const wrap = (r.closest('[data-sn-railwrap]') as El) || (r.parentNode as El);
     const bar = $('[data-sn-prog]', wrap);
+    const ac = new AbortController();
     const step = () => {
       const c = r.firstElementChild;
       return c ? c.getBoundingClientRect().width + (parseFloat(getComputedStyle(r).columnGap) || 20) : 300;
@@ -103,41 +125,29 @@ function rail(scope: ParentNode) {
       bar.style.width = w + '%';
       bar.style.left = (max > 0 ? (r.scrollLeft / max) * (100 - w) : 0) + '%';
     };
-    r.addEventListener('scroll', prog, { passive: true });
-    window.addEventListener('resize', prog);
+    r.addEventListener('scroll', prog, { passive: true, signal: ac.signal });
+    window.addEventListener('resize', prog, { signal: ac.signal });
     setTimeout(prog, 200);
-    $$('[data-sn-prev]', wrap).forEach((b) => b.addEventListener('click', () => r.scrollBy({ left: -step(), behavior: 'smooth' })));
-    $$('[data-sn-next]', wrap).forEach((b) => b.addEventListener('click', () => r.scrollBy({ left: step(), behavior: 'smooth' })));
+    $$('[data-sn-prev]', wrap).forEach((b) => b.addEventListener('click', () => r.scrollBy({ left: -step(), behavior: 'smooth' }), { signal: ac.signal }));
+    $$('[data-sn-next]', wrap).forEach((b) => b.addEventListener('click', () => r.scrollBy({ left: step(), behavior: 'smooth' }), { signal: ac.signal }));
     let down = false, x0 = 0, s0 = 0, moved = false;
     r.addEventListener('pointerdown', (e) => {
       if (e.pointerType !== 'mouse' || e.button) return;
       down = true; moved = false; x0 = e.clientX; s0 = r.scrollLeft;
-    });
+    }, { passive: true, signal: ac.signal });
     window.addEventListener('pointermove', (e) => {
       if (!down) return;
       const dx = e.clientX - x0;
       if (Math.abs(dx) > 6) { moved = true; r.classList.add('is-drag'); }
       if (moved) r.scrollLeft = s0 - dx;
-    });
+    }, { passive: true, signal: ac.signal });
     window.addEventListener('pointerup', () => {
       if (!down) return;
       down = false;
       setTimeout(() => r.classList.remove('is-drag'), 30);
-    });
-    r.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
-    const auto = parseFloat(r.getAttribute('data-sn-auto') || '') || 0;
-    if (auto > 0 && motion()) {
-      let hov = false;
-      r.addEventListener('mouseenter', () => (hov = true));
-      r.addEventListener('mouseleave', () => (hov = false));
-      const t = setInterval(() => {
-        if (!r.isConnected) return clearInterval(t);
-        if (hov || down || document.hidden) return;
-        const max = r.scrollWidth - r.clientWidth - 4;
-        if (r.scrollLeft >= max) r.scrollTo({ left: 0, behavior: 'smooth' });
-        else r.scrollBy({ left: step(), behavior: 'smooth' });
-      }, auto * 1e3);
-    }
+    }, { passive: true, signal: ac.signal });
+    r.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, { capture: true, signal: ac.signal });
+    onDisconnect(r, () => ac.abort());
   });
 }
 
@@ -153,6 +163,7 @@ function tabs(scope: ParentNode) {
     t.setAttribute('data-sn-tabs-on', '');
     const host = (t.closest('[data-sn-tabhost]') as El) || (t.parentNode as El);
     const btns = $$('button[data-tab]', t);
+    const ac = new AbortController();
     btns.forEach((b) =>
       b.addEventListener('click', () => {
         btns.forEach((x) => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-selected', String(x === b)); });
@@ -167,11 +178,12 @@ function tabs(scope: ParentNode) {
         });
         pill(t);
         t.dispatchEvent(new CustomEvent('sn:tab', { bubbles: true, detail: b.getAttribute('data-tab') }));
-      }),
+      }, { signal: ac.signal }),
     );
     pill(t);
-    window.addEventListener('resize', () => pill(t));
+    window.addEventListener('resize', () => pill(t), { signal: ac.signal });
     setTimeout(() => pill(t), 400);
+    onDisconnect(t, () => ac.abort());
   });
 }
 
@@ -383,6 +395,7 @@ function feathers(scope: ParentNode) {
     const col = host.getAttribute('data-color') || 'rgba(255,255,255,.75)';
     const n = parseInt(host.getAttribute('data-sn-feathers')!, 10) || 26;
     let W = 0, H = 0, vis = false, raf: number | null = null;
+    const ac = new AbortController();
     const size = () => {
       W = host.clientWidth; H = host.clientHeight;
       cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
@@ -391,12 +404,16 @@ function feathers(scope: ParentNode) {
     const mk = (y?: number) => ({ x: Math.random() * W, y: y ?? Math.random() * H, r: 1 + Math.random() * 2.6, s: 0.15 + Math.random() * 0.45, a: Math.random() * 6.28, w: 0.4 + Math.random() * 0.8, o: 0.25 + Math.random() * 0.6, f: Math.random() < 0.25 });
     size();
     const parts = Array.from({ length: n }, () => mk());
-    window.addEventListener('resize', size);
+    // ResizeObserver on the host, not window: it tracks the box that actually
+    // matters here and is torn down with the rest of this host's listeners.
+    const ro = new ResizeObserver(size);
+    ro.observe(host);
     const loop = () => {
       if (raf) return;
       const f = () => {
         raf = null;
-        if (!vis || document.hidden || !host.isConnected) return;
+        if (!host.isConnected) { ac.abort(); return; }
+        if (!vis || document.hidden) return;
         ctx.clearRect(0, 0, W, H);
         parts.forEach((p, i) => {
           p.y -= p.s; p.a += 0.012 * p.w; p.x += Math.sin(p.a) * 0.35;
@@ -411,8 +428,19 @@ function feathers(scope: ParentNode) {
       };
       f();
     };
-    whenIdle(() => new IntersectionObserver((es) => { vis = es[0].isIntersecting; if (vis) loop(); }).observe(host));
-    document.addEventListener('visibilitychange', () => !document.hidden && loop());
+    let io2: IntersectionObserver | null = null;
+    whenIdle(() => {
+      if (!host.isConnected) return;
+      io2 = new IntersectionObserver((es) => { vis = es[0].isIntersecting; if (vis) loop(); });
+      io2.observe(host);
+    });
+    document.addEventListener('visibilitychange', () => !document.hidden && loop(), { signal: ac.signal });
+    onDisconnect(host, () => {
+      ac.abort();
+      ro.disconnect();
+      io2?.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    });
   });
 }
 
@@ -495,12 +523,22 @@ export function install() {
     if (a && openOv && !e.defaultPrevented) close();
   });
 
+  // card media "glow": coalesced to one write per frame instead of per pointermove.
+  const hoverMQ = window.matchMedia('(hover: hover)');
+  let glowTarget: El | null = null, glowX = 0, glowY = 0, glowRaf = 0;
   document.addEventListener('pointermove', (e) => {
+    if (!hoverMQ.matches) return;
     const m = (e.target as El).closest?.('.sn-card__media') as El | null;
     if (!m) return;
-    const r = m.getBoundingClientRect();
-    m.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
-    m.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
+    glowTarget = m; glowX = e.clientX; glowY = e.clientY;
+    if (glowRaf) return;
+    glowRaf = requestAnimationFrame(() => {
+      glowRaf = 0;
+      if (!glowTarget) return;
+      const r = glowTarget.getBoundingClientRect();
+      glowTarget.style.setProperty('--mx', (((glowX - r.left) / r.width) * 100).toFixed(1) + '%');
+      glowTarget.style.setProperty('--my', (((glowY - r.top) / r.height) * 100).toFixed(1) + '%');
+    });
   }, { passive: true });
   document.addEventListener('mouseover', (e) => {
     const d = (e.target as El).closest?.('.sn-sw__dot[data-img]');

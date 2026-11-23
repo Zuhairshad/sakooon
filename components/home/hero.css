@@ -8,7 +8,6 @@
 #snhero-template--23876058939495__hero .snhero__stage { position: absolute; inset: 0; z-index: -2; }
 #snhero-template--23876058939495__hero .snhero__bg { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.4s ease; }
 #snhero-template--23876058939495__hero .snhero__bg.is-on { opacity: 1; z-index: 1; }
-#snhero-template--23876058939495__hero .snhero__bg.is-in { filter: url(#snhero-template--23876058939495__hero-f); }
 #snhero-template--23876058939495__hero .snhero__bg img, #snhero-template--23876058939495__hero .snhero__bg video, #snhero-template--23876058939495__hero .snhero__bg picture, #snhero-template--23876058939495__hero .snhero__bg .sn-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 #snhero-template--23876058939495__hero .snhero__bg img, #snhero-template--23876058939495__hero .snhero__bg .sn-art { transform: scale(1.14); transition: transform 9s cubic-bezier(.2, .6, .2, 1); }
 #snhero-template--23876058939495__hero .snhero__bg.is-on img, #snhero-template--23876058939495__hero .snhero__bg.is-on .sn-art { transform: scale(1.02); }
@@ -21,19 +20,19 @@
 #snhero-template--23876058939495__hero .snhero__copy { display: grid; max-width: 780px; }
 #snhero-template--23876058939495__hero .snhero__txt { grid-area: 1 / 1; visibility: hidden; }
 #snhero-template--23876058939495__hero .snhero__txt.is-on { visibility: visible; }
-#snhero-template--23876058939495__hero .snhero__eb { margin-bottom: 26px; opacity: 0; filter: blur(8px); transform: translateY(12px); transition: all .9s cubic-bezier(.2, .7, .2, 1); }
+#snhero-template--23876058939495__hero .snhero__eb { margin-bottom: 26px; opacity: 0; transform: translateY(12px); transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1); }
 #snhero-template--23876058939495__hero .snhero__h { font-size: clamp(3rem, 7.4vw, 7rem); line-height: .96; letter-spacing: -.035em; }
 #snhero-template--23876058939495__hero .snhero__h em { color: var(--ac); }
 #snhero-template--23876058939495__hero .snhero__w { display: inline-block; }
-#snhero-template--23876058939495__hero .snhero__w > * { display: inline-block; opacity: 0; filter: blur(16px); transform: translateY(.4em) scale(1.04); transition: opacity 1.2s cubic-bezier(.2, .7, .2, 1), filter 1.2s cubic-bezier(.2, .7, .2, 1), transform 1.3s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--wi) * 80ms + 150ms); }
-#snhero-template--23876058939495__hero .snhero__p { margin-top: 26px; max-width: 48ch; font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.75; color: var(--soft); opacity: 0; filter: blur(8px); transition: all 1s cubic-bezier(.2, .7, .2, 1) .5s; }
+#snhero-template--23876058939495__hero .snhero__w > * { display: inline-block; opacity: 0; transform: translateY(.4em) scale(1.04); transition: opacity 1.2s cubic-bezier(.2, .7, .2, 1), transform 1.3s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--wi) * 80ms + 150ms); }
+#snhero-template--23876058939495__hero .snhero__p { margin-top: 26px; max-width: 48ch; font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.75; color: var(--soft); opacity: 0; transform: translateY(10px); transition: opacity 1s cubic-bezier(.2, .7, .2, 1) .5s, transform 1s cubic-bezier(.2, .7, .2, 1) .5s; }
 #snhero-template--23876058939495__hero.snhero--center .snhero__p { margin-inline: auto; }
-#snhero-template--23876058939495__hero .snhero__btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; opacity: 0; transform: translateY(14px); transition: all 1s cubic-bezier(.2, .7, .2, 1) .65s; }
+#snhero-template--23876058939495__hero .snhero__btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; opacity: 0; transform: translateY(14px); transition: opacity 1s cubic-bezier(.2, .7, .2, 1) .65s, transform 1s cubic-bezier(.2, .7, .2, 1) .65s; }
 #snhero-template--23876058939495__hero.snhero--center .snhero__btns { justify-content: center; }
-#snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__eb, #snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__p { opacity: 1; filter: none; transform: none; }
-#snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__w > * { opacity: 1; filter: none; transform: none; }
+#snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__eb, #snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__p { opacity: 1; transform: none; }
+#snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__w > * { opacity: 1; transform: none; }
 #snhero-template--23876058939495__hero.is-ready .snhero__txt.is-on .snhero__btns { opacity: 1; transform: none; }
-#snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__w > *, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__eb, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__p, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__btns { opacity: 0 !important; filter: blur(14px) !important; transform: translateY(-.3em) !important; transition-duration: .6s; transition-delay: 0s; }
+#snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__w > *, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__eb, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__p, #snhero-template--23876058939495__hero .snhero__txt.is-out .snhero__btns { opacity: 0 !important; transform: translateY(-.3em) !important; transition-duration: .6s; transition-delay: 0s; }
 #snhero-template--23876058939495__hero .snhero__chips { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 44px; padding-top: 22px; border-top: 1px dashed var(--line2); }
 #snhero-template--23876058939495__hero.snhero--center .snhero__chips { justify-content: center; }
 #snhero-template--23876058939495__hero .snhero__chips li { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--soft); opacity: 0; transform: translateY(10px); transition: all .8s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i) * 90ms + 1s); }
@@ -46,7 +45,6 @@
 #snhero-template--23876058939495__hero.snhero--paper .snhero__frame { box-shadow: 0 60px 100px -50px rgba(27, 33, 48, .45); }
 #snhero-template--23876058939495__hero .snhero__fig { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.2s ease; }
 #snhero-template--23876058939495__hero .snhero__fig.is-on { opacity: 1; z-index: 1; }
-#snhero-template--23876058939495__hero .snhero__fig.is-in { filter: url(#snhero-template--23876058939495__hero-f); }
 #snhero-template--23876058939495__hero .snhero__fig img, #snhero-template--23876058939495__hero .snhero__fig .sn-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); transition: transform 8s cubic-bezier(.2, .6, .2, 1); }
 #snhero-template--23876058939495__hero .snhero__fig.is-on img, #snhero-template--23876058939495__hero .snhero__fig.is-on .sn-art { transform: scale(1); }
 #snhero-template--23876058939495__hero .snhero__stitch { position: absolute; inset: 12px; z-index: 3; border-radius: calc(var(--r) * 2.2 - 10px); border: 1.5px dashed color-mix(in srgb, var(--ac) 70%, transparent); pointer-events: none; }
@@ -88,9 +86,9 @@
    keyframes (same durations, delays and easing) from the first frame.
    The hero image (LCP) is never hidden: the frame only scales in.
    HeroBehavior drops .snhero--intro on the first slide change. */
-@keyframes snhero-in-eb { from { opacity: 0; filter: blur(8px); transform: translateY(12px); } }
-@keyframes snhero-in-w { from { opacity: 0; filter: blur(16px); transform: translateY(.4em) scale(1.04); } }
-@keyframes snhero-in-p { from { opacity: 0; filter: blur(8px); } }
+@keyframes snhero-in-eb { from { opacity: 0; transform: translateY(12px); } }
+@keyframes snhero-in-w { from { opacity: 0; transform: translateY(.4em) scale(1.04); } }
+@keyframes snhero-in-p { from { opacity: 0; transform: translateY(10px); } }
 @keyframes snhero-in-up { from { opacity: 0; transform: translateY(var(--y0, 14px)); } }
 @keyframes snhero-in-frame { from { scale: .9; } }
 @media (prefers-reduced-motion: no-preference) {
