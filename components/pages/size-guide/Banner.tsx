@@ -24,7 +24,7 @@ export default function Banner() {
           <nav className="sn-crumbs snph__crumbs" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <i />
-            <span aria-current="page">Size</span>
+            <span aria-current="page">Size guide</span>
           </nav>
           <h1 className="sn-h sn-h--xl">
             {'Size '}
