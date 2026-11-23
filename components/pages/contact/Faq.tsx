@@ -2,7 +2,7 @@ import SectionScript from '@/components/pages/SectionScript';
 import Link from 'next/link';
 import './faq.css';
 
-export default function Faq() {
+export default function Faq({ showContactCta = true }: { showContactCta?: boolean } = {}) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: "{\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"Which sheet size fits my mattress?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Measure your mattress width, length and depth. Our fitted sheets suit mattresses up to 12 inches deep. See the size guide for exact measurements.\"}}, {\"@type\": \"Question\", \"name\": \"What does T200, T250 and T300 mean?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"It is the thread count: threads woven into one square inch. Higher counts feel smoother and silkier; T200 is crisp and breathable, T300 is our softest sateen.\"}}, {\"@type\": \"Question\", \"name\": \"How should I wash my sheets?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Wash cool (30–40°C) with mild detergent, tumble dry low and iron warm. Avoid bleach to keep colours rich.\"}}, {\"@type\": \"Question\", \"name\": \"How long does delivery take?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"2–3 working days in Lahore, Karachi and Islamabad, 3–5 days elsewhere. Cash on delivery is available nationwide.\"}}, {\"@type\": \"Question\", \"name\": \"Can I exchange a product?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes, unused products in original packing can be exchanged within 7 days.\"}}]}" }} />
@@ -78,9 +78,11 @@ export default function Faq() {
                       <path d="M12 2.5a9.3 9.3 0 0 0-8 14l-1.2 5 5.1-1.3A9.3 9.3 0 1 0 12 2.5Zm0 1.8a7.5 7.5 0 1 1-3.9 13.9l-.4-.2-3 .8.8-2.9-.3-.4A7.5 7.5 0 0 1 12 4.3Zm-3.6 3.9c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2s.9 2.3 1 2.4c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3l-1.9-.9c-.3-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.7-1.5-1.9-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5l-.9-2c-.2-.5-.4-.4-.6-.4h-.6Z" />
                     </svg>
                   </a>
-                  <Link className="sn-btn sn-btn--sm sn-btn--ghost" href="/pages/contact">
-                    <span>Contact us</span>
-                  </Link>
+                  {showContactCta ? (
+                    <Link className="sn-btn sn-btn--sm sn-btn--ghost" href="/pages/contact">
+                      <span>Contact us</span>
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             </aside>

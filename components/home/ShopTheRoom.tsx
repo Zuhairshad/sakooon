@@ -52,7 +52,7 @@ export default function ShopTheRoom() {
               </svg>
             </button>
             <div className="snr__pop snr__pop--r sn-glass">
-              <a className="snr__pimg sn-media" href="#">
+              <span className="snr__pimg sn-media">
                 <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
                   <defs>
                     <linearGradient id="bgpl" x1="0" y1="0" x2="0" y2="1">
@@ -79,13 +79,13 @@ export default function ShopTheRoom() {
                     strokeLinecap="round"
                   />
                 </svg>
-              </a>
+              </span>
               <div className="snr__pinfo">
-                <a href="#" className="snr__pt">
+                <span className="snr__pt">
                   White pillows (pair)
-                </a>
+                </span>
                 <span className="snr__pp">Rs. 3,999</span>
-                <a className="sn-link" href="#">
+                <Link className="sn-link" href="/collections/all">
                   View
                   <svg
                     viewBox="0 0 24 24"
@@ -99,7 +99,7 @@ export default function ShopTheRoom() {
                   >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function ShopTheRoom() {
               </svg>
             </button>
             <div className="snr__pop snr__pop--r sn-glass">
-              <a className="snr__pimg sn-media" href="#">
+              <span className="snr__pimg sn-media">
                 <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
                   <defs>
                     <linearGradient id="bgpc" x1="0" y1="0" x2="0" y2="1">
@@ -150,13 +150,13 @@ export default function ShopTheRoom() {
                     strokeLinecap="round"
                   />
                 </svg>
-              </a>
+              </span>
               <div className="snr__pinfo">
-                <a href="#" className="snr__pt">
+                <span className="snr__pt">
                   Sage cushion cover
-                </a>
+                </span>
                 <span className="snr__pp">Rs. 1,499</span>
-                <a className="sn-link" href="#">
+                <Link className="sn-link" href="/collections/all">
                   View
                   <svg
                     viewBox="0 0 24 24"
@@ -170,7 +170,7 @@ export default function ShopTheRoom() {
                   >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function ShopTheRoom() {
               </svg>
             </button>
             <div className="snr__pop snr__pop--r sn-glass">
-              <a className="snr__pimg sn-media" href="#">
+              <span className="snr__pimg sn-media">
                 <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
                   <defs>
                     <linearGradient id="bgdv" x1="0" y1="0" x2="0" y2="1">
@@ -219,13 +219,13 @@ export default function ShopTheRoom() {
                   <path d="M162 370.0 H438" stroke="#E3D9C9" strokeWidth="2" strokeDasharray="2 10" />
                   <path d="M140 390 q160 -40 320 0" stroke="#A8834F" strokeWidth="6" fill="none" />
                 </svg>
-              </a>
+              </span>
               <div className="snr__pinfo">
-                <a href="#" className="snr__pt">
+                <span className="snr__pt">
                   Cloud duvet
-                </a>
+                </span>
                 <span className="snr__pp">Rs. 12,999</span>
-                <a className="sn-link" href="#">
+                <Link className="sn-link" href="/collections/all">
                   View
                   <svg
                     viewBox="0 0 24 24"
@@ -239,7 +239,7 @@ export default function ShopTheRoom() {
                   >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function ShopTheRoom() {
               </svg>
             </button>
             <div className="snr__pop snr__pop--l sn-glass">
-              <a className="snr__pimg sn-media" href="#">
+              <span className="snr__pimg sn-media">
                 <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
                   <defs>
                     <linearGradient id="bgbc" x1="0" y1="0" x2="0" y2="1">
@@ -328,13 +328,13 @@ export default function ShopTheRoom() {
                   <path d="M528 455h34l-6 25h-22Z" fill="#A8834F" />
                   <path d="M520 420h50l-8 -36h-34Z" fill="#FFFDF9" />
                 </svg>
-              </a>
+              </span>
               <div className="snr__pinfo">
-                <a href="#" className="snr__pt">
+                <span className="snr__pt">
                   Quilted bed cover
-                </a>
+                </span>
                 <span className="snr__pp">Rs. 11,999</span>
-                <a className="sn-link" href="#">
+                <Link className="sn-link" href="/collections/all">
                   View
                   <svg
                     viewBox="0 0 24 24"
@@ -348,7 +348,7 @@ export default function ShopTheRoom() {
                   >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

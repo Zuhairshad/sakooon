@@ -92,7 +92,7 @@ export default function Announcement() {
               <span>Cash on delivery · easy 7-day exchange</span>
             </p>
           </div>
-          <a className="sna__side sna__side--r" href="#">
+          <Link className="sna__side sna__side--r" href="/pages/contact">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -106,7 +106,7 @@ export default function Announcement() {
               <path d="M3 7l9-4 9 4v10l-9 4-9-4V7ZM3 7l9 4 9-4M12 11v10" />
             </svg>
             <span>Track your order</span>
-          </a>
+          </Link>
         </div>
       </div>
     </>

@@ -9,7 +9,7 @@ export default function NotFoundMain() {
       <section
         id="sn404-template--23876058742887__main"
         className="sn-s sn404"
-        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--pt': '0px', '--pb': '0px', colorScheme: 'dark' }}
+        style={{ '--bg': '#161B29', '--tx': '#F4EEE4', '--ac': '#E3C793', '--ac-aa': '#E3C793', '--pt': '0px', '--pb': '0px', colorScheme: 'dark' }}
         data-sn-silk-host=""
       >
         <div className="sn-silk" data-sn-silk="" data-c1="#161B29" data-c2="#2B2B45" data-c3="#E3C793" data-speed=".5" data-amp="1" />

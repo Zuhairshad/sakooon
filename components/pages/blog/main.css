@@ -13,7 +13,7 @@
 #snbl-template--23876058710119__main .snbl__date b { font: 400 1.35rem/1.1 var(--f-head); letter-spacing: 0; color: var(--tx); }
 #snbl-template--23876058710119__main .snbl__post:hover .snbl__date { transform: rotate(-5deg) translateY(-3px); }
 #snbl-template--23876058710119__main .snbl__body { display: grid; gap: 12px; justify-items: start; }
-#snbl-template--23876058710119__main .snbl__meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ac); }
+#snbl-template--23876058710119__main .snbl__meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ac-aa, var(--ac)); }
 #snbl-template--23876058710119__main .snbl__meta span { display: inline-flex; align-items: center; gap: 6px; }
 #snbl-template--23876058710119__main .snbl__meta span + span { color: var(--mute); }
 #snbl-template--23876058710119__main .snbl__meta .icon { width: 13px; height: 13px; }

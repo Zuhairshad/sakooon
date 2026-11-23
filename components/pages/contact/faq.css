@@ -13,7 +13,7 @@
 #snfq-template--23876058382439__faq .snfq__tabs { margin-bottom: 18px; }
 #snfq-template--23876058382439__faq .snfq__list { border-top: 1px solid var(--line); }
 #snfq-template--23876058382439__faq .snfq__q summary { gap: 18px; justify-content: flex-start; padding: 24px 0; }
-#snfq-template--23876058382439__faq .snfq__n { flex: none; width: 34px; font: 500 12px/1 var(--f-body); letter-spacing: .1em; color: var(--ac); font-variant-numeric: tabular-nums; }
+#snfq-template--23876058382439__faq .snfq__n { flex: none; width: 34px; font: 500 12px/1 var(--f-body); letter-spacing: .1em; color: var(--ac-aa, var(--ac)); font-variant-numeric: tabular-nums; }
 #snfq-template--23876058382439__faq .snfq__t { flex: 1; transition: color .4s, transform .6s cubic-bezier(.3, 1.2, .4, 1); }
 #snfq-template--23876058382439__faq .snfq__q summary:hover .snfq__t { transform: translateX(6px); }
 #snfq-template--23876058382439__faq .snfq__q[open] .snfq__t { color: var(--ac); }
