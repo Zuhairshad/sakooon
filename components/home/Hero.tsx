@@ -197,50 +197,16 @@ export default function Hero() {
                 />
               </figure>
               <figure className="snhero__fig" data-snhero-bg="">
-                <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-                  <defs>
-                    <linearGradient id="bgsh" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stopColor="#F1E9DD" />
-                      <stop offset="1" stopColor="#E3D6C2" />
-                    </linearGradient>
-                    <radialGradient id="glsh" cx="50%" cy="30%" r="60%">
-                      <stop offset="0" stopColor="#fff" stopOpacity=".7" />
-                      <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
-                  <rect width="600" height="750" fill="url(#bgsh)" />
-                  <rect width="600" height="750" fill="url(#glsh)" />
-                  <circle cx="300" cy="300" r="210" fill="#FFFDF9" opacity=".55" />
-                  <ellipse cx="300" cy="640" rx="200" ry="20" fill="#1B2130" opacity="0.2" />
-                  <g>
-                    <rect x="130" y="528" width="340" height="62" rx="14" fill="#FFFDF9" />
-                    <path d="M140 580h320" stroke="#E5DBCB" strokeWidth="2" opacity=".55" />
-                    <path d="M130 559.0 Q300.0 566.44 470 559.0" stroke="#E5DBCB" strokeWidth="1.5" fill="none" opacity=".35" />
-                  </g>
-                  <g>
-                    <rect x="128" y="472" width="344" height="62" rx="14" fill="#E8E1EE" />
-                    <path d="M138 524h324" stroke="#CFC4DA" strokeWidth="2" opacity=".55" />
-                    <path d="M128 503.0 Q300.0 510.44 472 503.0" stroke="#CFC4DA" strokeWidth="1.5" fill="none" opacity=".35" />
-                  </g>
-                  <g>
-                    <rect x="126" y="416" width="348" height="62" rx="14" fill="#DCE5EC" />
-                    <path d="M136 468h328" stroke="#BFCBD6" strokeWidth="2" opacity=".55" />
-                    <path d="M126 447.0 Q300.0 454.44 474 447.0" stroke="#BFCBD6" strokeWidth="1.5" fill="none" opacity=".35" />
-                  </g>
-                  <g>
-                    <rect x="124" y="360" width="352" height="62" rx="14" fill="#F2E3D5" />
-                    <path d="M134 412h332" stroke="#DCC6B1" strokeWidth="2" opacity=".55" />
-                    <path d="M124 391.0 Q300.0 398.44 476 391.0" stroke="#DCC6B1" strokeWidth="1.5" fill="none" opacity=".35" />
-                  </g>
-                  <rect x="282" y="374" width="36" height="216" fill="#A8834F" opacity=".9" />
-                  <g transform="translate(330 406) rotate(-8)">
-                    <rect width="96" height="58" rx="8" fill="#1B2130" />
-                    <text x="48" y="37" fontFamily="Georgia,serif" fontSize="24" fontStyle="italic" fill="#D9BF8F" textAnchor="middle">
-                      T300
-                    </text>
-                    <circle cx="10" cy="10" r="3" fill="#D9BF8F" />
-                  </g>
-                </svg>
+                <img
+                  src="/_next/image?url=%2Fimages%2Fsakooon-duvet-comfort-filling-220-gsm.webp&w=1080&q=75"
+                  srcSet="/_next/image?url=%2Fimages%2Fsakooon-duvet-comfort-filling-220-gsm.webp&w=640&q=75 640w, /_next/image?url=%2Fimages%2Fsakooon-duvet-comfort-filling-220-gsm.webp&w=1080&q=75 900w"
+                  sizes="(min-width: 990px) 42vw, 90vw"
+                  alt="Soft white cotton duvet rolled on a fitted sheet – Sakooon Duvet Comfort Filling"
+                  width="900"
+                  height="1317"
+                  loading="lazy"
+                  decoding="async"
+                />
               </figure>
               <span className="snhero__stitch" aria-hidden="true" />
             </div>
