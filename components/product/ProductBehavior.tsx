@@ -316,17 +316,34 @@ export default function ProductBehavior({ rootId }: { rootId: string }) {
     const bn = $('[data-snmp-buynow]', r);
     if (bn) on(bn, 'click', (e) => { e.preventDefault(); ctl.buyNow(bn); });
 
-    /* sticky add-to-cart bar */
+    /* sticky add-to-cart bar: shows once the inline buy box scrolls out of view (mobile only, via CSS) */
     const st = $('[data-snmp-sticky]', r), buy = $('[data-snmp-buy]', r);
     if (st && buy) {
-      const io = new IntersectionObserver((es) => {
-        const b = es[0], show = !b.isIntersecting && b.boundingClientRect.top < 0;
+      const sadd = $('[data-snmp-sadd]', st);
+      let outOfView = false;
+      const apply = () => {
+        // Hide while any overlay (e.g. the cart drawer) is open, same signal
+        // the theme runtime uses for its own open/close state.
+        const locked = document.documentElement.classList.contains('sn-lock');
+        const show = outOfView && !locked;
         st.classList.toggle('is-on', show);
         st.setAttribute('aria-hidden', String(!show));
+        if (sadd) sadd.tabIndex = show ? 0 : -1;
+        document.body.classList.toggle('snmp-sticky-pad', show);
+      };
+      const io = new IntersectionObserver((es) => {
+        const b = es[0];
+        outOfView = !b.isIntersecting && b.boundingClientRect.top < 0;
+        apply();
       });
       io.observe(buy);
-      offs.push(() => io.disconnect());
-      const sadd = $('[data-snmp-sadd]', st);
+      const lockObserver = new MutationObserver(apply);
+      lockObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      offs.push(() => {
+        io.disconnect();
+        lockObserver.disconnect();
+        document.body.classList.remove('snmp-sticky-pad');
+      });
       if (sadd) on(sadd, 'click', () => ctl.add());
     }
 
