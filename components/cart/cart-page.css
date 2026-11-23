@@ -70,7 +70,7 @@
 #snmk-template--23876058775655__main .snmk__trust li { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--soft); }
 #snmk-template--23876058775655__main .snmk__trust .icon { width: 16px; height: 16px; color: var(--ac); }
 #snmk-template--23876058775655__main .snmk__cont { justify-self: center; }
-#snmk-template--23876058775655__main .snmk__empty { position: relative; isolation: isolate; overflow: hidden; display: grid; place-items: center; min-height: 70vh; border-radius: calc(var(--r) * 1.4); background: #161B29; color: #F4EEE4; --tx: #F4EEE4; --soft: color-mix(in srgb, #F4EEE4 72%, transparent); --ac: #E3C793; text-align: center; }
+#snmk-template--23876058775655__main .snmk__empty { position: relative; isolation: isolate; overflow: hidden; display: grid; place-items: center; min-height: 70vh; border-radius: calc(var(--r) * 1.4); background: #161B29; color: #F4EEE4; --tx: #F4EEE4; --soft: color-mix(in srgb, #F4EEE4 72%, transparent); --ac: #E3C793; --ac-aa: #E3C793; text-align: center; }
 #snmk-template--23876058775655__main .snmk__ein { position: relative; z-index: 2; display: grid; justify-items: center; gap: 18px; padding: 60px 20px; }
 #snmk-template--23876058775655__main .snmk__ein .sn-lead { margin-inline: auto; }
 #snmk-template--23876058775655__main .snmk__ebtn { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 22px; margin-top: 8px; }

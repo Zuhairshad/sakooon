@@ -42,7 +42,7 @@
 .snh__n.is-empty { transform: scale(0); }
 .snh__n.is-bump { animation: snh-bump .6s cubic-bezier(.3, 1.6, .5, 1); }
 @keyframes snh-bump { 40% { transform: scale(1.5); } }
-.snh__cta { margin-left: 10px; --bg: var(--hbg); --tx: var(--htx); --ac: var(--hac); }
+.snh__cta { margin-left: 10px; --bg: var(--hbg); --tx: var(--htx); --ac: var(--hac); --ac-aa: var(--hac); }
 .snh__thread { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--htx) 18%, transparent) 0 6px, transparent 6px 11px); }
 .snh--clear:not(.is-scrolled) .snh__thread { opacity: 0; }
 
@@ -80,7 +80,7 @@
 .sns .sns__panel { position: absolute; inset: 0; overflow-y: auto; color: #F4EEE4; clip-path: circle(0% at calc(100% - 140px) 40px); transition: clip-path .9s cubic-bezier(.7, 0, .2, 1); }
 .sns.is-open .sns__panel { clip-path: circle(150% at calc(100% - 140px) 40px); }
 .sns__silk { position: fixed; inset: 0; z-index: -1; }
-.sns__in { padding-block: 34px 80px; --tx: #F4EEE4; --bg: #161B29; --ac: #E3C793; --line: rgba(255, 255, 255, .16); --line2: rgba(255, 255, 255, .28); --soft: rgba(255, 255, 255, .7); }
+.sns__in { padding-block: 34px 80px; --tx: #F4EEE4; --bg: #161B29; --ac: #E3C793; --ac-aa: #E3C793; --line: rgba(255, 255, 255, .16); --line2: rgba(255, 255, 255, .28); --soft: rgba(255, 255, 255, .7); }
 .sns__top { display: flex; justify-content: space-between; align-items: center; }
 .sns__top .sn-ibtn { color: #fff; border-color: rgba(255, 255, 255, .35); }
 .sns__form { position: relative; display: flex; align-items: center; margin-top: clamp(40px, 9vh, 110px); border-bottom: 1px solid rgba(255, 255, 255, .3); }

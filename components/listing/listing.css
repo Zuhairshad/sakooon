@@ -1,6 +1,6 @@
 
 .snms { padding-top: 0; }
-.snms .snms__top { position: relative; isolation: isolate; overflow: visible; padding: clamp(80px, 9vw, 130px) 0 clamp(50px, 6vw, 80px); background: #161B29; color: #F4EEE4; --tx: #F4EEE4; --soft: color-mix(in srgb, #F4EEE4 72%, transparent); --ac: #E3C793; --line2: rgba(255,255,255,.24); --line: rgba(255,255,255,.14); }
+.snms .snms__top { position: relative; isolation: isolate; overflow: visible; padding: clamp(80px, 9vw, 130px) 0 clamp(50px, 6vw, 80px); background: #161B29; color: #F4EEE4; --tx: #F4EEE4; --soft: color-mix(in srgb, #F4EEE4 72%, transparent); --ac: #E3C793; --ac-aa: #E3C793; --line2: rgba(255,255,255,.24); --line: rgba(255,255,255,.14); }
 .snms .snms__top .sn-silk { overflow: hidden; }
 .snms .snms__tin { position: relative; z-index: 2; display: grid; justify-items: center; gap: 22px; text-align: center; }
 .snms .snms__form { position: relative; width: min(720px, 100%); }

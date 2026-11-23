@@ -1,8 +1,8 @@
 
 #snhero-template--23876058939495__hero { min-height: var(--h); display: flex; flex-direction: column; justify-content: center; overflow: hidden; padding: var(--pt) 0 var(--pb); }
 #snhero-template--23876058939495__hero.snhero--silk, #snhero-template--23876058939495__hero.snhero--image { color: #fff; --tx: #fff; --soft: rgba(255, 255, 255, .78); --line: rgba(255, 255, 255, .2); --line2: rgba(255, 255, 255, .34); }
-#snhero-template--23876058939495__hero.snhero--silk { --ac: #E3C793; background: #161B29; }
-#snhero-template--23876058939495__hero.snhero--image { --ac: #E3C793; background: #161B29; }
+#snhero-template--23876058939495__hero.snhero--silk { --ac: #E3C793; --ac-aa: #E3C793; background: #161B29; }
+#snhero-template--23876058939495__hero.snhero--image { --ac: #E3C793; --ac-aa: #E3C793; background: #161B29; }
 #snhero-template--23876058939495__hero .snhero__silk { position: absolute; inset: 0; z-index: -2; }
 #snhero-template--23876058939495__hero .snhero__fx { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 #snhero-template--23876058939495__hero .snhero__stage { position: absolute; inset: 0; z-index: -2; }

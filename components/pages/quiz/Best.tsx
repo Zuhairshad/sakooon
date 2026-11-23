@@ -79,7 +79,7 @@ export default async function Best() {
           </div>
         </div>
         <div className="snp__panel" data-panel="t1" data-sn-railwrap="">
-          <div className="sn-rail sn-rail--bleed snp__list" data-sn-rail="" data-sn-auto="0">
+          <div className="sn-rail sn-rail--bleed snp__list" data-sn-rail="">
             {products.map((p, i) => (
               <div className="snp__item" key={p.handle}>
                 <ProductCard product={p} index={i} />
