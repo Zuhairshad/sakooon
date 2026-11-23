@@ -44,3 +44,6 @@ next-env.d.ts
 
 # local agent worktrees
 /.claude/worktrees/
+
+# Shopify theme exports (theme lives on the theme-code branch)
+theme_export__*.zip
