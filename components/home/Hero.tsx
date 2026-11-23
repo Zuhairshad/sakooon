@@ -24,12 +24,6 @@ export default function Hero() {
         data-auto="7"
         data-sn-silk-host=""
       >
-        <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-          <filter id="snhero-template--23876058939495__hero-f" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.004 0.012" numOctaves="2" seed="4" result="n" />
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" data-snhero-disp="" />
-          </filter>
-        </svg>
         <div className="snhero__silk" data-sn-silk="" data-c1="#161B29" data-c2="#2B2B45" data-c3="#E3C793" data-speed="0.9" data-amp="1" />
         <div className="snhero__fx" data-sn-feathers="35" data-color="#E3C793" />
         <div className="snhero__in sn-wrap">
@@ -60,7 +54,7 @@ export default function Hero() {
                   <em style={{ '--wi': '4' }}>you</em>
                 </span>{' '}
               </h1>
-              <p className="snhero__p">Grade bed sheets, duvets in breathable cotton — made for the deep, quiet sleep you deserve.</p>
+              <p className="snhero__p">Hotel-grade bed sheets, duvets in breathable cotton — made for the deep, quiet sleep you deserve.</p>
               <div className="snhero__btns">
                 <Link className="sn-btn sn-btn--light" href="/collections/all">
                   <span>Shop bed sheets</span>
