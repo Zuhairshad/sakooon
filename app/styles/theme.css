@@ -23,7 +23,7 @@
          --c-paper and --c-surface. Same gold/green family, darkened for legibility.
          Use only for small text on light backgrounds; keep --c-accent/--c-signal
          for large text, fills, borders, icons and anything on dark backgrounds. */
-      --c-accent-ink: #7E623B; --c-signal-ink: #4D7256;
+      --c-accent-ink: #785D38; --c-signal-ink: #4D7256;
       --f-head: 'SN Fraunces', Georgia, serif; --f-body: 'SN Figtree', system-ui, sans-serif; --head-w: 300;
       --pw: 1380px; --r: 32px; --r-sm: calc(var(--r) * .55);
       --bg: var(--c-paper); --tx: var(--c-ink); --ac: var(--c-accent); --ac-aa: var(--c-accent-ink);

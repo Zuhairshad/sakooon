@@ -52,7 +52,7 @@ export default function Gallery() {
           <div className="sngl__mosaic" data-sngl-mosaic="">
             <div className="sngl__col" data-speed=".06">
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '0' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '4 / 5' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp&w=1080&q=75"
@@ -73,10 +73,10 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '3' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '1 / 1' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-yarn-dyed-bed-sheet-set-aqua-stripe.webp&w=1080&q=75"
@@ -97,12 +97,12 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
             </div>
             <div className="sngl__col" data-speed="-.08">
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '1' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '1 / 1' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-yarn-dyed-bed-sheet-set-navy-plaid_a3d13ee9-15ce-491d-ad50-ffbf734c0898.webp&w=1080&q=75"
@@ -123,10 +123,10 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '4' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '4 / 5' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp&w=1080&q=75"
@@ -147,12 +147,12 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
             </div>
             <div className="sngl__col" data-speed=".12">
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '2' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '4 / 5' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-yarn-dyed-bed-sheet-set-grey-gingham_daae4f68-d687-4934-9c8c-8306a5cf9d58.webp&w=1080&q=75"
@@ -173,10 +173,10 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
               <figure className="sngl__tile" data-r="zoom" style={{ '--i': '5' }}>
-                <a className="sngl__a">
+                <div className="sngl__a">
                   <div className="sn-media sngl__m sn-ripple" style={{ aspectRatio: '1 / 1' }}>
                     <img
                       src="/_next/image?url=%2Fimages%2Fsakooon-yarn-dyed-bed-sheet-set-peach-floral.webp&w=1080&q=75"
@@ -197,7 +197,7 @@ export default function Gallery() {
                     </svg>
                     <em>Shop this look</em>
                   </span>
-                </a>
+                </div>
               </figure>
             </div>
           </div>
