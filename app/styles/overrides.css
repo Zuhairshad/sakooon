@@ -62,7 +62,7 @@
 /* Above-the-fold content is rendered visible (no JS reveal) so LCP never
    waits on hydration. Entrance motion is CSS-only. */
 [data-r][data-atf] { opacity: 1 !important; transform: none !important; filter: none !important; }
-html.sn-js body[data-motion=on] [data-atf-anim] { animation: sn-atf-in 1s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * 85ms); }
+html.sn-js body[data-motion=on] [data-atf-anim] { animation: sn-atf-in .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(min(var(--i, 0), 6) * 55ms); }
 @keyframes sn-atf-in { from { opacity: 0; transform: translateY(18px); } }
 
 /* <Static> wrapper (components/theme/Static.tsx) must not affect layout */
