@@ -1,0 +1,445 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snfq-' | append: section.id
+  assign cats = ''
+  for block in section.blocks
+    assign c = block.settings.category | strip
+    if c != blank
+      assign key = '|' | append: c | append: '|'
+      unless cats contains key
+        assign cats = cats | append: key
+      endunless
+    endif
+  endfor
+  assign cat_list = cats | split: '||'
+-%}
+<section id="{{ sid }}" class="sn-s snfq snfq--{{ s.layout }}" style="{% render 'sn-vars', s: s %}">
+  {% render 'sn-divider', s: s %}
+  <div class="sn-wrap">
+    <div class="snfq__grid">
+      <aside class="snfq__side">
+        {% render 'sn-head', s: s, k: 3 %}
+        {%- if s.show_search -%}
+          <label class="sn-pill-form snfq__search" data-r style="--i: 3;">
+            {% render 'sn-icon', name: 'search', class: 'icon' %}
+            <input type="search" placeholder="{{ s.search_ph | escape }}" data-snfq-q aria-label="{{ s.search_ph | escape }}">
+          </label>
+        {%- endif -%}
+        {%- if s.card_title != blank -%}
+          <div class="snfq__card sn-pillow sn-stitch" data-r="rise" style="--i: 4;">
+            <span class="sn-icon-circle">{% render 'sn-icon', name: 'headset', class: 'icon' %}</span>
+            <div>
+              <p class="sn-h sn-h--xs">{{ s.card_title }}</p>
+              {%- if s.card_text != blank -%}<p class="sn-small">{{ s.card_text }}</p>{%- endif -%}
+            </div>
+            <div class="snfq__cbtns">
+              {%- if settings.whatsapp != blank -%}<a class="sn-btn sn-btn--sm sn-btn--gold" href="https://wa.me/{{ settings.whatsapp | remove: '+' | remove: ' ' | remove: '-' }}" target="_blank" rel="noopener"><span>WhatsApp</span>{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}</a>{%- endif -%}
+              {%- if s.card_btn != blank -%}<a class="sn-btn sn-btn--sm sn-btn--ghost" href="{{ s.card_link | default: '/pages/contact' }}"><span>{{ s.card_btn }}</span></a>{%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </aside>
+      <div class="snfq__main" data-sn-tabhost>
+        {%- if s.show_tabs and cat_list.size > 1 -%}
+          <div class="sn-tabs snfq__tabs" role="tablist" data-r>
+            <span class="sn-tabs__pill"></span>
+            <button type="button" class="is-on" data-snfq-cat="*">{{ s.all_label }}</button>
+            {%- for c in cat_list -%}{%- assign cc = c | remove: '|' -%}{%- if cc != blank -%}<button type="button" data-snfq-cat="{{ cc | handleize }}">{{ cc }}</button>{%- endif -%}{%- endfor -%}
+          </div>
+        {%- endif -%}
+        <div class="snfq__list">
+          {%- for block in section.blocks -%}
+            {%- assign b = block.settings -%}
+            <details class="sn-acc snfq__q" data-cat="{{ b.category | strip | handleize }}"{% if s.open_first and forloop.first %} open{% endif %} data-r style="--i: {{ forloop.index0 | at_most: 8 }};" {{ block.shopify_attributes }}>
+              <summary><span class="snfq__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="snfq__t">{{ b.question }}</span><i aria-hidden="true"></i></summary>
+              <div class="sn-acc__body sn-rte">{{ b.answer }}</div>
+            </details>
+          {%- endfor -%}
+          <p class="snfq__none sn-small" hidden data-snfq-none>{{ s.none_text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{%- for block in section.blocks -%}{"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block.settings.answer | strip_html | json }}}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]}
+  </script>
+</section>
+<style>
+#{{ sid }} .snfq__grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr); gap: clamp(36px, 6vw, 110px); align-items: start; }
+#{{ sid }}.snfq--stack .snfq__grid { grid-template-columns: 1fr; max-width: 920px; margin-inline: auto; }
+#{{ sid }}.snfq--stack .snfq__side { position: static; justify-items: center; }
+#{{ sid }}.snfq--stack .snfq__search, #{{ sid }}.snfq--stack .snfq__card { width: 100%; }
+#{{ sid }}.snfq--stack .snfq__tabs { display: flex; width: max-content; margin-inline: auto; }
+#{{ sid }} .snfq__side { position: sticky; top: 120px; display: grid; gap: 22px; }
+#{{ sid }} .snfq__side .sn-head { margin-bottom: 4px; }
+#{{ sid }} .snfq__search { max-width: 440px; padding-left: 18px; color: var(--soft); }
+#{{ sid }} .snfq__search .icon { width: 18px; height: 18px; flex: none; }
+#{{ sid }} .snfq__card { display: grid; grid-template-columns: auto 1fr; gap: 14px 18px; align-items: center; padding: 24px; max-width: 440px; }
+#{{ sid }} .snfq__cbtns { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; }
+#{{ sid }} .snfq__tabs { margin-bottom: 18px; }
+#{{ sid }} .snfq__list { border-top: 1px solid var(--line); }
+#{{ sid }} .snfq__q summary { gap: 18px; justify-content: flex-start; padding: 24px 0; }
+#{{ sid }} .snfq__n { flex: none; width: 34px; font: 500 12px/1 var(--f-body); letter-spacing: .1em; color: var(--ac); font-variant-numeric: tabular-nums; }
+#{{ sid }} .snfq__t { flex: 1; transition: color .4s, transform .6s cubic-bezier(.3, 1.2, .4, 1); }
+#{{ sid }} .snfq__q summary:hover .snfq__t { transform: translateX(6px); }
+#{{ sid }} .snfq__q[open] .snfq__t { color: var(--ac); }
+#{{ sid }} .snfq__q .sn-acc__body { padding-left: 52px; }
+#{{ sid }} .snfq__q { position: relative; }
+#{{ sid }} .snfq__q::before { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--ac); transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.7, 0, .2, 1); }
+#{{ sid }} .snfq__q[open]::before { transform: scaleX(1); }
+#{{ sid }} .snfq__q.is-hide { display: none; }
+@media (max-width: 899px) {
+  #{{ sid }} .snfq__grid { grid-template-columns: 1fr; }
+  #{{ sid }} .snfq__side { position: static; }
+  #{{ sid }} .snfq__q .sn-acc__body { padding-left: 0; }
+  #{{ sid }} .snfq__n { width: 24px; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var qs = [].slice.call(r.querySelectorAll('.snfq__q')), cat = '*', term = '', none = r.querySelector('[data-snfq-none]');
+  function apply() {
+    var shown = 0;
+    qs.forEach(function (q) { var ok = (cat === '*' || q.getAttribute('data-cat') === cat) && (!term || q.textContent.toLowerCase().indexOf(term) > -1); q.classList.toggle('is-hide', !ok); if (ok) { shown++; q.classList.add('is-in'); } });
+    if (none) none.hidden = shown > 0;
+  }
+  var tabs = r.querySelector('.snfq__tabs');
+  if (tabs) tabs.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-snfq-cat]'); if (!b) return;
+    cat = b.getAttribute('data-snfq-cat');
+    [].forEach.call(tabs.querySelectorAll('button'), function (x) { x.classList.toggle('is-on', x === b); });
+    if (window.SN && SN.pill) SN.pill(tabs); apply();
+  });
+  if (tabs) SN.ready(function () { SN.pill(tabs); setTimeout(function () { SN.pill(tabs); }, 500); addEventListener('resize', function () { SN.pill(tabs); }); });
+  var q = r.querySelector('[data-snfq-q]');
+  if (q) q.addEventListener('input', function () { term = q.value.trim().toLowerCase(); apply(); if (term) qs.forEach(function (d) { if (!d.classList.contains('is-hide')) d.open = true; }); });
+  if (r.hasAttribute('data-one') || {{ s.one_open | json }}) qs.forEach(function (d) { d.addEventListener('toggle', function () { if (d.open) qs.forEach(function (o) { if (o !== d) o.open = false; }); }); });
+  document.addEventListener('shopify:block:select', function (e) { if (r.contains(e.target) && e.target.tagName === 'DETAILS') e.target.open = true; });
+})();
+</script>
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Good to know"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions,"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "softly answered"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Sizes, care, delivery and exchanges, all in one place."
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "split",
+          "label": "Sticky side + list"
+        },
+        {
+          "value": "stack",
+          "label": "Stacked, centred"
+        }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Category tabs",
+      "info": "Uses each question's category",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "All tab label",
+      "default": "All"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Search box",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_ph",
+      "label": "Search placeholder",
+      "default": "Search a question…"
+    },
+    {
+      "type": "text",
+      "id": "none_text",
+      "label": "No match text",
+      "default": "No question matches that. Message us on WhatsApp and we will help."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first question",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "one_open",
+      "label": "Only one open at a time",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Help card"
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Title",
+      "default": "Still wondering?"
+    },
+    {
+      "type": "text",
+      "id": "card_text",
+      "label": "Text",
+      "default": "Our sleep team replies within minutes."
+    },
+    {
+      "type": "text",
+      "id": "card_btn",
+      "label": "Button",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "card_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "default": "Sizing"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Which sheet size fits my mattress?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Measure your mattress width, length and depth. Our fitted sheets suit mattresses up to 12 inches deep. See the size guide for exact measurements.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question",
+          "settings": {
+            "category": "Sizing",
+            "question": "What does T200, T250 and T300 mean?",
+            "answer": "<p>It is the thread count: threads woven into one square inch. Higher counts feel smoother and silkier; T200 is crisp and breathable, T300 is our softest sateen.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "category": "Care",
+            "question": "How should I wash my sheets?",
+            "answer": "<p>Wash cool (30–40°C) with mild detergent, tumble dry low and iron warm. Avoid bleach to keep colours rich.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "category": "Delivery",
+            "question": "How long does delivery take?",
+            "answer": "<p>2–3 working days in Lahore, Karachi and Islamabad, 3–5 days elsewhere. Cash on delivery is available nationwide.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "category": "Delivery",
+            "question": "Can I exchange a product?",
+            "answer": "<p>Yes, unused products in original packing can be exchanged within 7 days.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

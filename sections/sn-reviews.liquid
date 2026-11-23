@@ -1,0 +1,444 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snrv-' | append: section.id
+  assign revs = section.blocks
+  assign pos = '8,34|24,8|50,2|76,10|92,34|90,78|68,96|32,94|10,76' | split: '|'
+-%}
+<section id="{{ sid }}" class="sn-s snrv snrv--{{ s.layout }}" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
+  {% render 'sn-divider', s: s %}
+  {%- if s.silk and s.layout == 'sky' -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".5" data-amp=".7"></div>{%- endif -%}
+  <div class="sn-wrap">
+    <div class="snrv__head">
+      {% render 'sn-head', s: s, k: 4 %}
+      {%- if s.rating != blank -%}
+        <div class="snrv__score sn-glass" data-r>
+          <b>{{ s.rating }}</b>
+          <span><span class="sn-stars" style="--p: {{ s.rating | times: 20 }}%;"></span><small>{{ s.rating_text }}</small></span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if s.layout == 'sky' -%}
+      <div class="snrv__sky" data-snrv>
+        <svg class="snrv__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {%- for block in revs limit: 9 -%}{%- unless forloop.first -%}{%- assign pi = forloop.index0 | minus: 1 -%}{%- assign a = pos[pi] | split: ',' -%}{%- assign b = pos[forloop.index0] | split: ',' -%}<line x1="{{ a[0] }}" y1="{{ a[1] }}" x2="{{ b[0] }}" y2="{{ b[1] }}" style="--i: {{ forloop.index0 }};"/>{%- endunless -%}{%- endfor -%}
+        </svg>
+        {%- for block in revs limit: 9 -%}
+          {%- assign p = pos[forloop.index0] | split: ',' -%}
+          <button type="button" class="snrv__star{% if forloop.first %} is-on{% endif %}" style="--x: {{ p[0] }}%; --y: {{ p[1] }}%; --i: {{ forloop.index0 }};" data-snrv-star="{{ forloop.index0 }}" aria-label="{{ block.settings.name | escape }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.avatar != blank -%}<img src="{{ block.settings.avatar | image_url: width: 120 }}" alt="" width="60" height="60" loading="lazy">{%- else -%}<span>{{ block.settings.name | slice: 0 }}</span>{%- endif -%}
+          </button>
+        {%- endfor -%}
+        <div class="snrv__quotes">
+          {%- for block in revs limit: 9 -%}
+            {%- assign b = block.settings -%}
+            <figure class="snrv__q{% if forloop.first %} is-on{% endif %}" data-snrv-q>
+              <span class="sn-stars" style="--p: {{ b.rating | times: 20 }}%;"></span>
+              <blockquote class="sn-h sn-h--m">“{{ b.text }}”</blockquote>
+              <figcaption><b>{{ b.name }}</b>{% if b.city != blank %} · {{ b.city }}{% endif %}{% if b.product != blank %}<em>{{ b.product }}</em>{% endif %}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  {%- if s.layout == 'wall' -%}
+    {%- for row in (1..2) -%}
+      <div class="sn-marq snrv__row{% if row == 2 %} sn-marq--rev{% endif %}" style="--dur: {{ s.speed }}s; --gap: 18px;">
+        {%- for c in (1..2) -%}
+          <div class="sn-marq__t is-pausable"{% if c == 2 %} aria-hidden="true"{% endif %}>
+            {%- for block in revs -%}
+              {%- assign odd = forloop.index | modulo: 2 -%}
+              {%- if row == 1 and odd == 0 -%}{%- continue -%}{%- endif -%}
+              {%- if row == 2 and odd == 1 -%}{%- continue -%}{%- endif -%}
+              {%- assign b = block.settings -%}
+              <figure class="snrv__card sn-pillow sn-stitch">
+                <span class="sn-stars" style="--p: {{ b.rating | times: 20 }}%;"></span>
+                <blockquote>“{{ b.text }}”</blockquote>
+                <figcaption><span class="snrv__av">{%- if b.avatar != blank -%}<img src="{{ b.avatar | image_url: width: 100 }}" alt="" width="40" height="40" loading="lazy">{%- else -%}{{ b.name | slice: 0 }}{%- endif -%}</span><span><b>{{ b.name }}</b><small>{{ b.city }}</small></span>{% if b.product != blank %}<em>{{ b.product }}</em>{% endif %}</figcaption>
+              </figure>
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+</section>
+<style>
+#{{ sid }} { overflow: hidden; }
+#{{ sid }}.snrv--sky { color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 70%, transparent); --ac: {{ settings.color_moon }}; --line: rgba(255, 255, 255, .14); }
+#{{ sid }} .snrv__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(30px, 4vw, 50px); }
+#{{ sid }} .snrv__head .sn-head { margin: 0; flex: 1 1 420px; }
+#{{ sid }} .snrv__score { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-radius: 999px; }
+#{{ sid }} .snrv__score > b { font: 300 2.8rem/1 var(--f-head); color: var(--ac); }
+#{{ sid }} .snrv__score small { display: block; margin-top: 4px; font-size: 12px; color: var(--soft); }
+#{{ sid }} .snrv__sky { position: relative; height: clamp(460px, 52vw, 640px); }
+@keyframes snrv-dash { to { stroke-dashoffset: -180; } }
+#{{ sid }} .snrv__lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+#{{ sid }} .snrv__lines line { stroke: color-mix(in srgb, var(--ac) 45%, transparent); stroke-dasharray: 3 6; vector-effect: non-scaling-stroke; stroke-width: 1; animation: snrv-dash 30s linear infinite; }
+#{{ sid }} .snrv__star { position: absolute; z-index: 2; left: var(--x); top: var(--y); width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: color-mix(in srgb, var(--ac) 22%, transparent); border: 1px solid color-mix(in srgb, var(--ac) 60%, transparent); color: var(--ac); font: 400 1.3rem var(--f-head); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 8%, transparent), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); animation: snrv-twinkle 4s ease-in-out infinite; animation-delay: calc(var(--i) * -.7s); transition: transform .6s cubic-bezier(.3, 1.5, .5, 1), background .4s, color .4s; }
+#{{ sid }} .snrv__star img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes snrv-twinkle { 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--ac) 4%, transparent), 0 0 46px color-mix(in srgb, var(--ac) 55%, transparent); } }
+#{{ sid }} .snrv__star:hover, #{{ sid }} .snrv__star.is-on { transform: scale(1.35); background: var(--ac); color: {{ settings.color_dark_bg }}; }
+#{{ sid }} .snrv__quotes { position: absolute; z-index: 1; left: 50%; top: 50%; width: min(680px, 86%); translate: -50% -50%; display: grid; text-align: center; pointer-events: none; }
+#{{ sid }} .snrv__q { grid-area: 1 / 1; display: grid; justify-items: center; gap: 18px; padding: 30px; border-radius: calc(var(--r) * 1.4); background: color-mix(in srgb, #0c0f1c 45%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); opacity: 0; transform: translateY(16px) scale(.97); filter: blur(10px); transition: opacity .8s, transform .9s cubic-bezier(.2, .8, .2, 1), filter .8s; }
+#{{ sid }} .snrv__q.is-on { opacity: 1; transform: none; filter: none; pointer-events: auto; }
+#{{ sid }} .snrv__q blockquote { font-style: italic; font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.35; }
+#{{ sid }} .snrv__q figcaption { font-size: 13px; letter-spacing: .08em; color: var(--soft); }
+#{{ sid }} .snrv__q figcaption b { color: var(--tx); font-weight: 600; }
+#{{ sid }} .snrv__q figcaption em, #{{ sid }} .snrv__card figcaption em { display: block; margin-top: 6px; font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snrv__row { margin-top: 18px; }
+#{{ sid }} .snrv__card { width: 380px; display: grid; gap: 16px; padding: 26px; white-space: normal; }
+#{{ sid }} .snrv__card blockquote { font: 300 1.15rem/1.55 var(--f-head); }
+#{{ sid }} .snrv__card figcaption { display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 12px; }
+#{{ sid }} .snrv__card figcaption em { grid-column: 1 / -1; margin: 0; }
+#{{ sid }} .snrv__card figcaption small { display: block; font-size: 12px; color: var(--soft); }
+#{{ sid }} .snrv__av { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--ac); color: var(--ac-ink); font: 400 1.1rem var(--f-head); }
+#{{ sid }} .snrv__av img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 749px) {
+  #{{ sid }} .snrv__sky { height: auto; display: grid; gap: 20px; }
+  #{{ sid }} .snrv__lines { display: none; }
+  #{{ sid }} .snrv__quotes { position: relative; left: auto; top: auto; translate: none; width: 100%; order: 2; }
+  #{{ sid }} .snrv__star { position: relative; left: auto; top: auto; margin: 0; width: 46px; height: 46px; }
+  #{{ sid }} .snrv__sky { grid-template-columns: repeat(auto-fill, 46px); justify-content: center; }
+  #{{ sid }} .snrv__quotes { grid-column: 1 / -1; }
+  #{{ sid }} .snrv__card { width: 300px; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var stars = r.querySelectorAll('[data-snrv-star]'), qs = r.querySelectorAll('[data-snrv-q]'); if (!stars.length) return;
+  var i = 0, t = null, hov = false;
+  function go(k) { i = k; stars.forEach(function (s, j) { s.classList.toggle('is-on', j === k); }); qs.forEach(function (q, j) { q.classList.toggle('is-on', j === k); }); }
+  stars.forEach(function (s, j) { s.addEventListener('click', function () { go(j); }); s.addEventListener('mouseenter', function () { go(j); }); });
+  r.addEventListener('mouseenter', function () { hov = true; }); r.addEventListener('mouseleave', function () { hov = false; });
+  t = setInterval(function () { if (!hov && !document.hidden) go((i + 1) % stars.length); }, {{ s.interval | times: 1000 }});
+  document.addEventListener('shopify:block:select', function (e) { var k = Array.prototype.indexOf.call(stars, e.target); if (k > -1) go(k); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Reviews",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Kind words"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A sky full of"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "good nights"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Style",
+      "options": [
+        {
+          "value": "sky",
+          "label": "Constellation (night sky)"
+        },
+        {
+          "value": "wall",
+          "label": "Two moving rows of cards"
+        }
+      ],
+      "default": "sky"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Overall rating (e.g. 4.9)",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating text",
+      "default": "from 1,200+ happy sleepers"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Next review every",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Row speed (wall)",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 70
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Live silk sky",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "midnight"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Ayesha K."
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City",
+          "default": "Lahore"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review",
+          "default": "The T300 sheets feel like a five-star hotel. Soft from the very first night."
+        },
+        {
+          "type": "text",
+          "id": "product",
+          "label": "Product",
+          "default": "T300 sateen set"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review"
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Hamza R.",
+            "city": "Karachi",
+            "text": "Finally a duvet that is warm without being heavy. It arrived wrapped like a gift.",
+            "product": "Cloud duvet"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Mehwish A.",
+            "city": "Islamabad",
+            "text": "These towels are so thick and absorbent — we ordered a second set within a week.",
+            "product": "Bath towels"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Usman T.",
+            "city": "Faisalabad",
+            "text": "Used the size guide, ordered King — fits our mattress perfectly, even with a topper.",
+            "product": "T250 sheet set"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Sana M.",
+            "city": "Multan",
+            "text": "The piped luxury pillow covers make my bedroom look styled. Love them.",
+            "product": "Luxury covers"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Bilal & Hira",
+            "city": "Rawalpindi",
+            "text": "We gifted a complete set at a wedding and everyone asked where it was from!",
+            "product": "Complete bed set"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

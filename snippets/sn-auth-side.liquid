@@ -1,0 +1,12 @@
+{%- comment -%} Night panel for account pages. Params: s (settings with side_* keys), k (moon phase) {%- endcomment -%}
+<aside class="snau__side" data-sn-silk-host aria-hidden="true">
+  <div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".45" data-amp=".9"></div>
+  <div data-sn-feathers="26" data-color="{{ settings.color_moon }}" style="position:absolute;inset:0;z-index:0"></div>
+  {%- if s.side_image != blank -%}<img class="snau__img" src="{{ s.side_image | image_url: width: 1400 }}" alt="" loading="lazy" width="{{ s.side_image.width }}" height="{{ s.side_image.height }}">{%- endif -%}
+  <div class="snau__moon"><i></i></div>
+  <div class="snau__quote">
+    <p class="sn-eyebrow">{% render 'sn-phase', k: k %}{{ s.side_eyebrow }}</p>
+    <p class="sn-h sn-h--m">{{ s.side_title }}</p>
+    {%- if s.side_text != blank -%}<p class="snau__st">{{ s.side_text }}</p>{%- endif -%}
+  </div>
+</aside>

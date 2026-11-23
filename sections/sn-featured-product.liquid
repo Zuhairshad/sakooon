@@ -1,0 +1,323 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snfp-' | append: section.id
+  assign fp = s.product
+  if fp == blank
+    assign fp = collections.all.products.first
+  endif
+  assign cv = fp.selected_or_first_available_variant
+  assign uid = 'fp' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snfp snfp--{{ s.media_pos }}" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
+  {% render 'sn-divider', s: s %}
+  {%- if s.silk -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".45" data-amp=".7"></div>{%- endif -%}
+  <div class="sn-wrap">
+    {%- if fp -%}
+    <div class="snfp__grid" data-sn-product id="{{ uid }}" data-ajax>
+      <script type="application/json" data-sn-pjson>{{ fp | json }}</script>
+      <script type="application/json" data-sn-pinv>{ {%- for v in fp.variants -%}"{{ v.id }}": {{ v.inventory_quantity | default: 0 }}{% unless forloop.last %},{% endunless %}{%- endfor -%} }</script>
+      <div class="snfp__gal" data-sn-gallery data-r="zoom">
+        <div class="snfp__track" data-sn-track>
+          {%- if fp.media.size > 0 -%}
+            {%- for m in fp.media limit: 8 -%}
+              {%- if m.media_type == 'image' or m.preview_image -%}
+                <div class="snfp__slide{% if forloop.first %} is-on{% endif %}" data-sn-slide="{{ m.id }}">
+                  <div class="sn-media snfp__m sn-ripple"><img src="{{ m.preview_image | default: m | image_url: width: 1200 }}" alt="{{ m.alt | default: fp.title | escape }}" loading="lazy" width="{{ m.preview_image.width | default: 1000 }}" height="{{ m.preview_image.height | default: 1250 }}"></div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div class="snfp__slide is-on" data-sn-slide="0">{% render 'sn-media', art: 'duvet-cover', class: 'snfp__m' %}</div>
+          {%- endif -%}
+        </div>
+        {%- if fp.media.size > 1 -%}
+          <div class="snfp__thumbs">
+            {%- for m in fp.media limit: 8 -%}
+              <button type="button" class="snfp__th{% if forloop.first %} is-on{% endif %}" data-sn-thumb="{{ m.id }}" aria-label="Image {{ forloop.index }}"><img src="{{ m.preview_image | default: m | image_url: width: 160 }}" alt="" loading="lazy" width="80" height="100"></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if s.badge != blank -%}<span class="snfp__seal" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="{{ sid }}-s" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#{{ sid }}-s">{{ s.badge | escape }} · {{ s.badge | escape }} ·</textPath></text></svg>{% render 'sn-phase', k: 4 %}</span>{%- endif -%}
+      </div>
+      <div class="snfp__info">
+        {%- if s.eyebrow != blank -%}<p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 3 %}{{ s.eyebrow }}</p>{%- endif -%}
+        <h2 class="sn-h sn-h--l" data-sn-split><a href="{{ fp.url }}">{{ fp.title }}</a></h2>
+        {%- if s.show_rating and fp.metafields.reviews.rating.value != blank -%}
+          {%- assign rv = fp.metafields.reviews.rating.value.rating | times: 20 -%}
+          <p class="snfp__rate" data-r><span class="sn-stars" style="--p: {{ rv }}%;"></span>{{ fp.metafields.reviews.rating.value.rating }} · {{ fp.metafields.reviews.rating_count.value }} {{ s.reviews_label }}</p>
+        {%- endif -%}
+        <div class="sn-pprice" data-sn-pprice data-r>{% render 'sn-price', product: fp, variant: cv %}</div>
+        {%- if s.show_desc -%}<div class="sn-rte snfp__desc" data-r>{{ fp.description | replace: '</li>', ' · ' | replace: '</p>', ' ' | strip_html | truncatewords: s.desc_words }}</div>{%- endif -%}
+        {%- form 'product', fp, data-sn-pform: '', class: 'snfp__form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ cv.id }}" data-sn-pvid>
+          <div data-r style="--i: 2;">{% render 'sn-picker', product: fp, style: s.picker, swatches: true, uid: uid %}</div>
+          <div class="sn-stock snfp__stock" data-sn-pstock data-low="5" data-in="{{ s.in_text | escape }}" data-out="{{ s.out_text | escape }}" data-lowtxt="{{ s.low_text | escape }}" data-r style="--i: 3;"><span class="sn-stock__t" data-sn-pstock-t>{{ s.in_text }}</span><span class="sn-stock__bar"><i data-sn-pstock-b style="width: 100%;"></i></span></div>
+          <div class="sn-buy" data-r style="--i: 4;">
+            <div class="sn-qty"><button type="button" data-sn-q="-1" aria-label="Decrease">{% render 'sn-icon', name: 'minus', class: 'icon' %}</button><input type="number" name="quantity" value="1" min="1" data-sn-pqty aria-label="Quantity"><button type="button" data-sn-q="1" aria-label="Increase">{% render 'sn-icon', name: 'plus', class: 'icon' %}</button></div>
+            <button type="submit" class="sn-btn sn-btn--gold sn-buy__atc" data-sn-patc data-label="{{ 'products.product.add_to_cart' | t | escape }}" data-sold="{{ 'products.product.sold_out' | t | escape }}"{% unless cv.available %} disabled{% endunless %}><span>{% if cv.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>{% render 'sn-icon', name: 'bag', class: 'icon' %}</button>
+            {%- if s.buy_now -%}<div class="sn-buy__now" data-sn-buynow>{{ form | payment_button }}</div>{%- endif -%}
+          </div>
+        {%- endform -%}
+        <div class="snfp__foot" data-r style="--i: 5;">
+          <a class="sn-link" href="{{ fp.url }}">{{ s.details_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+          <button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-wish="{{ fp.handle }}" aria-label="Wishlist">{% render 'sn-icon', name: 'heart', class: 'icon' %}</button>
+        </div>
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+#{{ sid }} .snfp__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(30px, 6vw, 100px); align-items: center; }
+#{{ sid }}.snfp--right .snfp__gal { order: 2; }
+#{{ sid }} .snfp__gal { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; }
+#{{ sid }} .snfp__track { grid-column: 2; grid-row: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: calc(var(--r) * 1.2); }
+#{{ sid }} .snfp__track::-webkit-scrollbar { display: none; }
+#{{ sid }} .snfp__slide { scroll-snap-align: start; }
+#{{ sid }} .snfp__m { aspect-ratio: 4 / 5; border-radius: calc(var(--r) * 1.2); }
+#{{ sid }} .snfp__thumbs { position: absolute; left: 0; top: 0; bottom: 0; width: 76px; display: grid; grid-auto-rows: max-content; gap: 10px; overflow-y: auto; scrollbar-width: none; padding-right: 4px; }
+#{{ sid }} .snfp__th { position: relative; aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden; opacity: .55; transition: opacity .4s, transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+#{{ sid }} .snfp__th::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1.5px solid transparent; transition: border-color .4s; }
+#{{ sid }} .snfp__th.is-on { opacity: 1; } #{{ sid }} .snfp__th.is-on::after { border-color: var(--ac); }
+#{{ sid }} .snfp__th:hover { transform: translateX(4px); opacity: 1; }
+#{{ sid }} .snfp__th img { width: 100%; height: 100%; object-fit: cover; }
+#{{ sid }} .snfp__seal { position: absolute; z-index: 3; right: -30px; top: -30px; width: 120px; height: 120px; display: grid; place-items: center; border-radius: 50%; background: var(--ac); color: var(--ac-ink); box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); }
+#{{ sid }} .snfp__seal > svg:not(.sn-ph) { position: absolute; inset: 0; width: 100%; height: 100%; animation: snfp-spin 20s linear infinite; }
+#{{ sid }} .snfp__seal text { font: 600 10px var(--f-body); letter-spacing: .28em; text-transform: uppercase; fill: currentColor; }
+#{{ sid }} .snfp__seal .sn-ph { width: 22px; height: 22px; }
+@keyframes snfp-spin { to { transform: rotate(360deg); } }
+#{{ sid }} .snfp__info { display: grid; gap: 20px; align-content: start; }
+#{{ sid }} .snfp__info h2 a:hover { color: var(--ac); }
+#{{ sid }} .snfp__rate { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--soft); }
+#{{ sid }} .snfp__desc { font-size: 15px; }
+#{{ sid }} .snfp__form { display: grid; gap: 22px; }
+#{{ sid }} .snfp__foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 18px; border-top: 1px dashed var(--line2); }
+@media (max-width: 899px) {
+  #{{ sid }} .snfp__grid { grid-template-columns: 1fr; }
+  #{{ sid }}.snfp--right .snfp__gal { order: 0; }
+  #{{ sid }} .snfp__gal { grid-template-columns: 1fr; }
+  #{{ sid }} .snfp__track, #{{ sid }} .snfp__thumbs { grid-column: 1; grid-row: auto; }
+  #{{ sid }} .snfp__thumbs { position: static; width: auto; grid-auto-flow: column; grid-auto-columns: 60px; overflow-x: auto; }
+  #{{ sid }} .snfp__seal { right: 8px; top: -20px; width: 96px; height: 96px; }
+}
+</style>
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "select",
+      "id": "media_pos",
+      "label": "Gallery position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Product of the month"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Rotating seal text",
+      "default": "Bestseller"
+    },
+    {
+      "type": "select",
+      "id": "picker",
+      "label": "Variant picker",
+      "options": [
+        {
+          "value": "pills",
+          "label": "Pills & swatches"
+        },
+        {
+          "value": "select",
+          "label": "Dropdowns"
+        }
+      ],
+      "default": "pills"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating (reviews.rating metafield)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_label",
+      "label": "Reviews label",
+      "default": "reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desc",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "desc_words",
+      "label": "Description words",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "buy_now",
+      "label": "Show dynamic checkout button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "in_text",
+      "label": "In stock text",
+      "default": "In stock, ships in 24 hours"
+    },
+    {
+      "type": "text",
+      "id": "low_text",
+      "label": "Low stock text ([n] = quantity)",
+      "default": "Only [n] left, almost gone"
+    },
+    {
+      "type": "text",
+      "id": "out_text",
+      "label": "Sold out text",
+      "default": "Sold out in this option"
+    },
+    {
+      "type": "text",
+      "id": "details_label",
+      "label": "Details link",
+      "default": "View full details"
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Silk background (use a night scheme)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product"
+    }
+  ]
+}
+{% endschema %}

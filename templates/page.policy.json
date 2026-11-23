@@ -1,0 +1,14 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-page",
+   "settings": {
+    "layout": "toc",
+    "head_size": "l"
+   }
+  }
+ },
+ "order": [
+  "main"
+ ]
+}

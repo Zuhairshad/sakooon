@@ -1,0 +1,87 @@
+{
+  "general": {
+    "meta": {
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "placeholder": "Search products, categories, brands",
+      "no_results": "No results for \"{{ terms }}\"",
+      "results_count": "{{ count }} results"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "menu": "Menu",
+    "search": "Search",
+    "cart": "Cart",
+    "account": "Account",
+    "wishlist": "Wishlist"
+  },
+  "header": {
+    "announcement_prev": "Previous announcement",
+    "announcement_next": "Next announcement",
+    "shop_now": "Shop now"
+  },
+  "products": {
+    "product": {
+      "sold_out": "Sold out",
+      "on_sale": "Sale",
+      "add_to_cart": "Add to cart",
+      "sku": "SKU",
+      "quantity": "Quantity",
+      "quick_view": "Quick view",
+      "view_full_details": "View full details",
+      "in_stock": "In stock",
+      "low_stock": "Only {{ count }} left",
+      "warranty": "Warranty",
+      "installation_support": "Installation support available"
+    }
+  },
+  "collections": {
+    "general": {
+      "empty": "No products found",
+      "filter_and_sort": "Filter and sort",
+      "sort_by": "Sort by",
+      "clear_all": "Clear all",
+      "items_with_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty",
+      "continue_shopping": "Continue shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "update": "Update cart"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account",
+      "orders": "Order history"
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign in",
+      "forgot_password": "Forgot your password?",
+      "create_account": "Create account"
+    }
+  },
+  "404": {
+    "title": "Page not found",
+    "subtext": "The page you're looking for doesn't exist.",
+    "link": "Continue shopping"
+  }
+}

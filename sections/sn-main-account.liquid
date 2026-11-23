@@ -1,0 +1,323 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snac-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snac" style="{% render 'sn-vars', s: s %}">
+  <div class="sn-wrap">
+    <div class="snac__hero" data-sn-silk-host>
+      <div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".45" data-amp=".8" data-quality="low"></div>
+      <div class="snac__hin">
+        <p class="sn-eyebrow" data-snac-greet data-m="{{ s.g_morning | escape }}" data-a="{{ s.g_afternoon | escape }}" data-e="{{ s.g_evening | escape }}" data-n="{{ s.g_night | escape }}">{% render 'sn-phase', k: 3 %}<span>{{ s.g_evening }}</span></p>
+        <h1 class="sn-h sn-h--l" data-sn-split>{{ customer.first_name | default: customer.name | default: s.fallback_name }}</h1>
+        <p class="snac__email">{{ customer.email }}</p>
+      </div>
+      <a class="sn-btn sn-btn--glass sn-btn--sm snac__out" href="{{ routes.account_logout_url }}"><span>{{ s.logout }}</span>{% render 'sn-icon', name: 'arrow-up-right', class: 'icon' %}</a>
+    </div>
+    <div class="snac__stats">
+      <div class="snac__stat sn-pillow sn-stitch" data-r="rise"><span class="sn-icon-circle">{% render 'sn-icon', name: 'package', class: 'icon' %}</span><b>{{ customer.orders_count }}</b><small>{{ s.orders_label }}</small></div>
+      <div class="snac__stat sn-pillow sn-stitch" data-r="rise" style="--i: 1;"><span class="sn-icon-circle">{% render 'sn-icon', name: 'sparkle', class: 'icon' %}</span><b>{{ customer.total_spent | money_without_trailing_zeros }}</b><small>{{ s.spent_label }}</small></div>
+      <a class="snac__stat sn-pillow sn-stitch" href="{{ s.wish_url | default: '/pages/wishlist' }}" data-r="rise" style="--i: 2;"><span class="sn-icon-circle">{% render 'sn-icon', name: 'heart', class: 'icon' %}</span><b data-sn-wish-count>0</b><small>{{ s.wish_label }}</small></a>
+      <a class="snac__stat sn-pillow sn-stitch" href="{{ routes.account_addresses_url }}" data-r="rise" style="--i: 3;"><span class="sn-icon-circle">{% render 'sn-icon', name: 'map-pin', class: 'icon' %}</span><b>{{ customer.addresses_count }}</b><small>{{ s.addr_label }}</small></a>
+    </div>
+    <div class="snac__grid">
+      <div class="snac__panel sn-pillow" data-r>
+        <div class="snac__ph"><p class="sn-h sn-h--s">{{ s.history_title }}</p></div>
+        {%- paginate customer.orders by 10 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="snac__tbl">
+              <thead><tr><th>{{ s.c_order }}</th><th>{{ s.c_date }}</th><th>{{ s.c_pay }}</th><th>{{ s.c_ful }}</th><th>{{ s.c_total }}</th></tr></thead>
+              <tbody>
+                {%- for o in customer.orders -%}
+                  <tr>
+                    <td><a class="sn-link" href="{{ o.customer_url }}">{{ o.name }}</a></td>
+                    <td data-l="{{ s.c_date }}">{{ o.created_at | date: '%b %d, %Y' }}</td>
+                    <td><span class="snac__st{% if o.financial_status == 'paid' %} is-ok{% else %} is-wait{% endif %}">{{ o.financial_status_label }}</span></td>
+                    <td><span class="snac__st{% if o.fulfillment_status == 'fulfilled' %} is-ok{% else %} is-wait{% endif %}">{{ o.fulfillment_status_label }}</span></td>
+                    <td><b>{{ o.total_price | money }}</b></td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+            {%- if paginate.pages > 1 -%}<div class="sn-pagination">{%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">‹</a>{%- endif -%}<span class="is-on">{{ paginate.current_page }}</span>{%- if paginate.next -%}<a href="{{ paginate.next.url }}">›</a>{%- endif -%}</div>{%- endif -%}
+          {%- else -%}
+            <div class="snac__none">{% render 'sn-art', name: 'pillow' %}<p>{{ s.no_orders }}</p><a class="sn-btn sn-btn--sm" href="{{ routes.all_products_collection_url }}"><span>{{ s.shop_btn }}</span></a></div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+      <aside class="snac__panel sn-pillow snac__addr" data-r style="--i: 2;">
+        <p class="sn-h sn-h--s">{{ s.addr_title }}</p>
+        {%- if customer.default_address -%}<address class="snac__adr">{{ customer.default_address | format_address }}</address>{%- else -%}<p class="sn-small">{{ s.no_addr }}</p>{%- endif -%}
+        <a class="sn-btn sn-btn--ghost sn-btn--sm" href="{{ routes.account_addresses_url }}"><span>{{ s.manage_addr }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+        {%- if settings.whatsapp != blank -%}<a class="sn-link" href="https://wa.me/{{ settings.whatsapp | remove: '+' | remove: ' ' | remove: '-' }}" target="_blank" rel="noopener">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}{{ s.help }}</a>{%- endif -%}
+      </aside>
+    </div>
+  </div>
+</section>
+<style>
+#{{ sid }} .snac__hero { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; min-height: 260px; padding: clamp(26px, 4vw, 50px); border-radius: calc(var(--r) * 1.4); background: {{ settings.color_dark_bg }}; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --ac: {{ settings.color_moon }}; }
+#{{ sid }} .snac__hin { display: grid; gap: 10px; }
+#{{ sid }} .snac__email { color: color-mix(in srgb, {{ settings.color_dark_text }} 70%, transparent); font-size: 14px; }
+#{{ sid }} .snac__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 18px 0; }
+#{{ sid }} .snac__stat { display: grid; justify-items: start; gap: 6px; padding: 20px 22px; transition: transform .6s cubic-bezier(.3, 1.2, .4, 1); }
+#{{ sid }} a.snac__stat:hover { transform: translateY(-5px); }
+#{{ sid }} .snac__stat .sn-icon-circle { width: 42px; height: 42px; margin-bottom: 6px; }
+#{{ sid }} .snac__stat .sn-icon-circle .icon { width: 18px; height: 18px; }
+#{{ sid }} .snac__stat b { font: 400 1.7rem/1 var(--f-head); }
+#{{ sid }} .snac__stat small { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+#{{ sid }} .snac__grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, .8fr); gap: 18px; align-items: start; }
+#{{ sid }} .snac__ph { margin-bottom: 18px; }
+#{{ sid }} .snac__addr { display: grid; gap: 16px; justify-items: start; }
+#{{ sid }} .snac__adr { font-style: normal; line-height: 1.7; color: var(--soft); font-size: 14.5px; }
+#{{ sid }} .snac__addr .sn-link .icon { width: 16px; height: 16px; }
+#{{ sid }} .snac__none { display: grid; justify-items: center; gap: 14px; padding: 20px 0; text-align: center; color: var(--soft); }
+#{{ sid }} .snac__none svg { width: 120px; height: 150px; border-radius: 20px; }
+@media (max-width: 899px) { #{{ sid }} .snac__stats { grid-template-columns: 1fr 1fr; } #{{ sid }} .snac__grid { grid-template-columns: 1fr; } #{{ sid }} .snac__hero { flex-direction: column; align-items: flex-start; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var g = r.querySelector('[data-snac-greet]'), h = new Date().getHours(), k = h < 5 ? 'n' : h < 12 ? 'm' : h < 17 ? 'a' : h < 21 ? 'e' : 'n';
+  g.querySelector('span').textContent = g.getAttribute('data-' + k);
+})();
+</script>
+{% schema %}
+{
+  "name": "Account",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "g_morning",
+      "label": "Morning greeting",
+      "default": "Good morning"
+    },
+    {
+      "type": "text",
+      "id": "g_afternoon",
+      "label": "Afternoon greeting",
+      "default": "Good afternoon"
+    },
+    {
+      "type": "text",
+      "id": "g_evening",
+      "label": "Evening greeting",
+      "default": "Good evening"
+    },
+    {
+      "type": "text",
+      "id": "g_night",
+      "label": "Night greeting",
+      "default": "Sweet dreams"
+    },
+    {
+      "type": "text",
+      "id": "fallback_name",
+      "label": "Name if empty",
+      "default": "Dear sleeper"
+    },
+    {
+      "type": "text",
+      "id": "logout",
+      "label": "Log out",
+      "default": "Log out"
+    },
+    {
+      "type": "text",
+      "id": "orders_label",
+      "label": "Orders label",
+      "default": "Orders"
+    },
+    {
+      "type": "text",
+      "id": "spent_label",
+      "label": "Spent label",
+      "default": "Total spent"
+    },
+    {
+      "type": "text",
+      "id": "wish_label",
+      "label": "Wishlist label",
+      "default": "Saved"
+    },
+    {
+      "type": "text",
+      "id": "wish_url",
+      "label": "Wishlist page URL",
+      "default": "/pages/wishlist"
+    },
+    {
+      "type": "text",
+      "id": "addr_label",
+      "label": "Addresses label",
+      "default": "Addresses"
+    },
+    {
+      "type": "text",
+      "id": "history_title",
+      "label": "Orders title",
+      "default": "Order history"
+    },
+    {
+      "type": "text",
+      "id": "c_order",
+      "label": "Order column",
+      "default": "Order"
+    },
+    {
+      "type": "text",
+      "id": "c_date",
+      "label": "Date column",
+      "default": "Date"
+    },
+    {
+      "type": "text",
+      "id": "c_pay",
+      "label": "Payment column",
+      "default": "Payment"
+    },
+    {
+      "type": "text",
+      "id": "c_ful",
+      "label": "Delivery column",
+      "default": "Delivery"
+    },
+    {
+      "type": "text",
+      "id": "c_total",
+      "label": "Total column",
+      "default": "Total"
+    },
+    {
+      "type": "text",
+      "id": "no_orders",
+      "label": "No orders text",
+      "default": "No orders yet, your first good night is waiting."
+    },
+    {
+      "type": "text",
+      "id": "shop_btn",
+      "label": "Shop button",
+      "default": "Start shopping"
+    },
+    {
+      "type": "text",
+      "id": "addr_title",
+      "label": "Address title",
+      "default": "Default address"
+    },
+    {
+      "type": "text",
+      "id": "no_addr",
+      "label": "No address text",
+      "default": "No address saved yet."
+    },
+    {
+      "type": "text",
+      "id": "manage_addr",
+      "label": "Manage addresses",
+      "default": "Manage addresses"
+    },
+    {
+      "type": "text",
+      "id": "help",
+      "label": "Help link",
+      "default": "Need help? Chat with us"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,191 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-product",
+   "settings": {},
+   "blocks": {
+    "eyebrow_u8jzPd": {
+     "type": "eyebrow",
+     "settings": {}
+    },
+    "title_e0IgxL": {
+     "type": "title",
+     "settings": {}
+    },
+    "rating_d6Gncf": {
+     "type": "rating",
+     "settings": {}
+    },
+    "price_BAepfJ": {
+     "type": "price",
+     "settings": {}
+    },
+    "specs_Bd0Kh8": {
+     "type": "specs",
+     "settings": {}
+    },
+    "variant_picker_oOOL8d": {
+     "type": "variant_picker",
+     "settings": {}
+    },
+    "stock_KLzdoc": {
+     "type": "stock",
+     "settings": {}
+    },
+    "properties_J2isAj": {
+     "type": "properties",
+     "settings": {}
+    },
+    "buy_buttons_IhKtJ0": {
+     "type": "buy_buttons",
+     "settings": {}
+    },
+    "delivery_RlgLKO": {
+     "type": "delivery",
+     "settings": {}
+    },
+    "trust_mxgJTe": {
+     "type": "trust",
+     "settings": {}
+    },
+    "complementary_KdNnFR": {
+     "type": "complementary",
+     "settings": {}
+    },
+    "tab_IBXuDL": {
+     "type": "tab",
+     "settings": {
+      "title": "Details",
+      "icon": "info",
+      "source": "description",
+      "open": true
+     }
+    },
+    "tab_7DxtpY": {
+     "type": "tab",
+     "settings": {
+      "title": "Fabric & care",
+      "icon": "wash",
+      "source": "care",
+      "content": "<p>Machine wash cool, tumble dry low, iron warm. Wash darks separately for the first time.</p>"
+     }
+    },
+    "tab_lSXpfK": {
+     "type": "tab",
+     "settings": {
+      "title": "Delivery & exchange",
+      "icon": "truck",
+      "content": "<p>Delivered in 2–5 working days across Pakistan. Cash on delivery available. Exchange within 7 days in original packing.</p>"
+     }
+    },
+    "share_tHF4vU": {
+     "type": "share",
+     "settings": {}
+    }
+   },
+   "block_order": [
+    "eyebrow_u8jzPd",
+    "title_e0IgxL",
+    "rating_d6Gncf",
+    "price_BAepfJ",
+    "specs_Bd0Kh8",
+    "variant_picker_oOOL8d",
+    "stock_KLzdoc",
+    "properties_J2isAj",
+    "buy_buttons_IhKtJ0",
+    "delivery_RlgLKO",
+    "trust_mxgJTe",
+    "complementary_KdNnFR",
+    "tab_IBXuDL",
+    "tab_7DxtpY",
+    "tab_lSXpfK",
+    "share_tHF4vU"
+   ]
+  },
+  "recs": {
+   "type": "sn-product-recs",
+   "settings": {
+    "source": "related"
+   }
+  },
+  "reviews": {
+   "type": "sn-reviews",
+   "settings": {},
+   "blocks": {
+    "review_CsMehG": {
+     "type": "review",
+     "settings": {}
+    },
+    "review_AkWvj7": {
+     "type": "review",
+     "settings": {
+      "name": "Hamza R.",
+      "city": "Karachi",
+      "text": "Finally a duvet that is warm without being heavy. It arrived wrapped like a gift.",
+      "product": "Cloud duvet"
+     }
+    },
+    "review_FAc9Qe": {
+     "type": "review",
+     "settings": {
+      "name": "Mehwish A.",
+      "city": "Islamabad",
+      "text": "These towels are so thick and absorbent — we ordered a second set within a week.",
+      "product": "Bath towels"
+     }
+    },
+    "review_WJKY40": {
+     "type": "review",
+     "settings": {
+      "name": "Usman T.",
+      "city": "Faisalabad",
+      "text": "Used the size guide, ordered King — fits our mattress perfectly, even with a topper.",
+      "product": "T250 sheet set"
+     }
+    },
+    "review_uvSwMF": {
+     "type": "review",
+     "settings": {
+      "name": "Sana M.",
+      "city": "Multan",
+      "text": "The piped luxury pillow covers make my bedroom look styled. Love them.",
+      "product": "Luxury covers"
+     }
+    },
+    "review_LZDe1f": {
+     "type": "review",
+     "settings": {
+      "name": "Bilal & Hira",
+      "city": "Rawalpindi",
+      "text": "We gifted a complete set at a wedding and everyone asked where it was from!",
+      "product": "Complete bed set"
+     }
+    }
+   },
+   "block_order": [
+    "review_CsMehG",
+    "review_AkWvj7",
+    "review_FAc9Qe",
+    "review_WJKY40",
+    "review_uvSwMF",
+    "review_LZDe1f"
+   ]
+  },
+  "recent": {
+   "type": "sn-product-recs",
+   "settings": {
+    "source": "recent",
+    "eyebrow": "Still thinking?",
+    "heading": "Recently",
+    "highlight": "viewed",
+    "scheme": "ivory"
+   }
+  }
+ },
+ "order": [
+  "main",
+  "recs",
+  "reviews",
+  "recent"
+ ]
+}

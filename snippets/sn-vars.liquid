@@ -1,0 +1,40 @@
+{%- comment -%}
+  Section colour + spacing variables. Usage: style="{% render 'sn-vars', s: section.settings %}"
+  Schemes: linen, ivory, sand, dusk, midnight, champagne
+{%- endcomment -%}
+{%- liquid
+  assign bg = settings.color_paper
+  assign tx = settings.color_ink
+  assign ac = settings.color_accent
+  assign dark = false
+  case s.scheme
+    when 'ivory'
+      assign bg = settings.color_surface
+    when 'sand'
+      assign bg = settings.color_line
+    when 'dusk'
+      assign bg = settings.color_dusk
+      assign tx = settings.color_dark_text
+      assign ac = settings.color_moon
+      assign dark = true
+    when 'midnight'
+      assign bg = settings.color_dark_bg
+      assign tx = settings.color_dark_text
+      assign ac = settings.color_moon
+      assign dark = true
+    when 'champagne'
+      assign bg = settings.color_accent
+      assign tx = settings.color_dark_bg
+      assign ac = settings.color_dark_bg
+  endcase
+  if s.bg_color != blank
+    assign bg = s.bg_color
+  endif
+  if s.text_color != blank
+    assign tx = s.text_color
+  endif
+  if s.accent_color != blank
+    assign ac = s.accent_color
+  endif
+-%}
+--bg: {{ bg }}; --tx: {{ tx }}; --ac: {{ ac }}; --pt: {{ s.pad_top | default: 0 }}px; --pb: {{ s.pad_bottom | default: 0 }}px;{% if dark %} color-scheme: dark;{% endif %}

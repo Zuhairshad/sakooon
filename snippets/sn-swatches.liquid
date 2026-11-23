@@ -1,0 +1,46 @@
+{%- comment -%} Colour swatches on cards. Params: product, limit {%- endcomment -%}
+{%- liquid
+  assign limit = limit | default: 5
+  assign copt = nil
+  for opt in product.options_with_values
+    assign on = opt.name | downcase
+    if on contains 'colo'
+      assign copt = opt
+      break
+    endif
+  endfor
+-%}
+{%- if copt and copt.values.size > 1 -%}
+  <div class="sn-sw">
+    {%- assign oidx = copt.position | minus: 1 -%}
+    {%- for value in copt.values limit: limit -%}
+      {%- liquid
+        assign vname = value.name | default: value
+        assign vimg = blank
+        assign vurl = product.url
+        for v in product.variants
+          if v.options[oidx] == vname
+            assign vurl = v.url
+            if v.featured_media
+              assign vimg = v.featured_media | image_url: width: 700
+            endif
+            break
+          endif
+        endfor
+        assign css = ''
+        if value.swatch.color
+          assign css = value.swatch.color
+        elsif value.swatch.image
+          assign css = value.swatch.image | image_url: width: 60 | prepend: 'url(' | append: ') center/cover'
+        else
+          capture css
+            render 'sn-color', name: vname
+          endcapture
+          assign css = css | strip
+        endif
+      -%}
+      <a href="{{ vurl }}" class="sn-sw__dot{% if css == '' %} sn-sw__dot--txt{% endif %}" title="{{ vname | escape }}" aria-label="{{ copt.name | escape }}: {{ vname | escape }}"{% if vimg != blank %} data-img="{{ vimg }}"{% endif %}{% if css != '' %} style="--sw: {{ css }};"{% endif %}>{% if css == '' %}{{ vname | slice: 0 }}{% endif %}</a>
+    {%- endfor -%}
+    {%- if copt.values.size > limit -%}<a href="{{ product.url }}" class="sn-sw__more">+{{ copt.values.size | minus: limit }}</a>{%- endif -%}
+  </div>
+{%- endif -%}

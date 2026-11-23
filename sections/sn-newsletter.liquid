@@ -1,0 +1,335 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snnl-' | append: section.id
+  assign fid = 'SnNews-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snnl snnl--{{ s.layout }}" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
+  {% render 'sn-divider', s: s %}
+  {%- if s.silk -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".4" data-amp=".7"></div>{%- endif -%}
+  {%- if s.feathers -%}<div data-sn-feathers="34" data-color="{{ settings.color_moon }}" style="position:absolute;inset:0;z-index:0"></div>{%- endif -%}
+  <div class="snnl__sky" aria-hidden="true">
+    <div class="snnl__moon" data-snnl-moon><i></i></div>
+    {%- for i in (1..14) -%}<span class="snnl__st" style="--x: {{ i | times: 37 | modulo: 100 }}%; --y: {{ i | times: 53 | modulo: 70 | plus: 4 }}%; --d: {{ i | times: 0.37 }}s;"></span>{%- endfor -%}
+  </div>
+  <div class="sn-wrap snnl__wrap">
+    <div class="snnl__copy">
+      {%- if s.eyebrow != blank -%}<p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 4 %}{{ s.eyebrow }}</p>{%- endif -%}
+      <h2 class="sn-h sn-h--{{ s.head_size }}" data-sn-split>{{ s.heading }}{% if s.highlight != blank %} <em>{{ s.highlight }}</em>{% endif %}</h2>
+      {%- if s.text != blank -%}<p class="sn-lead" data-r style="--i: 2;">{{ s.text }}</p>{%- endif -%}
+    </div>
+    <div class="snnl__formwrap" data-r="rise" style="--i: 3;">
+      {%- form 'customer', id: fid, class: 'snnl__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <div class="snnl__ok" role="status">
+            <svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" pathLength="100"/><path d="m19 31 8 8 15-17" pathLength="100"/></svg>
+            <div><p class="sn-h sn-h--s">{{ s.ok_title }}</p><p class="sn-small">{{ s.ok_text }}</p></div>
+          </div>
+        {%- else -%}
+          <div class="sn-pill-form snnl__pill">
+            {% render 'sn-icon', name: 'mail', class: 'icon snnl__mi' %}
+            <label class="sr" for="{{ fid }}-email">{{ s.placeholder }}</label>
+            <input id="{{ fid }}-email" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ s.placeholder | escape }}" value="{{ form.email }}">
+            <button type="submit" class="sn-btn sn-btn--gold"><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button>
+          </div>
+          {%- if form.errors -%}<p class="sn-msg sn-msg--err">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+          {%- if s.note != blank -%}<p class="snnl__note sn-small">{% render 'sn-icon', name: 'lock', class: 'icon' %}{{ s.note }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+      {%- if s.perks != blank -%}
+        {%- assign perks = s.perks | newline_to_br | split: '<br />' -%}
+        <ul class="snnl__perks">
+          {%- for p in perks -%}{%- assign pp = p | strip -%}{%- if pp != blank -%}<li>{% render 'sn-icon', name: 'sparkle', class: 'icon' %}{{ pp }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+#{{ sid }} { overflow: hidden; min-height: {{ s.min_h }}px; display: grid; align-items: center; }
+#{{ sid }} .snnl__wrap { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(30px, 6vw, 100px); align-items: end; }
+#{{ sid }}.snnl--center .snnl__wrap { grid-template-columns: 1fr; justify-items: center; text-align: center; max-width: 780px; }
+#{{ sid }}.snnl--center .sn-lead { margin-inline: auto; }
+#{{ sid }} .snnl__copy { display: grid; gap: 20px; }
+#{{ sid }}.snnl--center .snnl__copy { justify-items: center; }
+#{{ sid }} .snnl__formwrap { display: grid; gap: 18px; width: 100%; max-width: 560px; }
+#{{ sid }}.snnl--center .snnl__formwrap { margin-inline: auto; }
+#{{ sid }} .snnl__pill { padding-left: 18px; }
+#{{ sid }} .snnl__mi { width: 19px; height: 19px; flex: none; color: var(--ac); }
+#{{ sid }} .snnl__note { display: flex; align-items: center; gap: 8px; }
+#{{ sid }}.snnl--center .snnl__note { justify-content: center; }
+#{{ sid }} .snnl__note .icon { width: 14px; height: 14px; }
+#{{ sid }} .snnl__perks { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+#{{ sid }}.snnl--center .snnl__perks { justify-content: center; }
+#{{ sid }} .snnl__perks li { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--soft); }
+#{{ sid }} .snnl__perks .icon { width: 14px; height: 14px; color: var(--ac); }
+#{{ sid }} .snnl__ok { display: flex; align-items: center; gap: 18px; padding: 20px 24px; border-radius: var(--r); background: color-mix(in srgb, var(--ac) 12%, transparent); }
+#{{ sid }} .snnl__ok svg { width: 54px; height: 54px; flex: none; }
+#{{ sid }} .snnl__ok circle, #{{ sid }} .snnl__ok path { fill: none; stroke: var(--ac); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 100; animation: snnl-draw 1.4s cubic-bezier(.6, 0, .2, 1) both; }
+#{{ sid }} .snnl__ok path { animation-delay: .6s; }
+@keyframes snnl-draw { from { stroke-dashoffset: 100; } }
+#{{ sid }} .snnl__sky { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+#{{ sid }} .snnl__moon { position: absolute; right: 7%; top: calc(9% + var(--rise, 0) * 1%); width: clamp(84px, 8vw, 130px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 36% 34%, #fff, var(--c-moon) 50%, color-mix(in srgb, var(--c-moon) 55%, #5e4c2e)); box-shadow: 0 0 80px color-mix(in srgb, var(--c-moon) 50%, transparent), 0 0 200px color-mix(in srgb, var(--c-moon) 24%, transparent); opacity: {% if s.show_moon %}1{% else %}0{% endif %}; }
+#{{ sid }} .snnl__moon i { position: absolute; inset: -3%; border-radius: 50%; background: var(--bg); transform: translateX(var(--sh, 40%)); }
+#{{ sid }}.snnl--center .snnl__moon { right: auto; left: 50%; translate: -50% 0; top: auto; bottom: calc(-40% + var(--rise, 0) * -1%); width: clamp(260px, 36vw, 520px); opacity: {% if s.show_moon %}.35{% else %}0{% endif %}; }
+#{{ sid }} .snnl__st { position: absolute; left: var(--x); top: var(--y); width: 3px; height: 3px; border-radius: 50%; background: var(--c-moon); box-shadow: 0 0 8px var(--c-moon); animation: snnl-tw 3.6s ease-in-out infinite; animation-delay: var(--d); opacity: {% if s.stars %}.8{% else %}0{% endif %}; }
+@keyframes snnl-tw { 50% { opacity: .1; transform: scale(.4); } }
+@media (max-width: 899px) {
+  #{{ sid }} .snnl__wrap { grid-template-columns: 1fr; }
+  #{{ sid }} .snnl__moon { right: 4%; top: 6%; width: 90px; }
+  #{{ sid }} .snnl__pill { flex-wrap: wrap; border-radius: calc(var(--r) * .9); padding: 8px; }
+  #{{ sid }} .snnl__pill input { flex: 1 1 160px; }
+  #{{ sid }} .snnl__pill .sn-btn { flex: 1 1 100%; }
+  #{{ sid }} .snnl__mi { display: none; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var m = r.querySelector('[data-snnl-moon]'), tk = false;
+  function upd() { tk = false; var b = r.getBoundingClientRect(), p = Math.min(1, Math.max(0, 1 - b.top / innerHeight)); m.style.setProperty('--rise', ((1 - p) * 20).toFixed(1)); m.querySelector('i').style.setProperty('--sh', (22 + p * 48).toFixed(1) + '%'); }
+  addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(upd); } }, { passive: true }); upd();
+})();
+</script>
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "split",
+          "label": "Text left, form right"
+        },
+        {
+          "value": "center",
+          "label": "Centred under a rising moon"
+        }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The bedtime letter"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sleep notes,"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "once a month"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "New colours, care tips and members-only offers. Get 10% off your first order."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under form",
+      "default": "No spam. Unsubscribe any time."
+    },
+    {
+      "type": "textarea",
+      "id": "perks",
+      "label": "Perks (one per line)",
+      "default": "10% off first order\nEarly access to sales\nCare guides"
+    },
+    {
+      "type": "text",
+      "id": "ok_title",
+      "label": "Success title",
+      "default": "You're on the list"
+    },
+    {
+      "type": "text",
+      "id": "ok_text",
+      "label": "Success text",
+      "default": "Check your inbox for your welcome code."
+    },
+    {
+      "type": "header",
+      "content": "Night sky"
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Moving silk",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_moon",
+      "label": "Rising moon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "stars",
+      "label": "Twinkling stars",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "feathers",
+      "label": "Drifting feathers",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "min_h",
+      "label": "Minimum height",
+      "min": 300,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "midnight"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

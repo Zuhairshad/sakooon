@@ -1,0 +1,244 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snbl-' | append: section.id
+  assign arts = 'bed-sheet,towel,pillow,duvet,bed,pillow-cover' | split: ','
+-%}
+<section id="{{ sid }}" class="sn-s snbl" style="{% render 'sn-vars', s: s %}">
+  <div class="sn-wrap">
+    {%- paginate blog.articles by s.per_page -%}
+    <div class="snbl__head">
+      <div>
+        <p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 3 %}{{ s.eyebrow }}</p>
+        <h1 class="sn-h sn-h--xl" data-sn-split>{{ blog.title }}{% if s.highlight != blank %} <em>{{ s.highlight }}</em>{% endif %}</h1>
+      </div>
+      {%- if blog.all_tags.size > 0 and s.tags -%}
+        <nav class="snbl__tags" aria-label="Topics" data-r style="--i: 2;">
+          <a class="sn-chip{% unless current_tags %} is-on{% endunless %}" href="{{ blog.url }}">{{ s.all_label }}</a>
+          {%- for t in blog.all_tags -%}<a class="sn-chip{% if current_tags contains t %} is-on{% endif %}" href="{{ blog.url }}/tagged/{{ t | handleize }}">{{ t }}</a>{%- endfor -%}
+        </nav>
+      {%- endif -%}
+    </div>
+
+    <div class="snbl__grid">
+      {%- for a in blog.articles -%}
+        {%- assign lead = false -%}{%- if forloop.first and paginate.current_page == 1 and s.lead -%}{%- assign lead = true -%}{%- endif -%}
+        {%- assign words = a.content | strip_html | split: ' ' | size -%}
+        {%- assign mins = words | divided_by: 200 | at_least: 1 -%}
+        {%- assign ai = forloop.index0 | modulo: 6 -%}
+        <article class="snbl__post{% if lead %} is-lead{% endif %}" data-r="rise" style="--i: {{ forloop.index0 | modulo: 6 }};">
+          <a class="snbl__img" href="{{ a.url }}" aria-label="{{ a.title | escape }}">
+            {% render 'sn-media', image: a.image, art: arts[ai], width: 1400, sizes: '(min-width: 990px) 50vw, 100vw', class: 'snbl__m sn-ripple' %}
+            <span class="snbl__date"><b>{{ a.published_at | date: '%d' }}</b>{{ a.published_at | date: '%b %Y' }}</span>
+          </a>
+          <div class="snbl__body">
+            <p class="snbl__meta">{%- if a.tags.first -%}<span>{{ a.tags.first }}</span>{%- endif -%}<span>{% render 'sn-icon', name: 'clock', class: 'icon' %}{{ mins }} {{ s.min_label }}</span>{%- if s.author -%}<span>{{ a.author }}</span>{%- endif -%}</p>
+            <h2 class="sn-h {% if lead %}sn-h--l{% else %}sn-h--s{% endif %}"><a href="{{ a.url }}">{{ a.title }}</a></h2>
+            <p class="snbl__ex">{{ a.excerpt_or_content | strip_html | truncatewords: 26 }}</p>
+            <a class="sn-link" href="{{ a.url }}">{{ s.read_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+          </div>
+        </article>
+      {%- else -%}
+        <div class="sn-empty"><p class="sn-h sn-h--m">{{ s.empty }}</p></div>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="sn-pagination" aria-label="Pagination">
+        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="Previous">{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}</a>{%- endif -%}
+        {%- for part in paginate.parts -%}{%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- elsif part.title == paginate.current_page -%}<span class="is-on">{{ part.title }}</span>{%- else -%}<span>{{ part.title }}</span>{%- endif -%}{%- endfor -%}
+        {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Next">{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+<style>
+#{{ sid }} .snbl__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(36px, 5vw, 64px); padding-bottom: 28px; border-bottom: 1px dashed var(--line2); }
+#{{ sid }} .snbl__head > div { display: grid; gap: 16px; }
+#{{ sid }} .snbl__tags { display: flex; flex-wrap: wrap; gap: 8px; max-width: 640px; }
+#{{ sid }} .snbl__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(30px, 3vw, 48px) clamp(18px, 2.4vw, 34px); }
+#{{ sid }} .snbl__post { display: grid; gap: 18px; align-content: start; }
+#{{ sid }} .snbl__post.is-lead { grid-column: 1 / -1; grid-template-columns: 1.3fr 1fr; align-items: center; gap: clamp(24px, 4vw, 70px); }
+#{{ sid }} .snbl__img { position: relative; display: block; }
+#{{ sid }} .snbl__m { aspect-ratio: 4 / 3; border-radius: var(--r); }
+#{{ sid }} .is-lead .snbl__m { aspect-ratio: 16 / 11; border-radius: calc(var(--r) * 1.3); }
+#{{ sid }} .snbl__post:hover .snbl__m img, #{{ sid }} .snbl__post:hover .snbl__m .sn-art { transform: scale(1.05); }
+#{{ sid }} .snbl__date { position: absolute; z-index: 2; left: 14px; top: 14px; display: grid; justify-items: center; padding: 8px 14px 7px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); transition: transform .6s cubic-bezier(.3, 1.4, .5, 1); }
+#{{ sid }} .snbl__date b { font: 400 1.35rem/1.1 var(--f-head); letter-spacing: 0; color: var(--tx); }
+#{{ sid }} .snbl__post:hover .snbl__date { transform: rotate(-5deg) translateY(-3px); }
+#{{ sid }} .snbl__body { display: grid; gap: 12px; justify-items: start; }
+#{{ sid }} .snbl__meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snbl__meta span { display: inline-flex; align-items: center; gap: 6px; }
+#{{ sid }} .snbl__meta span + span { color: var(--mute); }
+#{{ sid }} .snbl__meta .icon { width: 13px; height: 13px; }
+#{{ sid }} .snbl__body h2 a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .6s cubic-bezier(.3, .7, .2, 1); }
+#{{ sid }} .snbl__post:hover h2 a { background-size: 100% 1px; }
+#{{ sid }} .snbl__ex { color: var(--soft); font-size: 15px; line-height: 1.7; }
+@media (max-width: 989px) { #{{ sid }} .snbl__grid { grid-template-columns: 1fr 1fr; } #{{ sid }} .snbl__post.is-lead { grid-template-columns: 1fr; } }
+@media (max-width: 599px) { #{{ sid }} .snbl__grid { grid-template-columns: 1fr; } }
+</style>
+{% schema %}
+{
+  "name": "Blog posts",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The Sakooon journal"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Italic text after title",
+      "default": "& slow mornings"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Posts per page",
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "checkbox",
+      "id": "lead",
+      "label": "Feature the newest post",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tags",
+      "label": "Topic filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "All topics label",
+      "default": "All stories"
+    },
+    {
+      "type": "text",
+      "id": "min_label",
+      "label": "Reading time label",
+      "default": "min read"
+    },
+    {
+      "type": "text",
+      "id": "read_label",
+      "label": "Read link",
+      "default": "Read the story"
+    },
+    {
+      "type": "text",
+      "id": "empty",
+      "label": "No posts text",
+      "default": "New stories are being written."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

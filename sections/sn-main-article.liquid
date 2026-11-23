@@ -1,0 +1,349 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snar-' | append: section.id
+  assign words = article.content | strip_html | split: ' ' | size
+  assign mins = words | divided_by: 200 | at_least: 1
+  assign url = shop.url | append: article.url
+-%}
+<article id="{{ sid }}" class="sn-s snar" style="{% render 'sn-vars', s: s %}">
+  <div class="snar__prog" id="{{ sid }}-prog" aria-hidden="true" style="--ac: {{ settings.color_accent }};"><i data-snar-prog></i><span data-snar-moon>{% render 'sn-phase', k: 4 %}</span></div>
+  <header class="sn-wrap snar__head">
+    <nav class="sn-crumbs" aria-label="Breadcrumb" data-r><a href="{{ routes.root_url }}">{{ s.home_label }}</a><i></i><a href="{{ blog.url }}">{{ blog.title }}</a></nav>
+    <p class="snar__meta" data-r style="--i: 1;">{%- if article.tags.first -%}<span>{{ article.tags.first }}</span>{%- endif -%}<span>{{ article.published_at | date: '%B %d, %Y' }}</span><span>{% render 'sn-icon', name: 'clock', class: 'icon' %}{{ mins }} {{ s.min_label }}</span></p>
+    <h1 class="sn-h sn-h--xl" data-sn-split>{{ article.title }}</h1>
+    {%- if article.excerpt != blank -%}<p class="sn-lead snar__ex" data-r style="--i: 3;">{{ article.excerpt | strip_html }}</p>{%- endif -%}
+    {%- if s.author -%}<p class="snar__by" data-r style="--i: 4;"><span class="snar__av">{{ article.author | slice: 0 }}</span>{{ s.by_label }} <b>{{ article.author }}</b></p>{%- endif -%}
+  </header>
+  {%- if article.image -%}
+    <div class="snar__hero{% if s.wide_image %} is-wide{% endif %}" data-r="unfold">
+      <div class="snar__hin" data-snar-px>{% render 'sn-media', image: article.image, width: 2400, sizes: '100vw', class: 'snar__img', eager: true %}</div>
+    </div>
+  {%- endif -%}
+  <div class="snar__wrap">
+    <aside class="snar__share" aria-label="{{ s.share_label | escape }}">
+      <span>{{ s.share_label }}</span>
+      <a class="sn-ibtn sn-ibtn--sm" target="_blank" rel="noopener" href="https://wa.me/?text={{ article.title | append: ' ' | append: url | url_encode }}" aria-label="WhatsApp">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}</a>
+      <a class="sn-ibtn sn-ibtn--sm" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ url | url_encode }}" aria-label="Facebook">{% render 'sn-icon', name: 'facebook', class: 'icon' %}</a>
+      <a class="sn-ibtn sn-ibtn--sm" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/button/?url={{ url | url_encode }}" aria-label="Pinterest">{% render 'sn-icon', name: 'heart', class: 'icon' %}</a>
+      <button type="button" class="sn-ibtn sn-ibtn--sm" data-snar-copy="{{ url }}" aria-label="Copy link">{% render 'sn-icon', name: 'share', class: 'icon' %}</button>
+    </aside>
+    <div class="sn-rte snar__body{% if s.dropcap %} has-drop{% endif %}" data-snar-body>{{ article.content }}</div>
+  </div>
+  <footer class="snar__foot">
+    {%- if article.tags.size > 0 -%}<div class="snar__tags">{%- for t in article.tags -%}<a class="sn-chip" href="{{ blog.url }}/tagged/{{ t | handleize }}">#{{ t }}</a>{%- endfor -%}</div>{%- endif -%}
+    {%- if s.sign -%}<div class="snar__sign"><svg viewBox="0 0 320 70" aria-hidden="true"><path pathLength="1" d="M8 52c18-30 34-42 40-34 8 12-20 40-8 40 14 0 26-46 40-46 10 0-4 34 6 34s18-24 26-24-2 22 8 22 16-20 26-20 0 18 10 18 14-14 22-14 2 14 10 14c12 0 30-18 44-18 10 0 8 12 18 12s24-10 52-14"/></svg><span>{{ s.sign_text }}</span></div>{%- endif -%}
+    {%- if blog.previous_article or blog.next_article -%}
+      <nav class="snar__pn" aria-label="More stories">
+        {%- if blog.previous_article -%}<a href="{{ blog.previous_article.url }}" class="sn-pillow sn-stitch"><small>{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}{{ s.prev_label }}</small><b>{{ blog.previous_article.title }}</b></a>{%- else -%}<span></span>{%- endif -%}
+        {%- if blog.next_article -%}<a href="{{ blog.next_article.url }}" class="sn-pillow sn-stitch is-next"><small>{{ s.next_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</small><b>{{ blog.next_article.title }}</b></a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+    {%- if blog.comments_enabled? -%}
+      <div class="snar__com">
+        <p class="sn-h sn-h--s">{{ s.comments_title }} <small>({{ article.comments_count }})</small></p>
+        {%- for c in article.comments -%}<div class="snar__c"><p class="snar__ca"><b>{{ c.author }}</b> · {{ c.created_at | date: '%b %d, %Y' }}</p><div class="sn-rte">{{ c.content }}</div></div>{%- endfor -%}
+        {%- form 'new_comment', article, class: 'snar__cf' -%}
+          {%- if form.posted_successfully? -%}<p class="sn-msg">{% if blog.moderated? %}{{ s.moderated }}{% else %}{{ s.posted }}{% endif %}</p>{%- endif -%}
+          {%- if form.errors -%}<p class="sn-msg sn-msg--err">{{ form.errors | default_errors }}</p>{%- endif -%}
+          <div class="snar__row"><input class="sn-input" name="comment[author]" placeholder="{{ s.name_ph | escape }}" value="{{ form.author }}" required aria-label="{{ s.name_ph | escape }}"><input class="sn-input" type="email" name="comment[email]" placeholder="{{ s.email_ph | escape }}" value="{{ form.email }}" required aria-label="{{ s.email_ph | escape }}"></div>
+          <textarea class="sn-textarea" name="comment[body]" placeholder="{{ s.msg_ph | escape }}" required aria-label="{{ s.msg_ph | escape }}">{{ form.body }}</textarea>
+          <button class="sn-btn sn-btn--gold" type="submit"><span>{{ s.post_label }}</span></button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </footer>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":{{ article.title | json }},"datePublished":{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},"author":{"@type":"Person","name":{{ article.author | json }}},{%- if article.image -%}"image":{{ article.image | image_url: width: 1600 | prepend: 'https:' | json }},{%- endif -%}"publisher":{"@type":"Organization","name":{{ shop.name | json }}}}</script>
+</article>
+<style>
+#{{ sid }} { overflow: visible; }
+#{{ sid }}-prog { position: fixed; z-index: 2147481500; left: 0; right: 0; top: 0; height: 2px; pointer-events: none; }
+#{{ sid }}-prog i { position: absolute; left: 0; top: 0; height: 2px; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, transparent, var(--ac)); }
+#{{ sid }}-prog span { position: absolute; top: -3px; left: calc(var(--p, 0) * 100%); width: 16px; height: 16px; margin-left: -8px; color: var(--ac); filter: drop-shadow(0 0 6px var(--ac)); opacity: calc(var(--p, 0) * 6); }
+#{{ sid }}-prog .sn-ph { width: 16px; height: 16px; }
+#{{ sid }} .snar__head { display: grid; justify-items: center; gap: 20px; text-align: center; max-width: 980px; }
+#{{ sid }} .snar__meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snar__meta span { display: inline-flex; align-items: center; gap: 6px; }
+#{{ sid }} .snar__meta span + span { color: var(--mute); }
+#{{ sid }} .snar__meta .icon { width: 13px; height: 13px; }
+#{{ sid }} .snar__ex { margin-inline: auto; }
+#{{ sid }} .snar__by { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--soft); }
+#{{ sid }} .snar__by b { color: var(--tx); font-weight: 500; }
+#{{ sid }} .snar__av { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--ac); color: var(--ac-ink); font: 400 1rem var(--f-head); }
+#{{ sid }} .snar__hero { width: min(1200px, 100% - 56px); margin: clamp(36px, 5vw, 64px) auto 0; overflow: hidden; border-radius: calc(var(--r) * 1.4); }
+#{{ sid }} .snar__hero.is-wide { width: calc(100% - 24px); }
+#{{ sid }} .snar__hin { will-change: transform; }
+#{{ sid }} .snar__img { aspect-ratio: 16 / 8; border-radius: 0; transform: scale(1.1); }
+#{{ sid }} .snar__wrap { position: relative; display: grid; grid-template-columns: 1fr minmax(0, 720px) 1fr; gap: 30px; width: min(1200px, 100% - 56px); margin: clamp(40px, 5vw, 70px) auto 0; }
+#{{ sid }} .snar__share { position: sticky; top: 130px; align-self: start; justify-self: end; display: grid; justify-items: center; gap: 10px; }
+#{{ sid }} .snar__share span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+#{{ sid }} .snar__body { grid-column: 2; font-size: 1.08rem; line-height: 1.9; }
+#{{ sid }} .snar__body.has-drop > p:first-child::first-letter { float: left; margin: .06em .14em 0 0; font: 400 4.6em/.82 var(--f-head); color: var(--ac); }
+#{{ sid }} .snar__body img { margin-block: 1em; }
+#{{ sid }} .snar__body blockquote { margin-block: 1.6em; padding: 10px 0 10px 28px; font-size: 1.6rem; }
+#{{ sid }} .snar__foot { width: min(720px, 100% - 56px); margin: 50px auto 0; display: grid; gap: 34px; }
+#{{ sid }} .snar__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+#{{ sid }} .snar__sign { display: grid; gap: 6px; }
+#{{ sid }} .snar__sign svg { width: 200px; }
+#{{ sid }} .snar__sign path { fill: none; stroke: var(--ac); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+#{{ sid }} .snar__sign.is-in path { transition: stroke-dashoffset 2.6s cubic-bezier(.6, 0, .3, 1); stroke-dashoffset: 0; }
+#{{ sid }} .snar__sign span { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); }
+#{{ sid }} .snar__pn { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+#{{ sid }} .snar__pn a { display: grid; gap: 8px; padding: 20px 22px; transition: transform .6s cubic-bezier(.3, 1.2, .4, 1); }
+#{{ sid }} .snar__pn a:hover { transform: translateY(-4px); }
+#{{ sid }} .snar__pn .is-next { text-align: right; justify-items: end; }
+#{{ sid }} .snar__pn small { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snar__pn small .icon { width: 14px; height: 14px; }
+#{{ sid }} .snar__pn b { font: 400 1.15rem/1.3 var(--f-head); }
+#{{ sid }} .snar__com { display: grid; gap: 18px; padding-top: 30px; border-top: 1px dashed var(--line2); }
+#{{ sid }} .snar__c { padding: 16px 0; border-bottom: 1px solid var(--line); }
+#{{ sid }} .snar__ca { font-size: 13px; color: var(--soft); margin-bottom: 6px; }
+#{{ sid }} .snar__cf { display: grid; gap: 12px; }
+#{{ sid }} .snar__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 989px) {
+  #{{ sid }} .snar__wrap { grid-template-columns: 1fr; width: calc(100% - 32px); }
+  #{{ sid }} .snar__body { grid-column: 1; }
+  #{{ sid }} .snar__share { position: static; grid-row: 2; justify-self: start; display: flex; }
+  #{{ sid }} .snar__share span { writing-mode: initial; transform: none; margin: 0 6px 0 0; }
+  #{{ sid }} .snar__hero { width: calc(100% - 32px); }
+  #{{ sid }} .snar__img { aspect-ratio: 4 / 3; }
+  #{{ sid }} .snar__foot { width: calc(100% - 32px); }
+  #{{ sid }} .snar__pn, #{{ sid }} .snar__row { grid-template-columns: 1fr; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var pg = document.getElementById('{{ sid }}-prog'); [].forEach.call(document.querySelectorAll('body > #{{ sid }}-prog'), function (o) { if (o !== pg) o.remove(); }); if (pg) document.body.appendChild(pg);
+  var b = r.querySelector('[data-snar-body]'), px = r.querySelector('[data-snar-px]'), tk = false;
+  var still = document.body.getAttribute('data-motion') === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function upd() {
+    tk = false; var bb = b.getBoundingClientRect(), p = Math.min(1, Math.max(0, (innerHeight * .5 - bb.top) / Math.max(1, bb.height)));
+    if (pg) pg.style.setProperty('--p', p.toFixed(4));
+    if (px && !still) { var hb = px.parentNode.getBoundingClientRect(); px.style.transform = 'translateY(' + ((hb.top) * -.08).toFixed(1) + 'px)'; }
+  }
+  addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(upd); } }, { passive: true }); upd();
+  var sg = r.querySelector('.snar__sign'); if (sg && 'IntersectionObserver' in window) new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { sg.classList.add('is-in'); o.disconnect(); } }).observe(sg);
+  var cp = r.querySelector('[data-snar-copy]'); if (cp) cp.addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText(cp.getAttribute('data-snar-copy')).then(function () { SN.toast({{ s.copied | json }}); }); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Article",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "min_label",
+      "label": "Reading time label",
+      "default": "min read"
+    },
+    {
+      "type": "checkbox",
+      "id": "author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "by_label",
+      "label": "By label",
+      "default": "Written by"
+    },
+    {
+      "type": "checkbox",
+      "id": "wide_image",
+      "label": "Wide hero image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "dropcap",
+      "label": "Drop cap",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "share_label",
+      "label": "Share label",
+      "default": "Share"
+    },
+    {
+      "type": "text",
+      "id": "copied",
+      "label": "Copied message",
+      "default": "Link copied"
+    },
+    {
+      "type": "checkbox",
+      "id": "sign",
+      "label": "Signature at the end",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sign_text",
+      "label": "Signature caption",
+      "default": "With love, the Sakooon team"
+    },
+    {
+      "type": "text",
+      "id": "prev_label",
+      "label": "Previous label",
+      "default": "Previous story"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next label",
+      "default": "Next story"
+    },
+    {
+      "type": "header",
+      "content": "Comments"
+    },
+    {
+      "type": "text",
+      "id": "comments_title",
+      "label": "Title",
+      "default": "Conversation"
+    },
+    {
+      "type": "text",
+      "id": "name_ph",
+      "label": "Name placeholder",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "email_ph",
+      "label": "Email placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "msg_ph",
+      "label": "Message placeholder",
+      "default": "Share your thoughts…"
+    },
+    {
+      "type": "text",
+      "id": "post_label",
+      "label": "Button",
+      "default": "Post comment"
+    },
+    {
+      "type": "text",
+      "id": "moderated",
+      "label": "Moderated message",
+      "default": "Thank you! Your comment will appear after review."
+    },
+    {
+      "type": "text",
+      "id": "posted",
+      "label": "Posted message",
+      "default": "Thank you, your comment is live."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

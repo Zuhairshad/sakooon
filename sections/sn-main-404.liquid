@@ -1,0 +1,167 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'sn404-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s sn404" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
+  <div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".5" data-amp="1"></div>
+  <div data-sn-feathers="40" data-color="{{ settings.color_moon }}" style="position:absolute;inset:0;z-index:0"></div>
+  <div class="sn404__in">
+    <div class="sn404__num" aria-hidden="true" data-sn404>
+      <span>4</span>
+      <span class="sn404__moon"><i class="sn404__glow"></i><i class="sn404__body"><i class="sn404__disc"></i><i class="sn404__sh"></i></i></span>
+      <span>4</span>
+    </div>
+    <p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 1 %}{{ s.eyebrow }}</p>
+    <h1 class="sn-h sn-h--l" data-sn-split>{{ s.heading }} <em>{{ s.highlight }}</em></h1>
+    <p class="sn-lead" data-r style="--i: 2;">{{ s.text }}</p>
+    <form action="{{ routes.search_url }}" method="get" class="sn404__form" role="search" data-r style="--i: 3;">
+      {% render 'sn-icon', name: 'search', class: 'icon' %}
+      <input type="search" name="q" placeholder="{{ s.placeholder | escape }}" aria-label="{{ s.placeholder | escape }}">
+      <button class="sn-btn sn-btn--sm sn-btn--light" type="submit"><span>{{ s.search_btn }}</span></button>
+    </form>
+    <div class="sn404__links" data-r style="--i: 4;">
+      <a class="sn-btn sn-btn--gold" href="{{ routes.root_url }}"><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'home', class: 'icon' %}</a>
+      {%- if s.menu != blank -%}{%- for l in linklists[s.menu].links limit: 5 -%}<a class="sn-chip" href="{{ l.url }}">{{ l.title }}</a>{%- endfor -%}{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+#{{ sid }} { min-height: calc(100svh - 80px); display: grid; place-items: center; overflow: hidden; background: {{ settings.color_dark_bg }}; text-align: center; }
+#{{ sid }} .sn404__in { position: relative; z-index: 2; display: grid; justify-items: center; gap: 20px; width: min(760px, calc(100% - 32px)); padding: 60px 0; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ settings.color_moon }}; --line2: rgba(255,255,255,.26); }
+#{{ sid }} .sn404__in .sn-lead { margin-inline: auto; }
+#{{ sid }} .sn404__num { display: flex; align-items: center; gap: clamp(10px, 2vw, 26px); font: 300 clamp(7rem, 20vw, 15rem)/.9 var(--f-head); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--c-moon) 70%, transparent); }
+#{{ sid }} .sn404__num > span:not(.sn404__moon) { animation: sn404-f 6s ease-in-out infinite; }
+#{{ sid }} .sn404__num > span:last-child { animation-delay: -3s; }
+@keyframes sn404-f { 50% { transform: translateY(-10px); } }
+#{{ sid }} .sn404__moon { position: relative; width: clamp(5.4rem, 15vw, 11.5rem); aspect-ratio: 1; translate: var(--mx, 0) var(--my, 0); transition: translate .6s cubic-bezier(.2, .8, .2, 1); }
+#{{ sid }} .sn404__moon i { position: absolute; inset: 0; border-radius: 50%; }
+#{{ sid }} .sn404__body { overflow: hidden; }
+#{{ sid }} .sn404__glow { inset: -40% !important; background: radial-gradient(circle, color-mix(in srgb, var(--c-moon) 45%, transparent), transparent 62%); animation: sn404-pulse 5s ease-in-out infinite; }
+@keyframes sn404-pulse { 50% { opacity: .5; transform: scale(.9); } }
+#{{ sid }} .sn404__disc { background: radial-gradient(circle at 34% 32%, #fff, var(--c-moon) 48%, color-mix(in srgb, var(--c-moon) 60%, #5d4a2a)); box-shadow: inset -12px -14px 30px rgba(0,0,0,.18); }
+#{{ sid }} .sn404__disc::before, #{{ sid }} .sn404__disc::after { content: ""; position: absolute; border-radius: 50%; background: rgba(120, 95, 55, .18); }
+#{{ sid }} .sn404__disc::before { width: 22%; height: 22%; left: 52%; top: 28%; } #{{ sid }} .sn404__disc::after { width: 14%; height: 14%; left: 30%; top: 60%; }
+#{{ sid }} .sn404__sh { background: {{ settings.color_dark_bg }}; animation: sn404-eclipse 9s cubic-bezier(.6, 0, .4, 1) infinite; }
+@keyframes sn404-eclipse { 0%, 100% { transform: translateX(-104%); } 45%, 55% { transform: translateX(28%); } }
+#{{ sid }} .sn404__form { display: flex; align-items: center; gap: 10px; width: min(520px, 100%); padding: 6px 6px 6px 20px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(10px); }
+#{{ sid }} .sn404__form:focus-within { border-color: var(--ac); }
+#{{ sid }} .sn404__form .icon { width: 18px; height: 18px; color: var(--ac); flex: none; }
+#{{ sid }} .sn404__form input { flex: 1; min-width: 0; border: 0; background: none; outline: none; color: #fff; font-size: 15px; padding: 10px 0; }
+#{{ sid }} .sn404__form input::placeholder { color: rgba(255,255,255,.5); }
+#{{ sid }} .sn404__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
+#{{ sid }} .sn404__links .sn-chip { border-color: rgba(255,255,255,.24); color: #fff; }
+#{{ sid }} .sn404__links .sn-chip:hover { background: var(--ac); color: {{ settings.color_dark_bg }}; border-color: var(--ac); }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var m = r.querySelector('.sn404__moon'); if (!m || !matchMedia('(hover: hover)').matches) return;
+  r.addEventListener('pointermove', function (e) { var b = r.getBoundingClientRect(); m.style.setProperty('--mx', ((e.clientX - b.left) / b.width - .5) * 30 + 'px'); m.style.setProperty('--my', ((e.clientY - b.top) / b.height - .5) * 20 + 'px'); });
+})();
+</script>
+{% schema %}
+{
+  "name": "404 page",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Page not found"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "This page drifted off"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "into a dream"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "The link may be broken or the page has moved. Let's tuck you back in."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Search placeholder",
+      "default": "Search sheets, duvets, towels…"
+    },
+    {
+      "type": "text",
+      "id": "search_btn",
+      "label": "Search button",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Home button",
+      "default": "Back to home"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Quick links menu"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "midnight"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    }
+  ]
+}
+{% endschema %}

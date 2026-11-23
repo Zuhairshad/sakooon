@@ -1,0 +1,536 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snsg-' | append: section.id
+  assign maxw = 1
+  assign maxl = 1
+  assign start = 0
+  for b in section.blocks
+    if b.settings.width > maxw
+      assign maxw = b.settings.width
+    endif
+    if b.settings.length > maxl
+      assign maxl = b.settings.length
+    endif
+    if b.settings.popular
+      assign start = forloop.index0
+    endif
+  endfor
+-%}
+<section id="{{ sid }}" class="sn-s snsg" style="{% render 'sn-vars', s: s %}" data-snsg data-start="{{ start }}" data-maxw="{{ maxw }}" data-maxl="{{ maxl }}">
+  {% render 'sn-divider', s: s %}
+  <div class="sn-wrap">
+    <div class="snsg__top">
+      {% render 'sn-head', s: s, k: 2 %}
+      <div class="snsg__unit" role="group" aria-label="Units" data-r>
+        <button type="button" class="is-on" data-snsg-u="in">{{ s.inch_label }}</button><button type="button" data-snsg-u="cm">{{ s.cm_label }}</button><span></span>
+      </div>
+    </div>
+
+    <div class="snsg__ruler" role="tablist" data-r>
+      <span class="snsg__ticks" aria-hidden="true"></span>
+      <span class="snsg__mark" data-snsg-mark aria-hidden="true"></span>
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <button type="button" role="tab" class="snsg__size{% if forloop.index0 == start %} is-on{% endif %}" data-snsg-tab="{{ forloop.index0 }}" data-w="{{ b.width }}" data-l="{{ b.length }}" data-p="{{ b.pillows }}" {{ block.shopify_attributes }}>
+          <b>{{ b.name }}</b><small data-snsg-dim>{{ b.width }} × {{ b.length }} in</small>{% if b.popular %}<em>{{ s.popular_label }}</em>{% endif %}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <div class="snsg__main">
+      <div class="snsg__scene" data-r="zoom">
+        <div class="snsg__floor" aria-hidden="true"></div>
+        <div class="snsg__bed" data-snsg-bed aria-hidden="true">
+          <div class="snsg__mat"><span class="snsg__duvet"></span><span class="snsg__fold"></span><span class="snsg__pills" data-snsg-pills></span></div>
+          <div class="snsg__head"></div>
+          <span class="snsg__dw"><b data-snsg-w></b></span>
+          <span class="snsg__dl"><b data-snsg-l></b></span>
+        </div>
+        {%- if s.note != blank -%}<p class="snsg__note">{{ s.note }}</p>{%- endif -%}
+      </div>
+      <div class="snsg__cards">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <div class="snsg__card sn-pillow sn-stitch{% if forloop.index0 == start %} is-on{% endif %}" data-snsg-card{% unless forloop.index0 == start %} hidden{% endunless %}>
+            <p class="sn-eyebrow">{{ s.fits_label }}</p>
+            <h3 class="sn-h sn-h--m">{{ b.name }}</h3>
+            <dl>
+              {%- if b.fitted != blank -%}<div><dt>{% render 'sn-icon', name: 'bed', class: 'icon' %}{{ s.l_fitted }}</dt><dd data-snsg-conv>{{ b.fitted }}</dd></div>{%- endif -%}
+              {%- if b.flat != blank -%}<div><dt>{% render 'sn-icon', name: 'layers', class: 'icon' %}{{ s.l_flat }}</dt><dd data-snsg-conv>{{ b.flat }}</dd></div>{%- endif -%}
+              {%- if b.duvet != blank -%}<div><dt>{% render 'sn-icon', name: 'duvet', class: 'icon' %}{{ s.l_duvet }}</dt><dd data-snsg-conv>{{ b.duvet }}</dd></div>{%- endif -%}
+              {%- if b.pillow != blank -%}<div><dt>{% render 'sn-icon', name: 'pillow', class: 'icon' %}{{ s.l_pillow }}</dt><dd><span data-snsg-conv>{{ b.pillow }}</span> × {{ b.pillows }}</dd></div>{%- endif -%}
+            </dl>
+            {%- if b.note != blank -%}<p class="sn-small">{{ b.note }}</p>{%- endif -%}
+            {%- if b.button != blank -%}<a class="sn-btn sn-btn--block" href="{{ b.link | default: routes.all_products_collection_url }}"><span>{{ b.button }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- if s.tip != blank -%}<p class="snsg__tip" data-r>{% render 'sn-icon', name: 'ruler', class: 'icon' %}{{ s.tip }}</p>{%- endif -%}
+  </div>
+</section>
+<style>
+#{{ sid }} .snsg__top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+#{{ sid }} .snsg__top .sn-head { margin-bottom: 0; flex: 1 1 420px; }
+#{{ sid }} .snsg__unit { position: relative; display: inline-flex; padding: 5px; border-radius: 999px; border: 1px solid var(--line2); }
+#{{ sid }} .snsg__unit button { position: relative; z-index: 1; min-width: 78px; padding: 10px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); transition: color .4s; }
+#{{ sid }} .snsg__unit button.is-on { color: var(--bg); }
+#{{ sid }} .snsg__unit span { position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: var(--tx); transition: transform .55s cubic-bezier(.3, 1.3, .4, 1); }
+#{{ sid }} .snsg__unit.is-cm span { transform: translateX(100%); }
+#{{ sid }} .snsg__ruler { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; margin: clamp(40px, 5vw, 64px) 0 clamp(30px, 4vw, 50px); padding-top: 30px; border-top: 1px solid var(--line2); overflow-x: auto; scrollbar-width: none; }
+#{{ sid }} .snsg__ticks { position: absolute; left: 0; right: 0; top: 0; height: 12px; background: repeating-linear-gradient(90deg, var(--line2) 0 1px, transparent 1px 12px), repeating-linear-gradient(90deg, var(--tx) 0 1px, transparent 1px 60px); background-size: auto 8px, auto 12px; background-repeat: repeat-x; opacity: .6; }
+#{{ sid }} .snsg__mark { position: absolute; top: -7px; left: 0; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--ac); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 20%, transparent); transition: left .7s cubic-bezier(.3, 1.2, .4, 1); }
+#{{ sid }} .snsg__size { display: grid; justify-items: center; gap: 4px; padding: 6px 10px; text-align: center; color: var(--soft); transition: color .4s; min-width: 110px; }
+#{{ sid }} .snsg__size b { font: 300 clamp(1.3rem, 2.2vw, 2rem)/1.1 var(--f-head); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+#{{ sid }} .snsg__size small { font-size: 12px; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+#{{ sid }} .snsg__size em { font-style: normal; font-size: 9.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snsg__size.is-on { color: var(--tx); }
+#{{ sid }} .snsg__size.is-on b { transform: scale(1.12); font-style: italic; }
+#{{ sid }} .snsg__main { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(30px, 5vw, 80px); align-items: center; }
+#{{ sid }} .snsg__scene { position: relative; aspect-ratio: 5 / 4; display: grid; place-items: center; perspective: 1500px; }
+#{{ sid }} .snsg__floor { position: absolute; inset: 8% 4%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--ac) 14%, transparent), transparent); }
+#{{ sid }} .snsg__bed { --bw: 50%; --bl: 64%; position: relative; width: var(--bw); height: var(--bl); transform-style: preserve-3d; transform: rotateX(56deg) rotateZ(-34deg); transition: width 1s cubic-bezier(.3, 1.1, .3, 1), height 1s cubic-bezier(.3, 1.1, .3, 1); }
+#{{ sid }} .snsg__mat { position: absolute; inset: 0; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 14px 22px 0 -2px color-mix(in srgb, var(--tx) 18%, transparent), 30px 50px 60px rgba(20, 22, 40, .25); transform: translateZ(26px); }
+#{{ sid }} .snsg__duvet { position: absolute; left: -3%; right: -3%; top: 30%; bottom: -3%; border-radius: 14px; background: linear-gradient(140deg, color-mix(in srgb, var(--ac) 25%, #fff), color-mix(in srgb, var(--ac) 45%, #fff)); box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .3); }
+#{{ sid }} .snsg__duvet::before { content: ""; position: absolute; inset: 9px; border-radius: 9px; border: 1.5px dashed rgba(255, 255, 255, .8); }
+#{{ sid }} .snsg__fold { position: absolute; left: -3%; right: -3%; top: 30%; height: 10%; border-radius: 12px 12px 4px 4px; background: #fbfaf6; box-shadow: 0 4px 8px -4px rgba(0, 0, 0, .25); }
+#{{ sid }} .snsg__pills { position: absolute; left: 6%; right: 6%; top: 5%; height: 18%; display: flex; gap: 5%; justify-content: center; }
+#{{ sid }} .snsg__pills i { flex: 1; max-width: 46%; border-radius: 14px; background: linear-gradient(180deg, #fff, #efe8dc); box-shadow: 0 6px 10px -6px rgba(0, 0, 0, .3); animation: snsg-pop .7s cubic-bezier(.3, 1.5, .5, 1) both; animation-delay: calc(var(--k) * 90ms + .2s); }
+@keyframes snsg-pop { from { transform: scale(.4) translateZ(20px); opacity: 0; } }
+#{{ sid }} .snsg__head { position: absolute; left: -4%; right: -4%; top: -2%; height: 74px; border-radius: 14px 14px 4px 4px; background: linear-gradient(180deg, color-mix(in srgb, var(--tx) 80%, #fff), var(--tx)); transform-origin: 50% 0; transform: rotateX(90deg); box-shadow: inset 0 -8px 0 rgba(255, 255, 255, .06); }
+#{{ sid }} .snsg__head::before { content: ""; position: absolute; inset: 10px 14px; border-radius: 8px; border: 1px dashed color-mix(in srgb, var(--ac) 70%, transparent); }
+#{{ sid }} .snsg__dw, #{{ sid }} .snsg__dl { position: absolute; display: grid; place-items: center; transform: translateZ(26px); transform-style: preserve-3d; }
+#{{ sid }} .snsg__dw { left: 0; right: 0; bottom: -16%; height: 1px; border-top: 1.5px dashed var(--ac); }
+#{{ sid }} .snsg__dl { top: 0; bottom: 0; right: -16%; width: 1px; border-left: 1.5px dashed var(--ac); }
+#{{ sid }} .snsg__dw b, #{{ sid }} .snsg__dl b { position: absolute; padding: 6px 12px; border-radius: 999px; background: var(--tx); color: var(--bg); font: 600 13px var(--f-body); white-space: nowrap; font-variant-numeric: tabular-nums; transform: rotateZ(34deg) rotateX(-56deg); }
+#{{ sid }} .snsg__note { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font: italic 300 1.05rem var(--f-head); color: var(--soft); }
+#{{ sid }} .snsg__cards { display: grid; }
+#{{ sid }} .snsg__card { grid-area: 1 / 1; display: grid; gap: 14px; padding: clamp(26px, 3vw, 40px); }
+#{{ sid }} .snsg__card[hidden] { display: none; }
+#{{ sid }} .snsg__card.is-on > * { animation: sntg-in .7s cubic-bezier(.2, .8, .2, 1) both; }
+#{{ sid }} .snsg__card dl { display: grid; margin: 6px 0; }
+#{{ sid }} .snsg__card dl > div { display: flex; justify-content: space-between; gap: 14px; padding: 13px 0; border-bottom: 1px dashed var(--line2); }
+#{{ sid }} .snsg__card dt { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--soft); }
+#{{ sid }} .snsg__card dt .icon { width: 18px; height: 18px; color: var(--ac); }
+#{{ sid }} .snsg__card dd { margin: 0; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; }
+#{{ sid }} .snsg__tip { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 40px; font-size: 14px; color: var(--soft); text-align: center; }
+#{{ sid }} .snsg__tip .icon { width: 20px; height: 20px; color: var(--ac); flex: none; }
+@keyframes sntg-in { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } }
+@media (max-width: 989px) { #{{ sid }} .snsg__main { grid-template-columns: 1fr; } }
+@media (max-width: 599px) { #{{ sid }} .snsg__ruler { grid-auto-columns: minmax(96px, 1fr); } #{{ sid }} .snsg__dw b, #{{ sid }} .snsg__dl b { font-size: 11px; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var tabs = r.querySelectorAll('[data-snsg-tab]'), cards = r.querySelectorAll('[data-snsg-card]'), bed = r.querySelector('[data-snsg-bed]'), pills = r.querySelector('[data-snsg-pills]'), mark = r.querySelector('[data-snsg-mark]'), ub = r.querySelector('.snsg__unit');
+  var maxw = +r.getAttribute('data-maxw') || 80, maxl = +r.getAttribute('data-maxl') || 84, unit = 'in', cur = 0;
+  try { unit = localStorage.getItem('sn-unit') || 'in'; } catch (e) {}
+  function f(v) { return unit === 'cm' ? Math.round(v * 2.54) + ' cm' : v + '″'; }
+  function conv(o) { return unit === 'in' ? o : o.replace(/(\d+(?:\.\d+)?)/g, function (m) { return Math.round(parseFloat(m) * 2.54); }).replace(/\s?(in|inch|inches)\b/gi, ' cm').replace(/[″"]/g, ' cm'); }
+  function paint() {
+    var t = tabs[cur]; if (!t) return;
+    var w = +t.getAttribute('data-w'), l = +t.getAttribute('data-l'), p = +t.getAttribute('data-p') || 2;
+    bed.style.setProperty('--bw', (w / maxw * 56).toFixed(1) + '%'); bed.style.setProperty('--bl', (l / maxl * 70).toFixed(1) + '%');
+    r.querySelector('[data-snsg-w]').textContent = f(w); r.querySelector('[data-snsg-l]').textContent = f(l);
+    var h = ''; for (var i = 0; i < Math.min(4, p); i++) h += '<i style="--k:' + i + '"></i>'; pills.innerHTML = h;
+    tabs.forEach(function (b) { var d = b.querySelector('[data-snsg-dim]'); var bw = +b.getAttribute('data-w'), bl = +b.getAttribute('data-l'); d.textContent = unit === 'cm' ? Math.round(bw * 2.54) + ' × ' + Math.round(bl * 2.54) + ' cm' : bw + ' × ' + bl + ' in'; });
+    r.querySelectorAll('[data-snsg-conv]').forEach(function (el) { if (!el.dataset.o) el.dataset.o = el.textContent; el.textContent = conv(el.dataset.o); });
+    if (mark) mark.style.left = (t.offsetLeft + t.offsetWidth / 2) + 'px';
+  }
+  function show(k) { cur = k; tabs.forEach(function (b, j) { b.classList.toggle('is-on', j === k); b.setAttribute('aria-selected', j === k); }); cards.forEach(function (c, j) { c.hidden = j !== k; c.classList.toggle('is-on', j === k); }); paint(); }
+  tabs.forEach(function (b, j) { b.addEventListener('click', function () { show(j); }); });
+  r.querySelectorAll('[data-snsg-u]').forEach(function (b) { b.addEventListener('click', function () { unit = b.getAttribute('data-snsg-u'); try { localStorage.setItem('sn-unit', unit); } catch (e) {} sync(); paint(); }); });
+  function sync() { r.querySelectorAll('[data-snsg-u]').forEach(function (x) { x.classList.toggle('is-on', x.getAttribute('data-snsg-u') === unit); }); ub.classList.toggle('is-cm', unit === 'cm'); }
+  sync(); show(+r.getAttribute('data-start') || 0); addEventListener('resize', paint);
+  document.addEventListener('shopify:block:select', function (e) { var k = Array.prototype.indexOf.call(tabs, e.target); if (k > -1) show(k); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Bed size guide",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Size guide"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The perfect fit for"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "your bed"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Slide along the ruler to your mattress size — the bed, sheets and duvet resize to show exactly what fits."
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "inch_label",
+      "label": "Inches",
+      "default": "Inches"
+    },
+    {
+      "type": "text",
+      "id": "cm_label",
+      "label": "Centimetres",
+      "default": "cm"
+    },
+    {
+      "type": "text",
+      "id": "popular_label",
+      "label": "Popular tag",
+      "default": "Most popular"
+    },
+    {
+      "type": "text",
+      "id": "fits_label",
+      "label": "Card small heading",
+      "default": "What fits"
+    },
+    {
+      "type": "text",
+      "id": "l_fitted",
+      "label": "Fitted sheet",
+      "default": "Fitted sheet"
+    },
+    {
+      "type": "text",
+      "id": "l_flat",
+      "label": "Flat sheet",
+      "default": "Flat sheet"
+    },
+    {
+      "type": "text",
+      "id": "l_duvet",
+      "label": "Duvet",
+      "default": "Duvet / cover"
+    },
+    {
+      "type": "text",
+      "id": "l_pillow",
+      "label": "Pillow covers",
+      "default": "Pillow covers"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under the bed",
+      "default": "Your mattress, seen from the corner"
+    },
+    {
+      "type": "text",
+      "id": "tip",
+      "label": "Tip",
+      "default": "Tip: our fitted sheets hug mattresses up to 14 inches deep — even with a topper."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size",
+      "name": "Bed size",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "King"
+        },
+        {
+          "type": "range",
+          "id": "width",
+          "label": "Width (in)",
+          "min": 30,
+          "max": 90,
+          "step": 1,
+          "default": 72
+        },
+        {
+          "type": "range",
+          "id": "length",
+          "label": "Length (in)",
+          "min": 60,
+          "max": 90,
+          "step": 1,
+          "default": 78
+        },
+        {
+          "type": "checkbox",
+          "id": "popular",
+          "label": "Most popular (opens first)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "fitted",
+          "label": "Fitted sheet",
+          "default": "72 x 78 x 14 in"
+        },
+        {
+          "type": "text",
+          "id": "flat",
+          "label": "Flat sheet",
+          "default": "108 x 108 in"
+        },
+        {
+          "type": "text",
+          "id": "duvet",
+          "label": "Duvet / cover",
+          "default": "104 x 90 in"
+        },
+        {
+          "type": "text",
+          "id": "pillow",
+          "label": "Pillow cover",
+          "default": "20 x 30 in"
+        },
+        {
+          "type": "range",
+          "id": "pillows",
+          "label": "Pillows",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button",
+          "default": "Shop King size"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bed size guide",
+      "blocks": [
+        {
+          "type": "size",
+          "settings": {
+            "name": "Single",
+            "width": 36,
+            "length": 78,
+            "fitted": "36 x 78 x 14 in",
+            "flat": "66 x 100 in",
+            "duvet": "68 x 88 in",
+            "pillows": 1,
+            "button": "Shop Single"
+          }
+        },
+        {
+          "type": "size",
+          "settings": {
+            "name": "Double",
+            "width": 54,
+            "length": 75,
+            "fitted": "54 x 75 x 14 in",
+            "flat": "81 x 96 in",
+            "duvet": "80 x 88 in",
+            "button": "Shop Double"
+          }
+        },
+        {
+          "type": "size",
+          "settings": {
+            "name": "Queen",
+            "width": 60,
+            "length": 78,
+            "fitted": "60 x 78 x 14 in",
+            "flat": "96 x 104 in",
+            "duvet": "90 x 94 in",
+            "button": "Shop Queen"
+          }
+        },
+        {
+          "type": "size",
+          "settings": {
+            "name": "King",
+            "popular": true,
+            "note": "The usual double bed in most Pakistani homes."
+          }
+        },
+        {
+          "type": "size",
+          "settings": {
+            "name": "Super King",
+            "width": 78,
+            "length": 84,
+            "fitted": "78 x 84 x 14 in",
+            "flat": "112 x 112 in",
+            "duvet": "110 x 98 in",
+            "pillow": "20 x 36 in",
+            "pillows": 3,
+            "button": "Shop Super King"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

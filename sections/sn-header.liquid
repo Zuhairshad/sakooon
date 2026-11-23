@@ -1,0 +1,994 @@
+{%- liquid
+  assign s = section.settings
+  assign menu = s.menu
+  assign use_menu = false
+  if menu != blank and menu.links.size > 0
+    assign use_menu = true
+  endif
+  assign items = section.blocks | where: 'type', 'item'
+  assign transparent = false
+  if s.transparent and request.page_type == 'index'
+    assign transparent = true
+  endif
+  assign logo = s.logo | default: settings.logo
+  assign logo_light = s.logo_light | default: settings.logo_light
+-%}
+<header id="snh" class="snh snh--{{ s.layout }}{% if transparent %} snh--clear{% endif %}" data-snh data-behavior="{{ s.behavior }}" style="--h-pad: {{ s.pad }}px; --logo-w: {{ s.logo_width }}px;">
+  <div class="snh__bar">
+    <div class="snh__in">
+      <button type="button" class="snh__burger" data-sn-open="SnMenu" aria-label="Menu"><i></i><i></i><i></i></button>
+
+      <a class="snh__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {%- if logo != blank -%}
+          <img class="snh__logo-d" src="{{ logo | image_url: width: 600 }}" alt="{{ shop.name | escape }}" width="{{ s.logo_width }}" height="{{ s.logo_width | divided_by: logo.aspect_ratio | round }}">
+          {%- if logo_light != blank -%}<img class="snh__logo-l" src="{{ logo_light | image_url: width: 600 }}" alt="" width="{{ s.logo_width }}" height="{{ s.logo_width | divided_by: logo_light.aspect_ratio | round }}">{%- endif -%}
+        {%- else -%}
+          {% render 'sn-logo' %}
+        {%- endif -%}
+      </a>
+
+      <nav class="snh__nav" aria-label="Main">
+        <ul class="snh__list">
+          {%- if use_menu -%}
+            {%- for link in menu.links -%}
+              {%- assign feat = nil -%}
+              {%- for b in items -%}{%- assign bt = b.settings.title | downcase | strip -%}{%- assign lt = link.title | downcase | strip -%}{%- if bt == lt -%}{%- assign feat = b -%}{%- endif -%}{%- endfor -%}
+              <li class="snh__li{% if link.links.size > 0 or feat %} has-mega{% endif %}" data-snh-li>
+                <a class="snh__a{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}"{% if link.links.size > 0 %} aria-haspopup="true" aria-expanded="false"{% endif %}><span>{{ link.title }}</span>{% if link.links.size > 0 %}{% render 'sn-icon', name: 'chevron-down', class: 'icon' %}{% endif %}</a>
+                {%- if link.links.size > 0 or feat -%}
+                  <div class="snh__mega" data-snh-mega>
+                    <div class="snh__mega-in sn-wrap">
+                      <div class="snh__cols">
+                        {%- assign has_grand = false -%}{%- for c in link.links -%}{%- if c.links.size > 0 -%}{%- assign has_grand = true -%}{%- endif -%}{%- endfor -%}
+                        {%- if has_grand -%}
+                          {%- for c in link.links -%}
+                            <div class="snh__col" style="--i: {{ forloop.index0 }};">
+                              <a class="snh__colh" href="{{ c.url }}">{{ c.title }}</a>
+                              <ul>{%- for g in c.links -%}<li><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endfor -%}</ul>
+                            </div>
+                          {%- endfor -%}
+                        {%- else -%}
+                          <div class="snh__col" style="--i: 0;">
+                            <p class="snh__colh">{{ feat.settings.col_heading | default: link.title }}</p>
+                            <ul>{%- for c in link.links -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endfor -%}</ul>
+                          </div>
+                        {%- endif -%}
+                        <a class="sn-link snh__all" href="{{ link.url }}">{{ s.view_all }} {{ link.title }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+                      </div>
+                      {%- if feat -%}{% render 'sn-header-features', b: feat %}{%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for b in items -%}
+              {%- assign bs = b.settings -%}
+              {%- assign lines = bs.links | newline_to_br | split: '<br />' -%}
+              {%- assign has_links = false -%}{%- for l in lines -%}{%- if l contains '|' -%}{%- assign has_links = true -%}{%- endif -%}{%- endfor -%}
+              <li class="snh__li{% if has_links %} has-mega{% endif %}" data-snh-li {{ b.shopify_attributes }}>
+                <a class="snh__a" href="{{ bs.url | default: '#' }}"{% if has_links %} aria-haspopup="true" aria-expanded="false"{% endif %}><span>{{ bs.title }}</span>{% if has_links %}{% render 'sn-icon', name: 'chevron-down', class: 'icon' %}{% endif %}</a>
+                {%- if has_links -%}
+                  <div class="snh__mega" data-snh-mega>
+                    <div class="snh__mega-in sn-wrap">
+                      <div class="snh__cols">
+                        <div class="snh__col" style="--i: 0;">
+                          <p class="snh__colh">{{ bs.col_heading | default: bs.title }}</p>
+                          <ul>
+                            {%- for l in lines -%}
+                              {%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}<li><a href="{{ pr[1] | strip }}">{{ pr[0] | strip }}</a></li>{%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                        <a class="sn-link snh__all" href="{{ bs.url | default: '#' }}">{{ s.view_all }} {{ bs.title }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+                      </div>
+                      {% render 'sn-header-features', b: b %}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- for b in section.blocks -%}
+            {%- if b.type == 'pill' -%}
+              <li class="snh__li" {{ b.shopify_attributes }}><a class="snh__pill" href="{{ b.settings.url | default: '#' }}">{% render 'sn-icon', name: b.settings.icon, class: 'icon' %}<span>{{ b.settings.title }}</span></a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <div class="snh__acts">
+        {%- if s.show_search -%}<button type="button" class="snh__ic" data-sn-open="SnSearch" aria-label="Search">{% render 'sn-icon', name: 'search', class: 'icon' %}</button>{%- endif -%}
+        {%- if s.show_account and shop.customer_accounts_enabled -%}<a class="snh__ic snh__hide-m" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'sn-icon', name: 'user', class: 'icon' %}</a>{%- endif -%}
+        {%- if s.show_wishlist -%}<a class="snh__ic snh__hide-m" href="{{ s.wishlist_url | default: '/pages/wishlist' }}" aria-label="Wishlist">{% render 'sn-icon', name: 'heart', class: 'icon' %}<b class="snh__n is-empty" data-sn-wish-count>0</b></a>{%- endif -%}
+        <a class="snh__ic snh__cart" data-sn-cart-icon href="{{ routes.cart_url }}" {% if settings.cart_type == 'drawer' %}data-sn-open="SnCart"{% endif %} aria-label="Cart">{% render 'sn-icon', name: 'bag', class: 'icon' %}<b class="snh__n{% if cart.item_count == 0 %} is-empty{% endif %}" data-sn-cart-count>{{ cart.item_count }}</b></a>
+        {%- if s.cta_label != blank -%}
+          <a class="snh__cta sn-btn sn-btn--sm" href="{% if s.cta_link != blank %}{{ s.cta_link }}{% else %}https://wa.me/{{ settings.whatsapp }}?text={{ s.cta_message | url_encode }}{% endif %}" target="_blank" rel="noopener">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}<span>{{ s.cta_label }}</span></a>
+        {%- endif -%}
+      </div>
+    </div>
+    <span class="snh__thread" aria-hidden="true"></span>
+  </div>
+  <div class="snh__dim" data-snh-dim></div>
+</header>
+
+{%- comment -%} ===== Search overlay ===== {%- endcomment -%}
+<div class="sn-ov sns" id="SnSearch" hidden aria-label="Search">
+  <div class="sns__panel" data-sn-psearch>
+    <div class="sns__silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".7" data-amp=".9"></div>
+    <div class="sns__in sn-wrap">
+      <div class="sns__top">
+        <p class="sn-eyebrow">{% render 'sn-phase', k: 3 %}{{ s.search_eyebrow }}</p>
+        <button type="button" class="sn-ibtn" data-sn-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button>
+      </div>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="sns__form">
+        <input type="search" name="q" placeholder="{{ s.search_placeholder | escape }}" autocomplete="off" aria-label="Search" autofocus>
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="submit" aria-label="Search">{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button>
+      </form>
+      {%- if s.popular != blank -%}
+        <div class="sns__pop">
+          <span>{{ s.popular_label }}</span>
+          {%- assign pops = s.popular | split: ',' -%}
+          {%- for p in pops -%}<a class="sn-chip" href="{{ routes.search_url }}?q={{ p | strip | url_encode }}" style="--i: {{ forloop.index0 }};">{{ p | strip }}</a>{%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="sns__res" data-sn-presults></div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ===== Mobile menu ===== {%- endcomment -%}
+<div class="sn-ov snm" id="SnMenu" hidden aria-label="Menu">
+  <div class="sn-ov__bg" data-sn-close></div>
+  <aside class="snm__panel" role="dialog" aria-modal="true">
+    <div class="snm__head">
+      <a href="{{ routes.root_url }}" class="snm__logo" aria-label="{{ shop.name | escape }}">{% render 'sn-logo' %}</a>
+      <button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button>
+    </div>
+    <nav class="snm__nav">
+      {%- if use_menu -%}
+        {%- for link in menu.links -%}
+          {%- if link.links.size > 0 -%}
+            <details class="snm__d" style="--i: {{ forloop.index0 }};"><summary><span>{{ link.title }}</span><i></i></summary>
+              <ul>{%- for c in link.links -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- for g in c.links -%}<li class="snm__g"><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endfor -%}{%- endfor -%}<li><a class="snm__all" href="{{ link.url }}">{{ s.view_all }} {{ link.title }} →</a></li></ul>
+            </details>
+          {%- else -%}
+            <a class="snm__a" href="{{ link.url }}" style="--i: {{ forloop.index0 }};">{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for b in items -%}
+          {%- assign lines = b.settings.links | newline_to_br | split: '<br />' -%}
+          {%- assign has_links = false -%}{%- for l in lines -%}{%- if l contains '|' -%}{%- assign has_links = true -%}{%- endif -%}{%- endfor -%}
+          {%- if has_links -%}
+            <details class="snm__d" style="--i: {{ forloop.index0 }};"><summary><span>{{ b.settings.title }}</span><i></i></summary>
+              <ul>{%- for l in lines -%}{%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}<li><a href="{{ pr[1] | strip }}">{{ pr[0] | strip }}</a></li>{%- endif -%}{%- endfor -%}<li><a class="snm__all" href="{{ b.settings.url | default: '#' }}">{{ s.view_all }} {{ b.settings.title }} →</a></li></ul>
+            </details>
+          {%- else -%}
+            <a class="snm__a" href="{{ b.settings.url | default: '#' }}" style="--i: {{ forloop.index0 }};">{{ b.settings.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- for b in section.blocks -%}{%- if b.type == 'pill' -%}<a class="snm__a snm__a--pill" href="{{ b.settings.url | default: '#' }}">{% render 'sn-icon', name: b.settings.icon, class: 'icon' %}{{ b.settings.title }}</a>{%- endif -%}{%- endfor -%}
+    </nav>
+    <div class="snm__foot">
+      <div class="snm__quick">
+        {%- if shop.customer_accounts_enabled -%}<a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">{% render 'sn-icon', name: 'user', class: 'icon' %}{% if customer %}My account{% else %}Sign in{% endif %}</a>{%- endif -%}
+        <a href="{{ s.wishlist_url | default: '/pages/wishlist' }}">{% render 'sn-icon', name: 'heart', class: 'icon' %}Wishlist</a>
+        <a href="https://wa.me/{{ settings.whatsapp }}" target="_blank" rel="noopener">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}WhatsApp</a>
+      </div>
+      {%- if s.drawer_note != blank -%}<p class="snm__note">{{ s.drawer_note }}</p>{%- endif -%}
+      <div class="snm__silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".8" data-mouse="false" data-quality="low"></div>
+    </div>
+  </aside>
+</div>
+
+<style>
+.snh { --hbg: {{ s.bg_color | default: settings.color_paper }}; --htx: {{ s.text_color | default: settings.color_ink }}; --hac: {{ settings.color_accent }};
+  position: sticky; top: 0; z-index: 50; color: var(--htx); transition: transform .6s cubic-bezier(.3, .7, .2, 1); }
+.snh--clear { position: fixed; left: 0; right: 0; top: var(--snh-top, 0px); }
+.snh.is-hidden { transform: translateY(-110%); }
+.snh__bar { position: relative; background: color-mix(in srgb, var(--hbg) 86%, transparent); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3); transition: background .5s, color .5s, box-shadow .5s; }
+.snh.is-scrolled .snh__bar { box-shadow: 0 18px 40px -30px rgba(20, 24, 40, .45); }
+.snh--clear:not(.is-scrolled):not(.is-open) { color: #fff; }
+.snh--clear:not(.is-scrolled):not(.is-open) .snh__bar { background: linear-gradient(180deg, rgba(10, 12, 22, .35), transparent); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.snh__in { position: relative; display: grid; align-items: center; gap: 20px; width: min(var(--pw), 100% - 48px); margin-inline: auto; padding-block: var(--h-pad); transition: padding .5s cubic-bezier(.3, .7, .2, 1); }
+.snh.is-scrolled .snh__in { padding-block: calc(var(--h-pad) * .55); }
+.snh--center .snh__in { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "nav logo acts"; }
+.snh--left .snh__in { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "logo nav acts"; }
+.snh__burger { grid-area: burger; display: none; width: 44px; height: 44px; flex-direction: column; justify-content: center; gap: 6px; }
+.snh__burger i { display: block; width: 22px; height: 1.5px; background: currentColor; transition: width .4s; }
+.snh__burger i:nth-child(2) { width: 15px; } .snh__burger:hover i { width: 22px; }
+.snh__logo { grid-area: logo; display: block; justify-self: center; position: relative; }
+.snh--left .snh__logo { justify-self: start; }
+.snh__logo img, .snh__logo .sn-logo { display: block; width: var(--logo-w); height: auto; transition: width .5s cubic-bezier(.3, .7, .2, 1); }
+.snh.is-scrolled .snh__logo img, .snh.is-scrolled .snh__logo .sn-logo { width: calc(var(--logo-w) * .82); }
+.snh__logo-l { position: absolute; inset: 0; opacity: 0; }
+.snh--clear:not(.is-scrolled):not(.is-open) .snh__logo-l { opacity: 1; } .snh--clear:not(.is-scrolled):not(.is-open) .snh__logo:has(.snh__logo-l) .snh__logo-d { opacity: 0; }
+.snh .sn-logo { --sn-logo-accent: var(--hac); }
+.snh--clear:not(.is-scrolled):not(.is-open) .sn-logo { --sn-logo-accent: {{ settings.color_moon }}; }
+.snh__nav { grid-area: nav; min-width: 0; }
+.snh--left .snh__nav { justify-self: center; }
+.snh__list { display: flex; align-items: center; gap: {{ s.nav_gap }}px; }
+.snh--center .snh__list { justify-content: flex-start; }
+.snh__a { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; font-size: {{ s.nav_size }}px; font-weight: 500; letter-spacing: {% if s.nav_upper %}.14em{% else %}.02em{% endif %}; {% if s.nav_upper %}text-transform: uppercase;{% endif %} white-space: nowrap; }
+.snh__a .icon { width: 14px; height: 14px; opacity: .6; transition: transform .4s; }
+.snh__li.is-open .snh__a .icon { transform: rotate(180deg); }
+.snh__a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 1px; background: repeating-linear-gradient(90deg, var(--hac) 0 5px, transparent 5px 9px); transform: scaleX(0); transform-origin: left; transition: transform .6s cubic-bezier(.7, 0, .2, 1); }
+.snh__li:hover .snh__a::after, .snh__li.is-open .snh__a::after, .snh__a.is-active::after { transform: scaleX(1); }
+.snh__pill { white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; border: 1px dashed color-mix(in srgb, currentColor 40%, transparent); font-size: 13px; font-weight: 500; transition: background .4s, color .4s, border-color .4s; }
+.snh__pill .icon { width: 15px; height: 15px; color: var(--hac); }
+.snh__pill:hover { background: var(--htx); color: var(--hbg); border-color: var(--htx); border-style: solid; }
+.snh__acts { grid-area: acts; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.snh__ic { position: relative; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; transition: background .3s; }
+.snh__ic:hover { background: color-mix(in srgb, currentColor 9%, transparent); }
+.snh__ic .icon { width: 21px; height: 21px; }
+.snh__n { position: absolute; top: 4px; right: 3px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; display: grid; place-items: center; font: 700 10px/1 var(--f-body); background: var(--hac); color: #fff; transition: transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+.snh__n.is-empty { transform: scale(0); }
+.snh__n.is-bump { animation: snh-bump .6s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes snh-bump { 40% { transform: scale(1.5); } }
+.snh__cta { margin-left: 10px; --bg: var(--hbg); --tx: var(--htx); --ac: var(--hac); }
+.snh__thread { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--htx) 18%, transparent) 0 6px, transparent 6px 11px); }
+.snh--clear:not(.is-scrolled) .snh__thread { opacity: 0; }
+
+/* mega */
+.snh__mega { position: absolute; left: 0; right: 0; top: 100%; z-index: 2; color: var(--c-ink); perspective: 1600px; visibility: hidden; pointer-events: none; }
+.snh__mega-in { position: relative; display: grid; grid-template-columns: minmax(220px, .8fr) minmax(0, 2fr); gap: clamp(30px, 4vw, 70px); padding: 40px clamp(28px, 3vw, 48px); margin-top: 10px; border-radius: var(--r); background: var(--c-surface); box-shadow: 0 40px 80px -40px rgba(20, 24, 40, .5); transform-origin: 50% 0; transform: rotateX(-18deg) translateY(-10px); opacity: 0; transition: transform .7s cubic-bezier(.2, .9, .2, 1), opacity .45s ease; }
+.snh__mega-in::after { content: ""; position: absolute; inset: 8px; border-radius: calc(var(--r) - 6px); border: 1px dashed color-mix(in srgb, var(--c-accent) 35%, transparent); pointer-events: none; }
+.snh__li.is-open .snh__mega { visibility: visible; pointer-events: auto; }
+.snh__li.is-open .snh__mega-in { transform: none; opacity: 1; }
+.snh__cols { display: flex; flex-direction: column; gap: 26px; }
+.snh__col { opacity: 0; transform: translateY(12px); transition: opacity .6s, transform .6s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i) * 70ms + 120ms); }
+.snh__li.is-open .snh__col { opacity: 1; transform: none; }
+.snh__colh { display: block; margin-bottom: 14px; font: 600 11px/1.2 var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: var(--c-accent); }
+.snh__col ul { display: grid; gap: 4px; }
+.snh__col li a { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font: 300 1.45rem/1.2 var(--f-head); transition: color .3s, transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+.snh__col li a::before { content: ""; width: 0; height: 7px; border-radius: 50%; background: var(--c-accent); transition: width .4s cubic-bezier(.3, 1.4, .5, 1); }
+.snh__col li a:hover { color: var(--c-accent); transform: translateX(4px); }
+.snh__col li a:hover::before { width: 7px; }
+.snh__all { --tx: var(--c-ink); margin-top: auto; }
+.snh__feats { display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); gap: 18px; }
+.snh__feat { position: relative; display: block; border-radius: calc(var(--r) * .8); overflow: hidden; aspect-ratio: 5 / 4; color: #fff; opacity: 0; transform: translateY(18px) scale(.97); transition: opacity .7s, transform .8s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i) * 90ms + 180ms); }
+.snh__li.is-open .snh__feat { opacity: 1; transform: none; }
+.snh__feat .sn-media { position: absolute; inset: 0; border-radius: 0; }
+.snh__feat::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(14, 16, 28, .72), transparent 55%); }
+.snh__feat-t { position: absolute; z-index: 1; left: 22px; right: 22px; bottom: 20px; display: grid; gap: 6px; }
+.snh__feat-t small { font-size: 10.5px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: {{ settings.color_moon }}; }
+.snh__feat-t b { font: 300 1.55rem/1.15 var(--f-head); }
+.snh__feat-t em { font-style: normal; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.snh__feat:hover .sn-media img, .snh__feat:hover .sn-media .sn-art { transform: scale(1.06); }
+.snh__dim { position: fixed; inset: 0; top: var(--snh-bottom, 120px); z-index: -1; background: rgba(14, 16, 28, .32); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .5s; }
+.snh.is-open .snh__dim { opacity: 1; }
+.snh.is-open .snh__bar { background: var(--c-surface); color: var(--c-ink); }
+
+/* search overlay */
+.sns .sns__panel { position: absolute; inset: 0; overflow-y: auto; color: {{ settings.color_dark_text }}; clip-path: circle(0% at calc(100% - 140px) 40px); transition: clip-path .9s cubic-bezier(.7, 0, .2, 1); }
+.sns.is-open .sns__panel { clip-path: circle(150% at calc(100% - 140px) 40px); }
+.sns__silk { position: fixed; inset: 0; z-index: -1; }
+.sns__in { padding-block: 34px 80px; --tx: {{ settings.color_dark_text }}; --bg: {{ settings.color_dark_bg }}; --ac: {{ settings.color_moon }}; --line: rgba(255, 255, 255, .16); --line2: rgba(255, 255, 255, .28); --soft: rgba(255, 255, 255, .7); }
+.sns__top { display: flex; justify-content: space-between; align-items: center; }
+.sns__top .sn-ibtn { color: #fff; border-color: rgba(255, 255, 255, .35); }
+.sns__form { position: relative; display: flex; align-items: center; margin-top: clamp(40px, 9vh, 110px); border-bottom: 1px solid rgba(255, 255, 255, .3); }
+.sns__form input[type="search"] { flex: 1; min-width: 0; border: 0; background: none; outline: none; color: #fff; font: 300 clamp(2.2rem, 6vw, 5rem)/1.2 var(--f-head); padding: 12px 0; letter-spacing: -.02em; }
+.sns__form input::placeholder { color: rgba(255, 255, 255, .38); }
+.sns__form input::-webkit-search-cancel-button { display: none; }
+.sns__form button { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: {{ settings.color_moon }}; color: {{ settings.color_dark_bg }}; transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+.sns__form button:hover { transform: scale(1.08) rotate(-8deg); }
+.sns__form button .icon { width: 22px; height: 22px; }
+.sns__form::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 0; background: {{ settings.color_moon }}; transition: width 1s cubic-bezier(.7, 0, .2, 1); }
+.sns.is-open .sns__form::after { width: 100%; transition-delay: .4s; }
+.sns__pop { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 28px; }
+.sns__pop > span { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 255, 255, .6); margin-right: 6px; }
+.sns__pop .sn-chip { color: #fff; border-color: rgba(255, 255, 255, .3); }
+.sns__pop .sn-chip:hover { background: #fff; color: {{ settings.color_dark_bg }}; }
+.sns__res { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; margin-top: 46px; }
+.sns__res:empty { display: none; }
+.snps__col ul { display: grid; gap: 8px; margin-top: 16px; }
+.snps__col li { opacity: 0; animation: sns-in .6s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(var(--i) * 60ms); }
+@keyframes sns-in { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.snps__col--p a { display: flex; align-items: center; gap: 16px; padding: 10px; border-radius: 18px; transition: background .3s; }
+.snps__col--p a:hover { background: rgba(255, 255, 255, .08); }
+.snps__img { width: 58px; aspect-ratio: 4 / 5; border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, .1); flex: none; }
+.snps__img img { width: 100%; height: 100%; object-fit: cover; }
+.snps__col--p b { display: block; font: 300 1.2rem/1.25 var(--f-head); } .snps__col--p small { color: {{ settings.color_moon }}; }
+.snps__txt { display: block; padding: 8px 0; font: 300 1.3rem var(--f-head); } .snps__txt:hover { color: {{ settings.color_moon }}; }
+.snps__all { grid-column: 1 / -1; color: #fff; --tx: #fff; }
+.snps__none { font: italic 300 1.4rem var(--f-head); opacity: .8; }
+
+/* mobile menu */
+.snm__panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(440px, 92vw); display: flex; flex-direction: column; background: var(--c-surface); color: var(--c-ink); transform: translateX(-102%); transition: transform .8s cubic-bezier(.3, 1, .3, 1); border-radius: 0 var(--r) var(--r) 0; overflow: hidden; }
+.snm.is-open .snm__panel { transform: none; }
+.snm__head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px dashed color-mix(in srgb, var(--c-accent) 40%, transparent); --tx: var(--c-ink); --line2: color-mix(in srgb, var(--c-ink) 22%, transparent); --bg: var(--c-surface); }
+.snm__logo .sn-logo { width: 130px; }
+.snm__nav { flex: 1; overflow-y: auto; padding: 14px 22px; }
+.snm__a, .snm__d summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0; border-bottom: 1px solid color-mix(in srgb, var(--c-ink) 10%, transparent); font: 300 1.75rem/1.1 var(--f-head); list-style: none; cursor: pointer; opacity: 0; transform: translateX(-24px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 60ms + 200ms); }
+.snm__d { opacity: 0; transform: translateX(-24px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 60ms + 200ms); }
+.snm__d summary { opacity: 1; transform: none; }
+.snm.is-open .snm__a, .snm.is-open .snm__d { opacity: 1; transform: none; }
+.snm__d summary::-webkit-details-marker { display: none; }
+.snm__d summary i { position: relative; width: 18px; height: 18px; }
+.snm__d summary i::before, .snm__d summary i::after { content: ""; position: absolute; left: 0; top: 50%; width: 18px; height: 1.4px; background: currentColor; transition: transform .4s; }
+.snm__d summary i::after { transform: rotate(90deg); }
+.snm__d[open] summary i::after { transform: rotate(0); }
+.snm__d ul { padding: 8px 0 16px 4px; display: grid; gap: 2px; }
+.snm__d li a { display: block; padding: 8px 0; font-size: 15px; color: var(--c-ink-soft); }
+.snm__g a { padding-left: 14px !important; font-size: 14px !important; }
+.snm__all { color: var(--c-accent) !important; font-weight: 600; }
+.snm__a--pill { justify-content: flex-start; font-family: var(--f-body); font-size: 15px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); }
+.snm__a--pill .icon { width: 18px; height: 18px; }
+.snm__foot { position: relative; isolation: isolate; padding: 22px; color: {{ settings.color_dark_text }}; overflow: hidden; }
+.snm__silk { position: absolute; inset: 0; z-index: -1; }
+.snm__quick { display: grid; gap: 4px; }
+.snm__quick a { display: flex; align-items: center; gap: 12px; padding: 9px 0; font-size: 15px; }
+.snm__quick .icon { width: 19px; height: 19px; color: {{ settings.color_moon }}; }
+.snm__note { margin-top: 12px; font-size: 13px; opacity: .75; }
+
+@media (max-width: 1099px) {
+  .snh__in, .snh--center .snh__in, .snh--left .snh__in { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "burger logo acts"; width: calc(100% - 24px); gap: 8px; }
+  .snh__burger { display: flex; }
+  .snh__nav, .snh__hide-m, .snh__cta { display: none !important; }
+  .snh__logo, .snh--left .snh__logo { justify-self: center; }
+  .snh__logo img, .snh__logo .sn-logo { width: calc(var(--logo-w) * .8); }
+}
+</style>
+
+<script>
+(function () {
+  var h = document.getElementById('snh'); if (!h || h.dataset.on) return; h.dataset.on = 1;
+  var lis = h.querySelectorAll('[data-snh-li].has-mega'), t = null, beh = h.getAttribute('data-behavior');
+  var ann = document.querySelector('.sn-announcement-section');
+  function setTop() { var a = ann ? ann.getBoundingClientRect().height : 0; h.style.setProperty('--snh-top', h.classList.contains('snh--clear') ? Math.max(0, a - scrollY) + 'px' : '0px'); h.style.setProperty('--snh-bottom', h.getBoundingClientRect().bottom + 'px'); }
+  function close() { lis.forEach(function (l) { l.classList.remove('is-open'); var a = l.querySelector('[aria-expanded]'); if (a) a.setAttribute('aria-expanded', 'false'); }); h.classList.remove('is-open'); }
+  lis.forEach(function (li) {
+    var a = li.querySelector('.snh__a');
+    function open() { clearTimeout(t); t = setTimeout(function () { lis.forEach(function (x) { x.classList.toggle('is-open', x === li); }); h.classList.add('is-open'); if (a) a.setAttribute('aria-expanded', 'true'); setTop(); }, {{ s.hover_delay }}); }
+    li.addEventListener('mouseenter', open);
+    li.addEventListener('mouseleave', function () { clearTimeout(t); t = setTimeout(close, 180); });
+    li.addEventListener('focusin', open);
+    if (a) a.addEventListener('keydown', function (e) { if (e.key === 'Escape') { close(); a.focus(); } });
+  });
+  h.addEventListener('focusout', function (e) { if (!h.contains(e.relatedTarget)) close(); });
+  var lastY = scrollY, ticking = false;
+  function onScroll() {
+    ticking = false; var y = scrollY;
+    h.classList.toggle('is-scrolled', y > 20);
+    if (beh === 'hide' && !h.classList.contains('is-open')) h.classList.toggle('is-hidden', y > lastY && y > 300);
+    lastY = y; setTop();
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  addEventListener('resize', setTop); onScroll();
+  var ov = document.getElementById('SnSearch');
+  if (ov) ov.addEventListener('sn:open', function () { if (window.SN && SN.search) SN.search(ov); });
+  if (window.SN && SN.search) SN.search(ov);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "sn-header-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Logo position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre (hotel style)"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent",
+      "label": "Transparent over the homepage hero",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "behavior",
+      "label": "On scroll",
+      "options": [
+        {
+          "value": "sticky",
+          "label": "Always visible"
+        },
+        {
+          "value": "hide",
+          "label": "Hide when scrolling down, show when scrolling up"
+        }
+      ],
+      "default": "hide"
+    },
+    {
+      "type": "range",
+      "id": "pad",
+      "label": "Height (padding)",
+      "min": 8,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Empty = logo from Theme settings, or the built-in moon-phase wordmark."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_light",
+      "label": "Logo on transparent header"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 280,
+      "step": 10,
+      "unit": "px",
+      "default": 160
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "info": "Optional. Empty = use the 'Menu item' blocks below. Items with sub-links open a mega menu."
+    },
+    {
+      "type": "range",
+      "id": "nav_size",
+      "label": "Menu text size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "nav_gap",
+      "label": "Space between items",
+      "min": 12,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_upper",
+      "label": "Uppercase menu",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hover_delay",
+      "label": "Mega menu open delay",
+      "min": 0,
+      "max": 400,
+      "step": 20,
+      "unit": "ms",
+      "default": 80
+    },
+    {
+      "type": "text",
+      "id": "view_all",
+      "label": "'View all' text",
+      "default": "Shop all"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Account",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Wishlist",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "wishlist_url",
+      "label": "Wishlist page",
+      "info": "Empty = /pages/wishlist"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Order on WhatsApp"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link",
+      "info": "Empty = WhatsApp number from Theme settings"
+    },
+    {
+      "type": "text",
+      "id": "cta_message",
+      "label": "WhatsApp message",
+      "default": "Hi Sakooon, I need help choosing bedding."
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_eyebrow",
+      "label": "Search small heading",
+      "default": "What are you dreaming of?"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder",
+      "default": "Search sheets, duvets, towels…"
+    },
+    {
+      "type": "text",
+      "id": "popular_label",
+      "label": "Popular label",
+      "default": "Popular"
+    },
+    {
+      "type": "text",
+      "id": "popular",
+      "label": "Popular searches (comma separated)",
+      "default": "T300 sateen, King size, Duvet, Bath towels, Pillow covers"
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu"
+    },
+    {
+      "type": "text",
+      "id": "drawer_note",
+      "label": "Note",
+      "default": "Quick replies on WhatsApp, 7 days a week."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Menu item / mega",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "When a Shopify menu is chosen, this must match the menu item's title to add the feature images.",
+          "default": "Bed Sheets"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "col_heading",
+          "label": "Column heading",
+          "default": "Shop by weave"
+        },
+        {
+          "type": "textarea",
+          "id": "links",
+          "label": "Sub links (one per line: Label | /url)",
+          "info": "Only used when no Shopify menu is chosen.",
+          "default": "T200 · Cotton percale | /collections/t200\nT250 · Fine percale | /collections/t250\nT300 · Cotton sateen | /collections/t300\nFitted sheets | /collections/fitted-sheets"
+        },
+        {
+          "type": "header",
+          "content": "Feature card 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "f1_image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "f1_art",
+          "label": "Illustration when no image",
+          "options": [
+            {
+              "value": "bed",
+              "label": "Bedroom"
+            },
+            {
+              "value": "bed-cover",
+              "label": "Bed cover"
+            },
+            {
+              "value": "bed-sheet",
+              "label": "Bed sheets"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "duvet-cover",
+              "label": "Duvet cover"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "pillow-cover",
+              "label": "Pillow cover"
+            },
+            {
+              "value": "towel",
+              "label": "Towels"
+            }
+          ],
+          "default": "bed-sheet"
+        },
+        {
+          "type": "text",
+          "id": "f1_kicker",
+          "label": "Small text",
+          "default": "Bestseller"
+        },
+        {
+          "type": "text",
+          "id": "f1_title",
+          "label": "Title",
+          "default": "T300 Sateen"
+        },
+        {
+          "type": "text",
+          "id": "f1_cta",
+          "label": "Link text",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "f1_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Feature card 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "f2_image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "f2_art",
+          "label": "Illustration when no image",
+          "options": [
+            {
+              "value": "bed",
+              "label": "Bedroom"
+            },
+            {
+              "value": "bed-cover",
+              "label": "Bed cover"
+            },
+            {
+              "value": "bed-sheet",
+              "label": "Bed sheets"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "duvet-cover",
+              "label": "Duvet cover"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "pillow-cover",
+              "label": "Pillow cover"
+            },
+            {
+              "value": "towel",
+              "label": "Towels"
+            }
+          ],
+          "default": "bed"
+        },
+        {
+          "type": "text",
+          "id": "f2_kicker",
+          "label": "Small text"
+        },
+        {
+          "type": "text",
+          "id": "f2_title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "f2_cta",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "f2_link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "pill",
+      "name": "Highlighted link",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "ruler"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Size guide"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

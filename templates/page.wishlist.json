@@ -1,0 +1,24 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-wishlist",
+   "settings": {
+    "pad_top": 120
+   }
+  },
+  "recent": {
+   "type": "sn-product-recs",
+   "settings": {
+    "source": "recent",
+    "eyebrow": "Still thinking?",
+    "heading": "Recently",
+    "highlight": "viewed",
+    "scheme": "ivory"
+   }
+  }
+ },
+ "order": [
+  "main",
+  "recent"
+ ]
+}

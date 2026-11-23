@@ -1,0 +1,314 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snad-' | append: section.id
+-%}
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+<section id="{{ sid }}" class="sn-s snad" style="{% render 'sn-vars', s: s %}">
+  <div class="sn-wrap">
+    <a class="sn-link snad__back" href="{{ routes.account_url }}">{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}{{ s.back }}</a>
+    <div class="snad__head">
+      <h1 class="sn-h sn-h--l" data-sn-split>{{ s.title }} <em>{{ s.title_hl }}</em></h1>
+      <button type="button" class="sn-btn sn-btn--gold" data-snad-toggle="new"><span>{{ s.add }}</span>{% render 'sn-icon', name: 'plus', class: 'icon' %}</button>
+    </div>
+    {%- paginate customer.addresses by 12 -%}
+    <div class="snad__grid">
+      <div class="snad__form sn-pillow sn-stitch" data-snad-form="new" hidden>
+        <p class="sn-h sn-h--s">{{ s.new_title }}</p>
+        {%- form 'customer_address', customer.new_address -%}
+          {%- assign fid = 'new' -%}
+          {% render 'sn-address-fields', form: form, fid: fid, s: s %}
+          <div class="snad__btns"><button class="sn-btn sn-btn--gold" type="submit"><span>{{ s.save }}</span></button><button class="sn-btn sn-btn--ghost" type="button" data-snad-toggle="new"><span>{{ s.cancel }}</span></button></div>
+        {%- endform -%}
+      </div>
+      {%- for a in customer.addresses -%}
+        <div class="snad__card sn-pillow{% if a == customer.default_address %} is-def{% endif %}" data-r="rise" style="--i: {{ forloop.index0 | modulo: 6 }};">
+          {%- if a == customer.default_address -%}<span class="snad__def">{% render 'sn-phase', k: 4 %}{{ s.default_label }}</span>{%- endif -%}
+          <p class="snad__name">{{ a.first_name }} {{ a.last_name }}</p>
+          <address>{{ a | format_address }}</address>
+          <div class="snad__acts">
+            <button type="button" class="sn-link" data-snad-toggle="{{ a.id }}">{{ s.edit }}</button>
+            <form method="post" action="{{ a.url }}" class="snad__del" data-snad-del="{{ s.confirm | escape }}"><input type="hidden" name="_method" value="delete"><button type="submit" class="sn-link">{{ s.delete }}</button></form>
+          </div>
+        </div>
+        <div class="snad__form sn-pillow sn-stitch" data-snad-form="{{ a.id }}" hidden>
+          <p class="sn-h sn-h--s">{{ s.edit_title }}</p>
+          {%- form 'customer_address', a -%}
+            {%- assign fid = a.id -%}
+            {% render 'sn-address-fields', form: form, fid: fid, s: s %}
+            <div class="snad__btns"><button class="sn-btn sn-btn--gold" type="submit"><span>{{ s.save }}</span></button><button class="sn-btn sn-btn--ghost" type="button" data-snad-toggle="{{ a.id }}"><span>{{ s.cancel }}</span></button></div>
+          {%- endform -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- endpaginate -%}
+  </div>
+</section>
+<style>
+#{{ sid }} .snad__back { margin-bottom: 24px; }
+#{{ sid }} .snad__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 30px; }
+#{{ sid }} .snad__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+#{{ sid }} .snad__card { position: relative; display: grid; gap: 10px; padding: 26px; border: 1px solid transparent; transition: transform .6s cubic-bezier(.3, 1.2, .4, 1), border-color .4s; }
+#{{ sid }} .snad__card:hover { transform: translateY(-4px); }
+#{{ sid }} .snad__card.is-def { border-color: var(--ac); }
+#{{ sid }} .snad__def { position: absolute; right: 18px; top: 18px; display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ac); }
+#{{ sid }} .snad__def .sn-ph { width: 13px; height: 13px; }
+#{{ sid }} .snad__name { font: 400 1.15rem var(--f-head); }
+#{{ sid }} .snad__card address { font-style: normal; font-size: 14px; line-height: 1.7; color: var(--soft); }
+#{{ sid }} .snad__acts { display: flex; gap: 22px; margin-top: 6px; }
+#{{ sid }} .snad__form { grid-column: 1 / -1; padding: clamp(22px, 3vw, 36px); animation: sn-acc-in .6s cubic-bezier(.2, .7, .2, 1); }
+#{{ sid }} .snad__form form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+#{{ sid }} .snad__form .is-full { grid-column: 1 / -1; }
+#{{ sid }} .snad__btns { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+@media (max-width: 899px) { #{{ sid }} .snad__grid { grid-template-columns: 1fr; } #{{ sid }} .snad__form form { grid-template-columns: 1fr; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  r.addEventListener('click', function (e) { var t = e.target.closest('[data-snad-toggle]'); if (!t) return; var f = r.querySelector('[data-snad-form="' + t.getAttribute('data-snad-toggle') + '"]'); if (f) { f.hidden = !f.hidden; if (!f.hidden) f.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
+  r.addEventListener('submit', function (e) { var d = e.target.closest('[data-snad-del]'); if (d && !confirm(d.getAttribute('data-snad-del'))) e.preventDefault(); });
+  function init() { if (!window.Shopify || !Shopify.CountryProvinceSelector) return; [].forEach.call(r.querySelectorAll('[data-snad-country]'), function (c) { var id = c.getAttribute('data-snad-country'); new Shopify.CountryProvinceSelector('AddrCountry-' + id, 'AddrProvince-' + id, { hideElement: 'AddrProvinceWrap-' + id }); }); }
+  if (document.readyState === 'complete') init(); else addEventListener('load', init);
+})();
+</script>
+{% schema %}
+{
+  "name": "Addresses",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "back",
+      "label": "Back link",
+      "default": "Back to account"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your"
+    },
+    {
+      "type": "text",
+      "id": "title_hl",
+      "label": "Heading, italic part",
+      "default": "addresses"
+    },
+    {
+      "type": "text",
+      "id": "add",
+      "label": "Add button",
+      "default": "Add address"
+    },
+    {
+      "type": "text",
+      "id": "new_title",
+      "label": "New address title",
+      "default": "New address"
+    },
+    {
+      "type": "text",
+      "id": "edit_title",
+      "label": "Edit title",
+      "default": "Edit address"
+    },
+    {
+      "type": "text",
+      "id": "edit",
+      "label": "Edit link",
+      "default": "Edit"
+    },
+    {
+      "type": "text",
+      "id": "delete",
+      "label": "Delete link",
+      "default": "Delete"
+    },
+    {
+      "type": "text",
+      "id": "confirm",
+      "label": "Delete confirmation",
+      "default": "Delete this address?"
+    },
+    {
+      "type": "text",
+      "id": "default_label",
+      "label": "Default badge",
+      "default": "Default"
+    },
+    {
+      "type": "text",
+      "id": "save",
+      "label": "Save button",
+      "default": "Save address"
+    },
+    {
+      "type": "text",
+      "id": "cancel",
+      "label": "Cancel button",
+      "default": "Cancel"
+    },
+    {
+      "type": "text",
+      "id": "l_first",
+      "label": "First name label",
+      "default": "First name"
+    },
+    {
+      "type": "text",
+      "id": "l_last",
+      "label": "Last name label",
+      "default": "Last name"
+    },
+    {
+      "type": "text",
+      "id": "l_company",
+      "label": "Company label",
+      "default": "Company (optional)"
+    },
+    {
+      "type": "text",
+      "id": "l_a1",
+      "label": "Address label",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "l_a2",
+      "label": "Apartment label",
+      "default": "Apartment, suite, etc."
+    },
+    {
+      "type": "text",
+      "id": "l_city",
+      "label": "City label",
+      "default": "City"
+    },
+    {
+      "type": "text",
+      "id": "l_country",
+      "label": "Country label",
+      "default": "Country"
+    },
+    {
+      "type": "text",
+      "id": "l_prov",
+      "label": "Province label",
+      "default": "Province"
+    },
+    {
+      "type": "text",
+      "id": "l_zip",
+      "label": "Postal code label",
+      "default": "Postal code"
+    },
+    {
+      "type": "text",
+      "id": "l_phone",
+      "label": "Phone label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "l_default",
+      "label": "Default checkbox",
+      "default": "Set as default address"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

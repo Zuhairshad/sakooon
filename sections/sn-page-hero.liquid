@@ -1,0 +1,415 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snph-' | append: section.id
+  assign ttl = s.heading
+  if ttl == blank
+    if page
+      assign ttl = page.title
+    elsif collection
+      assign ttl = collection.title
+    elsif blog
+      assign ttl = blog.title
+    else
+      assign ttl = page_title
+    endif
+  endif
+  assign dark = false
+  if s.style == 'silk' or s.style == 'image'
+    assign dark = true
+  endif
+-%}
+<section id="{{ sid }}" class="sn-s snph snph--{{ s.style }} snph--{{ s.align }}{% if dark %} is-dark{% endif %}" style="{% render 'sn-vars', s: s %} --mh: {{ s.height }}px;" data-sn-silk-host>
+  {% render 'sn-divider', s: s %}
+  {%- if s.style == 'silk' -%}
+    <div class="sn-silk" data-sn-silk data-c1="{{ s.c1 | default: settings.color_dark_bg }}" data-c2="{{ s.c2 | default: settings.color_dusk }}" data-c3="{{ s.c3 | default: settings.color_moon }}" data-speed=".5" data-amp=".9"></div>
+  {%- elsif s.style == 'image' -%}
+    <div class="snph__bg" data-snph-bg>{%- assign bgimg = s.image | default: collection.image -%}{% render 'sn-media', image: bgimg, art: s.art, width: 2400, sizes: '100vw', class: 'snph__img', eager: true %}</div>
+  {%- endif -%}
+  {%- if s.feathers and dark -%}<div data-sn-feathers="24" data-color="{{ settings.color_moon }}" style="position:absolute;inset:0;z-index:0"></div>{%- endif -%}
+  {%- if s.moon -%}
+    <svg class="snph__arc" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 290 Q 500 -60 1020 290" pathLength="1"/></svg>
+    <span class="snph__moon" data-snph-moon aria-hidden="true"><i></i></span>
+  {%- endif -%}
+  <div class="sn-wrap snph__in">
+    {%- if s.crumbs -%}
+      <nav class="sn-crumbs snph__crumbs" aria-label="Breadcrumb" data-r>
+        <a href="{{ routes.root_url }}">{{ s.home_label }}</a><i></i>
+        {%- if collection and template.name == 'collection' -%}<a href="{{ routes.collections_url }}">{{ s.coll_label }}</a><i></i>{%- endif -%}
+        <span aria-current="page">{{ ttl }}</span>
+      </nav>
+    {%- endif -%}
+    {%- if s.eyebrow != blank -%}<p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 2 %}{{ s.eyebrow }}</p>{%- endif -%}
+    <h1 class="sn-h sn-h--{{ s.head_size }}" data-sn-split>{{ ttl }}{% if s.highlight != blank %} <em>{{ s.highlight }}</em>{% endif %}</h1>
+    {%- if s.text != blank -%}<p class="sn-lead" data-r style="--i: 2;">{{ s.text }}</p>{%- elsif s.show_desc and collection.description != blank and template.name == 'collection' -%}<div class="sn-lead" data-r style="--i: 2;">{{ collection.description | strip_html | truncatewords: 40 }}</div>{%- endif -%}
+    {%- if s.btn != blank -%}<a class="sn-btn{% if dark %} sn-btn--light{% endif %}" href="{{ s.link | default: routes.all_products_collection_url }}" data-r style="--i: 3;"><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+  </div>
+  {%- if s.scroll_hint -%}<span class="snph__hint" aria-hidden="true"><i></i></span>{%- endif -%}
+</section>
+<style>
+#{{ sid }} { min-height: var(--mh); display: grid; align-items: center; overflow: hidden; }
+#{{ sid }}.is-dark { background: {{ s.c1 | default: settings.color_dark_bg }}; }
+#{{ sid }}.is-dark > * { --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 76%, transparent); --ac: {{ settings.color_moon }}; --line: rgba(255,255,255,.18); --line2: rgba(255,255,255,.3); color: var(--tx); }
+#{{ sid }} .snph__in { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: start; }
+#{{ sid }}.snph--center .snph__in { justify-items: center; text-align: center; }
+#{{ sid }}.snph--center .sn-lead { margin-inline: auto; }
+#{{ sid }} .snph__crumbs { margin-bottom: 6px; }
+#{{ sid }}.is-dark .sn-crumbs { color: var(--soft); }
+#{{ sid }}.is-dark .sn-crumbs span[aria-current] { color: var(--tx); }
+#{{ sid }} .snph__bg { position: absolute; inset: -8% 0; z-index: -2; will-change: transform; }
+#{{ sid }} .snph__img { position: absolute; inset: 0; border-radius: 0; }
+#{{ sid }}.snph--image::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, color-mix(in srgb, {{ settings.color_dark_bg }} {{ s.shade }}%, transparent), color-mix(in srgb, {{ settings.color_dark_bg }} {{ s.shade | divided_by: 3 }}%, transparent)); }
+#{{ sid }}.snph--center.snph--image::before { background: color-mix(in srgb, {{ settings.color_dark_bg }} {{ s.shade }}%, transparent); }
+#{{ sid }} .snph__arc { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 70%; pointer-events: none; z-index: 0; }
+#{{ sid }} .snph__arc path { fill: none; stroke: color-mix(in srgb, var(--ac) 45%, transparent); stroke-width: 1; stroke-dasharray: .004 .008; vector-effect: non-scaling-stroke; }
+#{{ sid }} .snph__moon { position: absolute; z-index: 1; left: calc(var(--mp, .15) * 100%); bottom: calc(70% * (1 - 4 * (var(--mp, .15) - .5) * (var(--mp, .15) - .5)) * .62 - 18px); width: 36px; height: 36px; margin-left: -18px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 35% 35%, #fff, var(--c-moon) 60%); box-shadow: 0 0 30px color-mix(in srgb, var(--c-moon) 70%, transparent), 0 0 80px color-mix(in srgb, var(--c-moon) 30%, transparent); transition: left .2s linear, bottom .2s linear; }
+#{{ sid }} .snph__moon i { position: absolute; inset: -2px; border-radius: 50%; background: var(--bg); transform: translateX(calc(30% + var(--mp, .15) * 60%)); opacity: .95; }
+#{{ sid }}.is-dark .snph__moon i { background: {{ s.c1 | default: settings.color_dark_bg }}; }
+#{{ sid }} .snph__hint { position: absolute; left: 50%; bottom: 22px; width: 24px; height: 38px; margin-left: -12px; border-radius: 999px; border: 1px solid var(--line2, var(--line)); z-index: 2; }
+#{{ sid }} .snph__hint i { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 4px; background: var(--ac); animation: snph-hint 1.8s cubic-bezier(.6, 0, .4, 1) infinite; }
+@keyframes snph-hint { 60% { transform: translateY(12px); opacity: 0; } 61% { transform: none; opacity: 0; } }
+@media (max-width: 749px) { #{{ sid }} { min-height: calc(var(--mh) * .72); } #{{ sid }} .snph__moon { width: 26px; height: 26px; margin-left: -13px; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var m = r.querySelector('[data-snph-moon]'), bg = r.querySelector('[data-snph-bg]'), tk = false;
+  var still = document.body.getAttribute('data-motion') === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function upd() {
+    tk = false; var b = r.getBoundingClientRect(), p = Math.min(1, Math.max(0, -b.top / Math.max(1, b.height)));
+    if (m) r.style.setProperty('--mp', (.15 + p * .7 + (still ? 0 : 0)).toFixed(3));
+    if (bg && !still) bg.style.transform = 'translateY(' + (p * 12).toFixed(2) + '%)';
+  }
+  addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(upd); } }, { passive: true }); upd();
+  if (m && !still) { var t0 = performance.now(); (function intro(t) { var k = Math.min(1, (t - t0) / 1800), e = 1 - Math.pow(1 - k, 3); if (r.getBoundingClientRect().top >= -2) r.style.setProperty('--mp', (.02 + e * .13).toFixed(3)); if (k < 1) requestAnimationFrame(intro); })(t0); }
+})();
+</script>
+{% schema %}
+{
+  "name": "Page banner",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Background",
+      "options": [
+        {
+          "value": "silk",
+          "label": "Moving silk (night)"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "plain",
+          "label": "Plain colour scheme"
+        }
+      ],
+      "default": "silk"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "art",
+      "label": "Illustration (no image)",
+      "options": [
+        {
+          "value": "bed",
+          "label": "Bedroom"
+        },
+        {
+          "value": "bed-cover",
+          "label": "Bed cover"
+        },
+        {
+          "value": "bed-sheet",
+          "label": "Bed sheets"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "duvet-cover",
+          "label": "Duvet cover"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "pillow-cover",
+          "label": "Pillow cover"
+        },
+        {
+          "value": "towel",
+          "label": "Towels"
+        }
+      ],
+      "default": "bed"
+    },
+    {
+      "type": "range",
+      "id": "shade",
+      "label": "Image shade",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Minimum height",
+      "min": 240,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 440
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "moon",
+      "label": "Moon travelling across the sky",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "feathers",
+      "label": "Drifting feathers",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll_hint",
+      "label": "Scroll hint",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "crumbs",
+      "label": "Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "coll_label",
+      "label": "Collections label",
+      "default": "Collections"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Empty = page, collection or blog title"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        },
+        {
+          "value": "xxl",
+          "label": "Huge"
+        }
+      ],
+      "default": "xl"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desc",
+      "label": "Collection: show description",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Silk colours"
+    },
+    {
+      "type": "color",
+      "id": "c1",
+      "label": "Deep"
+    },
+    {
+      "type": "color",
+      "id": "c2",
+      "label": "Mid"
+    },
+    {
+      "type": "color",
+      "id": "c3",
+      "label": "Sheen"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page banner",
+      "settings": {
+        "heading": "Our story",
+        "highlight": "begins at night",
+        "text": "A small Lahore studio with one obsession: helping Pakistan sleep a little deeper."
+      }
+    }
+  ]
+}
+{% endschema %}

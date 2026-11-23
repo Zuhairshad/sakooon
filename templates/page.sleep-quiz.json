@@ -1,0 +1,121 @@
+{
+ "sections": {
+  "quiz": {
+   "type": "sn-quiz",
+   "settings": {},
+   "blocks": {
+    "question_eV7G5I": {
+     "type": "question",
+     "settings": {}
+    },
+    "question_fQHeVV": {
+     "type": "question",
+     "settings": {
+      "question": "Which feel do you love?",
+      "a1": "Crisp, like a hotel",
+      "a1_icon": "leaf",
+      "a2": "Soft and smooth",
+      "a2_icon": "feather",
+      "a3": "Silky with a sheen",
+      "a3_icon": "sparkle"
+     }
+    },
+    "question_EqZe2q": {
+     "type": "question",
+     "settings": {
+      "question": "Who is it for?",
+      "a1": "Kids' or guest room",
+      "a1_icon": "home",
+      "a2": "Our everyday bed",
+      "a2_icon": "sleep",
+      "a3": "A gift or new home",
+      "a3_icon": "gift"
+     }
+    },
+    "result_pUWnoV": {
+     "type": "result",
+     "settings": {}
+    },
+    "result_PDF2ye": {
+     "type": "result",
+     "settings": {
+      "title": "T250 Fine Percale",
+      "line": "The best of soft and cool",
+      "text": "Smoother than everyday percale but still breathable — our bestseller for every season.",
+      "art": "bed",
+      "button": "Shop T250"
+     }
+    },
+    "result_E6RsXc": {
+     "type": "result",
+     "settings": {
+      "title": "T300 Sateen",
+      "line": "Silky, lustrous luxury",
+      "text": "A dense sateen weave with a soft sheen — five-star comfort every night.",
+      "art": "bed-cover",
+      "button": "Shop T300"
+     }
+    }
+   },
+   "block_order": [
+    "question_eV7G5I",
+    "question_fQHeVV",
+    "question_EqZe2q",
+    "result_pUWnoV",
+    "result_PDF2ye",
+    "result_E6RsXc"
+   ]
+  },
+  "features": {
+   "type": "sn-features",
+   "settings": {
+    "layout": "cards"
+   },
+   "blocks": {
+    "feature_NOPmeM": {
+     "type": "feature",
+     "settings": {}
+    },
+    "feature_jvqPVS": {
+     "type": "feature",
+     "settings": {
+      "icon": "cotton",
+      "title": "100% cotton",
+      "text": "Long-staple fibres that breathe and soften with every wash."
+     }
+    },
+    "feature_tNKiaE": {
+     "type": "feature",
+     "settings": {
+      "icon": "return",
+      "title": "7-day exchange",
+      "text": "Wrong size? Swap it, no questions asked."
+     }
+    },
+    "feature_dFrRgS": {
+     "type": "feature",
+     "settings": {
+      "icon": "whatsapp",
+      "title": "WhatsApp help",
+      "text": "Real people, quick answers, 10am to 10pm."
+     }
+    }
+   },
+   "block_order": [
+    "feature_NOPmeM",
+    "feature_jvqPVS",
+    "feature_tNKiaE",
+    "feature_dFrRgS"
+   ]
+  },
+  "best": {
+   "type": "sn-products",
+   "settings": {}
+  }
+ },
+ "order": [
+  "quiz",
+  "features",
+  "best"
+ ]
+}

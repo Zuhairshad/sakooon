@@ -1,0 +1,13 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-order",
+   "settings": {
+    "pad_top": 120
+   }
+  }
+ },
+ "order": [
+  "main"
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "sections": {
+  "banner": {
+   "type": "sn-page-hero",
+   "settings": {
+    "style": "silk",
+    "height": 340,
+    "pad_top": 120,
+    "pad_bottom": 48
+   }
+  },
+  "main": {
+   "type": "sn-main-page",
+   "settings": {
+    "show_title": false
+   }
+  }
+ },
+ "order": [
+  "banner",
+  "main"
+ ]
+}

@@ -1,0 +1,111 @@
+{
+ "sections": {
+  "banner": {
+   "type": "sn-page-hero",
+   "settings": {
+    "style": "silk",
+    "height": 360,
+    "heading": "Questions",
+    "highlight": "& answers"
+   }
+  },
+  "faq": {
+   "type": "sn-faq",
+   "settings": {},
+   "blocks": {
+    "question_BkdfQ1": {
+     "type": "question",
+     "settings": {}
+    },
+    "question_y3GQsM": {
+     "type": "question",
+     "settings": {
+      "category": "Sizing",
+      "question": "What does T200, T250 and T300 mean?",
+      "answer": "<p>It is the thread count: threads woven into one square inch. Higher counts feel smoother and silkier; T200 is crisp and breathable, T300 is our softest sateen.</p>"
+     }
+    },
+    "question_pSscDl": {
+     "type": "question",
+     "settings": {
+      "category": "Care",
+      "question": "How should I wash my sheets?",
+      "answer": "<p>Wash cool (30–40°C) with mild detergent, tumble dry low and iron warm. Avoid bleach to keep colours rich.</p>"
+     }
+    },
+    "question_krCaqx": {
+     "type": "question",
+     "settings": {
+      "category": "Delivery",
+      "question": "How long does delivery take?",
+      "answer": "<p>2–3 working days in Lahore, Karachi and Islamabad, 3–5 days elsewhere. Cash on delivery is available nationwide.</p>"
+     }
+    },
+    "question_9vJupc": {
+     "type": "question",
+     "settings": {
+      "category": "Delivery",
+      "question": "Can I exchange a product?",
+      "answer": "<p>Yes, unused products in original packing can be exchanged within 7 days.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "question_BkdfQ1",
+    "question_y3GQsM",
+    "question_pSscDl",
+    "question_krCaqx",
+    "question_9vJupc"
+   ]
+  },
+  "contact": {
+   "type": "sn-features",
+   "settings": {
+    "layout": "cards",
+    "heading": "Still need",
+    "highlight": "a hand?"
+   },
+   "blocks": {
+    "feature_94tnwl": {
+     "type": "feature",
+     "settings": {}
+    },
+    "feature_avyfEr": {
+     "type": "feature",
+     "settings": {
+      "icon": "cotton",
+      "title": "100% cotton",
+      "text": "Long-staple fibres that breathe and soften with every wash."
+     }
+    },
+    "feature_GPmpGX": {
+     "type": "feature",
+     "settings": {
+      "icon": "return",
+      "title": "7-day exchange",
+      "text": "Wrong size? Swap it, no questions asked."
+     }
+    },
+    "feature_afq0fj": {
+     "type": "feature",
+     "settings": {
+      "icon": "whatsapp",
+      "title": "WhatsApp help",
+      "text": "Real people, quick answers, 10am to 10pm."
+     }
+    }
+   },
+   "block_order": [
+    "feature_94tnwl",
+    "feature_avyfEr",
+    "feature_GPmpGX",
+    "feature_afq0fj"
+   ]
+  }
+ },
+ "order": [
+  "banner",
+  "faq",
+  "contact"
+ ]
+}

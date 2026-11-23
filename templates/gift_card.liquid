@@ -1,0 +1,51 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ shop.name }} gift card · {{ gift_card.balance | money }}</title>
+  <meta name="robots" content="noindex">
+  {{ content_for_header }}
+  {% render 'sn-fonts' %}
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+  <style>
+    :root { --ink: {{ settings.color_ink }}; --paper: {{ settings.color_paper }}; --dark: {{ settings.color_dark_bg }}; --dusk: {{ settings.color_dusk }}; --moon: {{ settings.color_moon }}; --ac: {{ settings.color_accent }}; }
+    * { box-sizing: border-box; } body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 70% 20%, var(--dusk), var(--dark) 60%); color: #fff; font: 400 16px/1.6 'SN Figtree', system-ui, sans-serif; }
+    .gc { width: min(520px, 100%); display: grid; gap: 22px; text-align: center; }
+    .gc__card { position: relative; aspect-ratio: 1.6; border-radius: 28px; overflow: hidden; padding: 28px; display: grid; align-content: space-between; text-align: left; background: linear-gradient(135deg, color-mix(in srgb, var(--moon) 80%, #fff), var(--ac)); color: var(--dark); box-shadow: 0 50px 90px -40px rgba(0,0,0,.7); animation: gc-in 1s cubic-bezier(.2, 1, .3, 1); }
+    .gc__card::before { content: ""; position: absolute; inset: 10px; border-radius: 20px; border: 1px dashed rgba(27, 33, 48, .35); }
+    .gc__card::after { content: ""; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff, rgba(255,255,255,.2) 70%); opacity: .55; }
+    @keyframes gc-in { from { opacity: 0; transform: translateY(30px) rotate(-3deg) scale(.95); } }
+    .gc__shop { font: 400 1.5rem 'SN Fraunces', Georgia, serif; letter-spacing: .02em; position: relative; }
+    .gc__bal { font: 300 3rem/1 'SN Fraunces', Georgia, serif; position: relative; }
+    .gc__bal small { display: block; font: 600 11px 'SN Figtree', sans-serif; letter-spacing: .2em; text-transform: uppercase; opacity: .7; margin-bottom: 8px; }
+    .gc__code { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 8px 8px 20px; border-radius: 999px; border: 1px dashed rgba(255,255,255,.4); font: 600 15px monospace; letter-spacing: .14em; }
+    .gc__code button, .gc__btn { min-height: 46px; padding: 0 20px; border-radius: 999px; border: 0; background: var(--moon); color: var(--dark); font: 600 12px 'SN Figtree', sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+    .gc__btn--ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.35); }
+    .gc__acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .gc__qr { display: grid; place-items: center; } .gc__qr img, .gc__qr canvas { background: #fff; padding: 10px; border-radius: 14px; }
+    .gc__muted { color: rgba(255,255,255,.7); font-size: 14px; }
+    @media print { body { background: #fff; color: #000; } .gc__acts { display: none; } }
+  </style>
+</head>
+<body>
+  <main class="gc">
+    <p class="gc__muted">{{ shop.name }}{% if gift_card.expired %} · Expired{% elsif gift_card.enabled == false %} · Disabled{% endif %}</p>
+    <div class="gc__card">
+      <span class="gc__shop">{{ shop.name }}</span>
+      <p class="gc__bal"><small>Gift card balance</small>{{ gift_card.balance | money }}</p>
+    </div>
+    {%- if gift_card.balance != gift_card.initial_value -%}<p class="gc__muted">Original value: {{ gift_card.initial_value | money }}</p>{%- endif -%}
+    {%- if gift_card.expires_on -%}<p class="gc__muted">Valid until {{ gift_card.expires_on | date: '%B %d, %Y' }}</p>{%- endif -%}
+    <div class="gc__code"><span id="GcCode">{{ gift_card.code | format_code }}</span><button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('GcCode').textContent.trim());this.textContent='Copied'">Copy</button></div>
+    <div class="gc__qr" id="GcQr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+    <div class="gc__acts">
+      <a class="gc__btn" href="{{ shop.url }}">Start shopping</a>
+      <button class="gc__btn gc__btn--ghost" type="button" onclick="window.print()">Print</button>
+      {%- if gift_card.pass_url -%}<a class="gc__btn gc__btn--ghost" href="{{ gift_card.pass_url }}">Add to Apple Wallet</a>{%- endif -%}
+    </div>
+  </main>
+  <script>addEventListener('load', function () { var q = document.getElementById('GcQr'); if (window.QRCode && q) new QRCode(q, { text: q.getAttribute('data-identifier'), width: 120, height: 120 }); });</script>
+</body>
+</html>

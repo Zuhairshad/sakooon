@@ -1,0 +1,24 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-article",
+   "settings": {
+    "pad_top": 120
+   }
+  },
+  "more": {
+   "type": "sn-journal",
+   "settings": {
+    "layout": "rail",
+    "eyebrow": "Keep reading",
+    "heading": "More",
+    "highlight": "stories",
+    "scheme": "ivory"
+   }
+  }
+ },
+ "order": [
+  "main",
+  "more"
+ ]
+}

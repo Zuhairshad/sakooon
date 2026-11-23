@@ -1,0 +1,808 @@
+{%- liquid
+  assign s = section.settings
+  assign msgs = section.blocks | where: 'type', 'message'
+-%}
+{%- if msgs.size > 0 -%}
+<div id="sna-{{ section.id }}" class="sna sna--{{ s.mode }}" style="--a-bg: {{ s.bg_color | default: settings.color_dark_bg }}; --a-tx: {{ s.text_color | default: settings.color_dark_text }}; --a-ac: {{ s.accent_color | default: settings.color_moon }};" data-sna data-speed="{{ s.interval }}">
+  {%- if s.silk -%}<div class="sna__silk" data-sn-silk data-c1="{{ s.bg_color | default: settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".5" data-amp=".6" data-scale=".7" data-mouse="false" data-quality="low"></div>{%- endif -%}
+  <div class="sna__in">
+    {%- if s.left_text != blank -%}<p class="sna__side">{% render 'sn-icon', name: s.left_icon, class: 'icon' %}<span>{{ s.left_text }}</span></p>{%- endif -%}
+    {%- if s.mode == 'marquee' -%}
+      <div class="sn-marq sna__marq" style="--dur: {{ s.marquee_speed }}s; --gap: 56px;">
+        {%- for r in (1..2) -%}
+          <div class="sn-marq__t is-pausable"{% if r == 2 %} aria-hidden="true"{% endif %}>
+            {%- for block in msgs -%}
+              <span class="sna__m" {{ block.shopify_attributes }}>{% render 'sn-phase', k: forloop.index %}{% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{% else %}{{ block.settings.text }}{% endif %}</span>
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="sna__rot" aria-live="polite">
+        {%- for block in msgs -%}
+          <p class="sna__m{% if forloop.first %} is-on{% endif %}" data-sna-m {{ block.shopify_attributes }}>
+            {% render 'sn-icon', name: block.settings.icon, class: 'icon' %}
+            <span>{{ block.settings.text }}</span>
+            {%- if block.settings.link != blank and block.settings.link_label != blank -%}<a class="sna__cta" href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>{%- endif -%}
+          </p>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if s.right_text != blank -%}<a class="sna__side sna__side--r" href="{{ s.right_link | default: '#' }}">{% render 'sn-icon', name: s.right_icon, class: 'icon' %}<span>{{ s.right_text }}</span></a>{%- endif -%}
+  </div>
+</div>
+<style>
+#sna-{{ section.id }} { position: relative; overflow: hidden; isolation: isolate; background: var(--a-bg); color: var(--a-tx); font-size: {{ s.font_size }}px; z-index: 60; }
+#sna-{{ section.id }} .sna__silk { position: absolute; inset: 0; z-index: -1; opacity: .9; }
+#sna-{{ section.id }} .sna__in { display: grid; grid-template-columns: 1fr minmax(0, auto) 1fr; align-items: center; gap: 20px; min-height: {{ s.height }}px; padding: 0 28px; }
+#sna-{{ section.id }} .sna__side { display: inline-flex; align-items: center; gap: 8px; font-size: .92em; letter-spacing: .06em; opacity: .82; white-space: nowrap; transition: opacity .3s, color .3s; }
+#sna-{{ section.id }} .sna__side--r { justify-self: end; }
+#sna-{{ section.id }} a.sna__side:hover { opacity: 1; color: var(--a-ac); }
+#sna-{{ section.id }} .icon { width: 15px; height: 15px; color: var(--a-ac); flex: none; }
+#sna-{{ section.id }} .sna__rot { grid-column: 2; position: relative; display: grid; justify-items: center; min-width: min(560px, 70vw); }
+#sna-{{ section.id }} .sna__m { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: .04em; text-align: center; opacity: 0; transform: translateY(70%); filter: blur(6px); transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1), filter .7s; pointer-events: none; }
+#sna-{{ section.id }} .sna__m.is-on { opacity: 1; transform: none; filter: none; pointer-events: auto; }
+#sna-{{ section.id }} .sna__m.is-out { opacity: 0; transform: translateY(-70%); filter: blur(6px); }
+#sna-{{ section.id }} .sna__cta { color: var(--a-ac); font-weight: 600; border-bottom: 1px dashed currentColor; padding-bottom: 1px; }
+#sna-{{ section.id }}.sna--marquee .sna__in { grid-template-columns: auto minmax(0, 1fr) auto; }
+#sna-{{ section.id }} .sna__marq { grid-column: 2; }
+#sna-{{ section.id }}.sna--marquee .sna__m { opacity: 1; transform: none; filter: none; display: inline-flex; gap: 12px; white-space: nowrap; }
+#sna-{{ section.id }} .sn-ph { width: 12px; height: 12px; color: var(--a-ac); }
+@media (max-width: 899px) {
+  #sna-{{ section.id }} .sna__in { grid-template-columns: 1fr; padding: 0 14px; }
+  #sna-{{ section.id }} .sna__side { display: none; }
+  #sna-{{ section.id }} .sna__rot, #sna-{{ section.id }} .sna__marq { grid-column: 1; min-width: 0; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('sna-{{ section.id }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var m = r.querySelectorAll('[data-sna-m]'); if (m.length < 2) return;
+  var i = 0, sec = parseFloat(r.getAttribute('data-speed')) || 5, hov = false;
+  r.addEventListener('mouseenter', function () { hov = true; }); r.addEventListener('mouseleave', function () { hov = false; });
+  setInterval(function () {
+    if (hov || document.hidden) return;
+    var a = m[i]; i = (i + 1) % m.length; var b = m[i];
+    a.classList.remove('is-on'); a.classList.add('is-out'); b.classList.remove('is-out'); b.classList.add('is-on');
+    setTimeout(function () { a.classList.remove('is-out'); }, 800);
+  }, sec * 1000);
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": "div",
+  "class": "sn-announcement-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Style",
+      "options": [
+        {
+          "value": "rotate",
+          "label": "One message at a time (dream fade)"
+        },
+        {
+          "value": "marquee",
+          "label": "Scrolling ribbon"
+        }
+      ],
+      "default": "rotate"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Change message every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Ribbon speed (lower = faster)",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Live silk background",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Left side"
+    },
+    {
+      "type": "select",
+      "id": "left_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "moon",
+          "label": "Moon"
+        },
+        {
+          "value": "sleep",
+          "label": "Sleep (Zzz)"
+        },
+        {
+          "value": "bed",
+          "label": "Bed"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "towel",
+          "label": "Towel"
+        },
+        {
+          "value": "cotton",
+          "label": "Cotton"
+        },
+        {
+          "value": "thread",
+          "label": "Thread / weave"
+        },
+        {
+          "value": "feather",
+          "label": "Feather / softness"
+        },
+        {
+          "value": "leaf",
+          "label": "Leaf / natural"
+        },
+        {
+          "value": "sparkle",
+          "label": "Sparkle"
+        },
+        {
+          "value": "sparkles",
+          "label": "Sparkles"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "ruler",
+          "label": "Ruler / size"
+        },
+        {
+          "value": "layers",
+          "label": "Layers"
+        },
+        {
+          "value": "droplet",
+          "label": "Droplet"
+        },
+        {
+          "value": "wash",
+          "label": "Washing"
+        },
+        {
+          "value": "iron",
+          "label": "Iron"
+        },
+        {
+          "value": "swatch",
+          "label": "Fabric swatch"
+        },
+        {
+          "value": "hotel",
+          "label": "Hotel"
+        },
+        {
+          "value": "truck",
+          "label": "Delivery truck"
+        },
+        {
+          "value": "package",
+          "label": "Package"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "return",
+          "label": "Easy returns"
+        },
+        {
+          "value": "refresh",
+          "label": "Exchange"
+        },
+        {
+          "value": "credit-card",
+          "label": "Card / payment"
+        },
+        {
+          "value": "lock",
+          "label": "Secure lock"
+        },
+        {
+          "value": "shield-check",
+          "label": "Shield"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "check-circle",
+          "label": "Check"
+        },
+        {
+          "value": "clock",
+          "label": "Clock"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "whatsapp",
+          "label": "WhatsApp"
+        },
+        {
+          "value": "mail",
+          "label": "Email"
+        },
+        {
+          "value": "message",
+          "label": "Message"
+        },
+        {
+          "value": "map-pin",
+          "label": "Map pin"
+        },
+        {
+          "value": "home",
+          "label": "Home"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "percent",
+          "label": "Percent"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        },
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        }
+      ],
+      "default": "phone"
+    },
+    {
+      "type": "text",
+      "id": "left_text",
+      "label": "Text",
+      "default": "+92 3XX XXXXXXX"
+    },
+    {
+      "type": "header",
+      "content": "Right side"
+    },
+    {
+      "type": "select",
+      "id": "right_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "moon",
+          "label": "Moon"
+        },
+        {
+          "value": "sleep",
+          "label": "Sleep (Zzz)"
+        },
+        {
+          "value": "bed",
+          "label": "Bed"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "towel",
+          "label": "Towel"
+        },
+        {
+          "value": "cotton",
+          "label": "Cotton"
+        },
+        {
+          "value": "thread",
+          "label": "Thread / weave"
+        },
+        {
+          "value": "feather",
+          "label": "Feather / softness"
+        },
+        {
+          "value": "leaf",
+          "label": "Leaf / natural"
+        },
+        {
+          "value": "sparkle",
+          "label": "Sparkle"
+        },
+        {
+          "value": "sparkles",
+          "label": "Sparkles"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "ruler",
+          "label": "Ruler / size"
+        },
+        {
+          "value": "layers",
+          "label": "Layers"
+        },
+        {
+          "value": "droplet",
+          "label": "Droplet"
+        },
+        {
+          "value": "wash",
+          "label": "Washing"
+        },
+        {
+          "value": "iron",
+          "label": "Iron"
+        },
+        {
+          "value": "swatch",
+          "label": "Fabric swatch"
+        },
+        {
+          "value": "hotel",
+          "label": "Hotel"
+        },
+        {
+          "value": "truck",
+          "label": "Delivery truck"
+        },
+        {
+          "value": "package",
+          "label": "Package"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "return",
+          "label": "Easy returns"
+        },
+        {
+          "value": "refresh",
+          "label": "Exchange"
+        },
+        {
+          "value": "credit-card",
+          "label": "Card / payment"
+        },
+        {
+          "value": "lock",
+          "label": "Secure lock"
+        },
+        {
+          "value": "shield-check",
+          "label": "Shield"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "check-circle",
+          "label": "Check"
+        },
+        {
+          "value": "clock",
+          "label": "Clock"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "whatsapp",
+          "label": "WhatsApp"
+        },
+        {
+          "value": "mail",
+          "label": "Email"
+        },
+        {
+          "value": "message",
+          "label": "Message"
+        },
+        {
+          "value": "map-pin",
+          "label": "Map pin"
+        },
+        {
+          "value": "home",
+          "label": "Home"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "percent",
+          "label": "Percent"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        },
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        }
+      ],
+      "default": "package"
+    },
+    {
+      "type": "text",
+      "id": "right_text",
+      "label": "Text",
+      "default": "Track your order"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Look"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 30,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free delivery across Pakistan over Rs. 5,000"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "message"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

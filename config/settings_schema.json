@@ -1,0 +1,633 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sakooon Nocturne",
+    "theme_version": "2.0.0",
+    "theme_author": "Custom build",
+    "theme_documentation_url": "https://sakooon.com",
+    "theme_support_url": "https://sakooon.com/pages/contact"
+  },
+  {
+    "name": "Colours",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Day palette"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Ink (main text)",
+        "default": "#1B2130"
+      },
+      {
+        "type": "color",
+        "id": "color_ink_soft",
+        "label": "Soft text",
+        "default": "#5D6372"
+      },
+      {
+        "type": "color",
+        "id": "color_paper",
+        "label": "Linen (page background)",
+        "default": "#F4EEE4"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Ivory (cards and drawers)",
+        "default": "#FBF8F2"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Sand (soft backgrounds)",
+        "default": "#E8DECF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Champagne (accent)",
+        "default": "#A8834F"
+      },
+      {
+        "type": "color",
+        "id": "color_sage",
+        "label": "Sage",
+        "default": "#B3C2A7"
+      },
+      {
+        "type": "header",
+        "content": "Night palette"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_bg",
+        "label": "Midnight",
+        "default": "#161B29"
+      },
+      {
+        "type": "color",
+        "id": "color_dusk",
+        "label": "Dusk (deep lavender night)",
+        "default": "#2B2B45"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Text on night colours",
+        "default": "#F4EEE4"
+      },
+      {
+        "type": "color",
+        "id": "color_moon",
+        "label": "Moonlight (accent on night colours)",
+        "default": "#E3C793"
+      },
+      {
+        "type": "header",
+        "content": "Status"
+      },
+      {
+        "type": "color",
+        "id": "color_signal",
+        "label": "In stock / success",
+        "default": "#5E8C6A"
+      },
+      {
+        "type": "color",
+        "id": "color_danger",
+        "label": "Sale / errors",
+        "default": "#B5483C"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_head",
+        "label": "Heading font",
+        "options": [
+          {
+            "value": "fraunces",
+            "label": "Fraunces (soft serif)"
+          },
+          {
+            "value": "cormorant",
+            "label": "Cormorant Garamond (classic serif)"
+          },
+          {
+            "value": "figtree",
+            "label": "Figtree (modern sans)"
+          }
+        ],
+        "default": "fraunces"
+      },
+      {
+        "type": "select",
+        "id": "head_weight",
+        "label": "Heading weight",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          }
+        ],
+        "default": "300"
+      },
+      {
+        "type": "range",
+        "id": "head_scale",
+        "label": "Heading size",
+        "min": 85,
+        "max": 125,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "select",
+        "id": "font_body",
+        "label": "Body font",
+        "options": [
+          {
+            "value": "figtree",
+            "label": "Figtree"
+          },
+          {
+            "value": "jost",
+            "label": "Jost"
+          }
+        ],
+        "default": "figtree"
+      },
+      {
+        "type": "range",
+        "id": "body_size",
+        "label": "Body text size",
+        "min": 14,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Design",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1100,
+        "max": 1700,
+        "step": 20,
+        "unit": "px",
+        "default": 1380
+      },
+      {
+        "type": "select",
+        "id": "corners",
+        "label": "Corner style",
+        "options": [
+          {
+            "value": "32",
+            "label": "Pillow (very round)"
+          },
+          {
+            "value": "18",
+            "label": "Soft"
+          },
+          {
+            "value": "6",
+            "label": "Tailored (almost square)"
+          }
+        ],
+        "default": "32"
+      },
+      {
+        "type": "checkbox",
+        "id": "stitch",
+        "label": "Stitched borders on cards",
+        "info": "A fine dashed 'stitch' line inside cards and panels.",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button hover",
+        "options": [
+          {
+            "value": "wave",
+            "label": "Rising silk wave"
+          },
+          {
+            "value": "simple",
+            "label": "Simple fade"
+          }
+        ],
+        "default": "wave"
+      },
+      {
+        "type": "checkbox",
+        "id": "grain",
+        "label": "Linen texture over the site",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Motion",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Every animation can be switched off here. Visitors who ask their device for reduced motion always get a calm, still site."
+      },
+      {
+        "type": "checkbox",
+        "id": "motion",
+        "label": "Scroll animations (dream reveals)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "silk",
+        "label": "Live silk backgrounds (WebGL)",
+        "info": "Flowing satin rendered on the graphics chip. Falls back to a still gradient on old phones.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "feathers",
+        "label": "Drifting feathers and stardust",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "ripple",
+        "label": "Fabric ripple when hovering product photos",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "moon_top",
+        "label": "Moon scroll indicator (back to top)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "view_transitions",
+        "label": "Soft fade between pages",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_ratio",
+        "label": "Image shape",
+        "options": [
+          {
+            "value": "4 / 5",
+            "label": "Portrait"
+          },
+          {
+            "value": "1 / 1",
+            "label": "Square"
+          },
+          {
+            "value": "3 / 4",
+            "label": "Tall"
+          }
+        ],
+        "default": "4 / 5"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_second",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick",
+        "label": "Quick add button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_wish",
+        "label": "Wishlist heart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_swatches",
+        "label": "Colour swatches",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "card_swatch_limit",
+        "label": "Swatches before +more",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "checkbox",
+        "id": "card_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "card_meta",
+        "label": "Show fabric line (specs.line_1 metafield)",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "card_badge",
+        "label": "Sale badge",
+        "options": [
+          {
+            "value": "percent",
+            "label": "Percent off"
+          },
+          {
+            "value": "text",
+            "label": "Text (Sale)"
+          },
+          {
+            "value": "none",
+            "label": "Hide"
+          }
+        ],
+        "default": "percent"
+      },
+      {
+        "type": "range",
+        "id": "card_new_days",
+        "label": "Show 'New' badge for products added in the last",
+        "min": 0,
+        "max": 60,
+        "step": 5,
+        "unit": "d",
+        "default": 30
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "When a product is added",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Open cart drawer"
+          },
+          {
+            "value": "page",
+            "label": "Stay and show a message"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "range",
+        "id": "free_ship",
+        "label": "Free delivery from (thousand Rs, 0 = hide)",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "text",
+        "id": "free_ship_text",
+        "label": "Progress text",
+        "default": "You're [amount] away from free delivery"
+      },
+      {
+        "type": "text",
+        "id": "free_ship_done",
+        "label": "Unlocked text",
+        "default": "Free delivery unlocked — sweet dreams!"
+      },
+      {
+        "type": "collection",
+        "id": "cart_upsell",
+        "label": "'Complete the bed' suggestions in cart"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_note",
+        "label": "Order note",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Store contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "whatsapp",
+        "label": "WhatsApp number (international, digits only)",
+        "info": "Example: 923001234567",
+        "default": "923000000000"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone (shown in header and footer)",
+        "default": "+92 3XX XXXXXXX"
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email",
+        "default": "hello@sakooon.com"
+      }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Leave empty to use the built-in moon-phase Sakooon wordmark."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_light",
+        "label": "Logo for dark backgrounds"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Preloader",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "pl_enabled",
+        "label": "Show the loading screen",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "pl_mode",
+        "label": "When",
+        "options": [
+          {
+            "value": "smart",
+            "label": "Full on first visit, short on other pages"
+          },
+          {
+            "value": "always",
+            "label": "Full on every page"
+          },
+          {
+            "value": "session",
+            "label": "Only once per visit"
+          }
+        ],
+        "default": "smart"
+      },
+      {
+        "type": "range",
+        "id": "pl_duration",
+        "label": "Minimum time",
+        "min": 2,
+        "max": 7,
+        "step": 1,
+        "unit": "s",
+        "default": 4
+      },
+      {
+        "type": "select",
+        "id": "pl_exit",
+        "label": "How the site appears",
+        "options": [
+          {
+            "value": "sheet",
+            "label": "Silk sheet is pulled away"
+          },
+          {
+            "value": "fold",
+            "label": "Folds up like linen"
+          },
+          {
+            "value": "dissolve",
+            "label": "Dissolves into light"
+          }
+        ],
+        "default": "sheet"
+      },
+      {
+        "type": "text",
+        "id": "pl_tagline",
+        "label": "Line under the logo",
+        "default": "Sleep, softly woven"
+      },
+      {
+        "type": "textarea",
+        "id": "pl_messages",
+        "label": "Bedtime messages (one per line)",
+        "default": "Weaving 300 threads per inch\nFluffing the pillows\nWarming the duvet\nDimming the lights"
+      },
+      {
+        "type": "checkbox",
+        "id": "pl_percent",
+        "label": "Show percentage number",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "pl_corner",
+        "label": "Small corner text",
+        "default": "Luxury bedding & bath · Pakistan"
+      },
+      {
+        "type": "checkbox",
+        "id": "pl_sound_wave",
+        "label": "Show the breathing ring",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "pl_c1",
+        "label": "Silk shadow colour"
+      },
+      {
+        "type": "color",
+        "id": "pl_c2",
+        "label": "Silk colour"
+      },
+      {
+        "type": "color",
+        "id": "pl_c3",
+        "label": "Silk highlight colour"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      }
+    ]
+  }
+]

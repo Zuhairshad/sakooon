@@ -1,0 +1,403 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snic-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snic snic--{{ s.layout }}" style="{% render 'sn-vars', s: s %}">
+  {% render 'sn-divider', s: s %}
+  <div class="sn-wrap snic__grid">
+    <div class="snic__copy">
+      {% render 'sn-head', s: s, k: 2 %}
+      {%- if s.points != blank -%}
+        {%- assign pts = s.points | newline_to_br | split: '<br />' -%}
+        <ul class="snic__pts">
+          {%- for p in pts -%}{%- assign pp = p | strip -%}{%- if pp != blank -%}
+            {%- assign kv = pp | split: '|' -%}
+            <li data-r style="--i: {{ forloop.index | plus: 2 }};"><span>{{ kv[0] }}</span><b>{{ kv[1] }}</b></li>
+          {%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if s.btn != blank -%}<a class="sn-btn" href="{{ s.link | default: routes.all_products_collection_url }}" data-r style="--i: 6;"><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+    </div>
+    <div class="snic__stage" data-snic data-r="zoom" style="--p: {{ s.start }}%;" tabindex="0" role="slider" aria-label="{{ s.before_label | escape }} / {{ s.after_label | escape }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ s.start }}">
+      <div class="snic__after">
+        {% render 'sn-media', image: s.after, art: s.art, width: 1600, sizes: '(min-width: 990px) 55vw, 100vw', class: 'snic__m' %}
+        <span class="snic__lbl snic__lbl--r">{{ s.after_label }}</span>
+      </div>
+      <div class="snic__before">
+        {%- if s.before == blank -%}{%- assign bc = 'snic__m is-faded' -%}{%- else -%}{%- assign bc = 'snic__m' -%}{%- endif -%}
+        {% render 'sn-media', image: s.before, art: s.art, width: 1600, sizes: '(min-width: 990px) 55vw, 100vw', class: bc %}
+        <span class="snic__lbl">{{ s.before_label }}</span>
+      </div>
+      <div class="snic__line" aria-hidden="true">
+        <span class="snic__knob">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/><circle class="snic__shadow" cx="12" cy="12" r="8.4"/></svg>
+          {% render 'sn-icon', name: 'chevron-left', class: 'icon snic__cl' %}{% render 'sn-icon', name: 'chevron-right', class: 'icon snic__cr' %}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+#{{ sid }} .snic__grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(30px, 6vw, 100px); align-items: center; }
+#{{ sid }}.snic--wide .snic__grid { grid-template-columns: 1fr; }
+#{{ sid }}.snic--wide .snic__copy { max-width: 760px; margin-inline: auto; text-align: center; justify-items: center; }
+#{{ sid }} .snic__copy { display: grid; gap: 24px; justify-items: start; }
+#{{ sid }} .snic__copy .sn-head { margin: 0; }
+#{{ sid }} .snic__pts { display: grid; width: 100%; border-top: 1px dashed var(--line2); }
+#{{ sid }} .snic__pts li { display: flex; justify-content: space-between; gap: 18px; padding: 14px 0; border-bottom: 1px dashed var(--line2); font-size: 14.5px; }
+#{{ sid }} .snic__pts span { color: var(--soft); }
+#{{ sid }} .snic__pts b { font-weight: 500; text-align: right; }
+#{{ sid }} .snic__stage { position: relative; aspect-ratio: {{ s.ratio }}; border-radius: calc(var(--r) * 1.3); overflow: hidden; cursor: ew-resize; touch-action: pan-y; user-select: none; outline-offset: 6px; box-shadow: 0 50px 90px -60px rgba(20, 22, 40, .6); }
+#{{ sid }} .snic__after, #{{ sid }} .snic__before { position: absolute; inset: 0; }
+#{{ sid }} .snic__before { clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+#{{ sid }} .snic__m { position: absolute; inset: 0; border-radius: 0; }
+#{{ sid }} .snic__m.is-faded img, #{{ sid }} .snic__m.is-faded .sn-art { filter: saturate(.25) brightness(.93) contrast(.9); }
+#{{ sid }} .snic__lbl { position: absolute; z-index: 2; left: 16px; top: 16px; padding: 8px 14px; border-radius: 999px; background: color-mix(in srgb, var(--c-dark) 72%, transparent); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+#{{ sid }} .snic__lbl--r { left: auto; right: 16px; background: var(--ac); color: var(--ac-ink); }
+#{{ sid }} .snic__line { position: absolute; z-index: 3; top: 0; bottom: 0; left: var(--p); width: 2px; margin-left: -1px; background: linear-gradient(transparent, #fff 14%, #fff 86%, transparent); box-shadow: 0 0 18px rgba(255,255,255,.7); pointer-events: none; }
+#{{ sid }} .snic__knob { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; translate: -50% -50%; display: grid; place-items: center; border-radius: 50%; background: var(--c-dark); color: var(--c-moon); box-shadow: 0 14px 30px -10px rgba(0,0,0,.6), 0 0 0 6px rgba(255,255,255,.25); transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+#{{ sid }} .snic__stage:active .snic__knob, #{{ sid }} .snic__stage:focus-visible .snic__knob { transform: scale(1.12); }
+#{{ sid }} .snic__knob svg { width: 26px; height: 26px; }
+#{{ sid }} .snic__shadow { fill: var(--c-dark); transform: translateX(calc((var(--pn, .5) - .5) * 16px + 4px)); }
+#{{ sid }} .snic__knob .icon { position: absolute; width: 14px; height: 14px; color: #fff; opacity: .8; }
+#{{ sid }} .snic__cl { left: -24px; } #{{ sid }} .snic__cr { right: -24px; }
+#{{ sid }} .snic__knob .icon { animation: snic-nudge 1.8s ease-in-out infinite; }
+#{{ sid }} .snic__cl { animation-direction: reverse !important; }
+@keyframes snic-nudge { 50% { translate: 4px 0; } }
+@media (max-width: 899px) { #{{ sid }} .snic__grid { grid-template-columns: 1fr; } #{{ sid }} .snic__stage { order: -1; } #{{ sid }} .snic__knob { width: 52px; height: 52px; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var st = r.querySelector('[data-snic]'), down = false, cur = {{ s.start }};
+  function set(p) { cur = Math.max(0, Math.min(100, p)); st.style.setProperty('--p', cur + '%'); st.style.setProperty('--pn', (cur / 100).toFixed(3)); st.setAttribute('aria-valuenow', Math.round(cur)); }
+  function at(e) { var b = st.getBoundingClientRect(); set((e.clientX - b.left) / b.width * 100); }
+  st.addEventListener('pointerdown', function (e) { down = true; st.setPointerCapture(e.pointerId); at(e); });
+  st.addEventListener('pointermove', function (e) { if (down) at(e); else if (e.pointerType === 'mouse' && {{ s.hover | json }}) at(e); });
+  st.addEventListener('pointerup', function () { down = false; });
+  st.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { set(cur - 5); e.preventDefault(); } if (e.key === 'ArrowRight') { set(cur + 5); e.preventDefault(); } });
+  set(cur);
+  if ('IntersectionObserver' in window && document.body.getAttribute('data-motion') !== 'off') {
+    new IntersectionObserver(function (es, o) {
+      if (!es[0].isIntersecting) return; o.disconnect();
+      var a = cur, t0 = performance.now();
+      (function f(t) { var k = Math.min(1, (t - t0) / 2200); if (down) return; set(a + Math.sin(k * Math.PI * 2) * 18 * (1 - k)); if (k < 1) requestAnimationFrame(f); })(t0);
+    }, { threshold: .5 }).observe(st);
+  }
+})();
+</script>
+{% schema %}
+{
+  "name": "Before / after",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "split",
+          "label": "Text beside slider"
+        },
+        {
+          "value": "wide",
+          "label": "Text above, wide slider"
+        }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Feel the difference"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ordinary cotton"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "vs. Sakooon sateen"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Drag the moon to compare a regular polycotton sheet with our T300 sateen after ten washes."
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "m"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "textarea",
+      "id": "points",
+      "label": "Comparison rows (Label|Value per line)",
+      "default": "Thread count|300 vs 140\nAfter 10 washes|Softer, no pilling\nColour|Locked-in, fade resistant"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button",
+      "default": "Shop sateen"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "before",
+      "label": "Before image (left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "after",
+      "label": "After image (right)"
+    },
+    {
+      "type": "select",
+      "id": "art",
+      "label": "Illustration (no images)",
+      "options": [
+        {
+          "value": "bed",
+          "label": "Bedroom"
+        },
+        {
+          "value": "bed-cover",
+          "label": "Bed cover"
+        },
+        {
+          "value": "bed-sheet",
+          "label": "Bed sheets"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "duvet-cover",
+          "label": "Duvet cover"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "pillow-cover",
+          "label": "Pillow cover"
+        },
+        {
+          "value": "towel",
+          "label": "Towels"
+        }
+      ],
+      "default": "bed-sheet"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before label",
+      "default": "Ordinary"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After label",
+      "default": "Sakooon T300"
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "4 / 3",
+          "label": "4:3"
+        },
+        {
+          "value": "16 / 10",
+          "label": "16:10"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        }
+      ],
+      "default": "4 / 3"
+    },
+    {
+      "type": "range",
+      "id": "start",
+      "label": "Start position",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "hover",
+      "label": "Follow the mouse on desktop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before / after"
+    }
+  ]
+}
+{% endschema %}

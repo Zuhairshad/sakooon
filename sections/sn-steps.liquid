@@ -1,0 +1,525 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snst-' | append: section.id
+  assign n = section.blocks.size
+-%}
+<section id="{{ sid }}" class="sn-s snst snst--{{ s.layout }}" style="{% render 'sn-vars', s: s %} --n: {{ n }};" data-sn-silk-host>
+  {% render 'sn-divider', s: s %}
+  {%- if s.silk -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".4" data-amp=".6"></div>{%- endif -%}
+  <div class="sn-wrap">
+    {% render 'sn-head', s: s, k: 0 %}
+    <ol class="snst__list" data-snst>
+      <li class="snst__thread" aria-hidden="true"><svg preserveAspectRatio="none" viewBox="0 0 100 10"><path d="M0 5 Q 12.5 0 25 5 T 50 5 T 75 5 T 100 5" pathLength="1"/></svg><i></i></li>
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- assign k = forloop.index0 | times: 4 | divided_by: n -%}
+        {%- if forloop.last -%}{%- assign k = 4 -%}{%- endif -%}
+        <li class="snst__step" style="--i: {{ forloop.index0 }};" data-snst-step {{ block.shopify_attributes }}>
+          <div class="snst__node">
+            <span class="snst__moon">{% render 'sn-phase', k: k %}</span>
+            <small>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</small>
+          </div>
+          <div class="snst__card{% if s.cards %} sn-pillow sn-stitch{% endif %}" data-r="rise" style="--i: {{ forloop.index0 }};">
+            {%- if b.image != blank -%}{% render 'sn-media', image: b.image, width: 700, sizes: '25vw', class: 'snst__img', ratio: '16 / 10' %}{%- else -%}<span class="sn-icon-circle">{% render 'sn-icon', name: b.icon, class: 'icon' %}</span>{%- endif -%}
+            <h3 class="sn-h sn-h--xs">{{ b.title }}</h3>
+            {%- if b.text != blank -%}<p>{{ b.text }}</p>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+<style>
+#{{ sid }} .snst__list { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); counter-reset: s; }
+#{{ sid }} .snst__thread { position: absolute; left: calc(50% / var(--n)); right: calc(50% / var(--n)); top: 30px; height: 14px; translate: 0 -50%; }
+#{{ sid }} .snst__thread svg { display: none; }
+#{{ sid }} .snst__thread::after { content: ""; position: absolute; left: 0; top: 50%; height: 1.5px; margin-top: -.75px; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, transparent, var(--ac) 12%); }
+#{{ sid }} .snst__thread path { fill: none; stroke: var(--ac); stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--p, 0)); }
+#{{ sid }} .snst__thread::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--line2); }
+#{{ sid }} .snst__thread i { position: absolute; top: 50%; left: calc(var(--p, 0) * 100%); width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--ac); box-shadow: 0 0 0 5px color-mix(in srgb, var(--ac) 20%, transparent), 0 0 18px var(--ac); }
+#{{ sid }} .snst__step { position: relative; display: grid; gap: 22px; justify-items: center; text-align: center; }
+#{{ sid }} .snst__node { position: relative; z-index: 2; display: grid; justify-items: center; gap: 8px; }
+#{{ sid }} .snst__moon { width: 60px; height: 60px; display: grid; place-items: center; border-radius: 50%; background: var(--bg); border: 1px solid var(--line2); color: var(--mute); transition: color .6s, border-color .6s, box-shadow .6s, transform .7s cubic-bezier(.3, 1.5, .5, 1); }
+#{{ sid }} .snst__moon .sn-ph { width: 26px; height: 26px; }
+#{{ sid }} .snst__node small { font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--mute); transition: color .6s; }
+#{{ sid }} .snst__step.is-lit .snst__moon { color: var(--ac); border-color: var(--ac); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 12%, transparent), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); transform: scale(1.08); }
+#{{ sid }} .snst__step.is-lit small { color: var(--ac); }
+#{{ sid }} .snst__card { display: grid; gap: 12px; justify-items: center; padding: {% if s.cards %}26px 22px 28px{% else %}0 6px{% endif %}; width: 100%; }
+#{{ sid }} .snst__card p { font-size: 14.5px; line-height: 1.65; color: var(--soft); }
+#{{ sid }} .snst__img { width: 100%; border-radius: calc(var(--r) * .7); }
+@media (max-width: 899px) {
+  #{{ sid }} .snst__list { grid-template-columns: 1fr; gap: 26px; padding-left: 0; }
+  #{{ sid }} .snst__thread { left: 30px; right: auto; top: 30px; bottom: 30px; width: 14px; height: auto; translate: -50% 0; }
+  #{{ sid }} .snst__thread svg { display: none; }
+  #{{ sid }} .snst__thread::before { left: 50%; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 1px dashed var(--line2); }
+  #{{ sid }} .snst__thread::after { left: 50%; top: 0; width: 1.4px; margin: 0 0 0 -.7px; height: calc(var(--p, 0) * 100%); background: var(--ac); }
+  #{{ sid }} .snst__thread i { left: 50%; top: calc(var(--p, 0) * 100%); }
+  #{{ sid }} .snst__step { grid-template-columns: 60px 1fr; justify-items: start; text-align: left; align-items: start; gap: 18px; }
+  #{{ sid }} .snst__card { justify-items: start; padding: {% if s.cards %}20px{% else %}6px 0 0{% endif %}; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var l = r.querySelector('[data-snst]'), th = l.querySelector('.snst__thread'), steps = [].slice.call(l.querySelectorAll('[data-snst-step]')), tk = false;
+  var still = document.body.getAttribute('data-motion') === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function upd() {
+    tk = false;
+    var b = l.getBoundingClientRect(), p = still ? 1 : Math.min(1, Math.max(0, (innerHeight * .78 - b.top) / (b.height * .9 + innerHeight * .2)));
+    th.style.setProperty('--p', p.toFixed(3));
+    var mob = innerWidth < 900;
+    steps.forEach(function (s, i) { var at = steps.length > 1 ? i / (steps.length - 1) : 0; s.classList.toggle('is-lit', p >= at - .02); });
+  }
+  addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(upd); } }, { passive: true }); addEventListener('resize', upd); upd();
+})();
+</script>
+{% schema %}
+{
+  "name": "Steps & journey",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "From loom to bed"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How every sheet"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "comes to you"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "line",
+          "label": "Thread line"
+        }
+      ],
+      "default": "line"
+    },
+    {
+      "type": "checkbox",
+      "id": "cards",
+      "label": "Show steps as pillow cards",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Silk background (use a night scheme)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "cotton"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (replaces icon)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Long-staple cotton"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Only the longest, strongest fibres make it to our looms."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Steps & journey",
+      "blocks": [
+        {
+          "type": "step"
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "swatch",
+            "title": "Woven to count",
+            "text": "T200, T250 or T300, woven on air-jet looms for an even, silky hand."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "wash",
+            "title": "Washed twice",
+            "text": "Pre-washed so it is soft from night one, with no shrinkage."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "gift",
+            "title": "Wrapped & delivered",
+            "text": "Folded by hand, boxed with care and at your door in days."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,387 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snpu-' | append: section.id
+  assign fid = 'SnPop-' | append: section.id
+-%}
+<div id="{{ sid }}" class="snpu snpu--{{ s.position }}" data-delay="{{ s.delay }}" data-days="{{ s.days }}" data-exit="{{ s.exit_intent }}" data-key="sakooon:pop:{{ s.storage_key | handleize }}" {% unless s.enabled %}data-off{% endunless %} hidden>
+  <div class="snpu__bg" data-snpu-close></div>
+  <div class="snpu__card" role="dialog" aria-modal="true" aria-label="{{ s.heading | escape }}" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
+    {%- if s.silk -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".5" data-amp=".8" data-quality="low"></div>{%- endif -%}
+    <button type="button" class="snpu__x" data-snpu-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button>
+    {%- if s.image != blank or s.show_art -%}
+      <div class="snpu__vis">{% render 'sn-media', image: s.image, art: s.art, width: 900, sizes: '400px', class: 'snpu__img' %}<span class="snpu__moon"><i></i></span></div>
+    {%- endif -%}
+    <div class="snpu__body">
+      {%- if s.eyebrow != blank -%}<p class="sn-eyebrow">{% render 'sn-phase', k: 3 %}{{ s.eyebrow }}</p>{%- endif -%}
+      <p class="sn-h sn-h--m">{{ s.heading }}{% if s.highlight != blank %} <em>{{ s.highlight }}</em>{% endif %}</p>
+      {%- if s.text != blank -%}<p class="snpu__text">{{ s.text }}</p>{%- endif -%}
+      {%- if s.mode == 'newsletter' -%}
+        {%- form 'customer', id: fid, class: 'snpu__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,popup">
+          {%- if form.posted_successfully? -%}
+            <div class="snpu__ok" data-snpu-success>
+              {%- if s.code != blank -%}<p class="sn-small">{{ s.code_label }}</p><button type="button" class="snpu__code" data-snpu-code="{{ s.code | escape }}"><b>{{ s.code }}</b><span>{{ s.copy_text }}</span></button>{%- endif -%}
+              <p class="sn-small">{{ s.ok_text }}</p>
+            </div>
+          {%- else -%}
+            <div class="sn-pill-form"><input type="email" name="contact[email]" required placeholder="{{ s.placeholder | escape }}" aria-label="{{ s.placeholder | escape }}" autocomplete="email"><button class="sn-btn sn-btn--gold sn-btn--sm" type="submit"><span>{{ s.btn }}</span></button></div>
+            {%- if form.errors -%}<p class="sn-msg sn-msg--err">{{ form.errors.messages.email }}</p>{%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      {%- else -%}
+        <div class="snpu__reveal" data-snpu-reveal>
+          <button type="button" class="sn-btn sn-btn--gold sn-btn--block snpu__rb" data-snpu-rbtn><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'gift', class: 'icon' %}</button>
+          <button type="button" class="snpu__code" data-snpu-code="{{ s.code | escape }}" hidden><b>{{ s.code }}</b><span>{{ s.copy_text }}</span></button>
+        </div>
+        {%- if s.link_label != blank -%}<a class="sn-link" href="{{ s.link | default: routes.all_products_collection_url }}">{{ s.link_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+      {%- endif -%}
+      <button type="button" class="snpu__no" data-snpu-close>{{ s.decline }}</button>
+    </div>
+  </div>
+</div>
+<style>
+#{{ sid }} { position: fixed; inset: 0; z-index: 2147482500; display: grid; place-items: center; padding: 16px; pointer-events: none; }
+#{{ sid }}.snpu--corner { place-items: end start; }
+#{{ sid }}.is-open { pointer-events: auto; }
+#{{ sid }} .snpu__bg { position: absolute; inset: 0; background: color-mix(in srgb, var(--c-dark) 55%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity .6s; }
+#{{ sid }}.snpu--corner .snpu__bg { display: none; }
+#{{ sid }}.is-open .snpu__bg { opacity: 1; }
+#{{ sid }} .snpu__card { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: {% if s.image != blank or s.show_art %}minmax(0, .85fr) minmax(0, 1fr){% else %}1fr{% endif %}; width: min({% if s.image != blank or s.show_art %}820px{% else %}480px{% endif %}, 100%); border-radius: calc(var(--r) * 1.3); background: var(--bg); color: var(--tx); box-shadow: 0 60px 120px -40px rgba(0,0,0,.6); opacity: 0; transform: translateY(60px) scale(.94); transition: opacity .6s, transform .9s cubic-bezier(.2, 1.1, .3, 1); --soft: color-mix(in srgb, var(--tx) 70%, transparent); --mute: color-mix(in srgb, var(--tx) 48%, transparent); --line2: color-mix(in srgb, var(--tx) 22%, transparent); --ac-ink: #fff; }
+#{{ sid }}.snpu--corner .snpu__card { width: min(400px, 100%); grid-template-columns: 1fr; }
+#{{ sid }}.snpu--corner .snpu__vis { display: none; }
+#{{ sid }}.is-open .snpu__card { opacity: 1; transform: none; }
+#{{ sid }} .snpu__x { position: absolute; z-index: 4; right: 14px; top: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--bg) 70%, transparent); color: var(--tx); transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+#{{ sid }} .snpu__x:hover { transform: rotate(90deg); }
+#{{ sid }} .snpu__x .icon { width: 17px; height: 17px; }
+#{{ sid }} .snpu__vis { position: relative; min-height: 100%; }
+#{{ sid }} .snpu__img { position: absolute; inset: 0; border-radius: 0; }
+#{{ sid }} .snpu__moon { position: absolute; left: 50%; bottom: 26px; width: 64px; height: 64px; margin-left: -32px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 35% 35%, #fff, var(--c-moon) 60%); box-shadow: 0 0 40px color-mix(in srgb, var(--c-moon) 80%, transparent); }
+#{{ sid }} .snpu__moon i { position: absolute; inset: -2px; border-radius: 50%; background: var(--c-dark); transform: translateX(100%); }
+#{{ sid }}.is-open .snpu__moon i { animation: snpu-wax 2.4s cubic-bezier(.6, 0, .3, 1) .5s forwards; }
+@keyframes snpu-wax { from { transform: translateX(-10%); } to { transform: translateX(105%); } }
+#{{ sid }} .snpu__body { position: relative; z-index: 1; display: grid; gap: 16px; align-content: center; padding: clamp(28px, 4vw, 48px); }
+#{{ sid }} .snpu__body > * { opacity: 0; transform: translateY(14px); transition: opacity .6s, transform .8s cubic-bezier(.2, .8, .2, 1); }
+#{{ sid }}.is-open .snpu__body > * { opacity: 1; transform: none; }
+#{{ sid }}.is-open .snpu__body > :nth-child(2) { transition-delay: .1s; } #{{ sid }}.is-open .snpu__body > :nth-child(3) { transition-delay: .2s; } #{{ sid }}.is-open .snpu__body > :nth-child(4) { transition-delay: .3s; } #{{ sid }}.is-open .snpu__body > :nth-child(n + 5) { transition-delay: .4s; }
+#{{ sid }} .snpu__text { color: var(--soft); font-size: 15px; }
+#{{ sid }} .snpu__code { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 8px 8px 8px 20px; border-radius: 999px; border: 1.5px dashed var(--ac); background: color-mix(in srgb, var(--ac) 10%, transparent); color: var(--tx); }
+#{{ sid }} .snpu__code b { font-size: 16px; letter-spacing: .26em; }
+#{{ sid }} .snpu__code span { padding: 10px 16px; border-radius: 999px; background: var(--ac); color: var(--ac-ink); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+#{{ sid }} .snpu__code:not([hidden]) { animation: snpu-pop .7s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes snpu-pop { from { transform: scale(.7); opacity: 0; } }
+#{{ sid }} .snpu__no { justify-self: start; font-size: 12.5px; color: var(--mute); text-decoration: underline; text-underline-offset: 3px; }
+#{{ sid }} .snpu__ok { display: grid; gap: 10px; }
+@media (max-width: 699px) {
+  #{{ sid }} { place-items: end center; padding: 10px; }
+  #{{ sid }} .snpu__card { grid-template-columns: 1fr; }
+  #{{ sid }} .snpu__vis { min-height: 150px; }
+  #{{ sid }} .snpu__moon { width: 48px; height: 48px; margin-left: -24px; bottom: 14px; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  [].forEach.call(document.querySelectorAll('body > #{{ sid }}'), function (o) { if (o !== r) o.remove(); });
+  if (r.parentNode !== document.body) { document.body.appendChild(r); }
+  var key = r.getAttribute('data-key'), days = +r.getAttribute('data-days') || 0, design = window.Shopify && Shopify.designMode;
+  function seen() { try { var t = +localStorage.getItem(key); return t && (Date.now() - t) < days * 864e5; } catch (e) { return false; } }
+  function mark() { try { localStorage.setItem(key, Date.now()); } catch (e) {} }
+  function open() { if (r.classList.contains('is-open')) return; r.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { r.classList.add('is-open'); }); }); if (window.SNSilk) SNSilk.init(r); }
+  function close() { r.classList.remove('is-open'); mark(); setTimeout(function () { r.hidden = true; }, 700); }
+  r.addEventListener('click', function (e) {
+    if (e.target.closest('[data-snpu-close]')) { e.preventDefault(); close(); }
+    var rb = e.target.closest('[data-snpu-rbtn]'); if (rb) { rb.hidden = true; r.querySelector('[data-snpu-reveal] [data-snpu-code]').hidden = false; mark(); }
+    var c = e.target.closest('[data-snpu-code]'); if (c) { var v = c.getAttribute('data-snpu-code'); if (navigator.clipboard) navigator.clipboard.writeText(v); var sp = c.querySelector('span'); sp.textContent = {{ s.copied_text | json }}; }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && r.classList.contains('is-open')) close(); });
+  if (r.querySelector('[data-snpu-success]')) { open(); return; }
+  if (design) {
+    document.addEventListener('shopify:section:select', function (e) { if (e.detail.sectionId === '{{ section.id }}') open(); });
+    document.addEventListener('shopify:section:deselect', function (e) { if (e.detail.sectionId === '{{ section.id }}') { r.classList.remove('is-open'); r.hidden = true; } });
+    return;
+  }
+  if (r.hasAttribute('data-off') || seen()) return;
+  var fired = false, go = function () { if (fired) return; fired = true; open(); };
+  setTimeout(go, (+r.getAttribute('data-delay') || 6) * 1000);
+  if (r.getAttribute('data-exit') === 'true') document.addEventListener('mouseout', function (e) { if (!e.relatedTarget && e.clientY < 10) go(); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Popup",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Show to visitors",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Type",
+      "options": [
+        {
+          "value": "newsletter",
+          "label": "Email sign-up (shows code after)"
+        },
+        {
+          "value": "reveal",
+          "label": "Reveal a discount code"
+        }
+      ],
+      "default": "newsletter"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre (modal)"
+        },
+        {
+          "value": "corner",
+          "label": "Corner card"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "label": "Delay",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "exit_intent",
+      "label": "Also open on exit intent (desktop)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "days",
+      "label": "Show again after",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "unit": "d",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "storage_key",
+      "label": "Campaign name",
+      "info": "Change it to show the popup again to everyone",
+      "default": "welcome"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_art",
+      "label": "Show illustration if no image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "art",
+      "label": "Illustration",
+      "options": [
+        {
+          "value": "bed",
+          "label": "Bedroom"
+        },
+        {
+          "value": "bed-cover",
+          "label": "Bed cover"
+        },
+        {
+          "value": "bed-sheet",
+          "label": "Bed sheets"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "duvet-cover",
+          "label": "Duvet cover"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "pillow-cover",
+          "label": "Pillow cover"
+        },
+        {
+          "value": "towel",
+          "label": "Towels"
+        }
+      ],
+      "default": "pillow"
+    },
+    {
+      "type": "checkbox",
+      "id": "silk",
+      "label": "Silk background (use a night scheme)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Welcome to Sakooon"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sleep better,"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "save 10%"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Join our bedtime letter and get 10% off your first order."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button",
+      "default": "Get my code"
+    },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Discount code",
+      "default": "SLEEP10"
+    },
+    {
+      "type": "text",
+      "id": "code_label",
+      "label": "Code label",
+      "default": "Your code:"
+    },
+    {
+      "type": "text",
+      "id": "copy_text",
+      "label": "Copy button",
+      "default": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "copied_text",
+      "label": "Copied text",
+      "default": "Copied"
+    },
+    {
+      "type": "text",
+      "id": "ok_text",
+      "label": "Success text",
+      "default": "Use it at checkout. Sweet dreams!"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link (reveal type)",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link URL"
+    },
+    {
+      "type": "text",
+      "id": "decline",
+      "label": "Decline text",
+      "default": "No thanks, I sleep fine"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "ivory"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popup"
+    }
+  ]
+}
+{% endschema %}

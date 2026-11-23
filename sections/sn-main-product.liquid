@@ -1,0 +1,2219 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snmp-' | append: section.id
+  assign uid = 'mp' | append: section.id
+  assign cv = product.selected_or_first_available_variant
+  assign fm = cv.featured_media | default: product.featured_media
+  assign size_ov = 'SnSize-' | append: section.id
+  assign wa = settings.whatsapp | remove: '+' | remove: ' ' | remove: '-'
+-%}
+<section id="{{ sid }}" class="sn-s snmp snmp--{{ s.gallery }}" style="{% render 'sn-vars', s: s %}">
+  <div class="sn-wrap">
+    {%- if s.crumbs -%}
+      <nav class="sn-crumbs snmp__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ s.home_label }}</a><i></i>
+        {%- if collection -%}<a href="{{ collection.url }}">{{ collection.title }}</a><i></i>{%- elsif product.collections.first -%}<a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a><i></i>{%- endif -%}
+        <span aria-current="page">{{ product.title }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="snmp__grid" data-sn-product data-history id="{{ uid }}">
+      <script type="application/json" data-sn-pjson>{{ product | json }}</script>
+      <script type="application/json" data-sn-pinv>{ {%- for v in product.variants -%}"{{ v.id }}": {% if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' %}{{ v.inventory_quantity | default: 0 }}{% else %}null{% endif %}{% unless forloop.last %},{% endunless %}{%- endfor -%} }</script>
+
+      {%- comment -%} ============ GALLERY ============ {%- endcomment -%}
+      <div class="snmp__gal" data-sn-gallery>
+        <div class="snmp__stage">
+          <div class="snmp__track" data-sn-track>
+            {%- if product.media.size > 0 -%}
+              {%- for m in product.media -%}
+                {%- assign on = false -%}{%- if m.id == fm.id -%}{%- assign on = true -%}{%- endif -%}
+                <div class="snmp__slide{% if on %} is-on{% endif %} snmp__slide--{{ m.media_type }}" data-sn-slide="{{ m.id }}" style="--i: {{ forloop.index0 | at_most: 5 }};">
+                  {%- case m.media_type -%}
+                    {%- when 'image' -%}
+                      <button type="button" class="sn-media snmp__m" data-snmp-zoom="{{ forloop.index0 }}" aria-label="{{ s.zoom_label | escape }}">
+                        <img src="{{ m | image_url: width: 1400 }}" srcset="{{ m | image_url: width: 700 }} 700w, {{ m | image_url: width: 1100 }} 1100w, {{ m | image_url: width: 1600 }} 1600w" sizes="(min-width: 990px) 55vw, 100vw" alt="{{ m.alt | escape }}" width="{{ m.width }}" height="{{ m.height }}" {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+                        <span class="snmp__zi">{% render 'sn-icon', name: 'zoom', class: 'icon' %}</span>
+                      </button>
+                    {%- when 'video' -%}
+                      <div class="sn-media snmp__m">{{ m | video_tag: controls: true, playsinline: true, muted: true, loop: true, image_size: '1400x' }}</div>
+                    {%- when 'external_video' -%}
+                      <div class="sn-media snmp__m snmp__ext">{{ m | external_video_tag }}</div>
+                    {%- when 'model' -%}
+                      <div class="sn-media snmp__m">{{ m | model_viewer_tag: image_size: '1400x' }}</div>
+                    {%- else -%}
+                      <div class="sn-media snmp__m">{{ m | media_tag }}</div>
+                  {%- endcase -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="snmp__slide is-on" data-sn-slide="0">{% render 'sn-media', art: s.art, class: 'snmp__m' %}</div>
+            {%- endif -%}
+          </div>
+          {%- if product.media.size > 1 -%}
+            <div class="snmp__arrows"><button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-gnav="-1" aria-label="Previous">{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}</button><button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-gnav="1" aria-label="Next">{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button></div>
+            <div class="snmp__gbar"><i data-sn-gprog style="width: {{ 100.0 | divided_by: product.media.size }}%;"></i></div>
+          {%- endif -%}
+          {%- if s.wish_on_gallery -%}<button type="button" class="snmp__wish sn-card__wish" data-sn-wish="{{ product.handle }}" aria-label="Wishlist">{% render 'sn-icon', name: 'heart', class: 'icon icon--outline' %}{% render 'sn-icon', name: 'heart-filled', class: 'icon icon--filled' %}</button>{%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="snmp__thumbs">
+            {%- for m in product.media -%}
+              <button type="button" class="snmp__th{% if m.id == fm.id %} is-on{% endif %}" data-sn-thumb="{{ m.id }}" aria-label="Media {{ forloop.index }}">
+                <img src="{{ m.preview_image | image_url: width: 180 }}" alt="" width="90" height="112" loading="lazy">
+                {%- if m.media_type == 'video' or m.media_type == 'external_video' -%}<i>{% render 'sn-icon', name: 'play', class: 'icon' %}</i>{%- elsif m.media_type == 'model' -%}<i>3D</i>{%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ============ INFO ============ {%- endcomment -%}
+      <div class="snmp__info">
+        <div class="snmp__inner">
+          {%- assign pfid = 'SnPF-' | append: section.id -%}
+          {%- form 'product', product, id: pfid, data-sn-pform: '', class: 'snmp__form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ cv.id }}" data-sn-pvid>
+          {%- for block in section.blocks -%}
+            {%- assign b = block.settings -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}{% render block %}
+              {%- when 'eyebrow' -%}
+                <p class="sn-eyebrow snmp__eb" {{ block.shopify_attributes }}>{% render 'sn-phase', k: 3 %}{% if b.text != blank %}{{ b.text }}{% else %}{{ product.vendor }}{% endif %}</p>
+              {%- when 'title' -%}
+                <h1 class="sn-h sn-h--{{ b.size }} snmp__title" data-sn-split {{ block.shopify_attributes }}>{{ product.title }}</h1>
+                {%- if b.subtitle and product.metafields.custom.subtitle != blank -%}<p class="snmp__sub">{{ product.metafields.custom.subtitle.value }}</p>{%- endif -%}
+              {%- when 'rating' -%}
+                {%- if product.metafields.reviews.rating.value != blank -%}
+                  {%- assign rv = product.metafields.reviews.rating.value.rating | times: 20 -%}
+                  <a class="snmp__rate" href="{{ b.link | default: '#reviews' }}" {{ block.shopify_attributes }}><span class="sn-stars" style="--p: {{ rv }}%;"></span><b>{{ product.metafields.reviews.rating.value.rating }}</b><span>{{ product.metafields.reviews.rating_count.value }} {{ b.label }}</span></a>
+                {%- endif -%}
+              {%- when 'price' -%}
+                <div class="snmp__pricebox" {{ block.shopify_attributes }}>
+                  <div class="sn-pprice" data-sn-pprice>
+                    <span class="sn-price__now{% if cv.compare_at_price > cv.price %} is-sale{% endif %}">{{ cv.price | money }}</span>
+                    {%- if cv.compare_at_price > cv.price -%}{%- assign pdiff = cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price | floor -%}<s class="sn-price__was">{{ cv.compare_at_price | money }}</s><span class="sn-badge sn-badge--sale">−{{ pdiff }}%</span>{%- endif -%}
+                  </div>
+                  {%- if b.tax_note != blank -%}<p class="sn-small">{{ b.tax_note }}</p>{%- endif -%}
+                  {%- if b.installments -%}<div class="snmp__pay">{{ form | payment_terms }}</div>{%- endif -%}
+                </div>
+              {%- when 'specs' -%}
+                {%- assign spec_src = b.items -%}{%- if product.metafields.custom.spec_chips != blank -%}{%- assign spec_src = product.metafields.custom.spec_chips.value -%}{%- endif -%}
+                {%- assign lines = spec_src | newline_to_br | split: '<br />' -%}
+                <ul class="snmp__specs" {{ block.shopify_attributes }}>
+                  {%- if product.metafields.custom.thread_count != blank -%}<li><b>T{{ product.metafields.custom.thread_count.value }}</b><span>{{ b.tc_label }}</span></li>{%- endif -%}
+                  {%- for l in lines -%}{%- assign ll = l | strip -%}{%- if ll != blank -%}{%- assign kv = ll | split: '|' -%}<li><b>{{ kv[0] }}</b><span>{{ kv[1] }}</span></li>{%- endif -%}{%- endfor -%}
+                </ul>
+              {%- when 'description' -%}
+                <div class="sn-rte snmp__desc{% if b.clamp %} is-clamp{% endif %}" data-snmp-desc {{ block.shopify_attributes }}>{{ product.description }}</div>
+                {%- if b.clamp -%}<button type="button" class="sn-link snmp__more" data-snmp-more data-less="{{ b.less | escape }}">{{ b.more }}</button>{%- endif -%}
+              {%- when 'variant_picker' -%}
+                <div class="snmp__picker" {{ block.shopify_attributes }}>{% render 'sn-picker', product: product, style: b.style, swatches: b.swatches, uid: uid, size_link: b.size_label, size_target: size_ov %}</div>
+              {%- when 'stock' -%}
+                <div class="sn-stock" data-sn-pstock data-low="{{ b.low }}" data-in="{{ b.in_text | escape }}" data-out="{{ b.out_text | escape }}" data-lowtxt="{{ b.low_text | escape }}" {{ block.shopify_attributes }}><span class="sn-stock__t" data-sn-pstock-t>{{ b.in_text }}</span>{%- if b.bar -%}<span class="sn-stock__bar"><i data-sn-pstock-b style="width: 100%;"></i></span>{%- endif -%}</div>
+              {%- when 'properties' -%}
+                <div class="snmp__props" {{ block.shopify_attributes }}>
+                  {%- if b.gift -%}<label class="sn-check snmp__gift"><input type="checkbox" name="properties[{{ b.gift_name | escape }}]" value="Yes"><span>{% render 'sn-icon', name: 'gift', class: 'icon' %}{{ b.gift_label }}</span></label>{%- endif -%}
+                  {%- if b.mono -%}<div class="sn-field"><label for="{{ uid }}-mono">{{ b.mono_label }}</label><input class="sn-input" id="{{ uid }}-mono" type="text" maxlength="{{ b.mono_max }}" name="properties[{{ b.mono_name | escape }}]" placeholder="{{ b.mono_ph | escape }}"></div>{%- endif -%}
+                </div>
+              {%- when 'buy_buttons' -%}
+                <div class="snmp__buy" data-snmp-buy {{ block.shopify_attributes }}>
+                  <div class="sn-buy">
+                    {%- if b.qty -%}<div class="sn-qty"><button type="button" data-sn-q="-1" aria-label="Decrease">{% render 'sn-icon', name: 'minus', class: 'icon' %}</button><input type="number" name="quantity" value="1" min="1" data-sn-pqty aria-label="{{ 'products.product.quantity' | t }}"><button type="button" data-sn-q="1" aria-label="Increase">{% render 'sn-icon', name: 'plus', class: 'icon' %}</button></div>{%- endif -%}
+                    <button type="submit" class="sn-btn sn-btn--gold sn-buy__atc" data-sn-patc data-label="{{ 'products.product.add_to_cart' | t | escape }}" data-sold="{{ 'products.product.sold_out' | t | escape }}"{% unless cv.available %} disabled{% endunless %}><span>{% if cv.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>{% render 'sn-icon', name: 'bag', class: 'icon' %}</button>
+                    {%- if b.wish -%}<button type="button" class="sn-ibtn snmp__wishb" data-sn-wish="{{ product.handle }}" aria-label="Wishlist">{% render 'sn-icon', name: 'heart', class: 'icon' %}</button>{%- endif -%}
+                    {%- if b.dynamic -%}<div class="sn-buy__now" data-sn-buynow>{{ form | payment_button }}</div>{%- endif -%}
+                  </div>
+                  {%- if b.whatsapp and wa != blank -%}
+                    {%- capture wmsg -%}{{ b.wa_msg }} {{ product.title }} – {{ shop.url }}{{ product.url }}{%- endcapture -%}
+                    <a class="snmp__wa" href="https://wa.me/{{ wa }}?text={{ wmsg | url_encode }}" target="_blank" rel="noopener" data-snmp-wa data-base="{{ b.wa_msg | escape }}">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}<span>{{ b.wa_label }}</span></a>
+                  {%- endif -%}
+                  {%- if b.pickup -%}
+                    {%- assign pk = cv.store_availabilities | where: 'pick_up_enabled', true -%}
+                    {%- if pk.size > 0 -%}<p class="snmp__pick">{% render 'sn-icon', name: 'map-pin', class: 'icon' %}<span>{% if pk.first.available %}{{ b.pickup_yes }}{% else %}{{ b.pickup_no }}{% endif %} <b>{{ pk.first.location.name }}</b> · {{ pk.first.pick_up_time }}</span></p>{%- endif -%}
+                  {%- endif -%}
+                </div>
+              {%- when 'delivery' -%}
+                <div class="snmp__del sn-pillow" data-snmp-del data-min="{{ b.min_days }}" data-max="{{ b.max_days }}" data-cut="{{ b.cutoff }}" data-sun="{{ b.skip_sunday }}" {{ block.shopify_attributes }}>
+                  <span class="snmp__truck">{% render 'sn-icon', name: 'truck', class: 'icon' %}<i></i></span>
+                  <div><p>{{ b.text }} <b data-snmp-dates>—</b></p><p class="sn-small" data-snmp-cut data-tpl="{{ b.cut_text | escape }}"></p></div>
+                </div>
+              {%- when 'trust' -%}
+                <ul class="snmp__trust" {{ block.shopify_attributes }}>
+                  {%- if b.t1 != blank -%}<li>{% render 'sn-icon', name: b.i1, class: 'icon' %}<span>{{ b.t1 }}</span></li>{%- endif -%}
+                  {%- if b.t2 != blank -%}<li>{% render 'sn-icon', name: b.i2, class: 'icon' %}<span>{{ b.t2 }}</span></li>{%- endif -%}
+                  {%- if b.t3 != blank -%}<li>{% render 'sn-icon', name: b.i3, class: 'icon' %}<span>{{ b.t3 }}</span></li>{%- endif -%}
+                  {%- if b.t4 != blank -%}<li>{% render 'sn-icon', name: b.i4, class: 'icon' %}<span>{{ b.t4 }}</span></li>{%- endif -%}
+                </ul>
+              {%- when 'tab' -%}
+                <details class="sn-acc snmp__acc"{% if b.open %} open{% endif %} {{ block.shopify_attributes }}>
+                  <summary><span class="snmp__acct">{% render 'sn-icon', name: b.icon, class: 'icon' %}{{ b.title }}</span><i aria-hidden="true"></i></summary>
+                  <div class="sn-acc__body sn-rte">
+                    {%- if b.source == 'description' -%}{{ product.description }}
+                    {%- elsif b.source == 'care' -%}{% render 'sn-care-icons' %}{{ b.content }}
+                    {%- elsif b.source == 'page' and b.page != blank -%}{{ b.page.content }}
+                    {%- else -%}{{ b.content }}{%- endif -%}
+                  </div>
+                </details>
+              {%- when 'complementary' -%}
+                {%- assign comp = product.metafields['shopify--discovery--product_recommendation'].complementary_products.value -%}
+                {%- if comp.size > 0 -%}
+                  <div class="snmp__comp" {{ block.shopify_attributes }}>
+                    <p class="snmp__ct">{{ b.title }}</p>
+                    <div class="snmp__crow">
+                      {%- for cp in comp limit: b.limit -%}
+                        <div class="snmp__cp">
+                          <a href="{{ cp.url }}" class="snmp__cimg">{%- if cp.featured_media -%}<img src="{{ cp.featured_media | image_url: width: 200 }}" alt="" width="80" height="100" loading="lazy">{%- else -%}{% render 'sn-art', name: 'pillow' %}{%- endif -%}</a>
+                          <span><a href="{{ cp.url }}">{{ cp.title }}</a>{% render 'sn-price', product: cp %}</span>
+                          {%- if cp.has_only_default_variant -%}<button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-add="{{ cp.selected_or_first_available_variant.id }}" aria-label="Add {{ cp.title | escape }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}</button>{%- else -%}<button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-quick="{{ cp.handle }}" aria-label="Choose {{ cp.title | escape }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}</button>{%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- when 'share' -%}
+                <div class="snmp__share" {{ block.shopify_attributes }}>
+                  <span>{{ b.label }}</span>
+                  <a class="sn-ibtn sn-ibtn--sm" target="_blank" rel="noopener" href="https://wa.me/?text={{ shop.url | append: product.url | url_encode }}" aria-label="WhatsApp">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}</a>
+                  <a class="sn-ibtn sn-ibtn--sm" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: product.url | url_encode }}" aria-label="Facebook">{% render 'sn-icon', name: 'facebook', class: 'icon' %}</a>
+                  <button type="button" class="sn-ibtn sn-ibtn--sm" data-snmp-copy="{{ shop.url }}{{ product.url }}" aria-label="Copy link">{% render 'sn-icon', name: 'share', class: 'icon' %}</button>
+                </div>
+              {%- when 'sku' -%}
+                <p class="snmp__sku sn-small" {{ block.shopify_attributes }}>{{ b.label }} <span data-sn-psku>{{ cv.sku }}</span></p>
+              {%- when 'text' -%}
+                <div class="sn-rte snmp__txt" {{ block.shopify_attributes }}>{{ b.text }}</div>
+              {%- when 'custom_liquid' -%}
+                <div {{ block.shopify_attributes }}>{{ b.code }}</div>
+            {%- endcase -%}
+          {%- endfor -%}
+          {%- endform -%}
+        </div>
+      </div>
+
+      {%- comment -%} ============ STICKY BAR ============ {%- endcomment -%}
+      {%- if s.sticky -%}
+        <div class="snmp__sticky" data-snmp-sticky aria-hidden="true">
+          <div class="snmp__sin">
+            <span class="snmp__simg">{%- if product.featured_media -%}<img src="{{ product.featured_media | image_url: width: 120 }}" alt="" width="48" height="60">{%- endif -%}</span>
+            <span class="snmp__st"><b>{{ product.title }}</b><span class="sn-small"><span data-sn-optv="0">{{ cv.options[0] }}</span>{% if cv.options[1] %} · <span data-sn-optv="1">{{ cv.options[1] }}</span>{% endif %}</span></span>
+            <div class="sn-pprice snmp__sp" data-sn-pprice>{% render 'sn-price', product: product, variant: cv %}</div>
+            <button type="button" class="sn-btn sn-btn--gold sn-btn--sm" data-sn-patc data-snmp-sadd data-label="{{ 'products.product.add_to_cart' | t | escape }}" data-sold="{{ 'products.product.sold_out' | t | escape }}" tabindex="-1"><span>{{ 'products.product.add_to_cart' | t }}</span></button>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ============ LIGHTBOX ============ {%- endcomment -%}
+  <div class="snmp__lb" id="{{ sid }}-lb" data-snmp-lb hidden role="dialog" aria-modal="true" aria-label="{{ product.title | escape }}">
+    <div class="snmp__lbtrack" data-snmp-lbt>
+      {%- for m in product.media -%}{%- if m.media_type == 'image' -%}<figure class="snmp__lbf"><img data-src="{{ m | image_url: width: 2400 }}" alt="{{ m.alt | escape }}" width="{{ m.width }}" height="{{ m.height }}"></figure>{%- endif -%}{%- endfor -%}
+    </div>
+    {%- assign lb_imgs = product.media | where: 'media_type', 'image' -%}
+    {%- if lb_imgs.size > 1 -%}
+    <button type="button" class="sn-ibtn snmp__lbn snmp__lbn--prev" data-snmp-lbn="-1" aria-label="Previous image">{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}</button>
+    <button type="button" class="sn-ibtn snmp__lbn snmp__lbn--next" data-snmp-lbn="1" aria-label="Next image">{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button>
+    {%- endif -%}
+    <button type="button" class="sn-ibtn snmp__lbx" data-snmp-lbx aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button>
+    <p class="snmp__lbhint">{{ s.lb_hint }}</p>
+  </div>
+
+  {%- comment -%} ============ SIZE GUIDE DRAWER ============ {%- endcomment -%}
+  <div class="sn-ov" id="{{ size_ov }}" hidden>
+    <div class="sn-ov__bg" data-sn-close></div>
+    <div class="sn-drawer snmp__sg" role="dialog" aria-modal="true" aria-label="{{ s.sg_title | escape }}">
+      <div class="sn-drawer__head"><p class="sn-drawer__title">{{ s.sg_title }}</p><button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button></div>
+      <div class="sn-drawer__body sn-rte">
+        {%- if s.sg_page != blank -%}{{ s.sg_page.content }}{%- else -%}{{ s.sg_content }}{%- endif -%}
+        {%- if s.sg_link_label != blank -%}<p><a href="{{ s.sg_link | default: '/pages/size-guide' }}">{{ s.sg_link_label }}</a></p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org", "@type": "Product",
+    "name": {{ product.title | json }}, "url": {{ shop.url | append: product.url | json }},
+    {%- if product.featured_media -%}"image": [{{ product.featured_media | image_url: width: 1600 | prepend: 'https:' | json }}],{%- endif -%}
+    "description": {{ product.description | strip_html | strip | truncate: 500 | json }},
+    "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+    {%- if product.metafields.reviews.rating.value != blank -%}"aggregateRating": { "@type": "AggregateRating", "ratingValue": {{ product.metafields.reviews.rating.value.rating | json }}, "reviewCount": {{ product.metafields.reviews.rating_count.value | json }} },{%- endif -%}
+    "offers": [{%- for v in product.variants -%}{ "@type": "Offer", "sku": {{ v.sku | json }}, "availability": "https://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}", "price": {{ v.price | divided_by: 100.0 | json }}, "priceCurrency": {{ cart.currency.iso_code | default: shop.currency | json }}, "url": {{ shop.url | append: v.url | json }} }{% unless forloop.last %},{% endunless %}{%- endfor -%}]
+  }
+  </script>
+</section>
+<style>
+#{{ sid }} .snmp__crumbs { margin-bottom: 22px; }
+#{{ sid }} .snmp__grid { display: grid; grid-template-columns: minmax(0, {{ s.gal_w }}fr) minmax(0, {{ 100 | minus: s.gal_w }}fr); gap: clamp(30px, 4.5vw, 80px); align-items: start; }
+/* gallery */
+#{{ sid }} .snmp__gal { position: relative; display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; }
+#{{ sid }} .snmp__stage { position: relative; grid-column: 2; min-width: 0; }
+#{{ sid }} .snmp__track { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: calc(var(--r) * 1.2); overscroll-behavior-x: contain; }
+#{{ sid }} .snmp__track::-webkit-scrollbar { display: none; }
+#{{ sid }} .snmp__slide { scroll-snap-align: start; }
+#{{ sid }} .snmp__m { display: block; width: 100%; aspect-ratio: {{ s.ratio }}; border-radius: calc(var(--r) * 1.2); cursor: zoom-in; }
+#{{ sid }} .snmp__m video, #{{ sid }} .snmp__m iframe, #{{ sid }} .snmp__m model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+#{{ sid }} .snmp__zi { position: absolute; z-index: 2; right: 16px; bottom: 16px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, #fff 80%, transparent); color: var(--c-ink); opacity: 0; transform: scale(.8); transition: opacity .4s, transform .5s cubic-bezier(.3, 1.5, .5, 1); backdrop-filter: blur(6px); }
+#{{ sid }} .snmp__zi .icon { width: 18px; height: 18px; }
+#{{ sid }} .snmp__m:hover .snmp__zi { opacity: 1; transform: none; }
+#{{ sid }} .snmp__arrows { position: absolute; z-index: 3; left: 16px; bottom: 16px; display: flex; gap: 8px; }
+#{{ sid }} .snmp__arrows .sn-ibtn { background: color-mix(in srgb, #fff 80%, transparent); border-color: transparent; color: var(--c-ink); backdrop-filter: blur(6px); }
+#{{ sid }} .snmp__gbar { position: absolute; z-index: 3; left: 120px; right: 76px; bottom: 34px; height: 2px; border-radius: 2px; background: rgba(255,255,255,.5); overflow: hidden; }
+#{{ sid }} .snmp__gbar i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--c-ink); transition: left .4s cubic-bezier(.3, .8, .2, 1); }
+#{{ sid }} .snmp__wish { right: 16px; top: 16px; }
+#{{ sid }} .snmp__thumbs { position: absolute; left: 0; top: 0; bottom: 0; width: 84px; display: grid; grid-auto-rows: max-content; gap: 10px; overflow-y: auto; scrollbar-width: none; padding: 2px; }
+#{{ sid }} .snmp__thumbs::-webkit-scrollbar { display: none; }
+#{{ sid }} .snmp__th { position: relative; aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden; opacity: .5; transition: opacity .4s, transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+#{{ sid }} .snmp__th::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1.5px solid transparent; transition: border-color .4s; }
+#{{ sid }} .snmp__th.is-on { opacity: 1; } #{{ sid }} .snmp__th.is-on::after { border-color: var(--ac); }
+#{{ sid }} .snmp__th:hover { opacity: 1; transform: translateX(3px); }
+#{{ sid }} .snmp__th img { width: 100%; height: 100%; object-fit: cover; }
+#{{ sid }} .snmp__th i { position: absolute; inset: 0; display: grid; place-items: center; font: 700 12px var(--f-body); font-style: normal; color: #fff; background: rgba(0,0,0,.25); }
+#{{ sid }} .snmp__th i .icon { width: 18px; height: 18px; }
+/* stacked gallery */
+#{{ sid }}.snmp--stack .snmp__gal { grid-template-columns: 1fr; }
+#{{ sid }}.snmp--stack .snmp__stage { grid-column: 1; }
+#{{ sid }}.snmp--stack .snmp__thumbs { display: none; }
+@media (min-width: 990px) {
+  #{{ sid }}.snmp--stack .snmp__track { grid-auto-flow: row; grid-template-columns: 1fr 1fr; grid-auto-columns: auto; overflow: visible; gap: 14px; border-radius: 0; }
+  #{{ sid }}.snmp--stack .snmp__slide:first-child { grid-column: 1 / -1; }
+  #{{ sid }}.snmp--stack .snmp__arrows, #{{ sid }}.snmp--stack .snmp__gbar { display: none; }
+  #{{ sid }}.snmp--stack .snmp__slide { opacity: 0; transform: translateY(30px); animation: snmp-in 1s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(var(--i) * .08s); }
+}
+@keyframes snmp-in { to { opacity: 1; transform: none; } }
+/* info */
+#{{ sid }} .snmp__info, #{{ sid }} .snmp__gal { position: sticky; top: {{ s.sticky_top }}px; }
+#{{ sid }} .snmp__form { display: grid; gap: 22px; }
+#{{ sid }} .snmp__title { margin-top: -6px; }
+#{{ sid }} .snmp__sub { margin-top: -10px; color: var(--soft); font-size: 15px; }
+#{{ sid }} .snmp__rate { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--soft); }
+#{{ sid }} .snmp__rate b { color: var(--tx); }
+#{{ sid }} .snmp__pricebox { display: grid; gap: 6px; padding-bottom: 18px; border-bottom: 1px dashed var(--line2); }
+#{{ sid }} .snmp__specs { display: flex; flex-wrap: wrap; gap: 10px; }
+#{{ sid }} .snmp__specs li { display: grid; gap: 2px; padding: 12px 16px; min-width: 96px; border-radius: calc(var(--r) * .6); border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 70%, transparent); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1), border-color .4s; }
+#{{ sid }} .snmp__specs li:hover { transform: translateY(-3px); border-color: var(--ac); }
+#{{ sid }} .snmp__specs b { font: 400 1.2rem/1.1 var(--f-head); }
+#{{ sid }} .snmp__specs span { font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+#{{ sid }} .snmp__desc { font-size: 15px; }
+#{{ sid }} .snmp__desc.is-clamp { max-height: 7.2em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); transition: max-height .8s cubic-bezier(.3, .8, .2, 1); }
+#{{ sid }} .snmp__desc.is-open { max-height: 2000px; -webkit-mask-image: none; mask-image: none; }
+#{{ sid }} .snmp__more { justify-self: start; margin-top: -12px; }
+#{{ sid }} .snmp__props { display: grid; gap: 14px; }
+#{{ sid }} .snmp__gift span { display: inline-flex; align-items: center; gap: 8px; }
+#{{ sid }} .snmp__gift .icon { width: 17px; height: 17px; color: var(--ac); }
+#{{ sid }} .snmp__buy { display: grid; gap: 14px; }
+#{{ sid }} .snmp__wishb { width: 56px; height: 56px; }
+#{{ sid }} .snmp__wishb.is-on { background: var(--c-danger); border-color: var(--c-danger); color: #fff; }
+#{{ sid }} .snmp__wa { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; border-radius: 999px; border: 1px dashed color-mix(in srgb, #25D366 70%, transparent); color: var(--tx); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: background .4s, color .4s; }
+#{{ sid }} .snmp__wa .icon { width: 19px; height: 19px; color: #25D366; transition: color .4s; }
+#{{ sid }} .snmp__wa:hover { background: #25D366; color: #fff; border-style: solid; } #{{ sid }} .snmp__wa:hover .icon { color: #fff; }
+#{{ sid }} .snmp__pick { display: flex; gap: 10px; font-size: 13px; color: var(--soft); }
+#{{ sid }} .snmp__pick .icon { width: 16px; height: 16px; flex: none; margin-top: 2px; color: var(--ac); }
+#{{ sid }} .snmp__del { display: flex; align-items: center; gap: 16px; padding: 16px 18px; font-size: 14px; }
+#{{ sid }} .snmp__del b { font-weight: 600; }
+#{{ sid }} .snmp__truck { position: relative; width: 46px; height: 46px; flex: none; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--ac) 14%, transparent); color: var(--ac); overflow: hidden; }
+#{{ sid }} .snmp__truck .icon { width: 22px; height: 22px; animation: snmp-drive 2.4s ease-in-out infinite; }
+#{{ sid }} .snmp__truck i { position: absolute; left: 8px; right: 8px; bottom: 11px; border-top: 1px dashed currentColor; opacity: .6; animation: snmp-road .6s linear infinite; }
+@keyframes snmp-drive { 50% { transform: translateY(-1.5px); } }
+@keyframes snmp-road { to { transform: translateX(-6px); } }
+#{{ sid }} .snmp__trust { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; padding: 18px 0; border-block: 1px dashed var(--line2); }
+#{{ sid }} .snmp__trust li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--soft); }
+#{{ sid }} .snmp__trust .icon { width: 20px; height: 20px; flex: none; color: var(--ac); }
+#{{ sid }} .snmp__acc summary { padding: 18px 0; font-size: 1.08rem; }
+#{{ sid }} .snmp__acct { display: inline-flex; align-items: center; gap: 12px; }
+#{{ sid }} .snmp__acct .icon { width: 19px; height: 19px; color: var(--ac); }
+#{{ sid }} .sk-care { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; margin-bottom: 16px; list-style: none; padding: 0; }
+#{{ sid }} .sk-care li { display: grid; justify-items: center; gap: 6px; text-align: center; font-size: 12px; }
+#{{ sid }} .sk-care svg { width: 38px; height: 38px; color: var(--tx); }
+#{{ sid }} .snmp__comp { display: grid; gap: 12px; }
+#{{ sid }} .snmp__ct { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); }
+#{{ sid }} .snmp__crow { display: grid; gap: 10px; }
+#{{ sid }} .snmp__cp { display: flex; align-items: center; gap: 14px; padding: 10px; border-radius: calc(var(--r) * .7); border: 1px solid var(--line); transition: border-color .4s, background .4s; }
+#{{ sid }} .snmp__cp:hover { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 5%, transparent); }
+#{{ sid }} .snmp__cimg { width: 56px; aspect-ratio: 4 / 5; flex: none; border-radius: 10px; overflow: hidden; background: var(--card2); }
+#{{ sid }} .snmp__cimg img, #{{ sid }} .snmp__cimg svg { width: 100%; height: 100%; object-fit: cover; }
+#{{ sid }} .snmp__cp > span { flex: 1; display: grid; gap: 2px; font-size: 14px; min-width: 0; }
+#{{ sid }} .snmp__share { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--soft); }
+#{{ sid }} .snmp__share span { margin-right: 6px; }
+/* sticky bar */
+#{{ sid }} .snmp__sticky { position: fixed; z-index: 800; left: 50%; bottom: 16px; width: min(860px, calc(100% - 24px)); translate: -50% 140%; transition: translate .7s cubic-bezier(.3, 1.2, .4, 1); }
+#{{ sid }} .snmp__sticky.is-on { translate: -50% 0; }
+#{{ sid }} .snmp__sin { display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c-dark) 92%, transparent); color: var(--c-dark-text); box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); --tx: var(--c-dark-text); --soft: color-mix(in srgb, var(--c-dark-text) 70%, transparent); --ac: var(--c-moon); --ac-ink: var(--c-dark); }
+#{{ sid }} .snmp__simg { width: 46px; height: 46px; flex: none; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,.1); }
+#{{ sid }} .snmp__simg img { width: 100%; height: 100%; object-fit: cover; }
+#{{ sid }} .snmp__st { flex: 1; display: grid; min-width: 0; }
+#{{ sid }} .snmp__st b { font: 400 1.02rem/1.2 var(--f-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#{{ sid }} .snmp__sp { font-size: 15px; }
+#{{ sid }} .snmp__sp .sn-badge { display: none; }
+/* lightbox */
+#{{ sid }}-lb[hidden] { display: none; }
+#{{ sid }}-lb { position: fixed; inset: 0; z-index: 2147482600; background: color-mix(in srgb, var(--c-paper) 96%, transparent); backdrop-filter: blur(10px); opacity: 0; transition: opacity .5s; }
+#{{ sid }}-lb.is-open { opacity: 1; }
+#{{ sid }}-lb .snmp__lbtrack { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+#{{ sid }}-lb .snmp__lbf { scroll-snap-align: center; display: grid; place-items: center; overflow: hidden; padding: 4vh 4vw 9vh; cursor: zoom-in; }
+#{{ sid }}-lb .snmp__lbf img { max-width: 100%; max-height: 86vh; width: auto; height: auto; object-fit: contain; border-radius: var(--r); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+#{{ sid }}-lb .snmp__lbf.is-z { cursor: zoom-out; }
+#{{ sid }}-lb .snmp__lbf.is-z img { transform: scale(2.2); }
+#{{ sid }}-lb .snmp__lbn { position: absolute; top: 50%; translate: 0 -50%; z-index: 2; background: var(--c-surface); }
+#{{ sid }}-lb .snmp__lbn--prev { left: 20px; }
+#{{ sid }}-lb .snmp__lbn--next { right: 20px; }
+@media (max-width: 749px) { #{{ sid }}-lb .snmp__lbn { top: auto; bottom: 56px; translate: none; } }
+#{{ sid }}-lb .snmp__lbx { position: absolute; right: 20px; top: 20px; background: var(--c-surface); }
+#{{ sid }}-lb .snmp__lbhint { position: absolute; left: 50%; bottom: 20px; translate: -50% 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--c-ink-soft); }
+#{{ size_ov }} .snmp__sg .sn-rte table { font-size: 14px; }
+#{{ size_ov }} .snmp__sg .sn-rte th { font-weight: 600; background: color-mix(in srgb, var(--tx) 5%, transparent); }
+@media (max-width: 989px) {
+  #{{ sid }} .snmp__grid { grid-template-columns: 1fr; }
+  #{{ sid }} .snmp__gal { grid-template-columns: 1fr; margin-inline: -16px; }
+  #{{ sid }} .snmp__stage { grid-column: 1; }
+  #{{ sid }} .snmp__track { border-radius: 0; }
+  #{{ sid }} .snmp__m { border-radius: 0; }
+  #{{ sid }} .snmp__thumbs { position: static; width: auto; grid-auto-flow: column; grid-auto-columns: 58px; overflow-x: auto; padding: 0 16px; }
+  #{{ sid }}.snmp--stack .snmp__thumbs { display: grid; }
+  #{{ sid }} .snmp__gbar { left: 110px; right: 20px; }
+  #{{ sid }} .snmp__info, #{{ sid }} .snmp__gal { position: static; }
+  #{{ sid }} .snmp__sticky { bottom: 10px; }
+  #{{ sid }} .snmp__sp { display: none; }
+  #{{ sid }} .snmp__wishb { width: 52px; height: 52px; }
+  #{{ sid }} .sn-buy .sn-qty { height: 52px; } #{{ sid }} .sn-buy .sn-qty button { width: 34px; }
+  #{{ sid }} .snmp__specs li { flex: 1 1 calc(50% - 10px); }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  /* description more */
+  var more = r.querySelector('[data-snmp-more]');
+  if (more) { var d = r.querySelector('[data-snmp-desc]'), ml = more.textContent; if (d.scrollHeight <= d.clientHeight + 8) { d.classList.remove('is-clamp'); more.hidden = true; } more.addEventListener('click', function () { var o = d.classList.toggle('is-open'); more.textContent = o ? more.getAttribute('data-less') : ml; }); }
+  /* delivery estimate */
+  var del = r.querySelector('[data-snmp-del]');
+  if (del) {
+    var addDays = function (n) { var dt = new Date(), c = 0; if (dt.getHours() >= +del.getAttribute('data-cut')) n++; while (c < n) { dt.setDate(dt.getDate() + 1); if (del.getAttribute('data-sun') === 'true' && dt.getDay() === 0) continue; c++; } return dt; };
+    var f = function (dt) { return dt.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }); };
+    del.querySelector('[data-snmp-dates]').textContent = f(addDays(+del.getAttribute('data-min'))) + ' – ' + f(addDays(+del.getAttribute('data-max')));
+    var cut = del.querySelector('[data-snmp-cut]'), tpl = cut.getAttribute('data-tpl');
+    (function tick() { var now = new Date(), end = new Date(); end.setHours(+del.getAttribute('data-cut'), 0, 0, 0); var ms = end - now; if (ms <= 0 || !tpl) { cut.textContent = ''; return; } var h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4); cut.textContent = tpl.replace('[time]', h + 'h ' + m + 'm'); setTimeout(tick, 30000); })();
+  }
+  /* whatsapp link follows variant */
+  var wa = r.querySelector('[data-snmp-wa]');
+  r.addEventListener('sn:variant', function (e) { if (wa) { var u = new URL(wa.href); u.searchParams.set('text', wa.getAttribute('data-base') + ' {{ product.title | escape }} (' + e.detail.title + ') – ' + location.origin + '{{ product.url }}?variant=' + e.detail.id); wa.href = u.toString(); } });
+  /* copy link */
+  var cp = r.querySelector('[data-snmp-copy]'); if (cp) cp.addEventListener('click', function () { if (navigator.share) navigator.share({ url: cp.getAttribute('data-snmp-copy') }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(cp.getAttribute('data-snmp-copy')).then(function () { SN.toast({{ s.copied | json }}); }); });
+  /* sticky bar */
+  var st = r.querySelector('[data-snmp-sticky]'), buy = r.querySelector('[data-snmp-buy]');
+  if (st && buy && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { var b = es[0], show = !b.isIntersecting && b.boundingClientRect.top < 0; st.classList.toggle('is-on', show); st.setAttribute('aria-hidden', !show); }).observe(buy);
+    st.querySelector('[data-snmp-sadd]').addEventListener('click', function () { var p = r.querySelector('[data-sn-product]').snProduct; if (p) p.add(); });
+  }
+  /* lightbox */
+  var lb = r.querySelector('[data-snmp-lb]'), lbt = lb && lb.querySelector('[data-snmp-lbt]');
+  if (lb) {
+    [].forEach.call(document.querySelectorAll('body > #{{ sid }}-lb'), function (o) { if (o !== lb) o.remove(); }); document.body.appendChild(lb);
+    var close = function () { lb.classList.remove('is-open'); document.documentElement.classList.remove('sn-lock'); setTimeout(function () { lb.hidden = true; }, 500); };
+    r.addEventListener('click', function (e) {
+      var z = e.target.closest('[data-snmp-zoom]'); if (!z || {{ s.zoom | json }} === false) return;
+      var idx = +z.getAttribute('data-snmp-zoom'), imgs = [].slice.call(lb.querySelectorAll('img[data-src]'));
+      imgs.forEach(function (im) { if (!im.src) im.src = im.getAttribute('data-src'); });
+      var ii = [].slice.call(r.querySelectorAll('[data-snmp-zoom]')).indexOf(z);
+      lb.hidden = false; document.documentElement.classList.add('sn-lock');
+      requestAnimationFrame(function () { lb.classList.add('is-open'); lbt.scrollLeft = lbt.clientWidth * ii; });
+    });
+    lb.querySelector('[data-snmp-lbx]').addEventListener('click', close);
+    var lbGo = function (d) {
+      var n = lbt.children.length; if (!n) return;
+      var cur = Math.round(lbt.scrollLeft / lbt.clientWidth), nx = (cur + d + n) % n;
+      [].forEach.call(lbt.querySelectorAll('.snmp__lbf.is-z'), function (f) { f.classList.remove('is-z'); });
+      lbt.scrollTo({ left: lbt.clientWidth * nx, behavior: 'smooth' });
+    };
+    [].forEach.call(lb.querySelectorAll('[data-snmp-lbn]'), function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); lbGo(+b.getAttribute('data-snmp-lbn')); }); });
+    window.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); close(); }
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopImmediatePropagation(); lbGo(e.key === 'ArrowRight' ? 1 : -1); }
+    }, true);
+    lbt.addEventListener('click', function (e) { var f = e.target.closest('.snmp__lbf'); if (!f) return; if (e.target.tagName !== 'IMG') { close(); return; } var im = f.querySelector('img'), b = im.getBoundingClientRect(); im.style.transformOrigin = ((e.clientX - b.left) / b.width * 100) + '% ' + ((e.clientY - b.top) / b.height * 100) + '%'; f.classList.toggle('is-z'); });
+    lbt.addEventListener('pointermove', function (e) { var f = e.target.closest('.snmp__lbf.is-z'); if (!f) return; var im = f.querySelector('img'), b = f.getBoundingClientRect(); im.style.transformOrigin = ((e.clientX - b.left) / b.width * 100) + '% ' + ((e.clientY - b.top) / b.height * 100) + '%'; });
+  }
+  /* size drawer moves to body so it sits above the header */
+  var sg = document.getElementById('SnSize-{{ section.id }}'); if (sg && sg.parentNode !== document.body) { [].forEach.call(document.querySelectorAll('body > #SnSize-{{ section.id }}'), function (o) { o.remove(); }); document.body.appendChild(sg); }
+})();
+</script>
+{% schema %}
+{
+  "name": "Product page",
+  "tag": "div",
+  "class": "snmp-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "select",
+      "id": "gallery",
+      "label": "Gallery layout",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider with thumbnails"
+        },
+        {
+          "value": "stack",
+          "label": "Editorial grid (desktop)"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "range",
+      "id": "gal_w",
+      "label": "Gallery width",
+      "min": 40,
+      "max": 65,
+      "step": 1,
+      "unit": "%",
+      "default": 56
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image shape",
+      "options": [
+        {
+          "value": "4 / 5",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Tall 3:4"
+        }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "select",
+      "id": "art",
+      "label": "Illustration (no images)",
+      "options": [
+        {
+          "value": "bed",
+          "label": "Bedroom"
+        },
+        {
+          "value": "bed-cover",
+          "label": "Bed cover"
+        },
+        {
+          "value": "bed-sheet",
+          "label": "Bed sheets"
+        },
+        {
+          "value": "duvet",
+          "label": "Duvet"
+        },
+        {
+          "value": "duvet-cover",
+          "label": "Duvet cover"
+        },
+        {
+          "value": "pillow",
+          "label": "Pillow"
+        },
+        {
+          "value": "pillow-cover",
+          "label": "Pillow cover"
+        },
+        {
+          "value": "towel",
+          "label": "Towels"
+        }
+      ],
+      "default": "duvet-cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom",
+      "label": "Full-screen zoom",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "zoom_label",
+      "label": "Zoom label",
+      "default": "Open zoom"
+    },
+    {
+      "type": "text",
+      "id": "lb_hint",
+      "label": "Zoom hint",
+      "default": "Tap to zoom · swipe for more"
+    },
+    {
+      "type": "checkbox",
+      "id": "wish_on_gallery",
+      "label": "Wishlist heart on gallery",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "crumbs",
+      "label": "Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "range",
+      "id": "sticky_top",
+      "label": "Info column sticky offset",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Floating add-to-cart bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copied",
+      "label": "Link copied message",
+      "default": "Link copied"
+    },
+    {
+      "type": "header",
+      "content": "Size guide drawer"
+    },
+    {
+      "type": "text",
+      "id": "sg_title",
+      "label": "Title",
+      "default": "Size guide"
+    },
+    {
+      "type": "page",
+      "id": "sg_page",
+      "label": "Page content",
+      "info": "Leave empty to use the text below"
+    },
+    {
+      "type": "richtext",
+      "id": "sg_content",
+      "label": "Content",
+      "default": "<p><strong>Fitted sheet (inches)</strong></p><p>Single 36 x 78 · Double 54 x 75 · Queen 60 x 78 · King 72 x 78 · Super King 78 x 80</p><p><strong>Duvet cover</strong></p><p>Single 54 x 86 · Double 78 x 86 · King 90 x 96</p><p>Pockets fit mattresses up to 12 in deep.</p>"
+    },
+    {
+      "type": "text",
+      "id": "sg_link_label",
+      "label": "Full guide link",
+      "default": "Open the full size guide"
+    },
+    {
+      "type": "url",
+      "id": "sg_link",
+      "label": "Full guide URL"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "eyebrow",
+      "name": "Small heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "info": "Empty = vendor"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "m",
+              "label": "Medium"
+            },
+            {
+              "value": "l",
+              "label": "Large"
+            }
+          ],
+          "default": "l"
+        },
+        {
+          "type": "checkbox",
+          "id": "subtitle",
+          "label": "Show subtitle (custom.subtitle metafield)",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "reviews"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Link target",
+          "default": "#reviews"
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tax_note",
+          "label": "Note",
+          "default": "Inclusive of all taxes · Cash on delivery available"
+        },
+        {
+          "type": "checkbox",
+          "id": "installments",
+          "label": "Shop Pay installments",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "specs",
+      "name": "Fabric specs",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tc_label",
+          "label": "Thread count label",
+          "default": "Thread count"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Specs (Value|Label per line)",
+          "default": "100%|Cotton\nSateen|Weave\n12 in|Pocket depth"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "clamp",
+          "label": "Shorten with Read more",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "more",
+          "label": "Read more",
+          "default": "Read more"
+        },
+        {
+          "type": "text",
+          "id": "less",
+          "label": "Read less",
+          "default": "Read less"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            {
+              "value": "pills",
+              "label": "Pills"
+            },
+            {
+              "value": "select",
+              "label": "Dropdowns"
+            }
+          ],
+          "default": "pills"
+        },
+        {
+          "type": "checkbox",
+          "id": "swatches",
+          "label": "Colour swatches",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "size_label",
+          "label": "Size guide link",
+          "default": "Size guide"
+        }
+      ]
+    },
+    {
+      "type": "stock",
+      "name": "Stock indicator",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "in_text",
+          "label": "In stock",
+          "default": "In stock · ready to ship"
+        },
+        {
+          "type": "text",
+          "id": "low_text",
+          "label": "Low stock ([n] = quantity)",
+          "default": "Only [n] left in this size"
+        },
+        {
+          "type": "text",
+          "id": "out_text",
+          "label": "Sold out",
+          "default": "Sold out in this option"
+        },
+        {
+          "type": "range",
+          "id": "low",
+          "label": "Low stock threshold",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "bar",
+          "label": "Thread bar",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "properties",
+      "name": "Gift & monogram",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "gift",
+          "label": "Gift wrap checkbox",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "gift_label",
+          "label": "Gift wrap label",
+          "default": "Gift wrap with a handwritten note"
+        },
+        {
+          "type": "text",
+          "id": "gift_name",
+          "label": "Gift property name",
+          "default": "Gift wrap"
+        },
+        {
+          "type": "checkbox",
+          "id": "mono",
+          "label": "Monogram field",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "mono_label",
+          "label": "Monogram label",
+          "default": "Monogram (up to 3 letters)"
+        },
+        {
+          "type": "text",
+          "id": "mono_ph",
+          "label": "Monogram placeholder",
+          "default": "e.g. S.A."
+        },
+        {
+          "type": "text",
+          "id": "mono_name",
+          "label": "Monogram property name",
+          "default": "Monogram"
+        },
+        {
+          "type": "range",
+          "id": "mono_max",
+          "label": "Max characters",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "qty",
+          "label": "Quantity",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "wish",
+          "label": "Wishlist button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "dynamic",
+          "label": "Dynamic checkout button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "whatsapp",
+          "label": "Order on WhatsApp",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "wa_label",
+          "label": "WhatsApp label",
+          "default": "Order on WhatsApp"
+        },
+        {
+          "type": "text",
+          "id": "wa_msg",
+          "label": "WhatsApp message",
+          "default": "Hi Sakooon, I would like to order:"
+        },
+        {
+          "type": "checkbox",
+          "id": "pickup",
+          "label": "Pickup availability",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "pickup_yes",
+          "label": "Pickup available",
+          "default": "Pickup available at"
+        },
+        {
+          "type": "text",
+          "id": "pickup_no",
+          "label": "Pickup unavailable",
+          "default": "Pickup currently unavailable at"
+        }
+      ]
+    },
+    {
+      "type": "delivery",
+      "name": "Delivery estimate",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Arrives"
+        },
+        {
+          "type": "range",
+          "id": "min_days",
+          "label": "Minimum days",
+          "min": 0,
+          "max": 14,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "max_days",
+          "label": "Maximum days",
+          "min": 1,
+          "max": 21,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "cutoff",
+          "label": "Same-day dispatch cut-off hour",
+          "min": 8,
+          "max": 23,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "type": "text",
+          "id": "cut_text",
+          "label": "Countdown text ([time])",
+          "default": "Order within [time] for same-day dispatch"
+        },
+        {
+          "type": "checkbox",
+          "id": "skip_sunday",
+          "label": "Skip Sundays",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust icons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "i1",
+          "label": "Icon 1",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "t1",
+          "label": "Text 1",
+          "default": "Free delivery over Rs. 5,000"
+        },
+        {
+          "type": "select",
+          "id": "i2",
+          "label": "Icon 2",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "return"
+        },
+        {
+          "type": "text",
+          "id": "t2",
+          "label": "Text 2",
+          "default": "7-day easy exchange"
+        },
+        {
+          "type": "select",
+          "id": "i3",
+          "label": "Icon 3",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "credit-card"
+        },
+        {
+          "type": "text",
+          "id": "t3",
+          "label": "Text 3",
+          "default": "Cash on delivery"
+        },
+        {
+          "type": "select",
+          "id": "i4",
+          "label": "Icon 4",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "cotton"
+        },
+        {
+          "type": "text",
+          "id": "t4",
+          "label": "Text 4",
+          "default": "100% pure cotton"
+        }
+      ]
+    },
+    {
+      "type": "tab",
+      "name": "Collapsible tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Details"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "moon",
+              "label": "Moon"
+            },
+            {
+              "value": "sleep",
+              "label": "Sleep (Zzz)"
+            },
+            {
+              "value": "bed",
+              "label": "Bed"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "towel",
+              "label": "Towel"
+            },
+            {
+              "value": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "value": "thread",
+              "label": "Thread / weave"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / softness"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf / natural"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "sparkles",
+              "label": "Sparkles"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler / size"
+            },
+            {
+              "value": "layers",
+              "label": "Layers"
+            },
+            {
+              "value": "droplet",
+              "label": "Droplet"
+            },
+            {
+              "value": "wash",
+              "label": "Washing"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "swatch",
+              "label": "Fabric swatch"
+            },
+            {
+              "value": "hotel",
+              "label": "Hotel"
+            },
+            {
+              "value": "truck",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "package",
+              "label": "Package"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Easy returns"
+            },
+            {
+              "value": "refresh",
+              "label": "Exchange"
+            },
+            {
+              "value": "credit-card",
+              "label": "Card / payment"
+            },
+            {
+              "value": "lock",
+              "label": "Secure lock"
+            },
+            {
+              "value": "shield-check",
+              "label": "Shield"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            },
+            {
+              "value": "mail",
+              "label": "Email"
+            },
+            {
+              "value": "message",
+              "label": "Message"
+            },
+            {
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "globe",
+              "label": "Globe"
+            },
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "headset",
+              "label": "Support"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ],
+          "default": "info"
+        },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Content",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text below"
+            },
+            {
+              "value": "description",
+              "label": "Product description"
+            },
+            {
+              "value": "care",
+              "label": "Care symbols + text"
+            },
+            {
+              "value": "page",
+              "label": "A page"
+            }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Woven from long-staple cotton for a soft, breathable feel.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "complementary",
+      "name": "Pairs well with",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Complete the bed"
+        },
+        {
+          "type": "range",
+          "id": "limit",
+          "label": "Products",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "paragraph",
+          "content": "Uses complementary products from the Search & Discovery app."
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Share"
+        }
+      ]
+    },
+    {
+      "type": "sku",
+      "name": "SKU",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "SKU:"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Free gift box with every set.</p>"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "Liquid"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

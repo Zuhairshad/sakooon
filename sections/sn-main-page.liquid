@@ -1,0 +1,230 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snpg-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snpg snpg--{{ s.layout }}" style="{% render 'sn-vars', s: s %}">
+  <div class="sn-wrap snpg__wrap">
+    {%- if s.show_title -%}
+      <header class="snpg__head">
+        <p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 2 %}{{ s.eyebrow | default: shop.name }}</p>
+        <h1 class="sn-h sn-h--{{ s.head_size }}" data-sn-split>{{ page.title }}</h1>
+      </header>
+    {%- endif -%}
+    {%- if s.layout == 'toc' -%}
+      <div class="snpg__grid">
+        <nav class="snpg__toc" aria-label="{{ s.toc_label | escape }}" data-snpg-toc hidden><p>{{ s.toc_label }}</p><ol></ol></nav>
+        <div class="sn-rte snpg__body" data-snpg-body data-r>{{ page.content }}</div>
+      </div>
+    {%- else -%}
+      <div class="sn-rte snpg__body" data-r>{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+#{{ sid }} .snpg__wrap { max-width: {% if s.layout == 'toc' %}1200px{% else %}{{ s.width }}px{% endif %}; }
+#{{ sid }} .snpg__head { display: grid; gap: 16px; margin-bottom: clamp(30px, 4vw, 54px); padding-bottom: 26px; border-bottom: 1px dashed var(--line2); {% if s.center %}justify-items: center; text-align: center;{% endif %} }
+#{{ sid }} .snpg__body { font-size: 1.04rem; }
+#{{ sid }} .snpg__body h2 { scroll-margin-top: 120px; }
+#{{ sid }} .snpg__grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(30px, 5vw, 80px); align-items: start; }
+#{{ sid }} .snpg__toc { position: sticky; top: 120px; display: grid; gap: 12px; }
+#{{ sid }} .snpg__toc p { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--mute); }
+#{{ sid }} .snpg__toc ol { display: grid; gap: 2px; list-style: none; padding: 0; margin: 0; border-left: 1px dashed var(--line2); }
+#{{ sid }} .snpg__toc a { position: relative; display: block; padding: 7px 0 7px 16px; font-size: 14px; color: var(--soft); transition: color .3s; }
+#{{ sid }} .snpg__toc a::before { content: ""; position: absolute; left: -4px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--ac); transform: scale(0); transition: transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+#{{ sid }} .snpg__toc a.is-on { color: var(--tx); }
+#{{ sid }} .snpg__toc a.is-on::before { transform: none; }
+@media (max-width: 899px) { #{{ sid }} .snpg__grid { grid-template-columns: 1fr; } #{{ sid }} .snpg__toc { position: static; } }
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var toc = r.querySelector('[data-snpg-toc]'), body = r.querySelector('[data-snpg-body]'); if (!toc || !body) return;
+  var hs = [].slice.call(body.querySelectorAll('h2, h3')); if (hs.length < 2) return;
+  var ol = toc.querySelector('ol');
+  hs.forEach(function (h, i) {
+    if (!h.id) h.id = 'sec-' + i + '-' + h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40);
+    var li = document.createElement('li'), a = document.createElement('a');
+    a.href = '#' + h.id; a.textContent = h.textContent;
+    if (h.tagName === 'H3') { a.style.paddingLeft = '28px'; a.style.fontSize = '13px'; }
+    li.appendChild(a); ol.appendChild(li);
+  });
+  toc.hidden = false;
+  var links = [].slice.call(ol.querySelectorAll('a'));
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (l) { l.classList.toggle('is-on', l.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-20% 0px -70% 0px' });
+  hs.forEach(function (h) { io.observe(h); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Page content",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "info": "Empty = store name"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Title size",
+      "options": [
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "checkbox",
+      "id": "center",
+      "label": "Centre title",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "simple",
+          "label": "Simple column"
+        },
+        {
+          "value": "toc",
+          "label": "With contents list (for policies & guides)"
+        }
+      ],
+      "default": "simple"
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "label": "Text width",
+      "min": 560,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 820
+    },
+    {
+      "type": "text",
+      "id": "toc_label",
+      "label": "Contents label",
+      "default": "On this page"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

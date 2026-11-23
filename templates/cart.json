@@ -1,0 +1,22 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-cart",
+   "settings": {}
+  },
+  "recs": {
+   "type": "sn-product-recs",
+   "settings": {
+    "source": "collection",
+    "eyebrow": "Finish the bed",
+    "heading": "Pairs",
+    "highlight": "beautifully",
+    "scheme": "ivory"
+   }
+  }
+ },
+ "order": [
+  "main",
+  "recs"
+ ]
+}

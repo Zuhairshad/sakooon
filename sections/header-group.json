@@ -1,0 +1,142 @@
+{
+ "name": "Header group",
+ "type": "header",
+ "sections": {
+  "announcement": {
+   "type": "sn-announcement",
+   "settings": {
+    "mode": "rotate"
+   },
+   "blocks": {
+    "message_u8jzPd": {
+     "type": "message",
+     "settings": {
+      "icon": "truck",
+      "text": "Free delivery across Pakistan over Rs. 5,000"
+     }
+    },
+    "message_e0IgxL": {
+     "type": "message",
+     "settings": {
+      "icon": "sparkle",
+      "text": "New: T300 cotton sateen in 7 calming colours",
+      "link": "/collections/bed-sheets",
+      "link_label": "Shop now"
+     }
+    },
+    "message_d6Gncf": {
+     "type": "message",
+     "settings": {
+      "icon": "return",
+      "text": "Cash on delivery · easy 7-day exchange"
+     }
+    }
+   },
+   "block_order": [
+    "message_u8jzPd",
+    "message_e0IgxL",
+    "message_d6Gncf"
+   ]
+  },
+  "header": {
+   "type": "sn-header",
+   "settings": {
+    "layout": "center",
+    "behavior": "hide"
+   },
+   "blocks": {
+    "item_BAepfJ": {
+     "type": "item",
+     "settings": {
+      "title": "Bed Sheets",
+      "url": "/collections/bed-sheets",
+      "col_heading": "Shop by weave",
+      "links": "T200 · Cotton percale | /collections/t200\nT250 · Fine percale | /collections/t250\nT300 · Cotton sateen | /collections/t300\nFitted sheets | /collections/fitted-sheets\nFlat sheet sets | /collections/flat-sheets\nKids' sheets | /collections/kids-bed-sheets",
+      "f1_art": "bed-sheet",
+      "f1_kicker": "Bestseller",
+      "f1_title": "T300 Sateen",
+      "f1_cta": "Shop now",
+      "f1_link": "/collections/t300",
+      "f2_art": "bed",
+      "f2_kicker": "Guide",
+      "f2_title": "Find your thread count",
+      "f2_cta": "Discover",
+      "f2_link": "/pages/size-guide"
+     }
+    },
+    "item_Bd0Kh8": {
+     "type": "item",
+     "settings": {
+      "title": "Duvets",
+      "url": "/collections/duvets",
+      "col_heading": "Duvets & covers",
+      "links": "All-season duvets | /collections/duvets\nWinter duvets | /collections/winter-duvets\nSummer duvets | /collections/summer-duvets\nDuvet covers | /collections/duvet-covers\nBed covers | /collections/bed-covers",
+      "f1_art": "duvet",
+      "f1_kicker": "Winter",
+      "f1_title": "Cloud Duvet",
+      "f1_cta": "Shop now",
+      "f1_link": "/collections/duvets",
+      "f2_art": "duvet-cover",
+      "f2_kicker": "New",
+      "f2_title": "Stonewashed covers",
+      "f2_cta": "Discover",
+      "f2_link": "/collections/duvet-covers"
+     }
+    },
+    "item_oOOL8d": {
+     "type": "item",
+     "settings": {
+      "title": "Pillows",
+      "url": "/collections/pillows",
+      "col_heading": "Pillows & covers",
+      "links": "Pillows | /collections/pillows\nPillow covers · Premium | /collections/pillow-covers-premium\nPillow covers · Luxury | /collections/pillow-covers-luxury\nCushion covers | /collections/cushion-covers",
+      "f1_art": "pillow-cover",
+      "f1_kicker": "Most loved",
+      "f1_title": "Luxury Covers",
+      "f1_cta": "Shop now",
+      "f1_link": "/collections/pillow-covers-luxury",
+      "f2_art": "pillow",
+      "f2_kicker": "Soft",
+      "f2_title": "Hollow-fibre pillows",
+      "f2_cta": "Discover",
+      "f2_link": "/collections/pillows"
+     }
+    },
+    "item_KLzdoc": {
+     "type": "item",
+     "settings": {
+      "title": "Bath",
+      "url": "/collections/bath-towels",
+      "col_heading": "Bath",
+      "links": "Bath towels | /collections/bath-towels\nBath sheets | /collections/bath-sheets\nHand towels | /collections/hand-towels\nTowel sets | /collections/towel-sets",
+      "f1_art": "towel",
+      "f1_kicker": "600 GSM",
+      "f1_title": "Spa Towels",
+      "f1_cta": "Shop now",
+      "f1_link": "/collections/bath-towels",
+      "f2_art": "bed"
+     }
+    },
+    "pill_J2isAj": {
+     "type": "pill",
+     "settings": {
+      "icon": "ruler",
+      "title": "Size guide",
+      "url": "/pages/size-guide"
+     }
+    }
+   },
+   "block_order": [
+    "item_BAepfJ",
+    "item_Bd0Kh8",
+    "item_oOOL8d",
+    "item_KLzdoc",
+    "pill_J2isAj"
+   ]
+  }
+ },
+ "order": [
+  "announcement",
+  "header"
+ ]
+}

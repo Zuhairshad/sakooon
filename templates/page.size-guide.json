@@ -1,0 +1,226 @@
+{
+ "sections": {
+  "banner": {
+   "type": "sn-page-hero",
+   "settings": {
+    "style": "silk",
+    "height": 380,
+    "heading": "Size",
+    "highlight": "guide",
+    "text": "Find the perfect fit for your mattress, pillows and duvet."
+   }
+  },
+  "sizes": {
+   "type": "sn-size-guide",
+   "settings": {},
+   "blocks": {
+    "size_zLczbt": {
+     "type": "size",
+     "settings": {
+      "name": "Single",
+      "width": 36,
+      "length": 78,
+      "fitted": "36 x 78 x 14 in",
+      "flat": "66 x 100 in",
+      "duvet": "68 x 88 in",
+      "pillows": 1,
+      "button": "Shop Single"
+     }
+    },
+    "size_tOofL9": {
+     "type": "size",
+     "settings": {
+      "name": "Double",
+      "width": 54,
+      "length": 75,
+      "fitted": "54 x 75 x 14 in",
+      "flat": "81 x 96 in",
+      "duvet": "80 x 88 in",
+      "button": "Shop Double"
+     }
+    },
+    "size_H2WjQ5": {
+     "type": "size",
+     "settings": {
+      "name": "Queen",
+      "width": 60,
+      "length": 78,
+      "fitted": "60 x 78 x 14 in",
+      "flat": "96 x 104 in",
+      "duvet": "90 x 94 in",
+      "button": "Shop Queen"
+     }
+    },
+    "size_TY4MyW": {
+     "type": "size",
+     "settings": {
+      "name": "King",
+      "popular": true,
+      "note": "The usual double bed in most Pakistani homes."
+     }
+    },
+    "size_uUFjsU": {
+     "type": "size",
+     "settings": {
+      "name": "Super King",
+      "width": 78,
+      "length": 84,
+      "fitted": "78 x 84 x 14 in",
+      "flat": "112 x 112 in",
+      "duvet": "110 x 98 in",
+      "pillow": "20 x 36 in",
+      "pillows": 3,
+      "button": "Shop Super King"
+     }
+    }
+   },
+   "block_order": [
+    "size_zLczbt",
+    "size_tOofL9",
+    "size_H2WjQ5",
+    "size_TY4MyW",
+    "size_uUFjsU"
+   ]
+  },
+  "threads": {
+   "type": "sn-thread-guide",
+   "settings": {},
+   "blocks": {
+    "grade_NPjc01": {
+     "type": "grade",
+     "settings": {
+      "label": "T200",
+      "number": 200,
+      "badge": "Everyday",
+      "weave": "Cotton percale",
+      "tone": "#DCE6EE",
+      "title": "Light, crisp and breathable",
+      "text": "<p>A simple one-over, one-under weave with a fresh matte finish — perfect for warm nights. It softens beautifully with every wash.</p>",
+      "m1": 6,
+      "m2": 6,
+      "m3": 10,
+      "m4": 7,
+      "best_for": "Kids' rooms, Guest rooms, Hot summers",
+      "price": "Rs. 5,499",
+      "button": "Shop T200"
+     }
+    },
+    "grade_T5GOBU": {
+     "type": "grade",
+     "settings": {
+      "label": "T250",
+      "number": 250,
+      "badge": "Bestseller",
+      "weave": "Fine percale",
+      "tone": "#D5DEC9",
+      "title": "The perfect balance of soft and cool",
+      "text": "<p>Finer yarns woven tighter for a smoother hand-feel that still breathes through Pakistani summers.</p>",
+      "m1": 8,
+      "m2": 8,
+      "m3": 9,
+      "m4": 8,
+      "best_for": "Couples, All seasons, Daily use",
+      "price": "Rs. 7,499",
+      "button": "Shop T250"
+     }
+    },
+    "grade_SZGi6H": {
+     "type": "grade",
+     "settings": {
+      "featured": true
+     }
+    }
+   },
+   "block_order": [
+    "grade_NPjc01",
+    "grade_T5GOBU",
+    "grade_SZGi6H"
+   ]
+  },
+  "compare": {
+   "type": "sn-compare",
+   "settings": {},
+   "blocks": {
+    "column_WGK10Z": {
+     "type": "column",
+     "settings": {}
+    },
+    "column_b0RLZ5": {
+     "type": "column",
+     "settings": {
+      "title": "Luxury",
+      "price": "Rs. 1,499 / pair",
+      "art": "pillow-cover",
+      "values": "Cotton sateen\nT300\nSilky sheen\nPiped flange edge\nHidden zip\nYes",
+      "featured": true,
+      "badge": "Most loved",
+      "btn": "Shop Luxury"
+     }
+    }
+   },
+   "block_order": [
+    "column_WGK10Z",
+    "column_b0RLZ5"
+   ]
+  },
+  "faq": {
+   "type": "sn-faq",
+   "settings": {
+    "heading": "Sizing",
+    "highlight": "questions"
+   },
+   "blocks": {
+    "question_TR9SPo": {
+     "type": "question",
+     "settings": {}
+    },
+    "question_fbciOx": {
+     "type": "question",
+     "settings": {
+      "category": "Sizing",
+      "question": "What does T200, T250 and T300 mean?",
+      "answer": "<p>It is the thread count: threads woven into one square inch. Higher counts feel smoother and silkier; T200 is crisp and breathable, T300 is our softest sateen.</p>"
+     }
+    },
+    "question_9gy1CJ": {
+     "type": "question",
+     "settings": {
+      "category": "Care",
+      "question": "How should I wash my sheets?",
+      "answer": "<p>Wash cool (30–40°C) with mild detergent, tumble dry low and iron warm. Avoid bleach to keep colours rich.</p>"
+     }
+    },
+    "question_dObOIR": {
+     "type": "question",
+     "settings": {
+      "category": "Delivery",
+      "question": "How long does delivery take?",
+      "answer": "<p>2–3 working days in Lahore, Karachi and Islamabad, 3–5 days elsewhere. Cash on delivery is available nationwide.</p>"
+     }
+    },
+    "question_pFqaDZ": {
+     "type": "question",
+     "settings": {
+      "category": "Delivery",
+      "question": "Can I exchange a product?",
+      "answer": "<p>Yes, unused products in original packing can be exchanged within 7 days.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "question_TR9SPo",
+    "question_fbciOx",
+    "question_9gy1CJ",
+    "question_dObOIR",
+    "question_pFqaDZ"
+   ]
+  }
+ },
+ "order": [
+  "banner",
+  "sizes",
+  "threads",
+  "compare",
+  "faq"
+ ]
+}

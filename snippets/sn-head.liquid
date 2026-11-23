@@ -1,0 +1,30 @@
+{%- comment -%}
+  Section heading. Params: s (settings), p (prefix, optional), link_label, link_url, k (moon phase), extra_class
+  Reads s.[p]eyebrow, [p]heading, [p]highlight, [p]text, [p]head_size, [p]head_align
+{%- endcomment -%}
+{%- liquid
+  assign p = p | default: ''
+  assign k_eb = p | append: 'eyebrow'
+  assign k_h = p | append: 'heading'
+  assign k_hl = p | append: 'highlight'
+  assign k_t = p | append: 'text'
+  assign k_sz = p | append: 'head_size'
+  assign k_al = p | append: 'head_align'
+  assign eb = s[k_eb]
+  assign h = s[k_h]
+  assign hl = s[k_hl]
+  assign tx = s[k_t]
+  assign sz = s[k_sz] | default: 'l'
+  assign al = s[k_al] | default: 'left'
+  assign tag = tag | default: 'h2'
+-%}
+{%- if eb != blank or h != blank or hl != blank or tx != blank or link_label != blank -%}
+<div class="sn-head{% if al == 'center' %} sn-head--center{% elsif link_label != blank %} sn-head--split{% endif %} {{ extra_class }}">
+  <div class="sn-head__main">
+    {%- if eb != blank -%}<p class="sn-eyebrow" data-r>{% render 'sn-phase', k: k %}{{ eb }}</p>{%- endif -%}
+    {%- if h != blank or hl != blank -%}<{{ tag }} class="sn-h sn-h--{{ sz }}" data-sn-split>{{ h }}{% if hl != blank %} <em>{{ hl }}</em>{% endif %}</{{ tag }}>{%- endif -%}
+    {%- if tx != blank -%}<p class="sn-lead" data-r style="--i: 2;">{{ tx | newline_to_br }}</p>{%- endif -%}
+  </div>
+  {%- if link_label != blank -%}<div data-r style="--i: 3;"><a class="sn-link" href="{{ link_url | default: routes.all_products_collection_url }}">{{ link_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a></div>{%- endif -%}
+</div>
+{%- endif -%}

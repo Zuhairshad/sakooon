@@ -1,0 +1,11 @@
+{
+ "sections": {
+  "main": {
+   "type": "sn-main-activate",
+   "settings": {}
+  }
+ },
+ "order": [
+  "main"
+ ]
+}

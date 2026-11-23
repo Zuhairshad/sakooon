@@ -1,0 +1,11 @@
+{%- comment -%}
+  Image with illustration fallback. Params: image, art, ratio (css), sizes, class, eager (bool), width (default 1400), alt, reveal (data-r value), focal
+{%- endcomment -%}
+{%- assign w = width | default: 1400 -%}
+<div class="sn-media {{ class }}"{% if ratio %} style="aspect-ratio: {{ ratio }};"{% endif %}{% if reveal %} data-r="{{ reveal }}"{% endif %}>
+  {%- if image != blank -%}
+    <img src="{{ image | image_url: width: w }}" srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: w }} {{ w }}w" sizes="{{ sizes | default: '100vw' }}" alt="{{ alt | default: image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}" loading="{% if eager %}eager{% else %}lazy{% endif %}"{% if eager %} fetchpriority="high"{% endif %}{% if focal %} style="object-position: {{ focal }};"{% elsif image.presentation.focal_point %} style="object-position: {{ image.presentation.focal_point }};"{% endif %}>
+  {%- else -%}
+    {%- assign fa = art | default: 'bed' -%}{% render 'sn-art', name: fa %}
+  {%- endif -%}
+</div>

@@ -1,0 +1,70 @@
+{%- comment -%}
+  Sakooon Nocturne product card. Params: product, i (stagger index), sizes, art (fallback), ratio
+{%- endcomment -%}
+{%- liquid
+  assign cv = product.selected_or_first_available_variant
+  assign ratio = ratio | default: settings.card_ratio
+  assign pct = 0
+  if cv.compare_at_price > cv.price and cv.price > 0
+    assign diff = cv.compare_at_price | minus: cv.price
+    assign pct = diff | times: 100 | divided_by: cv.compare_at_price | floor
+  endif
+  assign is_new = false
+  if settings.card_new_days > 0 and product.created_at
+    assign created = product.created_at | date: '%s' | plus: 0
+    assign nowts = 'now' | date: '%s' | plus: 0
+    assign age_days = nowts | minus: created | divided_by: 86400
+    if age_days <= settings.card_new_days
+      assign is_new = true
+    endif
+  endif
+  assign single = false
+  if product.has_only_default_variant or product.variants.size == 1
+    assign single = true
+  endif
+-%}
+<article class="sn-card" data-r style="--i: {{ i | default: 0 }}; --ratio: {{ ratio }};">
+  <div class="sn-card__stage">
+  <a class="sn-card__media sn-ripple" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_media -%}
+      <img src="{{ product.featured_media | image_url: width: 700 }}" srcset="{{ product.featured_media | image_url: width: 400 }} 400w, {{ product.featured_media | image_url: width: 700 }} 700w, {{ product.featured_media | image_url: width: 1000 }} 1000w" sizes="{{ sizes | default: '(min-width: 990px) 25vw, 50vw' }}" alt="{{ product.featured_media.alt | default: product.title | escape }}" width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}" loading="lazy">
+      {%- if settings.card_second and product.media[1] -%}
+        <img class="sn-card__b" src="{{ product.media[1] | image_url: width: 700 }}" alt="" loading="lazy" width="{{ product.media[1].width }}" height="{{ product.media[1].height }}">
+      {%- endif -%}
+    {%- else -%}
+      {%- assign fa = art | default: 'bed-sheet' -%}{% render 'sn-art', name: fa %}
+    {%- endif -%}
+  </a>
+  <div class="sn-card__badges">
+    {%- if product.available == false -%}
+      <span class="sn-badge sn-badge--out">{{ 'products.product.sold_out' | t }}</span>
+    {%- elsif pct > 0 and settings.card_badge == 'percent' -%}
+      <span class="sn-badge sn-badge--sale">−{{ pct }}%</span>
+    {%- elsif pct > 0 and settings.card_badge == 'text' -%}
+      <span class="sn-badge sn-badge--sale">Sale</span>
+    {%- endif -%}
+    {%- if is_new -%}<span class="sn-badge sn-badge--new">New</span>{%- endif -%}
+  </div>
+  {%- if settings.card_wish -%}
+    <button type="button" class="sn-card__wish" data-sn-wish="{{ product.handle }}" aria-label="Save {{ product.title | escape }} to wishlist" aria-pressed="false">{% render 'sn-icon', name: 'heart', class: 'icon icon--outline' %}{% render 'sn-icon', name: 'heart-filled', class: 'icon icon--filled' %}</button>
+  {%- endif -%}
+  {%- if settings.card_quick and product.available -%}
+    {%- if single -%}
+      <button type="button" class="sn-card__quick" data-sn-add="{{ cv.id }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>{{ 'products.product.add_to_cart' | t }}</span></button>
+    {%- else -%}
+      <button type="button" class="sn-card__quick" data-sn-quick="{{ product.handle }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>Quick add</span></button>
+    {%- endif -%}
+  {%- endif -%}
+  </div>
+  <div class="sn-card__info">
+    {%- if settings.card_vendor or settings.card_swatches -%}
+      <div class="sn-card__top">
+        {%- if settings.card_vendor and product.vendor != blank -%}<span class="sn-card__vendor">{{ product.vendor }}</span>{%- endif -%}
+        {%- if settings.card_swatches -%}{% render 'sn-swatches', product: product, limit: settings.card_swatch_limit %}{%- endif -%}
+      </div>
+    {%- endif -%}
+    <h3 class="sn-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    {%- if settings.card_meta and product.metafields.specs.line_1 != blank -%}<p class="sn-card__meta">{{ product.metafields.specs.line_1 }}{% if product.metafields.specs.line_2 != blank %} · {{ product.metafields.specs.line_2 }}{% endif %}</p>{%- endif -%}
+    <div class="sn-card__price">{% render 'sn-price', product: product, from: true %}</div>
+  </div>
+</article>

@@ -1,0 +1,173 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snactivate-' | append: section.id
+-%}
+<section id="{{ sid }}" class="sn-s snau" style="{% render 'sn-vars', s: s %}">
+  <div class="snau__grid">
+    {% render 'sn-auth-side', s: s, k: 2 %}
+    <div class="snau__main">
+      <div class="snau__card">
+        <p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 1 %}{{ s.eyebrow }}</p>
+        <h1 class="sn-h sn-h--l" data-sn-split>{{ s.heading }} <em>{{ s.highlight }}</em></h1>
+        <p class="snau__sub" data-r>{{ s.text }}</p>
+        {%- form 'activate_customer_password' -%}
+          {%- if form.errors -%}<p class="sn-msg sn-msg--err">{{ form.errors | default_errors }}</p>{%- endif -%}
+          <div class="snau__fl"><input class="sn-input" type="password" id="{{ sid }}-p" name="customer[password]" autocomplete="new-password" placeholder=" " required><label for="{{ sid }}-p">{{ s.l_pass }}</label><button type="button" class="snau__eye" data-snau-eye aria-label="Show password">{% render 'sn-icon', name: 'eye', class: 'icon' %}</button></div>
+          <div class="snau__fl"><input class="sn-input" type="password" id="{{ sid }}-c" name="customer[password_confirmation]" autocomplete="new-password" placeholder=" " required><label for="{{ sid }}-c">{{ s.l_conf }}</label></div>
+          <p class="sn-small" data-match hidden>{{ s.mismatch }}</p>
+          <button type="submit" class="sn-btn sn-btn--gold sn-btn--block"><span>{{ s.btn }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button>
+          <button type="submit" name="decline" class="sn-link" formnovalidate>{{ s.decline }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  var a = r.querySelector('#{{ sid }}-p'), b = r.querySelector('#{{ sid }}-c'), m = r.querySelector('[data-match]');
+  function chk() { m.hidden = !b.value || a.value === b.value; }
+  a.addEventListener('input', chk); b.addEventListener('input', chk);
+  r.addEventListener('click', function (e) { var eye = e.target.closest('[data-snau-eye]'); if (eye) { var i = eye.parentNode.querySelector('input'); i.type = i.type === 'password' ? 'text' : 'password'; } });
+})();
+</script>
+{% schema %}
+{
+  "name": "Activate account",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Almost there"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Activate your"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "account"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Set a password to finish creating your Sakooon account."
+    },
+    {
+      "type": "text",
+      "id": "l_pass",
+      "label": "Password label",
+      "default": "New password"
+    },
+    {
+      "type": "text",
+      "id": "l_conf",
+      "label": "Confirm label",
+      "default": "Confirm password"
+    },
+    {
+      "type": "text",
+      "id": "mismatch",
+      "label": "Mismatch text",
+      "default": "Passwords do not match yet."
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button",
+      "default": "Activate account"
+    },
+    {
+      "type": "text",
+      "id": "decline",
+      "label": "Decline link (activate)",
+      "default": "Decline invitation"
+    },
+    {
+      "type": "header",
+      "content": "Night panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image",
+      "label": "Image (optional)"
+    },
+    {
+      "type": "text",
+      "id": "side_eyebrow",
+      "label": "Small heading",
+      "default": "Sakooon members"
+    },
+    {
+      "type": "text",
+      "id": "side_title",
+      "label": "Quote",
+      "default": "Rest is the softest luxury."
+    },
+    {
+      "type": "textarea",
+      "id": "side_text",
+      "label": "Text",
+      "default": "Track orders, save favourites and get first access to new colours."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    }
+  ]
+}
+{% endschema %}

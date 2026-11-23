@@ -1,0 +1,187 @@
+{%- comment -%}
+  SAKOOON · NOCTURNE preloader
+  Live silk (WebGL) · the wordmark is stitched in gold thread · the three moons wax ·
+  a needle sews the progress line · the silk sheet is pulled away to reveal the store.
+  Settings: Theme settings > Preloader
+{%- endcomment -%}
+{%- liquid
+  assign on = settings.pl_enabled
+  if request.design_mode
+    assign on = false
+  endif
+  assign c1 = settings.pl_c1 | default: settings.color_dark_bg
+  assign c2 = settings.pl_c2 | default: settings.color_dusk
+  assign c3 = settings.pl_c3 | default: settings.color_moon
+  assign msgs = ''
+  assign sep = ''
+  assign lines = settings.pl_messages | strip | newline_to_br | split: '<br />'
+  for ln in lines
+    assign l = ln | strip
+    if l != blank
+      assign msgs = msgs | append: sep | append: l
+      assign sep = '|'
+    endif
+  endfor
+-%}
+{%- if on -%}
+<style>
+  html.pl-lock, html.pl-lock body { overflow: hidden !important; }
+  .snpl { --c1: {{ c1 }}; --c2: {{ c2 }}; --c3: {{ c3 }}; --tx: {{ settings.color_dark_text }};
+    position: fixed; inset: 0; z-index: 2147483600; color: var(--tx); font-family: var(--f-body); perspective: 1600px; }
+  .snpl[hidden] { display: none !important; }
+  .snpl__sheet { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(120% 90% at 30% 15%, color-mix(in srgb, var(--c3) 22%, transparent), transparent 60%), linear-gradient(165deg, var(--c2), var(--c1) 70%); transform-origin: 50% 0; will-change: transform; }
+  .snpl__sheet::after { content: ""; position: absolute; inset: 0; background: radial-gradient(70% 60% at 50% 46%, transparent 30%, rgba(0, 0, 0, .45)); pointer-events: none; }
+  .snpl__silk { position: absolute; inset: -2%; }
+  .snpl__edge { position: absolute; left: -5%; right: -5%; bottom: -60px; height: 60px; background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 90%, #000), transparent); filter: blur(8px); opacity: 0; }
+
+  .snpl__stage { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; align-content: center; gap: 34px; padding: 24px; transition: opacity .6s ease, transform .9s cubic-bezier(.6, 0, .3, 1), filter .6s; }
+  .snpl__corner { position: absolute; z-index: 2; font-size: 10.5px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; color: color-mix(in srgb, var(--tx) 60%, transparent); opacity: 0; animation: snpl-fade 1s ease .6s forwards; }
+  .snpl__corner--tl { left: 34px; top: 30px; } .snpl__corner--br { right: 34px; bottom: 30px; } .snpl__corner--tr { right: 34px; top: 30px; display: flex; align-items: center; gap: 10px; }
+  .snpl__corner--tr i { width: 7px; height: 7px; border-radius: 50%; background: var(--c3); box-shadow: 0 0 12px var(--c3); animation: snpl-blink 1.6s ease-in-out infinite; }
+  @keyframes snpl-blink { 50% { opacity: .25; } }
+  @keyframes snpl-fade { to { opacity: 1; } }
+
+  /* breathing moonlight halo + logo */
+  .snpl__halo { position: absolute; left: 50%; top: 50%; width: min(520px, 110vw); aspect-ratio: 2.2; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--c3) 26%, transparent), transparent); filter: blur(10px); opacity: 0; animation: snpl-fade 1.6s ease .3s forwards, snpl-halo 6s ease-in-out 1.8s infinite; pointer-events: none; }
+  @keyframes snpl-halo { 50% { transform: scale(1.12); opacity: .7; } }
+  .snpl__mark { position: relative; display: grid; place-items: center; width: min(560px, 82vw); aspect-ratio: 3.4 / 1; }
+  @keyframes snpl-rot { to { transform: rotate(360deg); } }
+  @keyframes snpl-breathe { 0%, 100% { transform: scale(.92); opacity: .2; } 50% { transform: scale(1.06); opacity: .55; } }
+  .snpl .sn-logo { position: relative; width: 100%; height: auto; overflow: visible; color: var(--tx); --sn-logo-accent: var(--c3); filter: drop-shadow(0 6px 30px rgba(0, 0, 0, .35)); }
+  .snpl .sn-logo__type path { fill: transparent; stroke: var(--c3); stroke-width: 7; stroke-dasharray: 1; stroke-dashoffset: 1; animation: snpl-draw 2.1s cubic-bezier(.6, .1, .3, 1) .35s forwards, snpl-fill 1s ease 2.15s forwards; }
+  .snpl .sn-logo__type path:nth-child(2) { animation-delay: .5s, 2.25s; } .snpl .sn-logo__type path:nth-child(3) { animation-delay: .65s, 2.35s; } .snpl .sn-logo__type path:nth-child(4) { animation-delay: .8s, 2.45s; }
+  @keyframes snpl-draw { to { stroke-dashoffset: 0; } }
+  @keyframes snpl-fill { to { fill: var(--tx); stroke-width: 0; } }
+  .snpl .sn-logo__ring { stroke-dasharray: 1; stroke-dashoffset: 1; animation: snpl-draw 1.2s cubic-bezier(.6, .1, .3, 1) forwards; }
+  .snpl .sn-logo__moon--1 .sn-logo__ring { animation-delay: 1s; } .snpl .sn-logo__moon--2 .sn-logo__ring { animation-delay: 1.2s; } .snpl .sn-logo__moon--3 .sn-logo__ring { animation-delay: 1.4s; }
+  .snpl .sn-logo__moon > :not(.sn-logo__ring) { opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; transform: scale(.2); animation: snpl-moon .9s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+  .snpl .sn-logo__moon--1 > :not(.sn-logo__ring) { animation-delay: 2.1s; } .snpl .sn-logo__moon--2 > :not(.sn-logo__ring) { animation-delay: 2.35s; } .snpl .sn-logo__moon--3 > :not(.sn-logo__ring) { animation-delay: 2.6s; }
+  @keyframes snpl-moon { to { opacity: 1; transform: none; } }
+  .snpl__img { width: min(260px, 60vw); height: auto; opacity: 0; animation: snpl-up 1.2s cubic-bezier(.2, .8, .2, 1) .4s forwards; }
+  @keyframes snpl-up { from { transform: translateY(18px); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
+
+  .snpl__tag { font: italic 300 clamp(1.15rem, 2.2vw, 1.55rem)/1.2 var(--f-head); letter-spacing: .01em; color: color-mix(in srgb, var(--c3) 75%, var(--tx)); }
+  .snpl__tag span { display: inline-block; opacity: 0; filter: blur(10px); transform: translateY(10px); animation: snpl-up .9s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(2.4s + var(--i) * 90ms); }
+
+  /* sewn progress */
+  .snpl__sew { width: min(380px, 76vw); display: grid; gap: 14px; opacity: 0; animation: snpl-fade .8s ease 1s forwards; }
+  .snpl__thread { position: relative; height: 12px; }
+  .snpl__thread svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .snpl__thread .base { stroke: color-mix(in srgb, var(--tx) 18%, transparent); stroke-width: 1; stroke-dasharray: 4 5; fill: none; }
+  .snpl__thread .done { stroke: var(--c3); stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; filter: drop-shadow(0 0 4px var(--c3)); }
+  .snpl__needle { position: absolute; top: 50%; left: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px; transition: none; }
+  .snpl__needle svg { width: 100%; height: 100%; animation: snpl-bob .5s ease-in-out infinite alternate; }
+  @keyframes snpl-bob { to { transform: translateY(-3px) rotate(-6deg); } }
+  .snpl__row { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+  .snpl__row:not(:has(.snpl__pct)) { justify-content: center; }
+  .snpl__msg { font-size: 11px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: color-mix(in srgb, var(--tx) 70%, transparent); transition: opacity .35s, filter .35s, transform .35s; }
+  .snpl__msg.is-swap { opacity: 0; filter: blur(6px); transform: translateY(5px); }
+  .snpl__pct { font: 300 1.9rem/1 var(--f-head); color: var(--tx); font-variant-numeric: tabular-nums; }
+  .snpl__pct small { font-size: .5em; color: var(--c3); margin-left: 2px; }
+
+  /* exits */
+  .snpl.is-done .snpl__stage { opacity: 0; transform: translateY(-40px) scale(.97); filter: blur(8px); }
+  .snpl--sheet.is-out .snpl__sheet { transform: translateY(-112%) rotateX(38deg) skewY(-3deg); transition: transform 1.35s cubic-bezier(.7, 0, .2, 1); border-radius: 0 0 50% 50% / 0 0 18% 18%; }
+  .snpl--sheet.is-out .snpl__edge { opacity: 1; }
+  .snpl--dissolve.is-out { opacity: 0; filter: blur(30px) brightness(1.6); transition: opacity 1.1s ease, filter 1.1s ease; }
+  .snpl__folds { position: absolute; inset: 0; display: none; flex-direction: column; perspective: 1400px; }
+  .snpl__folds i { flex: 1; background: linear-gradient(165deg, var(--c2), var(--c1)); transform-origin: 50% 0; backface-visibility: hidden; box-shadow: inset 0 -30px 40px -30px rgba(0, 0, 0, .5); }
+  .snpl--fold.is-out .snpl__sheet { opacity: 0; transition: opacity .2s; }
+  .snpl--fold.is-out .snpl__folds { display: flex; }
+  .snpl--fold.is-out .snpl__folds i { animation: snpl-fold .9s cubic-bezier(.7, 0, .3, 1) forwards; animation-delay: calc((3 - var(--k)) * 140ms); }
+  @keyframes snpl-fold { to { transform: rotateX(92deg); filter: brightness(.4); } }
+  .snpl.is-quick .snpl__corner, .snpl.is-quick .snpl__tag, .snpl.is-quick .snpl__msg { display: none; }
+  .snpl.is-quick .sn-logo__type path, .snpl.is-quick .sn-logo__ring, .snpl.is-quick .sn-logo__moon > * { animation-duration: .5s !important; animation-delay: 0s !important; }
+  .snpl.is-quick .sn-logo__type path { animation: snpl-fill .4s ease forwards !important; stroke-dashoffset: 0; }
+  @media (max-width: 599px) { .snpl__corner--tl, .snpl__corner--tr { top: 20px; } .snpl__corner--tl { left: 20px; } .snpl__corner--tr { right: 20px; } .snpl__corner--br { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .snpl * { animation-duration: .01ms !important; animation-delay: 0s !important; } }
+</style>
+<noscript><style>.snpl { display: none !important; }</style></noscript>
+<div class="snpl snpl--{{ settings.pl_exit | default: 'sheet' }}" data-snpl data-mode="{{ settings.pl_mode }}" data-min="{{ settings.pl_duration }}" data-msgs="{{ msgs | escape }}" role="status" aria-live="polite" aria-label="Loading">
+  <div class="snpl__sheet">
+    <div class="snpl__silk" data-sn-silk data-c1="{{ c1 }}" data-c2="{{ c2 }}" data-c3="{{ c3 }}" data-speed="1.1" data-amp="1.1" data-mouse="true"></div>
+    <div data-sn-feathers="34" data-color="{{ c3 }}" style="position:absolute;inset:0"></div>
+    <span class="snpl__edge"></span>
+  </div>
+  <div class="snpl__folds" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i></div>
+
+  {%- if settings.pl_corner != blank -%}<p class="snpl__corner snpl__corner--tl">{{ settings.pl_corner }}</p>{%- endif -%}
+  <p class="snpl__corner snpl__corner--tr"><i></i>{{ shop.name }}</p>
+  <p class="snpl__corner snpl__corner--br">© {{ 'now' | date: '%Y' }}</p>
+
+  <div class="snpl__stage">
+    <div class="snpl__mark">
+      {%- if settings.pl_sound_wave -%}
+        <span class="snpl__halo" aria-hidden="true"></span>
+      {%- endif -%}
+      {%- if settings.logo_light != blank -%}
+        <img class="snpl__img" src="{{ settings.logo_light | image_url: width: 600 }}" alt="{{ shop.name | escape }}" width="300" height="{{ 300 | divided_by: settings.logo_light.aspect_ratio | round }}">
+      {%- else -%}
+        {% render 'sn-logo' %}
+      {%- endif -%}
+    </div>
+    {%- if settings.pl_tagline != blank -%}
+      {%- assign tw = settings.pl_tagline | split: ' ' -%}
+      <p class="snpl__tag">{%- for w in tw -%}<span style="--i: {{ forloop.index0 }};">{{ w }}</span>{% unless forloop.last %} {% endunless %}{%- endfor -%}</p>
+    {%- endif -%}
+    <div class="snpl__sew" aria-hidden="true">
+      <div class="snpl__thread">
+        <svg viewBox="0 0 100 12" preserveAspectRatio="none"><path class="base" d="M0 6H100"/><path class="done" d="M0 6H100" data-snpl-done style="clip-path: inset(0 100% 0 0)"/></svg>
+        <span class="snpl__needle" data-snpl-needle><svg viewBox="0 0 26 26" fill="none"><path d="M4 22 21 5" stroke="var(--c3)" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="19.5" cy="6.5" rx="2.2" ry="1" transform="rotate(-45 19.5 6.5)" stroke="var(--c3)" stroke-width="1"/><circle cx="4" cy="22" r="2" fill="var(--c3)"/></svg></span>
+      </div>
+      <div class="snpl__row"><span class="snpl__msg" data-snpl-msg>Loading</span>{%- if settings.pl_percent -%}<span class="snpl__pct"><span data-snpl-pct>0</span><small>%</small></span>{%- endif -%}</div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var pl = document.querySelector('[data-snpl]'); if (!pl) return;
+  var de = document.documentElement, seen = false;
+  try { seen = sessionStorage.getItem('snpl') === '1'; } catch (e) {}
+  var mode = pl.getAttribute('data-mode');
+  if (mode === 'session' && seen) { pl.parentNode.removeChild(pl); return; }
+  var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
+  var quick = (mode === 'smart' && seen) || nav.type === 'back_forward';
+  if (quick) pl.classList.add('is-quick');
+  try { sessionStorage.setItem('snpl', '1'); } catch (e) {}
+  de.classList.add('pl-lock');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var min = quick ? 700 : (parseFloat(pl.getAttribute('data-min')) || 4) * 1000;
+  if (reduce) min = Math.min(min, 700);
+  var done = pl.querySelector('[data-snpl-done]'), needle = pl.querySelector('[data-snpl-needle]'), pct = pl.querySelector('[data-snpl-pct]'), msg = pl.querySelector('[data-snpl-msg]');
+  var msgs = (pl.getAttribute('data-msgs') || '').split('|').filter(Boolean); if (!msgs.length) msgs = ['Loading'];
+  var loaded = document.readyState === 'complete'; if (!loaded) addEventListener('load', function () { loaded = true; });
+  var t0 = performance.now(), last = t0, p = 0, fin = false, lm = -1;
+  function paint() {
+    done.style.clipPath = 'inset(0 ' + (100 - p).toFixed(2) + '% 0 0)';
+    needle.style.left = p.toFixed(2) + '%';
+    if (pct) pct.textContent = Math.round(p);
+    var k = Math.min(msgs.length - 1, Math.floor(p / 100 * msgs.length));
+    if (k !== lm) { lm = k; msg.classList.add('is-swap'); setTimeout(function () { msg.textContent = msgs[k]; msg.classList.remove('is-swap'); }, 260); }
+  }
+  function finish() {
+    if (fin) return; fin = true; p = 100; paint();
+    setTimeout(function () {
+      pl.classList.add('is-done');
+      setTimeout(function () {
+        pl.classList.add('is-out');
+        de.classList.remove('pl-lock');
+        window.dispatchEvent(new Event('preloader:done'));
+        setTimeout(function () { if (pl.parentNode) pl.parentNode.removeChild(pl); }, 1500);
+      }, quick ? 250 : 520);
+    }, quick ? 100 : 380);
+  }
+  function frame(now) {
+    if (fin) return;
+    var dt = Math.min(now - last, 60); last = now;
+    var el = now - t0, target = (loaded && el >= min) ? 100 : Math.min(94, el / min * 94);
+    p += (target - p) * Math.min(1, dt / (target === 100 ? 100 : 170));
+    if (target === 100 && p > 99.5) { finish(); return; }
+    paint(); requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  setTimeout(finish, 11000);
+  addEventListener('pageshow', function (e) { if (e.persisted) finish(); });
+})();
+</script>
+{%- endif -%}

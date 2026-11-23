@@ -1,0 +1,473 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = 'snp-' | append: section.id
+  assign tabs = section.blocks | where: 'type', 'tab'
+  assign promo = section.blocks | where: 'type', 'promo' | first
+  if tabs.size == 0
+    assign ntabs = 1
+  else
+    assign ntabs = tabs.size
+  endif
+-%}
+<section id="{{ sid }}" class="sn-s snp snp--{{ s.layout }}" style="{% render 'sn-vars', s: s %} --cols: {{ s.columns }}; --col: {{ s.card_width }}px;" data-sn-tabhost>
+  {% render 'sn-divider', s: s %}
+  <div class="sn-wrap">
+    <div class="snp__head">
+      {% render 'sn-head', s: s, k: 3 %}
+      <div class="snp__tools" data-r style="--i: 3;">
+        {%- if tabs.size > 1 -%}
+          <div class="sn-tabs" data-sn-tabs role="tablist">
+            <span class="sn-tabs__pill"></span>
+            {%- for t in tabs -%}<button type="button" role="tab" data-tab="t{{ forloop.index }}" class="{% if forloop.first %}is-on{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ t.shopify_attributes }}>{{ t.settings.label | default: t.settings.collection.title }}</button>{%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if s.layout == 'rail' -%}
+          <div class="sn-rail-nav"><button type="button" class="sn-ibtn" data-snp-prev aria-label="Previous">{% render 'sn-icon', name: 'arrow-left', class: 'icon' %}</button><button type="button" class="sn-ibtn" data-snp-next aria-label="Next">{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- for ti in (1..ntabs) -%}
+    {%- liquid
+      if tabs.size > 0
+        assign tb = tabs[forloop.index0]
+        assign col = tb.settings.collection
+        assign vlink = tb.settings.link
+      else
+        assign col = s.collection
+        assign vlink = s.view_link
+      endif
+    -%}
+    <div class="snp__panel" data-panel="t{{ ti }}" {% unless forloop.first %}hidden{% endunless %} data-sn-railwrap>
+      <div class="{% if s.layout == 'rail' %}sn-rail sn-rail--bleed{% else %}sn-wrap sn-grid{% endif %} snp__list" {% if s.layout == 'rail' %}data-sn-rail data-sn-auto="{{ s.autoplay }}"{% endif %}>
+        {%- if promo and forloop.first -%}
+          {%- assign pb = promo.settings -%}
+          <a class="snp__promo sn-stitch" href="{{ pb.link | default: col.url | default: '#' }}" data-r="zoom" {{ promo.shopify_attributes }}>
+            {% render 'sn-media', image: pb.image, art: pb.art, width: 900, sizes: '30vw', class: 'snp__pm sn-ripple' %}
+            <span class="snp__pt">
+              {%- if pb.kicker != blank -%}<small>{{ pb.kicker }}</small>{%- endif -%}
+              <b>{{ pb.title }}</b>
+              {%- if pb.cta != blank -%}<em>{{ pb.cta }} {% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</em>{%- endif -%}
+            </span>
+          </a>
+        {%- endif -%}
+        {%- if col != blank and col.products.size > 0 -%}
+          {%- for product in col.products limit: s.limit -%}
+            <div class="snp__item">{% render 'sn-card', product: product, i: forloop.index0, sizes: '(min-width: 990px) 25vw, 60vw' %}</div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for k in (1..4) -%}
+            <div class="snp__item">
+              <article class="sn-card" data-r style="--i: {{ forloop.index0 }};">
+                <a class="sn-card__media" href="#">{%- case k -%}{%- when 1 -%}{% render 'sn-art', name: 'bed-sheet' %}{%- when 2 -%}{% render 'sn-art', name: 'duvet' %}{%- when 3 -%}{% render 'sn-art', name: 'pillow-cover' %}{%- else -%}{% render 'sn-art', name: 'towel' %}{%- endcase -%}</a>
+                <div class="sn-card__info"><h3 class="sn-card__title"><a href="#">{{ s.placeholder_title }}</a></h3><div class="sn-card__price sn-price"><span class="sn-price__now">Rs. 0</span></div></div>
+              </article>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if s.layout == 'rail' -%}
+        <div class="sn-wrap snp__foot">
+          <div class="sn-progress" data-sn-prog><i></i></div>
+          {%- if s.view_label != blank -%}<a class="sn-link" href="{{ vlink | default: col.url | default: routes.all_products_collection_url }}">{{ s.view_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>{%- endif -%}
+        </div>
+      {%- elsif s.view_label != blank -%}
+        <div class="sn-wrap snp__foot snp__foot--c"><a class="sn-btn sn-btn--ghost" href="{{ vlink | default: col.url | default: routes.all_products_collection_url }}"><span>{{ s.view_label }}</span>{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a></div>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</section>
+<style>
+#{{ sid }} .snp__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; margin-bottom: clamp(30px, 4vw, 54px); }
+#{{ sid }} .snp__head .sn-head { margin-bottom: 0; flex: 1 1 420px; }
+#{{ sid }} .snp__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+#{{ sid }} .snp__panel[hidden] { display: none; }
+#{{ sid }}.snp--rail .snp__list { --col: {{ s.card_width }}px; }
+#{{ sid }} .snp__promo { position: relative; display: block; border-radius: var(--r); overflow: hidden; color: #fff; min-height: 100%; }
+#{{ sid }}.snp--grid .snp__promo { grid-column: span 2; grid-row: span 2; }
+#{{ sid }}.snp--rail .snp__promo { width: calc(var(--col) * 1.35); }
+#{{ sid }} .snp__pm { position: absolute; inset: 0; border-radius: 0; }
+#{{ sid }} .snp__promo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(12, 14, 26, .75), transparent 60%); }
+#{{ sid }} .snp__pt { position: absolute; z-index: 2; left: 28px; right: 28px; bottom: 26px; display: grid; gap: 10px; }
+#{{ sid }} .snp__pt small { font-size: 11px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: {{ settings.color_moon }}; }
+#{{ sid }} .snp__pt b { font: 300 clamp(1.8rem, 2.8vw, 2.6rem)/1.05 var(--f-head); letter-spacing: -.02em; }
+#{{ sid }} .snp__pt em { display: inline-flex; align-items: center; gap: 8px; font-style: normal; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+#{{ sid }} .snp__pt .icon { width: 15px; height: 15px; transition: transform .5s; }
+#{{ sid }} .snp__promo:hover .snp__pt .icon { transform: translateX(6px); }
+#{{ sid }} .snp__promo:hover .snp__pm img, #{{ sid }} .snp__promo:hover .snp__pm .sn-art { transform: scale(1.06); }
+#{{ sid }} .snp__foot { display: flex; align-items: center; gap: 30px; margin-top: 34px; }
+#{{ sid }} .snp__foot .sn-progress { flex: 1; }
+#{{ sid }} .snp__foot--c { justify-content: center; margin-top: 50px; }
+@media (max-width: 749px) {
+  #{{ sid }}.snp--rail .snp__list { --col: 72vw; }
+  #{{ sid }}.snp--grid .snp__promo { grid-column: span 2; grid-row: span 1; aspect-ratio: 4 / 3; }
+  #{{ sid }} .snp__tools .sn-rail-nav { display: none; }
+}
+</style>
+<script>
+(function () {
+  var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
+  function vis() { return r.querySelector('.snp__panel:not([hidden]) [data-sn-rail]'); }
+  function step(el) { var c = el.querySelector('.snp__item'); return c ? c.getBoundingClientRect().width + 22 : 300; }
+  var p = r.querySelector('[data-snp-prev]'), n = r.querySelector('[data-snp-next]');
+  if (p) p.addEventListener('click', function () { var v = vis(); if (v) v.scrollBy({ left: -step(v), behavior: 'smooth' }); });
+  if (n) n.addEventListener('click', function () { var v = vis(); if (v) v.scrollBy({ left: step(v), behavior: 'smooth' }); });
+})();
+</script>
+{% schema %}
+{
+  "name": "Products",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Most loved"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Heading, italic part",
+      "default": "bestsellers"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "head_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Used when there are no Tab blocks."
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "rail",
+          "label": "Drag slider"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "rail"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (grid)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Card width (slider)",
+      "min": 220,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "autoplay",
+      "label": "Auto-slide (0 = off)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "view_label",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_link",
+      "label": "View all link"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_title",
+      "label": "Placeholder product name (no collection yet)",
+      "default": "Choose a collection"
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "options": [
+        {
+          "value": "linen",
+          "label": "Linen"
+        },
+        {
+          "value": "ivory",
+          "label": "Ivory"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        },
+        {
+          "value": "champagne",
+          "label": "Champagne"
+        },
+        {
+          "value": "dusk",
+          "label": "Dusk (night)"
+        },
+        {
+          "value": "midnight",
+          "label": "Midnight (night)"
+        }
+      ],
+      "default": "linen"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Custom background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Custom text"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "select",
+      "id": "divider",
+      "label": "Top edge",
+      "options": [
+        {
+          "value": "none",
+          "label": "Straight"
+        },
+        {
+          "value": "wave",
+          "label": "Soft silk wave"
+        },
+        {
+          "value": "stitch",
+          "label": "Stitched seam"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tab label",
+          "default": "Bed sheets"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "View all link"
+        }
+      ]
+    },
+    {
+      "type": "promo",
+      "name": "Editorial tile",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Illustration when no image",
+          "options": [
+            {
+              "value": "bed",
+              "label": "Bedroom"
+            },
+            {
+              "value": "bed-cover",
+              "label": "Bed cover"
+            },
+            {
+              "value": "bed-sheet",
+              "label": "Bed sheets"
+            },
+            {
+              "value": "duvet",
+              "label": "Duvet"
+            },
+            {
+              "value": "duvet-cover",
+              "label": "Duvet cover"
+            },
+            {
+              "value": "pillow",
+              "label": "Pillow"
+            },
+            {
+              "value": "pillow-cover",
+              "label": "Pillow cover"
+            },
+            {
+              "value": "towel",
+              "label": "Towels"
+            }
+          ],
+          "default": "bed"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small text",
+          "default": "The edit"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Dress the bed like a suite"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Link text",
+          "default": "Shop the look"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Products"
+    }
+  ]
+}
+{% endschema %}
