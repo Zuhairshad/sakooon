@@ -223,6 +223,7 @@ export default async function SetBuilder() {
                             <input type="radio" name={name} value="" defaultChecked />
                             <span className="snsb__ot">
                               <b>No thanks</b>
+                              <small>Skip this step</small>
                             </span>
                             <Tick />
                           </label>
