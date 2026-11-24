@@ -1,3 +1,5 @@
+{%- comment -%} theme.liquid only loads the product form engine on product templates {%- endcomment -%}
+{%- unless template.name == 'product' -%}<script src="{{ 'sn-product.js' | asset_url }}" defer></script>{%- endunless -%}
 {%- liquid
   assign s = section.settings
   assign sid = 'snfp-' | append: section.id
