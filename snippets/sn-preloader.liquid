@@ -146,7 +146,9 @@
   try { sessionStorage.setItem('snpl', '1'); } catch (e) {}
   de.classList.add('pl-lock');
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var min = quick ? 700 : (parseFloat(pl.getAttribute('data-min')) || 4) * 1000;
+  // Capped at 1.2s regardless of the theme setting: a preloader should never
+  // hold the store hostage for seconds — it is a brief brand beat, not a gate.
+  var min = quick ? 700 : Math.min(((parseFloat(pl.getAttribute('data-min')) || 4) * 1000), 1200);
   if (reduce) min = Math.min(min, 700);
   var done = pl.querySelector('[data-snpl-done]'), needle = pl.querySelector('[data-snpl-needle]'), pct = pl.querySelector('[data-snpl-pct]'), msg = pl.querySelector('[data-snpl-msg]');
   var msgs = (pl.getAttribute('data-msgs') || '').split('|').filter(Boolean); if (!msgs.length) msgs = ['Loading'];
