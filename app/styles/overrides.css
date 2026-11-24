@@ -76,3 +76,7 @@ html.sn-js body[data-motion=on] [data-atf-anim] { animation: sn-atf-in .7s cubic
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* Small accent labels slide in without fading: a half-transparent eyebrow drops
+   below AA contrast while its reveal runs. */
+.sn-eyebrow[data-r]:not(.is-in) { opacity: 1; transform: translateY(10px); }
