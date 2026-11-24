@@ -88,7 +88,7 @@ const PRODUCTS = snapshot.products.map((p) => {
       name: o.name, position: i + 1, values: o.optionValues.map((v) => v.name), selected_value: first?.options[i],
     })),
     options_by_name: Object.fromEntries(opts.map((o, i) => [o.name, { name: o.name, values: o.optionValues.map((v) => v.name), selected_value: first?.options[i] }])),
-    collections: [], metafields: {}, seo: p.seo, template_suffix: null, requires_selling_plan: false, selling_plan_groups: [],
+    object_type: 'product', collections: [], metafields: {}, seo: p.seo, template_suffix: null, requires_selling_plan: false, selling_plan_groups: [],
   };
 });
 const productByHandle = Object.fromEntries(PRODUCTS.map((p) => [p.handle, p]));
@@ -396,7 +396,7 @@ const escapeHtml = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '
 const SHOP = {
   name: 'Sakooon', url: `http://localhost:${PORT}`, secure_url: `http://localhost:${PORT}`, domain: `localhost:${PORT}`, permanent_domain: 'sakooon.myshopify.com',
   money_format: 'Rs.{{amount}}', money_with_currency_format: 'Rs.{{amount}} PKR', currency: 'PKR', email: THEME_SETTINGS.email || '',
-  customer_accounts_enabled: true, customer_accounts_optional: true, password_message: '', description: '', locale: 'en',
+  customer_accounts_enabled: true, customer_accounts_optional: true, password_message: '', description: 'Premium bed sheets, duvets, pillows — woven for deep, peaceful sleep in every Pakistani home.', locale: 'en',
   policies: (extras.policies || []).map((p) => ({ title: p.title, url: `/policies/${p.handle}`, body: p.body })),
   enabled_payment_types: [], brand: {},
 };
@@ -457,6 +457,12 @@ function resolveRoute(url) {
   return { name: '404', file: '404.json', suffix: null, page_type: '404', title: 'Page not found', status: 404 };
 }
 
+const pageExcerpt = (route) => {
+  const html = route.vars?.page?.content || route.vars?.product?.description || route.vars?.collection?.description || '';
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return text ? text.slice(0, 160) : null;
+};
+
 function globalsFor(route, url) {
   return {
     shop: SHOP, settings: THEME_SETTINGS, routes: ROUTES, cart: cartObject(), customer: null,
@@ -464,7 +470,9 @@ function globalsFor(route, url) {
     pages: pageByHandle, blogs: blogByHandle, images: {}, localization: { language: { iso_code: 'en' }, country: { iso_code: 'PK', currency: { iso_code: 'PKR' } }, available_languages: [], available_countries: [] },
     request: { locale: { iso_code: 'en', primary: true }, page_type: route.page_type, path: url.pathname, host: url.host, origin: `http://${url.host}`, design_mode: false, visual_preview_mode: false },
     template: { name: route.name.replace(/^customers\//, ''), suffix: route.suffix, directory: route.name.startsWith('customers/') ? 'customers' : null },
-    page_title: route.title, page_description: route.description || null, canonical_url: `http://${url.host}${url.pathname}`,
+    page_title: route.title,
+    // Shopify falls back to the page's own text, then the shop description
+    page_description: route.description || pageExcerpt(route) || SHOP.description, canonical_url: `http://${url.host}${url.pathname}`,
     content_for_header: '', content_for_additional_checkout_buttons: '', current_page: 1, current_tags: null, powered_by_link: '',
     product: null, collection: null, page: null, blog: null, article: null, search: null,
     ...(route.vars || {}),
