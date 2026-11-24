@@ -2,7 +2,20 @@
   assign s = section.settings
   assign sid = 'snmp-' | append: section.id
   assign uid = 'mp' | append: section.id
-  assign cv = product.selected_or_first_available_variant
+  # Default to the first available variant whose photo matches the opening gallery
+  # image, so the gallery and the selected variant agree on load. Only applies when
+  # no variant is explicitly chosen via ?variant= (that choice always wins); falls
+  # back to the theme's normal "first available variant" rule otherwise.
+  assign cv = blank
+  unless product.selected_variant
+    for v in product.variants
+      if v.available and v.featured_media.id == product.featured_media.id
+        assign cv = v
+        break
+      endif
+    endfor
+  endunless
+  assign cv = cv | default: product.selected_or_first_available_variant
   assign fm = cv.featured_media | default: product.featured_media
   assign size_ov = 'SnSize-' | append: section.id
   assign wa = settings.whatsapp | remove: '+' | remove: ' ' | remove: '-'
@@ -74,6 +87,7 @@
           {%- assign pfid = 'SnPF-' | append: section.id -%}
           {%- form 'product', product, id: pfid, data-sn-pform: '', class: 'snmp__form', novalidate: 'novalidate' -%}
           <input type="hidden" name="id" value="{{ cv.id }}" data-sn-pvid>
+          {%- assign tab_h2_done = false -%}
           {%- for block in section.blocks -%}
             {%- assign b = block.settings -%}
             {%- case block.type -%}
@@ -146,6 +160,7 @@
                   {%- if b.t4 != blank -%}<li>{% render 'sn-icon', name: b.i4, class: 'icon' %}<span>{{ b.t4 }}</span></li>{%- endif -%}
                 </ul>
               {%- when 'tab' -%}
+                {%- unless tab_h2_done -%}<h2 class="visually-hidden">Product details</h2>{%- assign tab_h2_done = true -%}{%- endunless -%}
                 <details class="sn-acc snmp__acc"{% if b.open %} open{% endif %} {{ block.shopify_attributes }}>
                   <summary><span class="snmp__acct">{% render 'sn-icon', name: b.icon, class: 'icon' %}{{ b.title }}</span><i aria-hidden="true"></i></summary>
                   <div class="sn-acc__body sn-rte">
@@ -335,16 +350,26 @@
 #{{ sid }} .snmp__cp > span { flex: 1; display: grid; gap: 2px; font-size: 14px; min-width: 0; }
 #{{ sid }} .snmp__share { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--soft); }
 #{{ sid }} .snmp__share span { margin-right: 6px; }
-/* sticky bar */
-#{{ sid }} .snmp__sticky { position: fixed; z-index: 800; left: 50%; bottom: 16px; width: min(860px, calc(100% - 24px)); translate: -50% 140%; transition: translate .7s cubic-bezier(.3, 1.2, .4, 1); }
+/* sticky bar: mobile-only (<=749px) add-to-cart bar shown once the inline buy box scrolls out of view */
+#{{ sid }} .snmp__sticky { display: none; position: fixed; z-index: 800; left: 50%; bottom: 0; width: min(860px, calc(100% - 24px)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); translate: -50% 140%; transition: translate .7s cubic-bezier(.3, 1.2, .4, 1); }
 #{{ sid }} .snmp__sticky.is-on { translate: -50% 0; }
-#{{ sid }} .snmp__sin { display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c-dark) 92%, transparent); color: var(--c-dark-text); box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); --tx: var(--c-dark-text); --soft: color-mix(in srgb, var(--c-dark-text) 70%, transparent); --ac: var(--c-moon); --ac-ink: var(--c-dark); }
-#{{ sid }} .snmp__simg { width: 46px; height: 46px; flex: none; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,.1); }
+#{{ sid }} .snmp__sin { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c-dark) 92%, transparent); color: var(--c-dark-text); box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); --tx: var(--c-dark-text); --soft: color-mix(in srgb, var(--c-dark-text) 70%, transparent); --ac: var(--c-moon); --ac-aa: var(--c-moon); --ac-ink: var(--c-dark); }
+#{{ sid }} .snmp__simg { width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,.1); }
 #{{ sid }} .snmp__simg img { width: 100%; height: 100%; object-fit: cover; }
 #{{ sid }} .snmp__st { flex: 1; display: grid; min-width: 0; }
-#{{ sid }} .snmp__st b { font: 400 1.02rem/1.2 var(--f-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#{{ sid }} .snmp__sp { font-size: 15px; }
-#{{ sid }} .snmp__sp .sn-badge { display: none; }
+#{{ sid }} .snmp__st b { display: block; font: 400 1.02rem/1.2 var(--f-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#{{ sid }} .snmp__sp { font-size: 15px; white-space: nowrap; }
+#{{ sid }} .snmp__sp .sn-badge, #{{ sid }} .snmp__sp .sn-price__was { display: none; }
+#{{ sid }} .snmp__sin .sn-btn--sm { flex: none; padding: 0 14px; min-height: 40px; font-size: 10.5px; }
+@media (max-width: 749px) {
+  #{{ sid }} .snmp__sticky { display: block; }
+  /* room for the sticky bar so it never permanently covers the last footer content */
+  body.snmp-sticky-pad { padding-bottom: 76px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #{{ sid }} .snmp__sticky { translate: -50% 0; transition: opacity .25s linear; opacity: 0; pointer-events: none; }
+  #{{ sid }} .snmp__sticky.is-on { opacity: 1; pointer-events: auto; }
+}
 /* lightbox */
 #{{ sid }}-lb[hidden] { display: none; }
 #{{ sid }}-lb { position: fixed; inset: 0; z-index: 2147482600; background: color-mix(in srgb, var(--c-paper) 96%, transparent); backdrop-filter: blur(10px); opacity: 0; transition: opacity .5s; }
@@ -372,8 +397,6 @@
   #{{ sid }}.snmp--stack .snmp__thumbs { display: grid; }
   #{{ sid }} .snmp__gbar { left: 110px; right: 20px; }
   #{{ sid }} .snmp__info, #{{ sid }} .snmp__gal { position: static; }
-  #{{ sid }} .snmp__sticky { bottom: 10px; }
-  #{{ sid }} .snmp__sp { display: none; }
   #{{ sid }} .snmp__wishb { width: 52px; height: 52px; }
   #{{ sid }} .sn-buy .sn-qty { height: 52px; } #{{ sid }} .sn-buy .sn-qty button { width: 34px; }
   #{{ sid }} .snmp__specs li { flex: 1 1 calc(50% - 10px); }
@@ -399,11 +422,28 @@
   r.addEventListener('sn:variant', function (e) { if (wa) { var u = new URL(wa.href); u.searchParams.set('text', wa.getAttribute('data-base') + ' {{ product.title | escape }} (' + e.detail.title + ') – ' + location.origin + '{{ product.url }}?variant=' + e.detail.id); wa.href = u.toString(); } });
   /* copy link */
   var cp = r.querySelector('[data-snmp-copy]'); if (cp) cp.addEventListener('click', function () { if (navigator.share) navigator.share({ url: cp.getAttribute('data-snmp-copy') }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(cp.getAttribute('data-snmp-copy')).then(function () { SN.toast({{ s.copied | json }}); }); });
-  /* sticky bar */
+  /* sticky bar: shows once the inline buy box scrolls out of view (mobile only, via CSS) */
   var st = r.querySelector('[data-snmp-sticky]'), buy = r.querySelector('[data-snmp-buy]');
   if (st && buy && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) { var b = es[0], show = !b.isIntersecting && b.boundingClientRect.top < 0; st.classList.toggle('is-on', show); st.setAttribute('aria-hidden', !show); }).observe(buy);
-    st.querySelector('[data-snmp-sadd]').addEventListener('click', function () { var p = r.querySelector('[data-sn-product]').snProduct; if (p) p.add(); });
+    var sadd = st.querySelector('[data-snmp-sadd]');
+    var outOfView = false;
+    var applySticky = function () {
+      // Hide while any overlay (e.g. the cart drawer) is open, same signal
+      // the theme runtime uses for its own open/close state.
+      var locked = document.documentElement.classList.contains('sn-lock');
+      var show = outOfView && !locked;
+      st.classList.toggle('is-on', show);
+      st.setAttribute('aria-hidden', String(!show));
+      if (sadd) sadd.tabIndex = show ? 0 : -1;
+      document.body.classList.toggle('snmp-sticky-pad', show);
+    };
+    new IntersectionObserver(function (es) {
+      var b = es[0];
+      outOfView = !b.isIntersecting && b.boundingClientRect.top < 0;
+      applySticky();
+    }).observe(buy);
+    new MutationObserver(applySticky).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    if (sadd) sadd.addEventListener('click', function () { var p = r.querySelector('[data-sn-product]').snProduct; if (p) p.add(); });
   }
   /* lightbox */
   var lb = r.querySelector('[data-snmp-lb]'), lbt = lb && lb.querySelector('[data-snmp-lbt]');

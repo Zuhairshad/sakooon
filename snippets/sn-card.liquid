@@ -50,9 +50,9 @@
   {%- endif -%}
   {%- if settings.card_quick and product.available -%}
     {%- if single -%}
-      <button type="button" class="sn-card__quick" data-sn-add="{{ cv.id }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>{{ 'products.product.add_to_cart' | t }}</span></button>
+      <button type="button" class="sn-card__quick" data-sn-add="{{ cv.id }}" aria-label="Quick add: {{ product.title | escape }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>{{ 'products.product.add_to_cart' | t }}</span></button>
     {%- else -%}
-      <button type="button" class="sn-card__quick" data-sn-quick="{{ product.handle }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>Quick add</span></button>
+      <button type="button" class="sn-card__quick" data-sn-quick="{{ product.handle }}" aria-label="Quick add: {{ product.title | escape }}">{% render 'sn-icon', name: 'plus', class: 'icon' %}<span>Quick add</span></button>
     {%- endif -%}
   {%- endif -%}
   </div>
