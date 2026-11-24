@@ -24,6 +24,16 @@ const TEMPLATES: Record<string, () => React.ReactNode> = {
   faq: () => <FaqPage />,
 };
 const FALLBACK_TITLES: Record<string, string> = { about: 'About', contact: 'Contact', 'size-guide': 'Size Guide', quiz: 'Quiz', favorites: 'Wishlist', wishlist: 'Wishlist', faq: 'FAQ' };
+/** Used when the page has no SEO description or summary in Shopify. */
+const FALLBACK_DESCRIPTIONS: Record<string, string> = {
+  about: 'The story behind Sakooon: premium cotton bedding made in Pakistan for deep, quiet sleep.',
+  contact: 'Contact Sakooon by WhatsApp, phone or email, visit our stores, and find answers to common questions.',
+  'size-guide': 'Sakooon size guide: bed sheet, duvet and pillow measurements, thread counts and how to choose the right fit.',
+  quiz: 'Take the Sakooon sleep quiz to find the bed sheets and duvet that suit how you sleep.',
+  favorites: 'Your saved Sakooon bedding, ready when you are.',
+  wishlist: 'Your saved Sakooon bedding, ready when you are.',
+  faq: 'Answers about Sakooon orders, delivery, cash on delivery, exchanges, sizes and fabric care.',
+};
 
 /** FAQ: the theme's FAQ sections from the contact and size-guide templates. */
 function FaqPage() {
@@ -58,7 +68,7 @@ export async function generateMetadata({ params }: PageProps<'/pages/[handle]'>)
   if (!title) return {};
   return {
     title,
-    description: page?.seo.description || page?.bodySummary || undefined,
+    description: page?.seo.description || page?.bodySummary || FALLBACK_DESCRIPTIONS[handle],
     alternates: { canonical: `/pages/${handle}` },
     openGraph: { title, url: `/pages/${handle}` },
   };
