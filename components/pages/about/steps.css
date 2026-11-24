@@ -12,7 +12,7 @@
 #snst-template--23876058808423__steps .snst__moon .sn-ph { width: 26px; height: 26px; }
 #snst-template--23876058808423__steps .snst__node small { font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--mute); transition: color .6s; }
 #snst-template--23876058808423__steps .snst__step.is-lit .snst__moon { color: var(--ac); border-color: var(--ac); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 12%, transparent), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); transform: scale(1.08); }
-#snst-template--23876058808423__steps .snst__step.is-lit small { color: var(--ac); }
+#snst-template--23876058808423__steps .snst__step.is-lit small { color: var(--ac-aa, var(--ac)); }
 #snst-template--23876058808423__steps .snst__card { display: grid; gap: 12px; justify-items: center; padding: 26px 22px 28px; width: 100%; }
 #snst-template--23876058808423__steps .snst__card p { font-size: 14.5px; line-height: 1.65; color: var(--soft); }
 #snst-template--23876058808423__steps .snst__img { width: 100%; border-radius: calc(var(--r) * .7); }

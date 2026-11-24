@@ -31,7 +31,7 @@ export default function Stores() {
           </div>
           <div className="snsr__grid">
             <ul className="snsr__list" role="tablist">
-              <li data-r="left" style={{ '--i': '0' }}>
+              <li role="presentation" data-r="left" style={{ '--i': '0' }}>
                 <div
                   tabIndex={0}
                   className="snsr__store sn-pillow is-on"
@@ -101,7 +101,7 @@ export default function Stores() {
                   <i className="snsr__pin" aria-hidden="true" />
                 </div>
               </li>
-              <li data-r="left" style={{ '--i': '1' }}>
+              <li role="presentation" data-r="left" style={{ '--i': '1' }}>
                 <div
                   tabIndex={0}
                   className="snsr__store sn-pillow"
@@ -171,7 +171,7 @@ export default function Stores() {
                   <i className="snsr__pin" aria-hidden="true" />
                 </div>
               </li>
-              <li data-r="left" style={{ '--i': '2' }}>
+              <li role="presentation" data-r="left" style={{ '--i': '2' }}>
                 <div
                   tabIndex={0}
                   className="snsr__store sn-pillow"

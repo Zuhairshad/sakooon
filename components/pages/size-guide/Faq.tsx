@@ -87,16 +87,16 @@ export default function Faq() {
             <div className="snfq__main" data-sn-tabhost="">
               <div className="sn-tabs snfq__tabs" role="tablist" data-r="">
                 <span className="sn-tabs__pill" />
-                <button type="button" className="is-on" data-snfq-cat="*">
+                <button type="button" role="tab" aria-selected="true" className="is-on" data-snfq-cat="*">
                   All
                 </button>
-                <button type="button" data-snfq-cat="sizing">
+                <button type="button" role="tab" aria-selected="false" data-snfq-cat="sizing">
                   Sizing
                 </button>
-                <button type="button" data-snfq-cat="care">
+                <button type="button" role="tab" aria-selected="false" data-snfq-cat="care">
                   Care
                 </button>
-                <button type="button" data-snfq-cat="delivery">
+                <button type="button" role="tab" aria-selected="false" data-snfq-cat="delivery">
                   Delivery
                 </button>
               </div>

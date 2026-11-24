@@ -312,7 +312,7 @@ export default function Threads() {
                 <tr>
                   <th scope="row">Softness</th>
                   <td>
-                    <span className="sntg__moons" aria-label="6 / 10">
+                    <span className="sntg__moons" role="img" aria-label="6 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -334,7 +334,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td>
-                    <span className="sntg__moons" aria-label="8 / 10">
+                    <span className="sntg__moons" role="img" aria-label="8 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -357,7 +357,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td className="is-f">
-                    <span className="sntg__moons" aria-label="9 / 10">
+                    <span className="sntg__moons" role="img" aria-label="9 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -384,7 +384,7 @@ export default function Threads() {
                 <tr>
                   <th scope="row">Smoothness</th>
                   <td>
-                    <span className="sntg__moons" aria-label="6 / 10">
+                    <span className="sntg__moons" role="img" aria-label="6 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -406,7 +406,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td>
-                    <span className="sntg__moons" aria-label="8 / 10">
+                    <span className="sntg__moons" role="img" aria-label="8 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -429,7 +429,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td className="is-f">
-                    <span className="sntg__moons" aria-label="10 / 10">
+                    <span className="sntg__moons" role="img" aria-label="10 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -456,7 +456,7 @@ export default function Threads() {
                 <tr>
                   <th scope="row">Breathability</th>
                   <td>
-                    <span className="sntg__moons" aria-label="10 / 10">
+                    <span className="sntg__moons" role="img" aria-label="10 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -480,7 +480,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td>
-                    <span className="sntg__moons" aria-label="9 / 10">
+                    <span className="sntg__moons" role="img" aria-label="9 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -504,7 +504,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td className="is-f">
-                    <span className="sntg__moons" aria-label="7 / 10">
+                    <span className="sntg__moons" role="img" aria-label="7 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -530,7 +530,7 @@ export default function Threads() {
                 <tr>
                   <th scope="row">Durability</th>
                   <td>
-                    <span className="sntg__moons" aria-label="7 / 10">
+                    <span className="sntg__moons" role="img" aria-label="7 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -553,7 +553,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td>
-                    <span className="sntg__moons" aria-label="8 / 10">
+                    <span className="sntg__moons" role="img" aria-label="8 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />
@@ -576,7 +576,7 @@ export default function Threads() {
                     </span>
                   </td>
                   <td className="is-f">
-                    <span className="sntg__moons" aria-label="9 / 10">
+                    <span className="sntg__moons" role="img" aria-label="9 / 10">
                       <svg className="sn-ph" viewBox="0 0 16 16" aria-hidden="true">
                         <circle cx="8" cy="8" r="6.3" />
                         <circle cx="8" cy="8" r="5.6" style={{ fill: 'currentColor', stroke: 'none' }} />

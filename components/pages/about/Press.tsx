@@ -41,23 +41,23 @@ export default function Press() {
               </blockquote>
             </div>
             <div className="snlg__tabs" role="tablist">
-              <button type="button" className="snlg__logo is-on" data-snlg-t="0" aria-label="Dawn Lifestyle">
+              <button type="button" role="tab" aria-selected="true" className="snlg__logo is-on" data-snlg-t="0" aria-label="Dawn Lifestyle">
                 <span>Dawn Lifestyle</span>
                 <i className="snlg__bar" />
               </button>
-              <button type="button" className="snlg__logo" data-snlg-t="1" aria-label="Home & Living">
+              <button type="button" role="tab" aria-selected="false" className="snlg__logo" data-snlg-t="1" aria-label="Home & Living">
                 <span>Home & Living</span>
                 <i className="snlg__bar" />
               </button>
-              <button type="button" className="snlg__logo" data-snlg-t="2" aria-label="The Weekend Edit">
+              <button type="button" role="tab" aria-selected="false" className="snlg__logo" data-snlg-t="2" aria-label="The Weekend Edit">
                 <span>The Weekend Edit</span>
                 <i className="snlg__bar" />
               </button>
-              <button type="button" className="snlg__logo" data-snlg-t="3" aria-label="Sleep Journal">
+              <button type="button" role="tab" aria-selected="false" className="snlg__logo" data-snlg-t="3" aria-label="Sleep Journal">
                 <span>Sleep Journal</span>
                 <i className="snlg__bar" />
               </button>
-              <button type="button" className="snlg__logo" data-snlg-t="4" aria-label="Décor Daily">
+              <button type="button" role="tab" aria-selected="false" className="snlg__logo" data-snlg-t="4" aria-label="Décor Daily">
                 <span>Décor Daily</span>
                 <i className="snlg__bar" />
               </button>

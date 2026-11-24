@@ -175,7 +175,7 @@ const press: Init = (r, on) => {
   let i = 0, t: ReturnType<typeof setTimeout> | undefined;
   const go = (n: number) => {
     i = (n + ts.length) % ts.length;
-    ts.forEach((b, k) => b.classList.toggle('is-on', k === i));
+    ts.forEach((b, k) => { b.classList.toggle('is-on', k === i); b.setAttribute('aria-selected', String(k === i)); });
     $$('[data-snlg-q]', p).forEach((q) => q.classList.toggle('is-on', +q.getAttribute('data-snlg-q')! === i));
     clearTimeout(t);
     t = setTimeout(() => go(i + 1), 6000);
@@ -221,7 +221,7 @@ const faq: Init = (r, on) => {
       const b = (e.target as HTMLElement).closest('[data-snfq-cat]');
       if (!b) return;
       cat = b.getAttribute('data-snfq-cat')!;
-      $$('button', tabs).forEach((x) => x.classList.toggle('is-on', x === b));
+      $$('button', tabs).forEach((x) => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-selected', String(x === b)); });
       pill();
       apply();
     });
