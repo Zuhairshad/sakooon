@@ -1,4 +1,7 @@
 import '@/app/styles/chrome/popup.css';
+import { img, srcset } from '@/lib/utils';
+
+const PHOTO = '/images/sakooon-duvet-comfort-pillow-pack-of-2.webp';
 
 export default function Popup() {
   return (
@@ -37,32 +40,17 @@ export default function Popup() {
           </button>
           <div className="snpu__vis">
             <div className="sn-media snpu__img">
-              <svg className="sn-art " viewBox="0 0 600 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-                <defs>
-                  <linearGradient id="bgpl" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor="#F2EBE0" />
-                    <stop offset="1" stopColor="#E4D8C6" />
-                  </linearGradient>
-                  <radialGradient id="glpl" cx="50%" cy="30%" r="60%">
-                    <stop offset="0" stopColor="#fff" stopOpacity=".7" />
-                    <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
-                <rect width="600" height="750" fill="url(#bgpl)" />
-                <rect width="600" height="750" fill="url(#glpl)" />
-                <circle cx="300" cy="300" r="210" fill="#FFFDF9" opacity=".55" />
-                <ellipse cx="300" cy="600" rx="190" ry="18" fill="#1B2130" opacity="0.18" />
-                <path d="M110 300 q190 -40 380 0 q30 120 0 240 q-190 40 -380 0 q-30 -120 0 -240Z" fill="#FFFDF9" />
-                <path d="M160 330 Q300 300 440 330 M150 520 Q300 545 450 520" stroke="#E3D9C9" strokeWidth="3" fill="none" />
-                <path d="M200 420 q100 20 200 0" stroke="#E3D9C9" strokeWidth="3" fill="none" />
-                <path
-                  d="M110 300 q-14 -10 -20 -26 M490 300 q14 -10 20 -26 M110 540 q-14 10 -20 26 M490 540 q14 10 20 26"
-                  stroke="#E3D9C9"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <img
+                src={img(PHOTO, 600)}
+                srcSet={srcset(PHOTO, [400, 600, 900])}
+                sizes="(min-width: 700px) 300px, 100vw"
+                alt="Two white Sakooon cotton pillows with microfibre filling"
+                width={1264}
+                height={1568}
+                loading="lazy"
+                decoding="async"
+                style={{ objectPosition: '50% 40%' }}
+              />
             </div>
             <span className="snpu__moon">
               <i />
