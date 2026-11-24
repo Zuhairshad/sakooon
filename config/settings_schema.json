@@ -264,8 +264,8 @@
         "type": "checkbox",
         "id": "silk",
         "label": "Live silk backgrounds (WebGL)",
-        "info": "Flowing satin rendered on the graphics chip. Falls back to a still gradient on old phones.",
-        "default": true
+        "info": "Flowing satin rendered on the graphics chip. Off by default: the CSS gradient-drift look costs nothing on the main thread and no GPU shader; turn this on for the animated WebGL version.",
+        "default": false
       },
       {
         "type": "checkbox",
@@ -501,7 +501,8 @@
         "type": "checkbox",
         "id": "pl_enabled",
         "label": "Show the loading screen",
-        "default": true
+        "info": "Off by default so visitors see the store immediately. However long you set below, it is capped at 1.2s.",
+        "default": false
       },
       {
         "type": "select",
@@ -521,12 +522,13 @@
             "label": "Only once per visit"
           }
         ],
-        "default": "smart"
+        "default": "session"
       },
       {
         "type": "range",
         "id": "pl_duration",
         "label": "Minimum time",
+        "info": "Capped at 1.2s even if set higher.",
         "min": 2,
         "max": 7,
         "step": 1,

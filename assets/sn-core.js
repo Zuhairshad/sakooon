@@ -47,6 +47,26 @@
     })(el);
   }
 
+  /* ---------------- shared disconnect watcher ---------------- */
+  // One MutationObserver, shared by every host that needs cleanup when it
+  // leaves the DOM (e.g. a re-rendered section), instead of a per-host
+  // observer. Hosts register a callback; it fires once when host.isConnected
+  // goes false.
+  var disconnectWatchers = (typeof Map !== 'undefined') ? new Map() : null;
+  var domObserver = null;
+  function onDisconnect(host, cb) {
+    if (!disconnectWatchers) return;
+    disconnectWatchers.set(host, cb);
+    if (!domObserver && 'MutationObserver' in window) {
+      domObserver = new MutationObserver(function () {
+        disconnectWatchers.forEach(function (fn, h) {
+          if (!h.isConnected) { disconnectWatchers.delete(h); fn(); }
+        });
+      });
+      domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    }
+  }
+
   /* ---------------- reveal ---------------- */
   var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
@@ -70,19 +90,23 @@
         var max = r.scrollWidth - r.clientWidth, w = Math.max(10, r.clientWidth / Math.max(r.scrollWidth, 1) * 100);
         bar.style.width = w + '%'; bar.style.left = (max > 0 ? r.scrollLeft / max * (100 - w) : 0) + '%';
       }
-      r.addEventListener('scroll', prog, { passive: true }); window.addEventListener('resize', prog); setTimeout(prog, 200);
-      $$('[data-sn-prev]', wrap).forEach(function (b) { b.addEventListener('click', function () { r.scrollBy({ left: -step(), behavior: 'smooth' }); }); });
-      $$('[data-sn-next]', wrap).forEach(function (b) { b.addEventListener('click', function () { r.scrollBy({ left: step(), behavior: 'smooth' }); }); });
+      var ac = ('AbortController' in window) ? new AbortController() : null;
+      var lo = ac ? { signal: ac.signal } : {};
+      var lop = ac ? { passive: true, signal: ac.signal } : { passive: true };
+      r.addEventListener('scroll', prog, lop); window.addEventListener('resize', prog, lo); setTimeout(prog, 200);
+      $$('[data-sn-prev]', wrap).forEach(function (b) { b.addEventListener('click', function () { r.scrollBy({ left: -step(), behavior: 'smooth' }); }, lo); });
+      $$('[data-sn-next]', wrap).forEach(function (b) { b.addEventListener('click', function () { r.scrollBy({ left: step(), behavior: 'smooth' }); }, lo); });
       var down = false, x0 = 0, s0 = 0, moved = false;
-      r.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.button) return; down = true; moved = false; x0 = e.clientX; s0 = r.scrollLeft; });
-      window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 6) { moved = true; r.classList.add('is-drag'); } if (moved) r.scrollLeft = s0 - dx; });
-      window.addEventListener('pointerup', function () { if (!down) return; down = false; setTimeout(function () { r.classList.remove('is-drag'); }, 30); });
-      r.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
-      var auto = parseFloat(r.getAttribute('data-sn-auto')) || 0;
+      r.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.button) return; down = true; moved = false; x0 = e.clientX; s0 = r.scrollLeft; }, lop);
+      window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 6) { moved = true; r.classList.add('is-drag'); } if (moved) r.scrollLeft = s0 - dx; }, lop);
+      window.addEventListener('pointerup', function () { if (!down) return; down = false; setTimeout(function () { r.classList.remove('is-drag'); }, 30); }, lop);
+      r.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, ac ? { capture: true, signal: ac.signal } : true);
+      var auto = parseFloat(r.getAttribute('data-sn-auto')) || 0, autoT = null;
       if (auto > 0 && motion()) {
-        var hov = false; r.addEventListener('mouseenter', function () { hov = true; }); r.addEventListener('mouseleave', function () { hov = false; });
-        setInterval(function () { if (hov || down || document.hidden) return; var max = r.scrollWidth - r.clientWidth - 4; if (r.scrollLeft >= max) r.scrollTo({ left: 0, behavior: 'smooth' }); else r.scrollBy({ left: step(), behavior: 'smooth' }); }, auto * 1000);
+        var hov = false; r.addEventListener('mouseenter', function () { hov = true; }, lo); r.addEventListener('mouseleave', function () { hov = false; }, lo);
+        autoT = setInterval(function () { if (!r.isConnected) return clearInterval(autoT); if (hov || down || document.hidden) return; var max = r.scrollWidth - r.clientWidth - 4; if (r.scrollLeft >= max) r.scrollTo({ left: 0, behavior: 'smooth' }); else r.scrollBy({ left: step(), behavior: 'smooth' }); }, auto * 1000);
       }
+      onDisconnect(r, function () { if (ac) ac.abort(); if (autoT) clearInterval(autoT); });
     });
   };
 
@@ -97,6 +121,8 @@
       t.setAttribute('data-sn-tabs-on', '');
       var host = t.closest('[data-sn-tabhost]') || t.parentNode;
       var btns = $$('button[data-tab]', t);
+      var ac = ('AbortController' in window) ? new AbortController() : null;
+      var lo = ac ? { signal: ac.signal } : {};
       btns.forEach(function (b) {
         b.addEventListener('click', function () {
           btns.forEach(function (x) { x.classList.toggle('is-on', x === b); x.setAttribute('aria-selected', x === b); });
@@ -106,10 +132,11 @@
           });
           SN.pill(t);
           t.dispatchEvent(new CustomEvent('sn:tab', { bubbles: true, detail: b.getAttribute('data-tab') }));
-        });
+        }, lo);
       });
-      SN.pill(t); window.addEventListener('resize', function () { SN.pill(t); });
+      SN.pill(t); window.addEventListener('resize', function () { SN.pill(t); }, lo);
       setTimeout(function () { SN.pill(t); }, 400);
+      onDisconnect(t, function () { if (ac) ac.abort(); });
     });
   };
 
@@ -341,16 +368,24 @@
       var cv = document.createElement('canvas'); cv.className = 'sn-feathers'; host.appendChild(cv);
       var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, 1.5), parts = [], vis = true;
       var col = host.getAttribute('data-color') || 'rgba(255,255,255,.75)', n = parseInt(host.getAttribute('data-sn-feathers'), 10) || 26;
+      var ac = ('AbortController' in window) ? new AbortController() : null;
       function size() { W = host.clientWidth; H = host.clientHeight; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
       function mk(y) { return { x: Math.random() * W, y: y == null ? Math.random() * H : y, r: 1 + Math.random() * 2.6, s: .15 + Math.random() * .45, a: Math.random() * 6.28, w: .4 + Math.random() * .8, o: .25 + Math.random() * .6, f: Math.random() < .25 }; }
       size(); for (var i = 0; i < n; i++) parts.push(mk());
-      window.addEventListener('resize', size);
-      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) loop(); }).observe(host);
+      // ResizeObserver on the host, not window: tracks the box that actually
+      // matters here, and is torn down with the rest of this host's listeners.
+      var ro = null;
+      if ('ResizeObserver' in window) { ro = new ResizeObserver(size); ro.observe(host); }
+      else window.addEventListener('resize', size, ac ? { signal: ac.signal } : {});
+      var io2 = null;
+      if ('IntersectionObserver' in window) { io2 = new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) loop(); }); io2.observe(host); }
       var raf = null;
       function loop() {
         if (raf) return;
         (function f() {
-          raf = null; if (!vis || document.hidden) return;
+          raf = null;
+          if (!host.isConnected) return;
+          if (!vis || document.hidden) return;
           ctx.clearRect(0, 0, W, H);
           parts.forEach(function (p, i) {
             p.y -= p.s; p.a += .012 * p.w; p.x += Math.sin(p.a) * .35;
@@ -365,6 +400,12 @@
         })();
       }
       loop();
+      onDisconnect(host, function () {
+        if (ac) ac.abort();
+        if (ro) ro.disconnect();
+        if (io2) io2.disconnect();
+        if (raf) cancelAnimationFrame(raf);
+      });
     });
   };
 
@@ -384,9 +425,21 @@
   })();
 
   /* ---------------- card light follow ---------------- */
+  // Coalesced to one style write per animation frame instead of per
+  // pointermove, and skipped outright on touch devices that can't hover.
+  var hoverMQ = window.matchMedia('(hover: hover)');
+  var glowTarget = null, glowX = 0, glowY = 0, glowRaf = 0;
   document.addEventListener('pointermove', function (e) {
+    if (!hoverMQ.matches) return;
     var m = e.target.closest && e.target.closest('.sn-card__media'); if (!m) return;
-    var r = m.getBoundingClientRect(); m.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%'); m.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    glowTarget = m; glowX = e.clientX; glowY = e.clientY;
+    if (glowRaf) return;
+    glowRaf = requestAnimationFrame(function () {
+      glowRaf = 0; if (!glowTarget) return;
+      var r = glowTarget.getBoundingClientRect();
+      glowTarget.style.setProperty('--mx', ((glowX - r.left) / r.width * 100).toFixed(1) + '%');
+      glowTarget.style.setProperty('--my', ((glowY - r.top) / r.height * 100).toFixed(1) + '%');
+    });
   }, { passive: true });
   /* card swatch preview */
   document.addEventListener('mouseover', function (e) {
