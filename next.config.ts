@@ -12,6 +12,10 @@ const ACCOUNTS = SHOP_ID ? `https://shopify.com/${SHOP_ID}/account` : null;
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  experimental: {
+    // ~21KB of CSS (brotli): shipping it in the HTML saves the render-blocking stylesheet round trip
+    inlineCss: true,
+  },
   partialPrefetching: true,
   images: {
     // keep in sync with IMAGE_WIDTHS in lib/utils.ts
