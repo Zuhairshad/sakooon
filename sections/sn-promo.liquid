@@ -57,7 +57,7 @@
   </div>
 </section>
 <style>
-#{{ sid }} .snpr__box { position: relative; isolation: isolate; overflow: hidden; border-radius: calc(var(--r) * 1.4); padding: clamp(36px, 6vw, 90px); background: {% if s.style == 'plain' %}var(--card){% else %}{{ c1 }}{% endif %}; {% unless s.style == 'plain' %}--tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ c3 }}; --ac-ink: {{ c1 }}; --line: rgba(255,255,255,.16); color: var(--tx);{% endunless %} }
+#{{ sid }} .snpr__box { position: relative; isolation: isolate; overflow: hidden; border-radius: calc(var(--r) * 1.4); padding: clamp(36px, 6vw, 90px); background: {% if s.style == 'plain' %}var(--card){% else %}{{ c1 }}{% endif %}; {% unless s.style == 'plain' %}--tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ c3 }}; --ac-aa: {{ c3 }}; --ac-ink: {{ c1 }}; --line: rgba(255,255,255,.16); color: var(--tx);{% endunless %} }
 #{{ sid }} .snpr__bgimg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .45; }
 #{{ sid }} .snpr__in { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(30px, 5vw, 80px); align-items: center; }
 #{{ sid }}.snpr--right .snpr__vis { order: -1; }

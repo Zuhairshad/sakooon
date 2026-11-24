@@ -36,5 +36,9 @@
   if s.accent_color != blank
     assign ac = s.accent_color
   endif
+  assign has_ac_aa = false
+  if ac == settings.color_moon
+    assign has_ac_aa = true
+  endif
 -%}
---bg: {{ bg }}; --tx: {{ tx }}; --ac: {{ ac }}; --pt: {{ s.pad_top | default: 0 }}px; --pb: {{ s.pad_bottom | default: 0 }}px;{% if dark %} color-scheme: dark;{% endif %}
+--bg: {{ bg }}; --tx: {{ tx }}; --ac: {{ ac }};{% if has_ac_aa %} --ac-aa: {{ ac }};{% endif %} --pt: {{ s.pad_top | default: 0 }}px; --pb: {{ s.pad_bottom | default: 0 }}px;{% if dark %} color-scheme: dark;{% endif %}

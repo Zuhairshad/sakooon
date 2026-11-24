@@ -24,11 +24,12 @@
                 {%- endif -%}
                 {%- assign b = block.settings -%}
                 {%- assign ai = forloop.index0 | modulo: 8 -%}
+                {%- assign tile_url = b.link | default: b.product.url -%}
                 <figure class="sngl__tile" style="--w: {% if odd == 1 %}300{% else %}240{% endif %}px;" {{ block.shopify_attributes }}>
-                  <a {% if b.link != blank %}href="{{ b.link }}"{% elsif b.product != blank %}href="{{ b.product.url }}"{% endif %} class="sngl__a">
+                  <{% if tile_url != blank %}a href="{{ tile_url }}"{% else %}div{% endif %} class="sngl__a">
                     {% render 'sn-media', image: b.image, art: arts[ai], width: 700, sizes: '300px', class: 'sngl__m sn-ripple' %}
                     <span class="sngl__hov">{% render 'sn-icon', name: b.icon, class: 'icon' %}{% if b.caption != blank %}<em>{{ b.caption }}</em>{% endif %}</span>
-                  </a>
+                  </{% if tile_url != blank %}a{% else %}div{% endif %}>
                 </figure>
               {%- endfor -%}
             </div>
@@ -47,12 +48,13 @@
               {%- assign b = block.settings -%}
               {%- assign ai = forloop.index0 | modulo: 8 -%}
               {%- assign tall = forloop.index | modulo: 2 -%}
+              {%- assign tile_url = b.link | default: b.product.url -%}
               <figure class="sngl__tile" data-r="zoom" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
-                <a {% if b.link != blank %}href="{{ b.link }}"{% elsif b.product != blank %}href="{{ b.product.url }}"{% endif %} class="sngl__a">
+                <{% if tile_url != blank %}a href="{{ tile_url }}"{% else %}div{% endif %} class="sngl__a">
                   {%- if tall == 1 -%}{%- assign rt = '4 / 5' -%}{%- else -%}{%- assign rt = '1 / 1' -%}{%- endif -%}
                   {% render 'sn-media', image: b.image, art: arts[ai], width: 900, sizes: '(min-width: 990px) 33vw, 50vw', class: 'sngl__m sn-ripple', ratio: rt %}
                   <span class="sngl__hov">{% render 'sn-icon', name: b.icon, class: 'icon' %}{% if b.caption != blank %}<em>{{ b.caption }}</em>{% endif %}</span>
-                </a>
+                </{% if tile_url != blank %}a{% else %}div{% endif %}>
                 {%- if b.product != blank -%}
                   <figcaption class="sngl__prod sn-glass">
                     <span class="sngl__dot" aria-hidden="true"></span>

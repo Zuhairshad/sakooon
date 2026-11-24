@@ -27,7 +27,7 @@
 </section>
 <style>
 #{{ sid }} { min-height: calc(100svh - 80px); display: grid; place-items: center; overflow: hidden; background: {{ settings.color_dark_bg }}; text-align: center; }
-#{{ sid }} .sn404__in { position: relative; z-index: 2; display: grid; justify-items: center; gap: 20px; width: min(760px, calc(100% - 32px)); padding: 60px 0; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ settings.color_moon }}; --line2: rgba(255,255,255,.26); }
+#{{ sid }} .sn404__in { position: relative; z-index: 2; display: grid; justify-items: center; gap: 20px; width: min(760px, calc(100% - 32px)); padding: 60px 0; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ settings.color_moon }}; --ac-aa: {{ settings.color_moon }}; --line2: rgba(255,255,255,.26); }
 #{{ sid }} .sn404__in .sn-lead { margin-inline: auto; }
 #{{ sid }} .sn404__num { display: flex; align-items: center; gap: clamp(10px, 2vw, 26px); font: 300 clamp(7rem, 20vw, 15rem)/.9 var(--f-head); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--c-moon) 70%, transparent); }
 #{{ sid }} .sn404__num > span:not(.sn404__moon) { animation: sn404-f 6s ease-in-out infinite; }

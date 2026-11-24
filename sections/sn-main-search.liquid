@@ -62,6 +62,7 @@
             </details>
           {%- endif -%}
           <div class="snms__main">
+            <h2 class="visually-hidden">Products</h2>
             <div class="sn-grid snms__grid" style="--cols: {% if search.filters.size > 0 and s.filters %}3{% else %}4{% endif %};" data-sn-grid data-sn-region="grid">
               {%- for item in search.results -%}
                 {%- case item.object_type -%}
@@ -99,7 +100,7 @@
 <script src="{{ 'sn-facets.js' | asset_url }}" defer></script>
 <style>
 #{{ sid }} { padding-top: 0; }
-#{{ sid }} .snms__top { position: relative; isolation: isolate; overflow: visible; padding: clamp(80px, 9vw, 130px) 0 clamp(50px, 6vw, 80px); background: {{ settings.color_dark_bg }}; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ settings.color_moon }}; --line2: rgba(255,255,255,.24); --line: rgba(255,255,255,.14); }
+#{{ sid }} .snms__top { position: relative; isolation: isolate; overflow: visible; padding: clamp(80px, 9vw, 130px) 0 clamp(50px, 6vw, 80px); background: {{ settings.color_dark_bg }}; color: {{ settings.color_dark_text }}; --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 72%, transparent); --ac: {{ settings.color_moon }}; --ac-aa: {{ settings.color_moon }}; --line2: rgba(255,255,255,.24); --line: rgba(255,255,255,.14); }
 #{{ sid }} .snms__top .sn-silk { overflow: hidden; }
 #{{ sid }} .snms__tin { position: relative; z-index: 2; display: grid; justify-items: center; gap: 22px; text-align: center; }
 #{{ sid }} .snms__form { position: relative; width: min(720px, 100%); }

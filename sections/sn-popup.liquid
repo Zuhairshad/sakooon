@@ -2,14 +2,18 @@
   assign s = section.settings
   assign sid = 'snpu-' | append: section.id
   assign fid = 'SnPop-' | append: section.id
+  assign pop_image = s.image
+  if pop_image == blank
+    assign pop_image = all_products['duvet-comfort-pillow-pack-of-2'].featured_image
+  endif
 -%}
 <div id="{{ sid }}" class="snpu snpu--{{ s.position }}" data-delay="{{ s.delay }}" data-days="{{ s.days }}" data-exit="{{ s.exit_intent }}" data-key="sakooon:pop:{{ s.storage_key | handleize }}" {% unless s.enabled %}data-off{% endunless %} hidden>
   <div class="snpu__bg" data-snpu-close></div>
   <div class="snpu__card" role="dialog" aria-modal="true" aria-label="{{ s.heading | escape }}" style="{% render 'sn-vars', s: s %}" data-sn-silk-host>
     {%- if s.silk -%}<div class="sn-silk" data-sn-silk data-c1="{{ settings.color_dark_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ settings.color_moon }}" data-speed=".5" data-amp=".8" data-quality="low"></div>{%- endif -%}
     <button type="button" class="snpu__x" data-snpu-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button>
-    {%- if s.image != blank or s.show_art -%}
-      <div class="snpu__vis">{% render 'sn-media', image: s.image, art: s.art, width: 900, sizes: '400px', class: 'snpu__img' %}<span class="snpu__moon"><i></i></span></div>
+    {%- if pop_image != blank or s.show_art -%}
+      <div class="snpu__vis">{% render 'sn-media', image: pop_image, art: s.art, width: 900, sizes: '400px', class: 'snpu__img', eager: false, alt: pop_image.alt | default: 'Sakooon pillows' %}<span class="snpu__moon"><i></i></span></div>
     {%- endif -%}
     <div class="snpu__body">
       {%- if s.eyebrow != blank -%}<p class="sn-eyebrow">{% render 'sn-phase', k: 3 %}{{ s.eyebrow }}</p>{%- endif -%}
@@ -46,7 +50,7 @@
 #{{ sid }} .snpu__bg { position: absolute; inset: 0; background: color-mix(in srgb, var(--c-dark) 55%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity .6s; }
 #{{ sid }}.snpu--corner .snpu__bg { display: none; }
 #{{ sid }}.is-open .snpu__bg { opacity: 1; }
-#{{ sid }} .snpu__card { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: {% if s.image != blank or s.show_art %}minmax(0, .85fr) minmax(0, 1fr){% else %}1fr{% endif %}; width: min({% if s.image != blank or s.show_art %}820px{% else %}480px{% endif %}, 100%); border-radius: calc(var(--r) * 1.3); background: var(--bg); color: var(--tx); box-shadow: 0 60px 120px -40px rgba(0,0,0,.6); opacity: 0; transform: translateY(60px) scale(.94); transition: opacity .6s, transform .9s cubic-bezier(.2, 1.1, .3, 1); --soft: color-mix(in srgb, var(--tx) 70%, transparent); --mute: color-mix(in srgb, var(--tx) 48%, transparent); --line2: color-mix(in srgb, var(--tx) 22%, transparent); --ac-ink: #fff; }
+#{{ sid }} .snpu__card { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: {% if pop_image != blank or s.show_art %}minmax(0, .85fr) minmax(0, 1fr){% else %}1fr{% endif %}; width: min({% if pop_image != blank or s.show_art %}820px{% else %}480px{% endif %}, 100%); border-radius: calc(var(--r) * 1.3); background: var(--bg); color: var(--tx); box-shadow: 0 60px 120px -40px rgba(0,0,0,.6); opacity: 0; transform: translateY(60px) scale(.94); transition: opacity .6s, transform .9s cubic-bezier(.2, 1.1, .3, 1); --soft: color-mix(in srgb, var(--tx) 70%, transparent); --mute: color-mix(in srgb, var(--tx) 48%, transparent); --line2: color-mix(in srgb, var(--tx) 22%, transparent); --ac-ink: #fff; }
 #{{ sid }}.snpu--corner .snpu__card { width: min(400px, 100%); grid-template-columns: 1fr; }
 #{{ sid }}.snpu--corner .snpu__vis { display: none; }
 #{{ sid }}.is-open .snpu__card { opacity: 1; transform: none; }

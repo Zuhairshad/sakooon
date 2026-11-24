@@ -1,0 +1,23 @@
+{%- comment -%}
+  Returns "1" when a menu/submenu link should render, blank otherwise.
+  Hides a link when it:
+  - duplicates its parent's "Shop all" URL (dead weight, same destination twice)
+  - points at a /collections/<handle> that currently has 0 products (self-heals
+    the moment the merchant adds stock to that collection)
+  Usage: {% capture ok %}{% render 'sn-menu-link-ok', url: c.url, parent_url: link.url %}{% endcapture %}
+{%- endcomment -%}
+{%- liquid
+  assign ok = true
+  if url == blank
+    assign ok = false
+  elsif parent_url != blank and url == parent_url
+    assign ok = false
+  elsif url contains '/collections/'
+    assign handle = url | split: '/collections/' | last | split: '/' | first | split: '?' | first
+    assign coll = collections[handle]
+    if coll != blank and coll.products_count == 0
+      assign ok = false
+    endif
+  endif
+-%}
+{%- if ok -%}1{%- endif -%}

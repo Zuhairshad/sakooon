@@ -43,17 +43,26 @@
         <button type="button" class="snr__dot" aria-label="{{ title | escape }}" aria-expanded="false">
           <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="a" cx="22" cy="22" r="20"/><circle class="b" cx="22" cy="22" r="7"/><path class="c" d="M22 16v12M16 22h12"/></svg>
         </button>
+        {%- liquid
+          assign spot_url = p.url | default: b.link
+        -%}
         <div class="snr__pop snr__pop--{{ side }} sn-glass">
-          <a class="snr__pimg sn-media" href="{{ p.url | default: b.link | default: '#' }}">
-            {%- if p.featured_media -%}<img src="{{ p.featured_media | image_url: width: 300 }}" alt="" loading="lazy" width="150" height="190">{%- else -%}{% render 'sn-art', name: b.art %}{%- endif -%}
-          </a>
+          {%- if spot_url != blank -%}
+            <a class="snr__pimg sn-media" href="{{ spot_url }}">
+              {%- if p.featured_media -%}<img src="{{ p.featured_media | image_url: width: 300 }}" alt="" loading="lazy" width="150" height="190">{%- else -%}{% render 'sn-art', name: b.art %}{%- endif -%}
+            </a>
+          {%- else -%}
+            <span class="snr__pimg sn-media">
+              {%- if p.featured_media -%}<img src="{{ p.featured_media | image_url: width: 300 }}" alt="" loading="lazy" width="150" height="190">{%- else -%}{% render 'sn-art', name: b.art %}{%- endif -%}
+            </span>
+          {%- endif -%}
           <div class="snr__pinfo">
-            <a href="{{ p.url | default: b.link | default: '#' }}" class="snr__pt">{{ title }}</a>
+            {%- if spot_url != blank -%}<a href="{{ spot_url }}" class="snr__pt">{{ title }}</a>{%- else -%}<span class="snr__pt">{{ title }}</span>{%- endif -%}
             <span class="snr__pp">{%- if p != blank -%}{% render 'sn-price', product: p %}{%- else -%}{{ b.price_text }}{%- endif -%}</span>
             {%- if p != blank and p.available -%}
               {%- if p.variants.size == 1 -%}<button type="button" class="sn-link" data-sn-add="{{ v.id }}">{{ s.add_label }}{% render 'sn-icon', name: 'plus', class: 'icon' %}</button>{%- else -%}<button type="button" class="sn-link" data-sn-quick="{{ p.handle }}">{{ s.choose_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</button>{%- endif -%}
             {%- else -%}
-              <a class="sn-link" href="{{ b.link | default: '#' }}">{{ s.view_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
+              <a class="sn-link" href="{{ b.link | default: routes.all_products_collection_url }}">{{ s.view_label }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
             {%- endif -%}
           </div>
         </div>
