@@ -8,9 +8,8 @@
   assign c2 = s.silk_c2 | default: settings.color_dusk
   assign c3 = s.silk_c3 | default: settings.color_moon
 -%}
-<section id="{{ sid }}" class="sn-s snhero snhero--{{ s.mode }} snhero--{{ s.align }}" style="{% render 'sn-vars', s: s %} --h: {{ s.height }}svh;" data-snhero data-auto="{{ s.autoplay }}" data-sn-silk-host>
+<section id="{{ sid }}" class="sn-s snhero snhero--{{ s.mode }} snhero--{{ s.align }} is-ready" style="{% render 'sn-vars', s: s %} --h: {{ s.height }}svh;" data-snhero data-auto="{{ s.autoplay }}" data-sn-silk-host>
   {% render 'sn-divider', s: s %}
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="{{ sid }}-f" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.012" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" data-snhero-disp/></filter></svg>
 
   {%- if s.mode == 'silk' -%}
     <div class="snhero__silk" data-sn-silk data-c1="{{ c1 }}" data-c2="{{ c2 }}" data-c3="{{ c3 }}" data-speed="{{ s.silk_speed | divided_by: 10.0 }}" data-amp="1"></div>
@@ -71,7 +70,7 @@
             {%- assign b = block.settings -%}
             <figure class="snhero__fig{% if forloop.first %} is-on{% endif %}" data-snhero-bg>
               {%- if b.image != blank -%}
-                <img src="{{ b.image | image_url: width: 1200 }}" srcset="{{ b.image | image_url: width: 700 }} 700w, {{ b.image | image_url: width: 1200 }} 1200w" sizes="(min-width: 990px) 42vw, 90vw" alt="{{ b.image.alt | default: b.heading | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                <img src="{{ b.image | image_url: width: 1200 }}" srcset="{{ b.image | image_url: width: 700 }} 700w, {{ b.image | image_url: width: 1200 }} 1200w" sizes="(min-width: 990px) 42vw, 90vw" alt="{{ b.image.alt | default: b.heading | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"{% if forloop.first %} fetchpriority="high"{% endif %}>
               {%- else -%}
                 {% render 'sn-art', name: b.art %}
               {%- endif -%}
@@ -120,7 +119,6 @@
 #{{ sid }} .snhero__stage { position: absolute; inset: 0; z-index: -2; }
 #{{ sid }} .snhero__bg { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.4s ease; }
 #{{ sid }} .snhero__bg.is-on { opacity: 1; z-index: 1; }
-#{{ sid }} .snhero__bg.is-in { filter: url(#{{ sid }}-f); }
 #{{ sid }} .snhero__bg img, #{{ sid }} .snhero__bg video, #{{ sid }} .snhero__bg picture, #{{ sid }} .snhero__bg .sn-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 #{{ sid }} .snhero__bg img, #{{ sid }} .snhero__bg .sn-art { transform: scale(1.14); transition: transform 9s cubic-bezier(.2, .6, .2, 1); }
 #{{ sid }} .snhero__bg.is-on img, #{{ sid }} .snhero__bg.is-on .sn-art { transform: scale(1.02); }
@@ -133,19 +131,19 @@
 #{{ sid }} .snhero__copy { display: grid; max-width: 780px; }
 #{{ sid }} .snhero__txt { grid-area: 1 / 1; visibility: hidden; }
 #{{ sid }} .snhero__txt.is-on { visibility: visible; }
-#{{ sid }} .snhero__eb { margin-bottom: 26px; opacity: 0; filter: blur(8px); transform: translateY(12px); transition: all .9s cubic-bezier(.2, .7, .2, 1); }
+#{{ sid }} .snhero__eb { margin-bottom: 26px; opacity: 0; transform: translateY(12px); transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1); }
 #{{ sid }} .snhero__h { font-size: clamp(3rem, 7.4vw, 7rem); line-height: .96; letter-spacing: -.035em; }
 #{{ sid }} .snhero__h em { color: var(--ac); }
 #{{ sid }} .snhero__w { display: inline-block; }
-#{{ sid }} .snhero__w > * { display: inline-block; opacity: 0; filter: blur(16px); transform: translateY(.4em) scale(1.04); transition: opacity 1.2s cubic-bezier(.2, .7, .2, 1), filter 1.2s cubic-bezier(.2, .7, .2, 1), transform 1.3s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--wi) * 80ms + 150ms); }
-#{{ sid }} .snhero__p { margin-top: 26px; max-width: 48ch; font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.75; color: var(--soft); opacity: 0; filter: blur(8px); transition: all 1s cubic-bezier(.2, .7, .2, 1) .5s; }
+#{{ sid }} .snhero__w > * { display: inline-block; opacity: 0; transform: translateY(.4em) scale(1.04); transition: opacity 1.2s cubic-bezier(.2, .7, .2, 1), transform 1.3s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--wi) * 80ms + 150ms); }
+#{{ sid }} .snhero__p { margin-top: 26px; max-width: 48ch; font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.75; color: var(--soft); opacity: 0; transform: translateY(10px); transition: opacity 1s cubic-bezier(.2, .7, .2, 1) .5s, transform 1s cubic-bezier(.2, .7, .2, 1) .5s; }
 #{{ sid }}.snhero--center .snhero__p { margin-inline: auto; }
-#{{ sid }} .snhero__btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; opacity: 0; transform: translateY(14px); transition: all 1s cubic-bezier(.2, .7, .2, 1) .65s; }
+#{{ sid }} .snhero__btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; opacity: 0; transform: translateY(14px); transition: opacity 1s cubic-bezier(.2, .7, .2, 1) .65s, transform 1s cubic-bezier(.2, .7, .2, 1) .65s; }
 #{{ sid }}.snhero--center .snhero__btns { justify-content: center; }
-#{{ sid }}.is-ready .snhero__txt.is-on .snhero__eb, #{{ sid }}.is-ready .snhero__txt.is-on .snhero__p { opacity: 1; filter: none; transform: none; }
-#{{ sid }}.is-ready .snhero__txt.is-on .snhero__w > * { opacity: 1; filter: none; transform: none; }
+#{{ sid }}.is-ready .snhero__txt.is-on .snhero__eb, #{{ sid }}.is-ready .snhero__txt.is-on .snhero__p { opacity: 1; transform: none; }
+#{{ sid }}.is-ready .snhero__txt.is-on .snhero__w > * { opacity: 1; transform: none; }
 #{{ sid }}.is-ready .snhero__txt.is-on .snhero__btns { opacity: 1; transform: none; }
-#{{ sid }} .snhero__txt.is-out .snhero__w > *, #{{ sid }} .snhero__txt.is-out .snhero__eb, #{{ sid }} .snhero__txt.is-out .snhero__p, #{{ sid }} .snhero__txt.is-out .snhero__btns { opacity: 0 !important; filter: blur(14px) !important; transform: translateY(-.3em) !important; transition-duration: .6s; transition-delay: 0s; }
+#{{ sid }} .snhero__txt.is-out .snhero__w > *, #{{ sid }} .snhero__txt.is-out .snhero__eb, #{{ sid }} .snhero__txt.is-out .snhero__p, #{{ sid }} .snhero__txt.is-out .snhero__btns { opacity: 0 !important; transform: translateY(-.3em) !important; transition-duration: .6s; transition-delay: 0s; }
 #{{ sid }} .snhero__chips { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 44px; padding-top: 22px; border-top: 1px dashed var(--line2); }
 #{{ sid }}.snhero--center .snhero__chips { justify-content: center; }
 #{{ sid }} .snhero__chips li { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--soft); opacity: 0; transform: translateY(10px); transition: all .8s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i) * 90ms + 1s); }
@@ -159,7 +157,6 @@
 #{{ sid }}.snhero--paper .snhero__frame { box-shadow: 0 60px 100px -50px rgba(27, 33, 48, .45); }
 #{{ sid }} .snhero__fig { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.2s ease; }
 #{{ sid }} .snhero__fig.is-on { opacity: 1; z-index: 1; }
-#{{ sid }} .snhero__fig.is-in { filter: url(#{{ sid }}-f); }
 #{{ sid }} .snhero__fig img, #{{ sid }} .snhero__fig .sn-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); transition: transform 8s cubic-bezier(.2, .6, .2, 1); }
 #{{ sid }} .snhero__fig.is-on img, #{{ sid }} .snhero__fig.is-on .sn-art { transform: scale(1); }
 #{{ sid }} .snhero__stitch { position: absolute; inset: 12px; z-index: 3; border-radius: calc(var(--r) * 2.2 - 10px); border: 1.5px dashed color-mix(in srgb, var(--ac) 70%, transparent); pointer-events: none; }
@@ -195,6 +192,14 @@
 #{{ sid }} .snhero__cue i { position: relative; width: 1px; height: 64px; background: var(--line2); overflow: hidden; }
 #{{ sid }} .snhero__cue i::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--ac); animation: snhero-cue 2.2s cubic-bezier(.6, 0, .4, 1) infinite; }
 @keyframes snhero-cue { to { top: 100%; } }
+/* These loops are decorative; they wait for html.sn-idle (set in theme.liquid
+   after load + requestIdleCallback) so they never compete with first paint. */
+html:not(.sn-idle) #{{ sid }} .snhero__swatch,
+html:not(.sn-idle) #{{ sid }} .snhero__sw-dots i,
+html:not(.sn-idle) #{{ sid }} .snhero__seal svg:not(.sn-ph),
+html:not(.sn-idle) #{{ sid }} .snhero__cue i::after {
+  animation-play-state: paused !important;
+}
 @media (max-width: 989px) {
   #{{ sid }} .snhero__in { grid-template-columns: 1fr; }
   #{{ sid }} .snhero__vis { justify-self: center; width: min(400px, 82%); order: -1; margin-top: 10px; }
@@ -211,20 +216,14 @@
 (function () {
   var r = document.getElementById('{{ sid }}'); if (!r || r.dataset.on) return; r.dataset.on = 1;
   var bgs = r.querySelectorAll('[data-snhero-bg]'), txts = r.querySelectorAll('[data-snhero-txt]'), dots = r.querySelectorAll('[data-snhero-dot]');
-  var cur = r.querySelector('[data-snhero-cur]'), disp = r.querySelector('[data-snhero-disp]'), vis = r.querySelector('[data-snhero-vis]');
-  var n = txts.length, i = 0, timer = null, secs = parseFloat(r.getAttribute('data-auto')) || 0;
+  var cur = r.querySelector('[data-snhero-cur]'), vis = r.querySelector('[data-snhero-vis]');
+  var n = txts.length, i = 0, timer = null, secs = parseFloat(r.getAttribute('data-auto')) || 0, tiltRaf = 0;
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches || document.body.getAttribute('data-motion') === 'off';
   r.style.setProperty('--dur', (secs || 7) + 's');
-  function settle(el) {
-    if (reduce || !disp) return;
-    el.classList.add('is-in'); var t0 = performance.now();
-    (function f(t) { var p = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - p, 3); disp.setAttribute('scale', (90 * (1 - e)).toFixed(1)); if (p < 1) requestAnimationFrame(f); else { el.classList.remove('is-in'); disp.setAttribute('scale', '0'); } })(t0);
-  }
   function go(k) {
     if (n < 2) return; k = (k + n) % n; if (k === i) return;
     var prev = i; i = k;
     bgs.forEach(function (b, j) { b.classList.toggle('is-on', j === k); });
-    if (bgs[k]) settle(bgs[k]);
     txts[prev].classList.add('is-out');
     setTimeout(function () { txts.forEach(function (t, j) { t.classList.remove('is-out'); t.classList.toggle('is-on', j === k); t.setAttribute('aria-hidden', j === k ? 'false' : 'true'); }); }, 520);
     dots.forEach(function (d, j) { d.classList.toggle('is-on', j === k); });
@@ -237,10 +236,23 @@
   r.addEventListener('mouseleave', function () { if (secs) { r.classList.remove('is-paused'); restart(); } });
   var x0 = null; r.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
   r.addEventListener('touchend', function (e) { if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1)); x0 = null; });
-  if (vis && !reduce && matchMedia('(hover: hover)').matches) r.addEventListener('pointermove', function (e) { var b = r.getBoundingClientRect(); vis.style.setProperty('--mx', ((e.clientX - b.left) / b.width - .5).toFixed(3)); vis.style.setProperty('--my', ((e.clientY - b.top) / b.height - .5).toFixed(3)); });
-  function start() { r.classList.add('is-ready'); restart(); }
-  if (document.documentElement.classList.contains('pl-lock')) addEventListener('preloader:done', function () { setTimeout(start, 250); }, { once: true }); else requestAnimationFrame(function () { requestAnimationFrame(start); });
-  if (window.Shopify && Shopify.designMode) r.classList.add('is-ready');
+  if (vis && !reduce && matchMedia('(hover: hover)').matches) {
+    var tiltX = 0, tiltY = 0;
+    r.addEventListener('pointermove', function (e) {
+      tiltX = e.clientX; tiltY = e.clientY;
+      if (tiltRaf) return;
+      tiltRaf = requestAnimationFrame(function () {
+        tiltRaf = 0;
+        var b = r.getBoundingClientRect();
+        vis.style.setProperty('--mx', ((tiltX - b.left) / b.width - .5).toFixed(3));
+        vis.style.setProperty('--my', ((tiltY - b.top) / b.height - .5).toFixed(3));
+      });
+    }, { passive: true });
+  }
+  // The hero renders complete on first paint (.is-ready is server-rendered);
+  // only the autoplay timer needs a start call, and it can start right away —
+  // it no longer waits on a preloader that is off by default.
+  restart();
   document.addEventListener('shopify:block:select', function (e) { var k = Array.prototype.indexOf.call(r.querySelectorAll('[data-snhero-bg]'), e.target); if (k < 0) return; go(k); clearTimeout(timer); });
 })();
 </script>
