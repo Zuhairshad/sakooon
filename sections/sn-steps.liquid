@@ -43,7 +43,7 @@
 #{{ sid }} .snst__moon .sn-ph { width: 26px; height: 26px; }
 #{{ sid }} .snst__node small { font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--mute); transition: color .6s; }
 #{{ sid }} .snst__step.is-lit .snst__moon { color: var(--ac); border-color: var(--ac); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ac) 12%, transparent), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); transform: scale(1.08); }
-#{{ sid }} .snst__step.is-lit small { color: var(--ac); }
+#{{ sid }} .snst__step.is-lit small { color: var(--ac-aa, var(--ac)); }
 #{{ sid }} .snst__card { display: grid; gap: 12px; justify-items: center; padding: {% if s.cards %}26px 22px 28px{% else %}0 6px{% endif %}; width: 100%; }
 #{{ sid }} .snst__card p { font-size: 14.5px; line-height: 1.65; color: var(--soft); }
 #{{ sid }} .snst__img { width: 100%; border-radius: calc(var(--r) * .7); }

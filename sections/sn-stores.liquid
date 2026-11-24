@@ -11,7 +11,7 @@
       <ul class="snsr__list" role="tablist">
         {%- for block in section.blocks -%}
           {%- assign b = block.settings -%}
-          <li data-r="left" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <li role="presentation" data-r="left" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
             <div tabindex="0" class="snsr__store sn-pillow{% if forloop.first %} is-on{% endif %}" data-snsr="{{ b.map | default: b.address | url_encode }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
               <span class="snsr__city">{{ b.city }}</span>
               <span class="snsr__name sn-h sn-h--xs">{{ b.name }}</span>

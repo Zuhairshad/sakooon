@@ -70,7 +70,7 @@
                 <tr><th scope="row">{{ l }}</th>
                   {%- for b in grades -%}
                     {%- case mi -%}{%- when 1 -%}{%- assign v = b.settings.m1 -%}{%- when 2 -%}{%- assign v = b.settings.m2 -%}{%- when 3 -%}{%- assign v = b.settings.m3 -%}{%- else -%}{%- assign v = b.settings.m4 -%}{%- endcase -%}
-                    <td{% if b.settings.featured %} class="is-f"{% endif %}><span class="sntg__moons" aria-label="{{ v }} / 10">{%- for d in (1..5) -%}{%- assign th = d | times: 2 -%}{%- assign th1 = th | minus: 1 -%}{%- if v >= th -%}{% render 'sn-phase', k: 4 %}{%- elsif v == th1 -%}{% render 'sn-phase', k: 2 %}{%- else -%}{% render 'sn-phase', k: 0 %}{%- endif -%}{%- endfor -%}</span></td>
+                    <td{% if b.settings.featured %} class="is-f"{% endif %}><span class="sntg__moons" role="img" aria-label="{{ v }} / 10">{%- for d in (1..5) -%}{%- assign th = d | times: 2 -%}{%- assign th1 = th | minus: 1 -%}{%- if v >= th -%}{% render 'sn-phase', k: 4 %}{%- elsif v == th1 -%}{% render 'sn-phase', k: 2 %}{%- else -%}{% render 'sn-phase', k: 0 %}{%- endif -%}{%- endfor -%}</span></td>
                   {%- endfor -%}
                 </tr>
               {%- endif -%}

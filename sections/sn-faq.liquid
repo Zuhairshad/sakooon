@@ -43,8 +43,8 @@
         {%- if s.show_tabs and cat_list.size > 1 -%}
           <div class="sn-tabs snfq__tabs" role="tablist" data-r>
             <span class="sn-tabs__pill"></span>
-            <button type="button" class="is-on" data-snfq-cat="*">{{ s.all_label }}</button>
-            {%- for c in cat_list -%}{%- assign cc = c | remove: '|' -%}{%- if cc != blank -%}<button type="button" data-snfq-cat="{{ cc | handleize }}">{{ cc }}</button>{%- endif -%}{%- endfor -%}
+            <button type="button" role="tab" aria-selected="true" class="is-on" data-snfq-cat="*">{{ s.all_label }}</button>
+            {%- for c in cat_list -%}{%- assign cc = c | remove: '|' -%}{%- if cc != blank -%}<button type="button" role="tab" aria-selected="false" data-snfq-cat="{{ cc | handleize }}">| handleize }}">{{ cc }}</button>{%- endif -%}{%- endfor -%}
           </div>
         {%- endif -%}
         <div class="snfq__list">
@@ -108,7 +108,7 @@
   if (tabs) tabs.addEventListener('click', function (e) {
     var b = e.target.closest('[data-snfq-cat]'); if (!b) return;
     cat = b.getAttribute('data-snfq-cat');
-    [].forEach.call(tabs.querySelectorAll('button'), function (x) { x.classList.toggle('is-on', x === b); });
+    [].forEach.call(tabs.querySelectorAll('button'), function (x) { x.classList.toggle('is-on', x === b); x.setAttribute('aria-selected', String(x === b)); });
     if (window.SN && SN.pill) SN.pill(tabs); apply();
   });
   if (tabs) SN.ready(function () { SN.pill(tabs); setTimeout(function () { SN.pill(tabs); }, 500); addEventListener('resize', function () { SN.pill(tabs); }); });
