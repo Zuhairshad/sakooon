@@ -44,13 +44,13 @@
                           {%- for c in link.links -%}
                             <div class="snh__col" style="--i: {{ forloop.index0 }};">
                               <a class="snh__colh" href="{{ c.url }}">{{ c.title }}</a>
-                              <ul>{%- for g in c.links -%}<li><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endfor -%}</ul>
+                              <ul>{%- for g in c.links -%}{%- capture ok -%}{% render 'sn-menu-link-ok', url: g.url, parent_url: c.url %}{%- endcapture -%}{%- if ok == '1' -%}<li><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endif -%}{%- endfor -%}</ul>
                             </div>
                           {%- endfor -%}
                         {%- else -%}
                           <div class="snh__col" style="--i: 0;">
                             <p class="snh__colh">{{ feat.settings.col_heading | default: link.title }}</p>
-                            <ul>{%- for c in link.links -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endfor -%}</ul>
+                            <ul>{%- for c in link.links -%}{%- capture ok -%}{% render 'sn-menu-link-ok', url: c.url, parent_url: link.url %}{%- endcapture -%}{%- if ok == '1' -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endif -%}{%- endfor -%}</ul>
                           </div>
                         {%- endif -%}
                         <a class="sn-link snh__all" href="{{ link.url }}">{{ s.view_all }} {{ link.title }}{% render 'sn-icon', name: 'arrow-right', class: 'icon' %}</a>
@@ -65,7 +65,15 @@
             {%- for b in items -%}
               {%- assign bs = b.settings -%}
               {%- assign lines = bs.links | newline_to_br | split: '<br />' -%}
-              {%- assign has_links = false -%}{%- for l in lines -%}{%- if l contains '|' -%}{%- assign has_links = true -%}{%- endif -%}{%- endfor -%}
+              {%- assign has_links = false -%}
+              {%- for l in lines -%}
+                {%- if l contains '|' -%}
+                  {%- assign pr = l | strip | split: '|' -%}
+                  {%- assign purl = pr[1] | strip -%}
+                  {%- capture ok -%}{% render 'sn-menu-link-ok', url: purl, parent_url: bs.url %}{%- endcapture -%}
+                  {%- if ok == '1' -%}{%- assign has_links = true -%}{%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
               <li class="snh__li{% if has_links %} has-mega{% endif %}" data-snh-li {{ b.shopify_attributes }}>
                 <a class="snh__a" href="{{ bs.url | default: '#' }}"{% if has_links %} aria-haspopup="true" aria-expanded="false"{% endif %}><span>{{ bs.title }}</span>{% if has_links %}{% render 'sn-icon', name: 'chevron-down', class: 'icon' %}{% endif %}</a>
                 {%- if has_links -%}
@@ -76,7 +84,12 @@
                           <p class="snh__colh">{{ bs.col_heading | default: bs.title }}</p>
                           <ul>
                             {%- for l in lines -%}
-                              {%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}<li><a href="{{ pr[1] | strip }}">{{ pr[0] | strip }}</a></li>{%- endif -%}
+                              {%- if l contains '|' -%}
+                                {%- assign pr = l | strip | split: '|' -%}
+                                {%- assign purl = pr[1] | strip -%}
+                                {%- capture ok -%}{% render 'sn-menu-link-ok', url: purl, parent_url: bs.url %}{%- endcapture -%}
+                                {%- if ok == '1' -%}<li><a href="{{ purl }}">{{ pr[0] | strip }}</a></li>{%- endif -%}
+                              {%- endif -%}
                             {%- endfor -%}
                           </ul>
                         </div>
@@ -100,8 +113,8 @@
       <div class="snh__acts">
         {%- if s.show_search -%}<button type="button" class="snh__ic" data-sn-open="SnSearch" aria-label="Search">{% render 'sn-icon', name: 'search', class: 'icon' %}</button>{%- endif -%}
         {%- if s.show_account and shop.customer_accounts_enabled -%}<a class="snh__ic snh__hide-m" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'sn-icon', name: 'user', class: 'icon' %}</a>{%- endif -%}
-        {%- if s.show_wishlist -%}<a class="snh__ic snh__hide-m" href="{{ s.wishlist_url | default: '/pages/wishlist' }}" aria-label="Wishlist">{% render 'sn-icon', name: 'heart', class: 'icon' %}<b class="snh__n is-empty" data-sn-wish-count>0</b></a>{%- endif -%}
-        <a class="snh__ic snh__cart" data-sn-cart-icon href="{{ routes.cart_url }}" {% if settings.cart_type == 'drawer' %}data-sn-open="SnCart"{% endif %} aria-label="Cart">{% render 'sn-icon', name: 'bag', class: 'icon' %}<b class="snh__n{% if cart.item_count == 0 %} is-empty{% endif %}" data-sn-cart-count>{{ cart.item_count }}</b></a>
+        {%- if s.show_wishlist -%}<a class="snh__ic snh__hide-m" href="{{ s.wishlist_url | default: '/pages/wishlist' }}"><span class="visually-hidden">Wishlist</span>{% render 'sn-icon', name: 'heart', class: 'icon' %}<b class="snh__n is-empty" data-sn-wish-count>0</b></a>{%- endif -%}
+        <a class="snh__ic snh__cart" data-sn-cart-icon href="{{ routes.cart_url }}" {% if settings.cart_type == 'drawer' %}data-sn-open="SnCart"{% endif %}><span class="visually-hidden">Cart</span>{% render 'sn-icon', name: 'bag', class: 'icon' %}<b class="snh__n{% if cart.item_count == 0 %} is-empty{% endif %}" data-sn-cart-count>{{ cart.item_count }}</b></a>
         {%- if s.cta_label != blank -%}
           <a class="snh__cta sn-btn sn-btn--sm" href="{% if s.cta_link != blank %}{{ s.cta_link }}{% else %}https://wa.me/{{ settings.whatsapp }}?text={{ s.cta_message | url_encode }}{% endif %}" target="_blank" rel="noopener">{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}<span>{{ s.cta_label }}</span></a>
         {%- endif -%}
@@ -130,7 +143,17 @@
         <div class="sns__pop">
           <span>{{ s.popular_label }}</span>
           {%- assign pops = s.popular | split: ',' -%}
-          {%- for p in pops -%}<a class="sn-chip" href="{{ routes.search_url }}?q={{ p | strip | url_encode }}" style="--i: {{ forloop.index0 }};">{{ p | strip }}</a>{%- endfor -%}
+          {%- for p in pops -%}
+            {%- assign term = p | strip -%}
+            {%- assign term_dc = term | downcase -%}
+            {%- assign chip_empty = false -%}
+            {%- for c in collections -%}
+              {%- assign cc = c[1] -%}
+              {%- assign cc_title_dc = cc.title | downcase -%}
+              {%- if cc.title != blank and cc_title_dc == term_dc and cc.products_count == 0 -%}{%- assign chip_empty = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- unless chip_empty -%}<a class="sn-chip" href="{{ routes.search_url }}?q={{ term | url_encode }}" style="--i: {{ forloop.index0 }};">{{ term }}</a>{%- endunless -%}
+          {%- endfor -%}
         </div>
       {%- endif -%}
       <div class="sns__res" data-sn-presults></div>
@@ -151,7 +174,7 @@
         {%- for link in menu.links -%}
           {%- if link.links.size > 0 -%}
             <details class="snm__d" style="--i: {{ forloop.index0 }};"><summary><span>{{ link.title }}</span><i></i></summary>
-              <ul>{%- for c in link.links -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- for g in c.links -%}<li class="snm__g"><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endfor -%}{%- endfor -%}<li><a class="snm__all" href="{{ link.url }}">{{ s.view_all }} {{ link.title }} →</a></li></ul>
+              <ul>{%- for c in link.links -%}{%- capture cok -%}{% render 'sn-menu-link-ok', url: c.url, parent_url: link.url %}{%- endcapture -%}{%- if cok == '1' -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endif -%}{%- for g in c.links -%}{%- capture gok -%}{% render 'sn-menu-link-ok', url: g.url, parent_url: c.url %}{%- endcapture -%}{%- if gok == '1' -%}<li class="snm__g"><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endif -%}{%- endfor -%}{%- endfor -%}<li><a class="snm__all" href="{{ link.url }}">{{ s.view_all }} {{ link.title }} →</a></li></ul>
             </details>
           {%- else -%}
             <a class="snm__a" href="{{ link.url }}" style="--i: {{ forloop.index0 }};">{{ link.title }}</a>
@@ -160,10 +183,18 @@
       {%- else -%}
         {%- for b in items -%}
           {%- assign lines = b.settings.links | newline_to_br | split: '<br />' -%}
-          {%- assign has_links = false -%}{%- for l in lines -%}{%- if l contains '|' -%}{%- assign has_links = true -%}{%- endif -%}{%- endfor -%}
+          {%- assign has_links = false -%}
+          {%- for l in lines -%}
+            {%- if l contains '|' -%}
+              {%- assign pr = l | strip | split: '|' -%}
+              {%- assign purl = pr[1] | strip -%}
+              {%- capture ok -%}{% render 'sn-menu-link-ok', url: purl, parent_url: b.settings.url %}{%- endcapture -%}
+              {%- if ok == '1' -%}{%- assign has_links = true -%}{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
           {%- if has_links -%}
             <details class="snm__d" style="--i: {{ forloop.index0 }};"><summary><span>{{ b.settings.title }}</span><i></i></summary>
-              <ul>{%- for l in lines -%}{%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}<li><a href="{{ pr[1] | strip }}">{{ pr[0] | strip }}</a></li>{%- endif -%}{%- endfor -%}<li><a class="snm__all" href="{{ b.settings.url | default: '#' }}">{{ s.view_all }} {{ b.settings.title }} →</a></li></ul>
+              <ul>{%- for l in lines -%}{%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}{%- assign purl = pr[1] | strip -%}{%- capture ok -%}{% render 'sn-menu-link-ok', url: purl, parent_url: b.settings.url %}{%- endcapture -%}{%- if ok == '1' -%}<li><a href="{{ purl }}">{{ pr[0] | strip }}</a></li>{%- endif -%}{%- endif -%}{%- endfor -%}<li><a class="snm__all" href="{{ b.settings.url | default: '#' }}">{{ s.view_all }} {{ b.settings.title }} →</a></li></ul>
             </details>
           {%- else -%}
             <a class="snm__a" href="{{ b.settings.url | default: '#' }}" style="--i: {{ forloop.index0 }};">{{ b.settings.title }}</a>
@@ -266,7 +297,7 @@
 .sns .sns__panel { position: absolute; inset: 0; overflow-y: auto; color: {{ settings.color_dark_text }}; clip-path: circle(0% at calc(100% - 140px) 40px); transition: clip-path .9s cubic-bezier(.7, 0, .2, 1); }
 .sns.is-open .sns__panel { clip-path: circle(150% at calc(100% - 140px) 40px); }
 .sns__silk { position: fixed; inset: 0; z-index: -1; }
-.sns__in { padding-block: 34px 80px; --tx: {{ settings.color_dark_text }}; --bg: {{ settings.color_dark_bg }}; --ac: {{ settings.color_moon }}; --line: rgba(255, 255, 255, .16); --line2: rgba(255, 255, 255, .28); --soft: rgba(255, 255, 255, .7); }
+.sns__in { padding-block: 34px 80px; --tx: {{ settings.color_dark_text }}; --bg: {{ settings.color_dark_bg }}; --ac: {{ settings.color_moon }}; --ac-aa: {{ settings.color_moon }}; --line: rgba(255, 255, 255, .16); --line2: rgba(255, 255, 255, .28); --soft: rgba(255, 255, 255, .7); }
 .sns__top { display: flex; justify-content: space-between; align-items: center; }
 .sns__top .sn-ibtn { color: #fff; border-color: rgba(255, 255, 255, .35); }
 .sns__form { position: relative; display: flex; align-items: center; margin-top: clamp(40px, 9vh, 110px); border-bottom: 1px solid rgba(255, 255, 255, .3); }
@@ -301,7 +332,7 @@
 .snm.is-open .snm__panel { transform: none; }
 .snm__head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px dashed color-mix(in srgb, var(--c-accent) 40%, transparent); --tx: var(--c-ink); --line2: color-mix(in srgb, var(--c-ink) 22%, transparent); --bg: var(--c-surface); }
 .snm__logo .sn-logo { width: 130px; }
-.snm__nav { flex: 1; overflow-y: auto; padding: 14px 22px; }
+.snm__nav { flex: 0 1 auto; min-height: 0; overflow-y: auto; padding: 14px 22px; }
 .snm__a, .snm__d summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0; border-bottom: 1px solid color-mix(in srgb, var(--c-ink) 10%, transparent); font: 300 1.75rem/1.1 var(--f-head); list-style: none; cursor: pointer; opacity: 0; transform: translateX(-24px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 60ms + 200ms); }
 .snm__d { opacity: 0; transform: translateX(-24px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 60ms + 200ms); }
 .snm__d summary { opacity: 1; transform: none; }
@@ -317,7 +348,7 @@
 .snm__all { color: var(--c-accent) !important; font-weight: 600; }
 .snm__a--pill { justify-content: flex-start; font-family: var(--f-body); font-size: 15px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); }
 .snm__a--pill .icon { width: 18px; height: 18px; }
-.snm__foot { position: relative; isolation: isolate; padding: 22px; color: {{ settings.color_dark_text }}; overflow: hidden; }
+.snm__foot { position: relative; isolation: isolate; flex: 1 0 auto; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; color: {{ settings.color_dark_text }}; overflow: hidden; }
 .snm__silk { position: absolute; inset: 0; z-index: -1; }
 .snm__quick { display: grid; gap: 4px; }
 .snm__quick a { display: flex; align-items: center; gap: 12px; padding: 9px 0; font-size: 15px; }
@@ -575,7 +606,7 @@
       "type": "text",
       "id": "popular",
       "label": "Popular searches (comma separated)",
-      "default": "T300 sateen, King size, Duvet, Bath towels, Pillow covers"
+      "default": "T300 sateen, King size, Duvet, Pillow covers"
     },
     {
       "type": "header",

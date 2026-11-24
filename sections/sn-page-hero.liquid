@@ -35,7 +35,7 @@
       <nav class="sn-crumbs snph__crumbs" aria-label="Breadcrumb" data-r>
         <a href="{{ routes.root_url }}">{{ s.home_label }}</a><i></i>
         {%- if collection and template.name == 'collection' -%}<a href="{{ routes.collections_url }}">{{ s.coll_label }}</a><i></i>{%- endif -%}
-        <span aria-current="page">{{ ttl }}</span>
+        <span aria-current="page">{{ ttl }}{% if s.highlight != blank %} {{ s.highlight }}{% endif %}</span>
       </nav>
     {%- endif -%}
     {%- if s.eyebrow != blank -%}<p class="sn-eyebrow" data-r>{% render 'sn-phase', k: 2 %}{{ s.eyebrow }}</p>{%- endif -%}
@@ -48,7 +48,7 @@
 <style>
 #{{ sid }} { min-height: var(--mh); display: grid; align-items: center; overflow: hidden; }
 #{{ sid }}.is-dark { background: {{ s.c1 | default: settings.color_dark_bg }}; }
-#{{ sid }}.is-dark > * { --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 76%, transparent); --ac: {{ settings.color_moon }}; --line: rgba(255,255,255,.18); --line2: rgba(255,255,255,.3); color: var(--tx); }
+#{{ sid }}.is-dark > * { --tx: {{ settings.color_dark_text }}; --soft: color-mix(in srgb, {{ settings.color_dark_text }} 76%, transparent); --ac: {{ settings.color_moon }}; --ac-aa: {{ settings.color_moon }}; --line: rgba(255,255,255,.18); --line2: rgba(255,255,255,.3); color: var(--tx); }
 #{{ sid }} .snph__in { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: start; }
 #{{ sid }}.snph--center .snph__in { justify-items: center; text-align: center; }
 #{{ sid }}.snph--center .sn-lead { margin-inline: auto; }

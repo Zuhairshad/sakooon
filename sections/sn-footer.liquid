@@ -4,7 +4,7 @@
   assign c_tx = s.text_color | default: settings.color_dark_text
   assign c_ac = s.accent_color | default: settings.color_moon
 -%}
-<footer id="snf" class="snf" style="--bg: {{ c_bg }}; --tx: {{ c_tx }}; --ac: {{ c_ac }}; --soft: color-mix(in srgb, {{ c_tx }} 66%, transparent); --line: color-mix(in srgb, {{ c_tx }} 14%, transparent); --line2: color-mix(in srgb, {{ c_tx }} 26%, transparent); --ac-ink: {{ c_bg }};">
+<footer id="snf" class="snf" style="--bg: {{ c_bg }}; --tx: {{ c_tx }}; --ac: {{ c_ac }}; --ac-aa: {{ c_ac }}; --soft: color-mix(in srgb, {{ c_tx }} 66%, transparent); --line: color-mix(in srgb, {{ c_tx }} 14%, transparent); --line2: color-mix(in srgb, {{ c_tx }} 26%, transparent); --ac-ink: {{ c_bg }};">
   <div class="snf__sky" aria-hidden="true">
     {%- if s.silk -%}<div class="snf__silk" data-sn-silk data-c1="{{ c_bg }}" data-c2="{{ settings.color_dusk }}" data-c3="{{ c_ac }}" data-speed=".55" data-amp=".9"></div>{%- endif -%}
     {%- if s.feathers -%}<div data-sn-feathers="40" data-color="{{ c_ac }}" style="position:absolute;inset:0"></div>{%- endif -%}
@@ -76,10 +76,30 @@
             <summary><span>{{ b.heading }}</span><i></i></summary>
             <ul>
               {%- if block.type == 'menu' and b.menu != blank -%}
-                {%- for link in b.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+                {%- for link in b.menu.links -%}
+                  {%- assign hide = false -%}
+                  {%- if link.url contains '/blogs/' -%}
+                    {%- assign bhandle = link.url | split: '/blogs/' | last | split: '/' | first | split: '?' | first -%}
+                    {%- assign bl = blogs[bhandle] -%}
+                    {%- if bl != blank and bl.articles_count == 0 -%}{%- assign hide = true -%}{%- endif -%}
+                  {%- endif -%}
+                  {%- unless hide -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endunless -%}
+                {%- endfor -%}
               {%- elsif block.type == 'menu' -%}
                 {%- assign lines = b.links | newline_to_br | split: '<br />' -%}
-                {%- for l in lines -%}{%- if l contains '|' -%}{%- assign pr = l | strip | split: '|' -%}<li><a href="{{ pr[1] | strip }}">{{ pr[0] | strip }}</a></li>{%- endif -%}{%- endfor -%}
+                {%- for l in lines -%}
+                  {%- if l contains '|' -%}
+                    {%- assign pr = l | strip | split: '|' -%}
+                    {%- assign purl = pr[1] | strip -%}
+                    {%- assign hide = false -%}
+                    {%- if purl contains '/blogs/' -%}
+                      {%- assign bhandle = purl | split: '/blogs/' | last | split: '/' | first | split: '?' | first -%}
+                      {%- assign bl = blogs[bhandle] -%}
+                      {%- if bl != blank and bl.articles_count == 0 -%}{%- assign hide = true -%}{%- endif -%}
+                    {%- endif -%}
+                    {%- unless hide -%}<li><a href="{{ purl }}">{{ pr[0] | strip }}</a></li>{%- endunless -%}
+                  {%- endif -%}
+                {%- endfor -%}
               {%- elsif block.type == 'text' -%}
                 <li class="snf__txt">{{ b.text }}</li>
               {%- endif -%}

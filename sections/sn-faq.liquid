@@ -34,7 +34,7 @@
             </div>
             <div class="snfq__cbtns">
               {%- if settings.whatsapp != blank -%}<a class="sn-btn sn-btn--sm sn-btn--gold" href="https://wa.me/{{ settings.whatsapp | remove: '+' | remove: ' ' | remove: '-' }}" target="_blank" rel="noopener"><span>WhatsApp</span>{% render 'sn-icon', name: 'whatsapp', class: 'icon' %}</a>{%- endif -%}
-              {%- if s.card_btn != blank -%}<a class="sn-btn sn-btn--sm sn-btn--ghost" href="{{ s.card_link | default: '/pages/contact' }}"><span>{{ s.card_btn }}</span></a>{%- endif -%}
+              {%- if s.card_btn != blank and template.suffix != 'contact' -%}<a class="sn-btn sn-btn--sm sn-btn--ghost" href="{{ s.card_link | default: '/pages/contact' }}"><span>{{ s.card_btn }}</span></a>{%- endif -%}
             </div>
           </div>
         {%- endif -%}
@@ -79,7 +79,7 @@
 #{{ sid }} .snfq__tabs { margin-bottom: 18px; }
 #{{ sid }} .snfq__list { border-top: 1px solid var(--line); }
 #{{ sid }} .snfq__q summary { gap: 18px; justify-content: flex-start; padding: 24px 0; }
-#{{ sid }} .snfq__n { flex: none; width: 34px; font: 500 12px/1 var(--f-body); letter-spacing: .1em; color: var(--ac); font-variant-numeric: tabular-nums; }
+#{{ sid }} .snfq__n { flex: none; width: 34px; font: 500 12px/1 var(--f-body); letter-spacing: .1em; color: var(--ac-aa, var(--ac)); font-variant-numeric: tabular-nums; }
 #{{ sid }} .snfq__t { flex: 1; transition: color .4s, transform .6s cubic-bezier(.3, 1.2, .4, 1); }
 #{{ sid }} .snfq__q summary:hover .snfq__t { transform: translateX(6px); }
 #{{ sid }} .snfq__q[open] .snfq__t { color: var(--ac); }
