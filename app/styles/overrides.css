@@ -79,4 +79,8 @@ html.sn-js body[data-motion=on] [data-atf-anim] { animation: sn-atf-in .7s cubic
 
 /* Small accent labels slide in without fading: a half-transparent eyebrow drops
    below AA contrast while its reveal runs. */
-.sn-eyebrow[data-r]:not(.is-in) { opacity: 1; transform: translateY(10px); }
+html.sn-js body[data-motion=on] .sn-eyebrow[data-r]:not(.is-in) { opacity: 1; filter: none; transform: translateY(10px); }
+
+/* Only the reveal animates. Elements waiting to be revealed switch to their
+   hidden state instantly, so off-screen content never sits half-faded. */
+html.sn-js body[data-motion=on] [data-r]:not(.is-in) { transition: none; }

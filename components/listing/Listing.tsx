@@ -109,11 +109,14 @@ export function Facets({
 
 export function ProductGrid({ products, cols = 3 }: { products: Product[]; cols?: number }) {
   return (
-    <div className="sn-grid snms__grid" style={{ '--cols': String(cols) }} data-sn-grid="" data-sn-region="grid">
-      {products.map((p, i) => (
-        <ProductCard key={p.handle} product={p} index={i % 8} sizes="(min-width: 990px) 25vw, 50vw" priority={i < 4} />
-      ))}
-    </div>
+    <>
+      <h2 className="visually-hidden">Products</h2>
+      <div className="sn-grid snms__grid" style={{ '--cols': String(cols) }} data-sn-grid="" data-sn-region="grid">
+        {products.map((p, i) => (
+          <ProductCard key={p.handle} product={p} index={i % 8} sizes="(min-width: 990px) 25vw, 50vw" priority={i < 4} />
+        ))}
+      </div>
+    </>
   );
 }
 

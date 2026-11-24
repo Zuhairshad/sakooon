@@ -593,6 +593,7 @@ export default function ProductMain({
                         <span>100% pure cotton</span>
                       </li>
                     </ul>
+                    <h2 className="visually-hidden">Product details</h2>
                     <details className="sn-acc snmp__acc" open>
                       <summary>
                         <span className="snmp__acct">
