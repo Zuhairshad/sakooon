@@ -22,8 +22,6 @@ export default function HeroBehavior({ id = 'snhero-template--23876058939495__he
       if (k === i) return;
       const prev = i;
       i = k;
-      // the CSS-only entrance (hero.css) plays once; later slides use the transitions
-      r.classList.remove('snhero--intro');
       bgs.forEach((b, j) => b.classList.toggle('is-on', j === k));
       txts[prev].classList.add('is-out');
       setTimeout(() => txts.forEach((t, j) => { t.classList.remove('is-out'); t.classList.toggle('is-on', j === k); t.setAttribute('aria-hidden', j === k ? 'false' : 'true'); }), 520);

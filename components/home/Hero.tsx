@@ -10,7 +10,7 @@ export default function Hero() {
       <Static>
       <section
         id="snhero-template--23876058939495__hero"
-        className="sn-s snhero snhero--silk snhero--left is-ready snhero--intro"
+        className="sn-s snhero snhero--silk snhero--left is-ready"
         style={{
           '--bg': '#161B29',
           '--tx': '#F4EEE4',

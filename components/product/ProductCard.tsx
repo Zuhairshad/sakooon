@@ -77,7 +77,7 @@ export default function ProductCard({
         <button type="button" className="sn-card__wish" data-sn-wish={p.handle} aria-label={`Save ${p.title} to wishlist`} aria-pressed="false">
           <WishIcons />
         </button>
-        <button type="button" className="sn-card__quick" data-sn-quick={p.handle}>
+        <button type="button" className="sn-card__quick" data-sn-quick={p.handle} aria-label={`Quick add: ${p.title}`}>
           <svg viewBox="0 0 24 24" fill="none" className="icon" aria-hidden="true">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>

@@ -45,3 +45,4 @@
 #snsb-template--23876058939495__builder .snsb__opt:has(input:checked) .snsb__tick { transform: scale(1); }
 @media (max-width: 989px) { #snsb-template--23876058939495__builder .snsb__grid { grid-template-columns: 1fr; } #snsb-template--23876058939495__builder .snsb__stack-wrap { position: static; } #snsb-template--23876058939495__builder .snsb__stack { max-width: 420px; width: 100%; justify-self: center; } }
 @media (max-width: 599px) { #snsb-template--23876058939495__builder .snsb__opts { grid-template-columns: 1fr; } }
+#snsb-template--23876058939495__builder .snsb__sum .snsb__row, #snsb-template--23876058939495__builder .snsb__sum .sn-small { color: color-mix(in srgb, var(--tx) 78%, transparent); }

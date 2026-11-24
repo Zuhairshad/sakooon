@@ -81,24 +81,6 @@
 #snhero-template--23876058939495__hero .snhero__cue i::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--ac); animation: snhero-cue 2.2s cubic-bezier(.6, 0, .4, 1) infinite; }
 @keyframes snhero-cue { to { top: 100%; } }
 
-/* Entrance. The theme added .is-ready from JS and let transitions run; here
-   .is-ready is server-rendered, so the same motion is replayed with CSS
-   keyframes (same durations, delays and easing) from the first frame.
-   The hero image (LCP) is never hidden: the frame only scales in.
-   HeroBehavior drops .snhero--intro on the first slide change. */
-@keyframes snhero-in-eb { from { opacity: 0; transform: translateY(12px); } }
-@keyframes snhero-in-w { from { opacity: 0; transform: translateY(.4em) scale(1.04); } }
-@keyframes snhero-in-p { from { opacity: 0; transform: translateY(10px); } }
-@keyframes snhero-in-up { from { opacity: 0; transform: translateY(var(--y0, 14px)); } }
-@keyframes snhero-in-frame { from { scale: .9; } }
-@media (prefers-reduced-motion: no-preference) {
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__txt.is-on .snhero__eb { animation: snhero-in-eb .9s cubic-bezier(.2, .7, .2, 1) both; }
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__txt.is-on .snhero__w > * { animation: snhero-in-w 1.3s cubic-bezier(.2, .7, .2, 1) calc(var(--wi) * 80ms + 150ms) both; }
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__txt.is-on .snhero__p { animation: snhero-in-p 1s cubic-bezier(.2, .7, .2, 1) .5s both; }
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__txt.is-on .snhero__btns { animation: snhero-in-up 1s cubic-bezier(.2, .7, .2, 1) .65s both; }
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__chips li { --y0: 10px; animation: snhero-in-up .8s cubic-bezier(.2, .7, .2, 1) calc(var(--i) * 90ms + 1s) both; }
-  #snhero-template--23876058939495__hero.snhero--intro .snhero__frame { animation: snhero-in-frame 1.6s cubic-bezier(.2, .7, .2, 1) .2s both; }
-}
 @media (max-width: 989px) {
   #snhero-template--23876058939495__hero .snhero__in { grid-template-columns: 1fr; }
   #snhero-template--23876058939495__hero .snhero__vis { justify-self: center; width: min(400px, 82%); order: -1; margin-top: 10px; }

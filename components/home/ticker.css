@@ -13,7 +13,7 @@
 #sntk-template--23876058939495__ticker.sntk--s .sntk__w { font-size: clamp(1.3rem, 2.2vw, 1.8rem); }
 #sntk-template--23876058939495__ticker.sntk--m .sntk__w { font-size: clamp(2rem, 4vw, 3.4rem); }
 #sntk-template--23876058939495__ticker.sntk--l .sntk__w { font-size: clamp(2.8rem, 7.4vw, 7rem); }
-#sntk-template--23876058939495__ticker .sntk__w.is-it { font-style: italic; color: var(--ac); }
+#sntk-template--23876058939495__ticker .sntk__w.is-it { font-style: italic; color: var(--ac-aa, var(--ac)); }
 #sntk-template--23876058939495__ticker.sntk--ribbons .sntk__band .sntk__w.is-it { color: inherit; }
 #sntk-template--23876058939495__ticker .sntk__w.is-ol { color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, currentColor 60%, transparent); }
 #sntk-template--23876058939495__ticker .sntk__w.is-ol { -webkit-text-stroke-color: color-mix(in srgb, var(--tx) 55%, transparent); }

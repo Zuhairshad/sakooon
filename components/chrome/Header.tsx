@@ -637,7 +637,8 @@ export default function Header() {
                   <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
                 </svg>
               </Link>
-              <Link className="snh__ic snh__hide-m" href="/pages/wishlist" aria-label="Wishlist">
+              <Link className="snh__ic snh__hide-m" href="/pages/wishlist">
+                <span className="visually-hidden">Wishlist</span>
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -654,7 +655,8 @@ export default function Header() {
                   0
                 </b>
               </Link>
-              <Link className="snh__ic snh__cart" data-sn-cart-icon="" href="/cart" data-sn-open="SnCart" aria-label="Cart">
+              <Link className="snh__ic snh__cart" data-sn-cart-icon="" href="/cart" data-sn-open="SnCart">
+                <span className="visually-hidden">Cart</span>
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
