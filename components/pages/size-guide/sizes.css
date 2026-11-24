@@ -12,7 +12,7 @@
 #snsg-template--23876058447975__sizes .snsg__size { display: grid; justify-items: center; gap: 4px; padding: 6px 10px; text-align: center; color: var(--soft); transition: color .4s; min-width: 110px; }
 #snsg-template--23876058447975__sizes .snsg__size b { font: 300 clamp(1.3rem, 2.2vw, 2rem)/1.1 var(--f-head); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
 #snsg-template--23876058447975__sizes .snsg__size small { font-size: 12px; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
-#snsg-template--23876058447975__sizes .snsg__size em { font-style: normal; font-size: 9.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ac); }
+#snsg-template--23876058447975__sizes .snsg__size em { font-style: normal; font-size: 9.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ac-aa, var(--ac)); }
 #snsg-template--23876058447975__sizes .snsg__size.is-on { color: var(--tx); }
 #snsg-template--23876058447975__sizes .snsg__size.is-on b { transform: scale(1.12); font-style: italic; }
 #snsg-template--23876058447975__sizes .snsg__main { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(30px, 5vw, 80px); align-items: center; }
