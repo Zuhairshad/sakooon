@@ -98,7 +98,21 @@
   }
   if (!customElements.get('predictive-search')) customElements.define('predictive-search', PredictiveSearch);
 
+  /* Idle cards ship inside <template data-deferred-media> (search-drawer.liquid); swap them in on the first
+     hover/focus/press of a search trigger, or when the drawer opens by other means. */
+  const hydrateIdle = () => {
+    const d = document.getElementById('search-drawer');
+    if (d) d.querySelectorAll('template[data-deferred-media]').forEach((t) => t.replaceWith(t.content.cloneNode(true)));
+  };
+  const TRIGGER = '[data-drawer-open="search-drawer"], [aria-controls="search-drawer"]';
+  ['pointerover', 'focusin', 'touchstart', 'click'].forEach((type) => document.addEventListener(type, (e) => {
+    if (e.target instanceof Element && e.target.closest(TRIGGER)) hydrateIdle();
+  }, { capture: true, passive: true }));
+  const drawer = document.getElementById('search-drawer');
+  if (drawer) new MutationObserver(() => { if (drawer.hasAttribute('open')) hydrateIdle(); }).observe(drawer, { attributes: true, attributeFilter: ['open'] });
+
   theme.pubsub && theme.pubsub.subscribe('search:open-request', ({ trigger } = {}) => {
+    hydrateIdle();
     const d = document.getElementById('search-drawer');
     if (d && typeof d.open === 'function') d.open(trigger);
   });

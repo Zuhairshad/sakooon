@@ -136,10 +136,16 @@
             {%- if featured != blank and featured.products.size > 0 -%}
               <div class="predictive-search__main">
                 <h2 class="predictive-search__heading" id="SearchFeatured">{{ section.settings.featured_heading | default: featured.title | escape }}</h2>
+                {%- comment -%}
+                  The drawer is in the DOM on every page, so with predictive search on (search.js loaded) the cards wait in a
+                  <template data-deferred-media> and are swapped in on the first hover/focus/open of a search trigger: closed, it requests no images.
+                {%- endcomment -%}
                 <ul class="predictive-search__grid list-unstyled" role="list" aria-labelledby="SearchFeatured">
+                  {%- if settings.predictive_search_enabled -%}<template data-deferred-media>{%- endif -%}
                   {%- for product in featured.products limit: section.settings.products_limit -%}
                     <li>{%- render 'product-card', product: product, image_ratio: 'square', show_swatches: false, show_secondary_image: false, sizes: '(min-width: 1024px) 20vw, 50vw' -%}</li>
                   {%- endfor -%}
+                  {%- if settings.predictive_search_enabled -%}</template>{%- endif -%}
                 </ul>
               </div>
             {%- endif -%}
