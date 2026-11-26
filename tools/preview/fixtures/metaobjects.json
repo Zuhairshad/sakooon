@@ -12,7 +12,6 @@
           "description": "<p>Cotton satin has a smooth finish that feels gentle on the skin and a subtle sheen that makes a bed look put-together.</p><p>Our yarn-dyed bed sheet sets are coloured before the fabric is woven, which gives them rich, long-lasting colour. Our two-tone duvet cover sets pair a deep shade on one side with a lighter tone on the other, so you can flip the cover and change the mood of the room.</p><p>The bed sheets in both sets resist wrinkles, so the bed stays neat with very little effort.</p>",
           "composition": "Cotton satin",
           "fibre": "cotton",
-          "texture": "Smooth, with a subtle sheen",
           "feel": "Smooth, Soft sheen",
           "care_guide": "page:care-bedsheets",
           "texture_image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp",
@@ -39,7 +38,7 @@
           "composition": "Cotton",
           "fibre": "cotton",
           "texture": "Ultrasonic quilted, embossed",
-          "feel": "Soft, Raised pattern",
+          "feel": "Soft, Lightweight",
           "seasons": [
             "all-season"
           ],
