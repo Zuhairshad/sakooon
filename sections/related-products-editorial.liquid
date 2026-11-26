@@ -1,0 +1,86 @@
+{%- comment -%}
+  Products related to an editorial page or fabric. Source, in order: products picked in the section ->
+  the fabric's related_products -> the fabric's collection -> the collection picked in the section.
+  The fabric is the page's `metaobject` (fabric web page) or the fabric picker. Uses shad-d8's product-card.
+  Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign fabric = metaobject
+  if fabric == blank
+    assign fabric = s.fabric
+  endif
+  assign products = s.products
+  if products == blank and fabric != blank
+    assign products = fabric.related_products.value
+    if products == blank and fabric.collection.value != blank
+      assign products = fabric.collection.value.products
+    endif
+  endif
+  if products == blank and s.collection != blank
+    assign products = s.collection.products
+  endif
+  assign heading = s.heading
+  if fabric != blank and heading contains '[fabric]'
+    assign heading = heading | replace: '[fabric]', fabric.name.value
+  elsif heading contains '[fabric]'
+    assign heading = heading | replace: '[fabric]', ''
+  endif
+  assign link_url = s.link_url
+  if link_url == blank and fabric.collection.value != blank
+    assign link_url = fabric.collection.value.url
+  endif
+-%}
+{%- if products != blank or request.design_mode -%}
+<div class="section ed-section related-editorial color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="page-width">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: heading, heading_size: s.heading_size, link_label: s.link_label, link_url: link_url %}
+    <ul class="related-editorial__list list-unstyled{% if s.mobile_rail %} related-editorial__list--rail{% endif %}" role="list">
+      {%- if products != blank -%}
+        {%- for product in products limit: s.limit -%}
+          <li class="related-editorial__item">{% render 'product-card', product: product, columns_desktop: s.columns, image_ratio: s.image_ratio, heading_tag: 'h3' %}</li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..s.columns) -%}
+          <li class="related-editorial__item">{% render 'product-card', product: blank, columns_desktop: s.columns %}</li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.related-products-editorial.name",
+  "tag": "section",
+  "class": "section-related-products-editorial",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "info": "t:sections.related-products-editorial.settings.heading.info", "default": "Shop [fabric]" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h4", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "View all" },
+    { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label", "info": "t:sections.related-products-editorial.settings.link_url.info" },
+    { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.main-metaobject-fabric.settings.fabric.label", "info": "t:sections.main-metaobject-fabric.settings.fabric.info" },
+    { "type": "product_list", "id": "products", "label": "t:sections.related-products-editorial.settings.products.label", "limit": 12 },
+    { "type": "collection", "id": "collection", "label": "t:sections.related-products-editorial.settings.collection.label" },
+    { "type": "range", "id": "limit", "min": 2, "max": 12, "step": 1, "label": "t:sections.related-products-editorial.settings.limit.label", "default": 4 },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 4 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "portrait", "options": [
+      { "value": "adapt", "label": "t:sections.related-products-editorial.settings.image_ratio.options.adapt" },
+      { "value": "portrait", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "square", "label": "t:sections.editorial.settings.image_ratio.options.square" }
+    ] },
+    { "type": "checkbox", "id": "mobile_rail", "label": "t:sections.editorial-gallery.settings.mobile_rail.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "presets": [ { "name": "t:sections.related-products-editorial.presets.name" } ]
+}
+{% endschema %}

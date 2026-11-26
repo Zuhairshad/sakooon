@@ -1,0 +1,152 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "show_breadcrumbs": true,
+        "heading": "",
+        "content_width": "page",
+        "text": "<p>A little care goes a long way. These guides explain how to wash, dry and store each product so it keeps its feel for years.</p>",
+        "padding_top": 80,
+        "padding_bottom": 64
+      }
+    },
+    "types": {
+      "type": "care-guide",
+      "blocks": {
+        "bedsheets": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Bedsheets",
+            "text": "<p>How to wash, dry and store your bedsheets so they stay soft and last longer.</p>",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-bedsheets"
+          }
+        },
+        "pillows": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Pillows",
+            "text": "<p>How to wash, dry and store your pillows so they stay soft and last longer.</p>",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-pillows"
+          }
+        },
+        "comforters": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Duvets and comforters",
+            "text": "<p>How to wash, dry and store your duvets and comforters so they stay soft and last longer.</p>",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-comforters"
+          }
+        },
+        "towels": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Towels",
+            "text": "<p>How to wash, dry and store your towels so they stay soft and last longer.</p>",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-towels"
+          }
+        }
+      },
+      "block_order": [
+        "bedsheets",
+        "pillows",
+        "comforters",
+        "towels"
+      ],
+      "settings": {
+        "heading": "",
+        "layout": "cards",
+        "columns": 2,
+        "image_ratio": "4/5",
+        "item_heading_size": "h4",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "fabrics": {
+      "type": "fabric-guide",
+      "settings": {
+        "heading": "Care by fabric",
+        "heading_size": "h4",
+        "limit": 12,
+        "exclude_current": false,
+        "columns": 3,
+        "show_summary": false,
+        "show_ratings": false,
+        "show_filters": false,
+        "card_link_label": "Fabric and care",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "symbols": {
+      "type": "care-guide",
+      "blocks": {
+        "s": {
+          "type": "symbols",
+          "settings": {
+            "heading": "",
+            "symbols": "wash-30, wash-40, wash-60, hand-wash, no-bleach, tumble-low, tumble-none, line-dry, iron-low, iron-medium, iron-high, no-iron, dry-clean, no-dry-clean",
+            "show_labels": true
+          }
+        }
+      },
+      "block_order": [
+        "s"
+      ],
+      "settings": {
+        "heading": "Care symbols explained",
+        "heading_size": "h4",
+        "text": "<p>The symbols on our care labels, and what each one means.</p>",
+        "layout": "stacked",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "last": {
+      "type": "editorial-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Making it last",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "l": {
+          "type": "list",
+          "settings": {
+            "style": "dash",
+            "text": "<ul><li>Wash at lower temperatures and with a gentle spin where the label allows.</li><li>Use a mild detergent and skip fabric softener.</li><li>Rotate between two sets so each rests between uses.</li><li>Treat stains as soon as possible.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "l"
+      ],
+      "settings": {
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "types",
+    "fabrics",
+    "symbols",
+    "last"
+  ]
+}

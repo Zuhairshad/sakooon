@@ -1128,6 +1128,99 @@
           "label": "Show divider below"
         }
       }
+    },
+    "care-guide": {
+      "name": "Care guide",
+      "presets": {
+        "name": "Care guide"
+      },
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "cards": "Cards",
+            "stacked": "Rows",
+            "split": "Heading beside text"
+          }
+        },
+        "show_placeholders": {
+          "label": "Show image placeholders on cards"
+        },
+        "item_heading_size": {
+          "label": "Topic heading size",
+          "options": {
+            "body": "Body text"
+          }
+        },
+        "show_in_nav": {
+          "label": "Include in page navigation"
+        }
+      },
+      "blocks": {
+        "topic": {
+          "name": "Topic",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "options": {
+                "wash": "Washing",
+                "tumble": "Tumble drying",
+                "hang_dry": "Line drying",
+                "iron": "Ironing",
+                "dry_clean": "Dry cleaning",
+                "no_bleach": "No bleach",
+                "drop": "Water",
+                "sun": "Sun",
+                "wind": "Airing",
+                "thermometer": "Temperature",
+                "leaf": "Natural",
+                "moon": "Night and storage"
+              }
+            }
+          }
+        },
+        "symbols": {
+          "name": "Care symbols",
+          "settings": {
+            "symbols": {
+              "label": "Symbols",
+              "info": "Comma-separated: wash-30, wash-40, wash-60, hand-wash, no-bleach, tumble-low, tumble-none, line-dry, iron-low, iron-medium, iron-high, no-iron, dry-clean, no-dry-clean"
+            },
+            "show_labels": {
+              "label": "Show labels"
+            }
+          }
+        }
+      }
+    },
+    "related-products-editorial": {
+      "name": "Related products",
+      "presets": {
+        "name": "Related products"
+      },
+      "settings": {
+        "heading": {
+          "info": "[fabric] is replaced with the fabric's name."
+        },
+        "link_url": {
+          "info": "Leave blank to link to the fabric's collection."
+        },
+        "products": {
+          "label": "Products",
+          "info": "Overrides the fabric's related products."
+        },
+        "collection": {
+          "label": "Fallback collection"
+        },
+        "limit": {
+          "label": "Maximum products"
+        },
+        "image_ratio": {
+          "options": {
+            "adapt": "Adapt to image"
+          }
+        }
+      }
     }
   }
 }
