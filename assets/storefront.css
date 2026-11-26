@@ -177,7 +177,7 @@ a.mega-menu__heading:hover { text-decoration: underline; }
   .footer--dividers .footer__block + .footer__block { border-inline-start: var(--border-width) solid var(--color-border); }
 }
 .footer__title { font-size: var(--text-lg); line-height: var(--leading-snug); margin-bottom: var(--space-3); }
-.footer__heading { font-family: var(--font-body-family); font-size: var(--text-sm); font-weight: var(--font-body-weight-bold, 500); line-height: 1.5; letter-spacing: var(--tracking-normal); margin-bottom: var(--space-4); }
+.footer__heading { font-family: var(--font-heading-family); font-size: 18px; font-weight: var(--font-heading-weight); line-height: 1.3; letter-spacing: 0; margin-bottom: var(--space-4); }
 .footer__text { font-size: var(--text-sm); }
 .footer__text--muted, .footer__disclaimer { color: var(--color-foreground-muted); }
 .footer__disclaimer { margin-top: var(--space-3); font-size: var(--text-xs); }
@@ -603,8 +603,8 @@ html.js:not(.reveal-off) .rich-text--statement .reveal:not(.is-visible) { transf
 .brand-values__content .brand-values__lead { margin-top: var(--space-4); color: var(--color-foreground-muted); }
 .brand-values__rows { margin-top: var(--space-8); border-top: var(--border-width) solid var(--color-border); }
 .brand-values__row { display: grid; justify-items: start; gap: var(--space-2); padding-block: var(--space-5); border-bottom: var(--border-width) solid var(--color-border); }
-/* Small row titles stay in the body face; the display serif is for large headings only. */
-.brand-values__row-title { margin: 0; font-family: var(--font-body-family); font-weight: var(--font-body-weight-bold); font-size: var(--text-md); letter-spacing: 0; }
+/* Row titles use the heading serif (user: every heading in the heading font), sized up so the serif stays legible. */
+.brand-values__row-title { margin: 0; font-family: var(--font-heading-family); font-weight: var(--font-heading-weight); font-size: 21px; line-height: 1.25; letter-spacing: 0; }
 .brand-values__link { font-size: var(--text-sm); margin-top: var(--space-1); }
 .brand-values__item .brand-values__link { justify-self: start; }
 @media (min-width: 1024px) {
