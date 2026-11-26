@@ -26,10 +26,12 @@
     for w in widths_arr
       assign wn = w | strip | plus: 0
       if wn <= max_w
-        assign srcset = srcset | append: img | image_url: width: wn | append: ' ' | append: wn | append: 'w, '
+        assign src_w = img | image_url: width: wn
+        assign srcset = srcset | append: src_w | append: ' ' | append: wn | append: 'w, '
       endif
     endfor
-    assign srcset = srcset | append: img | image_url: width: max_w | append: ' ' | append: max_w | append: 'w'
+    assign src_max = img | image_url: width: max_w
+    assign srcset = srcset | append: src_max | append: ' ' | append: max_w | append: 'w'
     assign base_w = 1600
     if max_w < base_w
       assign base_w = max_w

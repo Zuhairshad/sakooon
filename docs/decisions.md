@@ -64,3 +64,6 @@ for editorial templates; Parachute's 12-col/8px-gap geometry for commerce templa
 From the editorial review: free-text certification fields are removed everywhere; a `certification` metaobject with issuer,
 licence number, verification URL and expiry is required for anything to render. Care guides are pages with topic blocks; the
 care_guide metaobject is deferred.
+
+## 2026-11-26 D13: Never `pkill -f` the preview; restart by port
+`pkill -f tools/preview/server.mjs` matches every session's preview. Restart only your own: `lsof -ti tcp:<your port> | xargs kill`, then start again.
