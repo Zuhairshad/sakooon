@@ -156,8 +156,16 @@
       document.addEventListener('keydown', this._onKey);
       document.querySelectorAll(`[data-drawer-open="${this.id}"]`).forEach((b) => b.setAttribute('aria-expanded', 'true'));
       const focusTarget = this.querySelector('[data-autofocus]') || this.panel;
-      // wait for the transition to start so focus does not scroll the hidden panel
-      requestAnimationFrame(() => theme.trapFocus(this.panel, focusTarget));
+      // Focus once the panel is actually visible: visibility flips on the next frame (or after a .01ms transition under
+      // reduced motion), and focus() on a visibility:hidden element is a silent no-op. Retry a few frames, then force it.
+      let tries = 0;
+      const attempt = () => {
+        if (!this.isOpen) return;
+        const visible = getComputedStyle(this.panel).visibility !== 'hidden';
+        if (visible || tries >= 10) { theme.trapFocus(this.panel, focusTarget); if (!this.panel.contains(document.activeElement)) focusTarget.focus({ preventScroll: true }); return; }
+        tries += 1; requestAnimationFrame(attempt);
+      };
+      requestAnimationFrame(attempt);
       this.dispatchEvent(new CustomEvent('theme:drawer:open', { bubbles: true, detail: { id: this.id } }));
       theme.pubsub.publish('drawer:open', { id: this.id, el: this });
     }

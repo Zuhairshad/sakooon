@@ -328,5 +328,7 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  /* Drawers/dialogs must flip visibility synchronously so focus() lands on open (a .01ms transition still defers it a frame). */
+  .drawer, .dialog, .overlay, [open] > .drawer, [open] > .dialog, [open] > .overlay, .drawer.is-open, .overlay.is-open { transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
