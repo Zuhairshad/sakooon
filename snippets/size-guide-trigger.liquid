@@ -4,7 +4,9 @@
     block per category whose id is the product type handle (duvet-covers, sheet-sets, ...).
   - Link: {{ page.url }}#{{ product.type | handle }} works without JS. product.js opens <theme-dialog id="SizeGuide-..."> instead,
     filling it with the page's [data-size-guide] element and scrolling to the anchor when present.
-  {% render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label %}
+  {% render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label, expanded: true %}
+  expanded: render as an accordion row with the product's own sizes and the "how to choose" line before the link (plain link when
+  neither exists).
 {%- endcomment -%}
 {%- assign guide = product.metafields.sakooon.size_guide.value -%}
 {%- if guide != blank -%}
@@ -15,6 +17,7 @@
     assign guide_title = guide.title | default: fallback_title
     assign trigger_label = label | default: guide_title
   -%}
+  {%- capture trigger -%}
   <a
     href="{{ guide.url }}{% if anchor != blank %}#{{ anchor }}{% endif %}"
     class="size-guide-trigger link"
@@ -26,6 +29,54 @@
     {%- render 'icon', icon: 'info', size: 16 -%}
     <span>{{ trigger_label | escape }}</span>
   </a>
+  {%- endcapture -%}
+  {%- liquid
+    # Row content, real sources only: the description's own "Available sizes" section (else its "What's in" list, which
+    # carries the dimensions), then the "how to choose" line from the editorial locale (skipped while missing).
+    assign size_html = ''
+    assign normalised = product.description | replace: '<h2', '<h3' | replace: '</h2>', '</h3>'
+    assign chunks = normalised | split: '<h3'
+    assign contents_html = ''
+    for chunk in chunks
+      if forloop.first
+        continue
+      endif
+      assign heading_raw = chunk | split: '</h3>' | first
+      assign heading = heading_raw | prepend: '<h3' | append: '</h3>' | strip_html | strip | downcase
+      assign body = chunk | remove_first: heading_raw | remove_first: '</h3>' | strip
+      if heading contains 'available sizes' or heading == 'sizes'
+        assign size_html = body
+      elsif contents_html == blank and heading contains "what's in" or contents_html == blank and heading contains 'what’s in'
+        assign contents_html = body
+      endif
+    endfor
+    if size_html == blank
+      assign size_html = contents_html
+    endif
+    assign how = 'editorial.size_guide.how_to_choose' | t
+    # A missing key comes back as "translation missing: …" (Shopify) or a humanised key (preview); real text is 2–3 lines.
+    if how contains 'translation missing' or how.size < 30
+      assign how = ''
+    endif
+    assign panel_id = dialog_id | append: '-row'
+  -%}
+  {%- if expanded and size_html != blank or expanded and how != blank -%}
+    <theme-disclosure class="product-accordion size-guide-row" data-group="product-{{ section_id }}">
+      <button type="button" class="disclosure__trigger product-accordion__trigger" aria-expanded="false" aria-controls="{{ panel_id }}">
+        <span class="product-accordion__titles"><span class="product-accordion__title">{{ guide_title | escape }}</span></span>
+        {%- render 'icon', icon: 'plus', size: 16, class: 'icon-plus' -%}
+      </button>
+      <div class="disclosure__panel" id="{{ panel_id }}">
+        <div class="disclosure__content product-accordion__content">
+          {%- if size_html != blank -%}<div class="rte product-accordion__rte">{{ size_html }}</div>{%- endif -%}
+          {%- if how != blank -%}<p class="product-accordion__text">{{ how | escape }}</p>{%- endif -%}
+          {{ trigger }}
+        </div>
+      </div>
+    </theme-disclosure>
+  {%- else -%}
+    {{ trigger }}
+  {%- endif -%}
   <theme-dialog id="{{ dialog_id }}" class="size-guide-dialog" data-lock-scroll>
     <div class="overlay" data-drawer-close></div>
     <div class="drawer drawer--right size-guide-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="{{ dialog_id }}-title">
@@ -33,8 +84,10 @@
         <h2 class="drawer__title" id="{{ dialog_id }}-title">{{ guide_title | escape }}</h2>
         <button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', icon: 'close', size: 20 -%}</button>
       </div>
-      <div class="drawer__body size-guide-dialog__body" data-size-guide-body aria-busy="true">
-        <div class="spinner" aria-hidden="true"></div>
+      <div class="drawer__body size-guide-dialog__body">
+        {%- comment -%} The category's diagram (shad-8b's size-diagram: bed-sheet-set -> flat sheet, duvet-cover-set -> duvet in cover, duvet, pillow). {%- endcomment -%}
+        <div class="size-guide-dialog__diagram">{%- render 'size-diagram', category: anchor, id_prefix: dialog_id -%}</div>
+        <div data-size-guide-body aria-busy="true"><div class="spinner" aria-hidden="true"></div></div>
       </div>
     </div>
   </theme-dialog>

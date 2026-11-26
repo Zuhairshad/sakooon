@@ -18,7 +18,7 @@
         "acc_shipping": { "type": "accordion", "settings": { "source": "shipping_returns", "heading": "", "subtitle": "" } },
         "pairing": { "type": "pairing", "settings": { "heading": "Pairs well with" } }
       },
-      "block_order": ["badge", "title", "picker", "buy", "includes", "size_guide", "acc_description", "acc_dimensions", "acc_composition", "acc_feel", "acc_specs", "acc_care", "acc_shipping", "pairing"],
+      "block_order": ["badge", "title", "picker", "buy", "includes", "acc_description", "size_guide", "acc_dimensions", "acc_composition", "acc_feel", "acc_specs", "acc_care", "acc_shipping", "pairing"],
       "settings": { "gallery_layout": "carousel", "media_by_colour": true, "enable_sticky_bar": true }
     },
     "complementary": { "type": "complementary-products", "settings": { "heading": "Complete the bed", "limit": 4 } },

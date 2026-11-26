@@ -31,6 +31,27 @@
         assign row_body = chunk | remove_first: heading_raw | remove_first: '</h3>' | strip
       endif
       assign row_text = row_body | strip_html | strip
+      assign row_link = ''
+      assign row_key = row_heading | downcase
+      # "Available sizes" moves into the size guide row (size-guide-trigger, expanded) when the product has a guide.
+      if row_key contains 'available sizes' and product.metafields.sakooon.size_guide.value != blank
+        assign row_text = ''
+      endif
+      if row_key == 'care' and row_text != blank
+        assign row_fabric = product.selected_or_first_available_variant.metafields.sakooon.fabric.value
+        if row_fabric == blank
+          assign row_fabric = product.metafields.sakooon.fabric.value
+        endif
+        assign row_care_page = product.metafields.sakooon.care_guide.value | default: row_fabric.care_guide.value
+        if row_care_page != blank
+          capture row_link
+            echo '<a class="link product-accordion__link" href="' | append: row_care_page.url | append: '">'
+            echo 'products.product.care_guide' | t
+            render 'icon', icon: 'arrow-right', size: 14
+            echo '</a>'
+          endcapture
+        endif
+      endif
       assign panel_id = 'Accordion-' | append: section_id | append: '-' | append: block.id | append: '-' | append: forloop.index
     -%}
     {%- if row_text != blank and row_heading != blank -%}
@@ -42,7 +63,7 @@
           {%- render 'icon', icon: 'plus', size: 16, class: 'icon-plus' -%}
         </button>
         <div class="disclosure__panel" id="{{ panel_id }}"{% if row_open %} data-open{% endif %}>
-          <div class="disclosure__content product-accordion__content"><div class="rte product-accordion__rte">{{ row_body }}</div></div>
+          <div class="disclosure__content product-accordion__content"><div class="rte product-accordion__rte">{{ row_body }}</div>{{ row_link }}</div>
         </div>
       </theme-disclosure>
     {%- endif -%}
@@ -99,11 +120,18 @@
         {%- assign origin = mf.origin.value | default: fabric.origin.value -%}
         {%- if origin != blank -%}<div><dt>{{ 'products.product.specs.origin' | t }}</dt><dd>{{ origin }}</dd></div>{%- endif -%}
       {%- endcapture -%}
+      {%- comment -%} Real text before the link: fabric overview (5–6 lines) -> summary -> description; nothing invented. {%- endcomment -%}
+      {%- assign fabric_text = fabric.overview.value | default: fabric.summary.value -%}
+      {%- if fabric_text != blank -%}
+        <p class="product-accordion__text">{{ fabric_text | escape | newline_to_br }}</p>
+      {%- elsif fabric.description != blank -%}
+        <div class="rte">{{ fabric.description | metafield_tag }}</div>
+      {%- endif -%}
       {%- if rows != blank -%}<dl class="product-accordion__specs">{{ rows }}</dl>{%- endif -%}
       {%- if fabric != blank -%}
         {%- render 'fabric-rating', fabric: fabric, compact: true -%}
         {%- if fabric.system.url != blank -%}
-          <a class="link product-accordion__link" href="{{ fabric.system.url }}">{{ 'products.product.about_fabric' | t: fabric: fabric.name.value }}</a>
+          <a class="link product-accordion__link" href="{{ fabric.system.url }}">{{ 'products.product.read_fabric_guide' | t }}{%- render 'icon', icon: 'arrow-right', size: 14 -%}</a>
         {%- endif -%}
       {%- endif -%}
 
@@ -140,13 +168,15 @@
       {%- unless description_care -%}
         {%- if mf.care_instructions != blank -%}
           <div class="rte">{{ mf.care_instructions | metafield_tag }}</div>
+        {%- elsif fabric.care_summary.value != blank -%}
+          <p class="product-accordion__text">{{ fabric.care_summary.value | escape | newline_to_br }}</p>
         {%- elsif fabric.care != blank -%}
           <div class="rte">{{ fabric.care | metafield_tag }}</div>
         {%- endif -%}
         {%- if mf.drying_instructions != blank -%}<div class="rte">{{ mf.drying_instructions | metafield_tag }}</div>{%- endif -%}
         {%- if fabric.care_symbols.value != blank -%}{%- render 'care-icons', symbols: fabric.care_symbols.value, show_labels: true -%}{%- endif -%}
         {%- assign care_page = mf.care_guide.value | default: fabric.care_guide.value -%}
-        {%- if care_page != blank -%}<a class="link product-accordion__link" href="{{ care_page.url }}">{{ 'products.product.care_guide' | t }}</a>{%- endif -%}
+        {%- if care_page != blank -%}<a class="link product-accordion__link" href="{{ care_page.url }}">{{ 'products.product.care_guide' | t }}{%- render 'icon', icon: 'arrow-right', size: 14 -%}</a>{%- endif -%}
       {%- endunless -%}
 
     {%- when 'shipping_returns' -%}

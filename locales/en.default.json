@@ -153,6 +153,7 @@
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
       "about_fabric": "About {{ fabric }}",
       "care_guide": "Read the care guide",
+      "read_fabric_guide": "Read the full fabric guide",
       "specs": {
         "composition": "Composition",
         "weave": "Weave",

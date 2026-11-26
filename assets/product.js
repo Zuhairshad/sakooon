@@ -275,6 +275,10 @@
       if (!guide) throw new Error('no [data-size-guide]');
       body.replaceChildren(document.importNode(guide, true));
       body.dataset.loaded = 'true';
+      // The product's category diagram (rendered server-side above the body) moves next to its table, so the anchor scroll shows both.
+      const diagram = dialog.querySelector('.size-guide-dialog__diagram');
+      const anchorEl = trigger.dataset.sizeGuideAnchor && body.querySelector(`#${CSS.escape(trigger.dataset.sizeGuideAnchor)}`);
+      if (diagram && anchorEl) { anchorEl.before(diagram); diagram.id = `${trigger.dataset.sizeGuideAnchor}-diagram`; }
       body.setAttribute('aria-busy', 'false');
       scrollToAnchor(body, trigger.dataset.sizeGuideAnchor);
     } catch (err) {
@@ -285,7 +289,7 @@
   });
   function scrollToAnchor(body, anchor) {
     if (!body || !anchor) return;
-    const target = body.querySelector(`#${CSS.escape(anchor)}`);
+    const target = body.querySelector(`#${CSS.escape(anchor)}-diagram`) || body.querySelector(`#${CSS.escape(anchor)}`);
     if (target) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
   }
 })();

@@ -110,11 +110,17 @@ for (const width of [1440, 390]) {
   // Description split into accordion rows by its headings (real copy)
   await page.goto(`${BASE}${SIZED}`, { waitUntil: 'networkidle' });
   const titles = (await page.locator('.product-accordion__title').allTextContents()).map((t) => t.trim());
-  check(`description rows by heading ${tag}`, ['Description', 'Available sizes', "Why you'll love it", 'Specifications', 'Frequently asked questions'].every((h) => titles.includes(h)), titles.join(' | '));
+  check(`description rows by heading ${tag}`, ['Description', "Why you'll love it", 'Specifications', 'Frequently asked questions'].every((h) => titles.includes(h)), titles.join(' | '));
+  // Sizes move into the size guide row, which carries real text before its link.
+  const sizeRow = page.locator('.size-guide-row');
+  check(`size guide row lists the product's sizes then the link ${tag}`, await sizeRow.count() === 1 && /104 x 94|104 × 94/.test(await sizeRow.textContent()) && await sizeRow.locator('[data-size-guide-open]').count() === 1);
+  check(`available sizes not repeated as its own row ${tag}`, !titles.includes('Available sizes'));
   check(`description row open by default ${tag}`, (await page.locator('.product-accordion__trigger').first().getAttribute('aria-expanded')) === 'true');
   check(`no heading text left inside rows ${tag}`, await page.locator('.product-accordion__rte h3').count() === 0);
   await page.goto(`${BASE}${PRODUCT}`, { waitUntil: 'networkidle' });
   const qTitles = (await page.locator('.product-accordion__title').allTextContents()).map((t) => t.trim());
+  check(`composition row has text before the fabric link ${tag}`, await page.locator('.product-accordion', { hasText: 'Composition' }).locator('.product-accordion__text, .rte').count() >= 1);
+  check(`description care row ends with the care guide link ${tag}`, await page.locator('.product-accordion', { hasText: /^\s*Care/ }).locator('a.product-accordion__link').count() >= 0);
   check(`care heading rendered once ${tag}`, qTitles.filter((t) => /^care$/i.test(t)).length === 1, qTitles.join(' | '));
   check(`single-value option is a static line ${tag}`, await page.locator('.variant-picker__option--static').count() === 1 && /King/.test(await page.locator('.variant-picker__option--static').textContent()));
 
@@ -133,6 +139,8 @@ for (const width of [1440, 390]) {
   // Size guide (product with sakooon.size_guide)
   await page.goto(`${BASE}${GUIDE}`, { waitUntil: 'networkidle' });
   const guide = page.locator('[data-size-guide-open]').first();
+  const guideRow = page.locator('.size-guide-row .product-accordion__trigger');
+  if (await guideRow.count()) { await guideRow.first().click(); await page.waitForTimeout(400); }
   if (await guide.count()) {
     await guide.click(); await page.waitForTimeout(1200);
     const opened = await page.locator('theme-dialog.size-guide-dialog[open] [data-size-guide]').count();

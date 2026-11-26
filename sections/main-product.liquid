@@ -78,8 +78,8 @@
               </div>
 
             {%- when 'size_guide' -%}
-              <div class="main-product__size-guide" {{ block.shopify_attributes }}>
-                {%- render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label -%}
+              <div class="main-product__size-guide main-product__accordion" {{ block.shopify_attributes }}>
+                {%- render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label, expanded: true -%}
               </div>
 
             {%- when 'whats_included' -%}
