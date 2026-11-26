@@ -75,7 +75,7 @@
                 <th scope="row">{{ label_key | t }}</th>
                 {%- for h in handle_list -%}
                   {%- assign v = shop.metaobjects.fabric[h][key].value -%}
-                  <td>{%- if v != blank -%}{{ v }}{%- if key == 'gsm' %} g/m²{% endif -%}{%- endif -%}</td>
+                  <td>{%- if v != blank -%}{% if key == 'weave' %}{{ v | capitalize }}{% else %}{{ v }}{% endif %}{%- if key == 'gsm' %} g/m²{% endif -%}{%- endif -%}</td>
                 {%- endfor -%}
               </tr>
             {%- endfor -%}

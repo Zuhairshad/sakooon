@@ -36,7 +36,7 @@
         <button type="button" class="fabric-guide__chip" aria-pressed="true" data-filter="">{{ 'editorial.fabric_guide.all' | t }}</button>
         {%- for item in filters -%}
           {%- assign parts = item | split: '::' -%}
-          <button type="button" class="fabric-guide__chip" aria-pressed="false" data-filter="{{ parts[0] }}">{{ parts[1] }}</button>
+          <button type="button" class="fabric-guide__chip" aria-pressed="false" data-filter="{{ parts[0] }}">{{ parts[1] | capitalize }}</button>
         {%- endfor -%}
       </div>
     {%- endif -%}

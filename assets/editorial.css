@@ -201,6 +201,7 @@ theme-disclosure.accordion[open] > .disclosure__panel { grid-template-rows: 1fr;
 .care-icons--icons-only { display: flex; flex-wrap: wrap; gap: var(--space-4); }
 
 /* ---------- fabric-card snippet / fabric-guide ---------- */
+fabric-guide { display: block; }
 .fabric-card { display: flex; flex-direction: column; gap: var(--space-2); }
 .fabric-card__link { display: flex; flex-direction: column; gap: var(--space-4); text-decoration: none; }
 .fabric-card__title { font-size: var(--text-lg); font-weight: var(--font-heading-weight); line-height: 1.5; }
@@ -221,7 +222,7 @@ theme-disclosure.accordion[open] > .disclosure__panel { grid-template-rows: 1fr;
 .fabric-guide__empty { margin-top: var(--space-6); color: var(--color-foreground-muted); }
 
 /* ---------- fabric-compare ---------- */
-.fabric-compare__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.fabric-compare__scroll { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; } /* relative: keeps the visually-hidden caption inside the scroll box */
 .fabric-compare__scroll:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
 .fabric-compare__table { min-width: 640px; font-size: var(--text-sm); table-layout: fixed; }
 .fabric-compare__table th, .fabric-compare__table td { text-align: start; vertical-align: top; padding: var(--space-4) var(--space-4) var(--space-4) 0; border-bottom: var(--border-width) solid var(--color-border); }

@@ -67,7 +67,7 @@
               {%- assign v = fabric[key].value -%}
               {%- if v != blank -%}
                 {%- assign label_key = 'editorial.fabric_compare.rows.' | append: key -%}
-                <div class="main-fabric__spec"><dt>{{ label_key | t }}</dt><dd>{{ v }}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
+                <div class="main-fabric__spec"><dt>{{ label_key | t }}</dt><dd>{% if key == 'weave' %}{{ v | capitalize }}{% else %}{{ v }}{% endif %}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
               {%- endif -%}
             {%- endfor -%}
           {%- endcapture -%}

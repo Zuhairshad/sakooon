@@ -34,10 +34,10 @@
                 {%- assign v = fabric[key].value -%}
                 {%- if v != blank -%}
                   {%- assign label_key = 'editorial.fabric_compare.rows.' | append: key -%}
-                  <div class="fabric-detail__spec"><dt>{{ label_key | t }}</dt><dd>{{ v }}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
+                  <div class="fabric-detail__spec"><dt>{{ label_key | t }}</dt><dd>{% if key == 'weave' %}{{ v | capitalize }}{% else %}{{ v }}{% endif %}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
                 {%- endif -%}
               {%- endfor -%}
-              {%- if fabric.seasons.value != blank -%}<div class="fabric-detail__spec"><dt>{{ 'editorial.fabric.seasons' | t }}</dt><dd>{{ fabric.seasons.value | join: ', ' }}</dd></div>{%- endif -%}
+              {%- if fabric.seasons.value != blank -%}<div class="fabric-detail__spec"><dt>{{ 'editorial.fabric.seasons' | t }}</dt><dd>{{ fabric.seasons.value | join: ', ' | replace: '-', ' ' | capitalize }}</dd></div>{%- endif -%}
             {%- endcapture -%}
             {%- if rows != blank -%}<dl class="fabric-detail__specs">{{ rows }}</dl>{%- endif -%}
           {%- when 'ratings' -%}
