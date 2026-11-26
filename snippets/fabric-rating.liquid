@@ -1,6 +1,6 @@
 {%- comment -%}
   Fabric characteristic ratings. Owner: shad-8b.
-  {% render 'fabric-rating', fabric: fabric, fields: 'softness,breathability,durability,warmth', compact: false %}
+  {% render 'fabric-rating', fabric: fabric, fields: 'softness,breathability,durability,warmth', compact: false, hide_labels: false %}
   Reads rating metaobject fields (value.rating / value.scale_max). Fields that are blank are skipped; nothing
   renders when all are blank. `warmth` is a position (1 cool to 5 warm), drawn as a scale with a marker,
   not as filled bars.
@@ -16,7 +16,7 @@
   endfor
 -%}
 {%- if has_any -%}
-<dl class="fabric-rating{% if compact %} fabric-rating--compact{% endif %}">
+<dl class="fabric-rating{% if compact %} fabric-rating--compact{% endif %}{% if hide_labels %} fabric-rating--bare{% endif %}">
   {%- for f in fields -%}
     {%- liquid
       assign key = f | strip
@@ -30,7 +30,7 @@
       assign label_key = 'editorial.fabric_rating.' | append: key
     -%}
     <div class="fabric-rating__row">
-      <dt class="fabric-rating__label">{{ label_key | t }}</dt>
+      <dt class="fabric-rating__label{% if hide_labels %} visually-hidden{% endif %}">{{ label_key | t }}</dt>
       <dd class="fabric-rating__value">
         {%- if key == 'warmth' -%}
           {%- liquid

@@ -85,6 +85,33 @@
     window.addEventListener('resize', requestOffset);
   }
 
+  /* ---------- <fabric-guide> ----------
+     Filter chips (aria-pressed) show only cards whose data-weave / data-fibre matches. */
+  class FabricGuide extends HTMLElement {
+    connectedCallback() {
+      this.chips = Array.from(this.querySelectorAll('[data-filter]'));
+      if (!this.chips.length) return;
+      this.attr = this.dataset.filterBy === 'fibre' ? 'fibre' : 'weave';
+      this.empty = this.querySelector('.fabric-guide__empty');
+      this._onClick = (e) => { const chip = e.target.closest('[data-filter]'); if (chip) this.apply(chip); };
+      this.addEventListener('click', this._onClick);
+    }
+    disconnectedCallback() { if (this._onClick) this.removeEventListener('click', this._onClick); }
+    apply(chip) {
+      const value = chip.dataset.filter;
+      this.chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      let shown = 0;
+      this.querySelectorAll('.fabric-guide__item').forEach((item) => {
+        const card = item.querySelector('.fabric-card');
+        const match = !value || (card && card.dataset[this.attr] === value);
+        item.hidden = !match;
+        if (match) shown += 1;
+      });
+      if (this.empty) this.empty.hidden = shown > 0;
+    }
+  }
+  if (!customElements.get('fabric-guide')) customElements.define('fabric-guide', FabricGuide);
+
   /* Open an accordion when the URL hash targets it (e.g. a PDP linking to /pages/faq#faq-<id>). */
   const openFromHash = () => {
     if (!location.hash) return;

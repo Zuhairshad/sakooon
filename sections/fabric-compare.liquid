@@ -1,0 +1,183 @@
+{%- comment -%}
+  Fabric comparison table. Columns are fabrics (same source order as fabric-guide); rows are fabric fields,
+  each toggled by a setting. A row is omitted when every fabric leaves that field blank; a single blank cell
+  stays empty (no "N/A"). Mobile: horizontal scroll with a sticky first column. Owner: shad-8b.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+{%- capture handles -%}{% render 'fabric-handles', blocks: section.blocks, page: page, limit: 6 %}{%- endcapture -%}
+{%- liquid
+  assign handle_list = handles | strip | split: ','
+  assign region_label = s.heading
+  if region_label == blank
+    assign region_label = 'editorial.fabric_compare.label' | t
+  endif
+  assign text_rows = 'composition,weave,finish,thread_count,gsm,feel,texture,origin' | split: ','
+  assign rating_rows = 'softness,breathability,durability,warmth' | split: ','
+-%}
+<div class="section ed-section fabric-compare color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    {%- if handles == blank -%}
+      {%- if request.design_mode -%}<p class="fabric-compare__empty">{{ 'editorial.fabric_compare.empty' | t }}</p>{%- endif -%}
+    {%- else -%}
+      <div class="fabric-compare__scroll" role="region" aria-label="{{ region_label | escape }}" tabindex="0">
+        <table class="fabric-compare__table">
+          <caption class="visually-hidden">{{ 'editorial.fabric_compare.caption' | t }}</caption>
+          <thead>
+            <tr>
+              <td class="fabric-compare__corner"></td>
+              {%- for h in handle_list -%}
+                {%- assign f = shop.metaobjects.fabric[h] -%}
+                <th scope="col" class="fabric-compare__fabric">
+                  {%- assign thumb = f.texture_image.value | default: f.lifestyle_image.value -%}
+                  {%- if s.show_images -%}
+                    <div class="media fabric-compare__thumb" style="--aspect: 1/1">{% render 'image', image: thumb, sizes: '160px', aspect: '1/1', alt: '', placeholder: 'collection-2' %}</div>
+                  {%- endif -%}
+                  {%- if f.system.url != blank -%}<a class="ed-link-fade" href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
+                </th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- if s.row_summary -%}
+              {%- liquid
+                assign any = false
+                for h in handle_list
+                  if shop.metaobjects.fabric[h].summary.value != blank
+                    assign any = true
+                  endif
+                endfor
+              -%}
+              {%- if any -%}
+                <tr><th scope="row">{{ 'editorial.fabric_compare.rows.summary' | t }}</th>
+                  {%- for h in handle_list -%}<td class="fabric-compare__summary">{{ shop.metaobjects.fabric[h].summary.value }}</td>{%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endif -%}
+            {%- for key in text_rows -%}
+              {%- liquid
+                assign setting_key = 'row_' | append: key
+                unless s[setting_key]
+                  continue
+                endunless
+                assign any = false
+                for h in handle_list
+                  if shop.metaobjects.fabric[h][key].value != blank
+                    assign any = true
+                  endif
+                endfor
+                unless any
+                  continue
+                endunless
+                assign label_key = 'editorial.fabric_compare.rows.' | append: key
+              -%}
+              <tr>
+                <th scope="row">{{ label_key | t }}</th>
+                {%- for h in handle_list -%}
+                  {%- assign v = shop.metaobjects.fabric[h][key].value -%}
+                  <td>{%- if v != blank -%}{{ v }}{%- if key == 'gsm' %} g/m²{% endif -%}{%- endif -%}</td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+            {%- if s.row_best_for -%}
+              {%- liquid
+                assign any = false
+                for h in handle_list
+                  if shop.metaobjects.fabric[h].best_for.value != blank
+                    assign any = true
+                  endif
+                endfor
+              -%}
+              {%- if any -%}
+                <tr><th scope="row">{{ 'editorial.fabric_compare.rows.best_for' | t }}</th>
+                  {%- for h in handle_list -%}<td>{{ shop.metaobjects.fabric[h].best_for.value | join: ', ' }}</td>{%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endif -%}
+            {%- if s.row_ratings -%}
+              {%- for key in rating_rows -%}
+                {%- liquid
+                  assign any = false
+                  for h in handle_list
+                    if shop.metaobjects.fabric[h][key].value != blank
+                      assign any = true
+                    endif
+                  endfor
+                  unless any
+                    continue
+                  endunless
+                  assign label_key = 'editorial.fabric_rating.' | append: key
+                -%}
+                <tr class="fabric-compare__rating-row">
+                  <th scope="row">{{ label_key | t }}</th>
+                  {%- for h in handle_list -%}
+                    <td>{% render 'fabric-rating', fabric: shop.metaobjects.fabric[h], fields: key, hide_labels: true, compact: true %}</td>
+                  {%- endfor -%}
+                </tr>
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if s.row_care -%}
+              {%- liquid
+                assign any = false
+                for h in handle_list
+                  if shop.metaobjects.fabric[h].care_symbols.value != blank
+                    assign any = true
+                  endif
+                endfor
+              -%}
+              {%- if any -%}
+                <tr><th scope="row">{{ 'editorial.fabric_compare.rows.care' | t }}</th>
+                  {%- for h in handle_list -%}<td>{% render 'care-icons', symbols: shop.metaobjects.fabric[h].care_symbols.value, show_labels: false %}</td>{%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endif -%}
+          </tbody>
+        </table>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.fabric-compare.name",
+  "tag": "section",
+  "class": "section-fabric-compare",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Compare fabrics" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "paragraph", "content": "t:sections.fabric-guide.settings.source.content" },
+    { "type": "checkbox", "id": "show_images", "label": "t:sections.fabric-compare.settings.show_images.label", "default": true },
+    { "type": "header", "content": "t:sections.fabric-compare.settings.rows_header.content" },
+    { "type": "checkbox", "id": "row_summary", "label": "t:sections.fabric-compare.settings.row_summary.label", "default": false },
+    { "type": "checkbox", "id": "row_composition", "label": "t:sections.fabric-compare.settings.row_composition.label", "default": true },
+    { "type": "checkbox", "id": "row_weave", "label": "t:sections.fabric-compare.settings.row_weave.label", "default": true },
+    { "type": "checkbox", "id": "row_finish", "label": "t:sections.fabric-compare.settings.row_finish.label", "default": false },
+    { "type": "checkbox", "id": "row_thread_count", "label": "t:sections.fabric-compare.settings.row_thread_count.label", "default": true },
+    { "type": "checkbox", "id": "row_gsm", "label": "t:sections.fabric-compare.settings.row_gsm.label", "default": true },
+    { "type": "checkbox", "id": "row_feel", "label": "t:sections.fabric-compare.settings.row_feel.label", "default": true },
+    { "type": "checkbox", "id": "row_texture", "label": "t:sections.fabric-compare.settings.row_texture.label", "default": false },
+    { "type": "checkbox", "id": "row_origin", "label": "t:sections.fabric-compare.settings.row_origin.label", "default": false },
+    { "type": "checkbox", "id": "row_best_for", "label": "t:sections.fabric-compare.settings.row_best_for.label", "default": true },
+    { "type": "checkbox", "id": "row_ratings", "label": "t:sections.fabric-compare.settings.row_ratings.label", "default": true },
+    { "type": "checkbox", "id": "row_care", "label": "t:sections.fabric-compare.settings.row_care.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "fabric", "name": "t:sections.fabric-guide.blocks.fabric.name", "settings": [
+      { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.fabric-guide.blocks.fabric.settings.fabric.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.fabric-compare.presets.name" } ]
+}
+{% endschema %}
