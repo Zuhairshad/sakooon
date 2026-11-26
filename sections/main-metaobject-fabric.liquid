@@ -1,6 +1,6 @@
 {%- comment -%}
-  Fabric page header for templates/metaobject/fabric.json: imagery, name, summary as the lead, the 5-6 line
-  overview, key specifications,
+  Fabric page header for templates/metaobject/fabric.json: imagery, name, tagline, the 5-6 line overview
+  (or the short summary when there is no overview), key specifications,
   ratings and a link to shop the fabric. Reads the `metaobject` of the web page; the fabric picker is a
   fallback so the section can also sit on a page template. Every field is optional and blank-guarded.
   Reference: Tekla care detail (docs/reference/editorial.md 2.4). Owner: shad-8b.
@@ -66,8 +66,11 @@
         <h1 class="main-fabric__title {{ s.heading_size }}">{{ name }}</h1>
         {%- if fabric != blank -%}
           {%- if fabric.tagline.value != blank -%}<p class="main-fabric__tagline">{{ fabric.tagline.value }}</p>{%- endif -%}
-          {%- if fabric.summary.value != blank -%}<p class="main-fabric__summary">{{ fabric.summary.value }}</p>{%- endif -%}
-          {%- if fabric.overview.value != blank -%}<p class="main-fabric__overview">{{ fabric.overview.value | newline_to_br }}</p>{%- endif -%}
+          {%- if fabric.overview.value != blank -%}
+            <p class="main-fabric__overview">{{ fabric.overview.value | newline_to_br }}</p>
+          {%- elsif fabric.summary.value != blank -%}
+            <p class="main-fabric__summary">{{ fabric.summary.value }}</p>
+          {%- endif -%}
           {%- capture specs -%}
             {%- for key in spec_keys -%}
               {%- assign v = fabric[key].value -%}
