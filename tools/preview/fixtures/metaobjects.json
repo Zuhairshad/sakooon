@@ -1,18 +1,134 @@
 {
+  "_source": "Phase 2 (shad-8b). Only facts stated in the Shopify product descriptions (data/store.json, 2026-11-19). Thread count, GSM, weave, origin, ratings and certifications are deliberately empty until the user supplies verified data. See docs/reference/editorial-content-sources.md.",
   "metaobjects": {
-    "certification": [
-      { "handle": "example-standard", "fields": { "name": "Example Textile Standard (placeholder)", "issuer": "Example Institute", "licence_number": "00000-PLACEHOLDER", "certificate_url": "https://example.com/verify/00000", "scope": "Finished bedding", "valid_until": "2027-12-31" } }
-    ],
+    "certification": [],
     "fabric": [
-      { "handle": "percale", "fields": { "name": "Percale", "tagline": "Crisp and cool", "summary": "A plain one-over-one-under weave with a matte, crisp hand. Placeholder copy.", "description": "<p>Placeholder description for percale. Real, verified copy arrives in Phase 2.</p>", "composition": "Composition to be verified", "fibre": "cotton", "weave": "percale", "texture": "Matte, crisp", "feel": "Crisp", "softness": { "rating": 3 }, "breathability": { "rating": 5 }, "warmth": { "rating": 1 }, "durability": { "rating": 4 }, "best_for": ["Hot sleepers", "Warm climates"], "seasons": ["all-season", "warm-weather"], "care": "<p>Placeholder care text for percale.</p>", "care_symbols": ["wash-40", "no-bleach", "tumble-low", "iron-medium"], "care_guide": "page:about", "texture_image": "image:sakooon-quilted-bed-sheet-set-ivory.webp", "lifestyle_image": "image:sakooon-white-bedding-bedroom.webp", "gallery": ["image:sakooon-quilted-bed-sheet-set-sage-green.webp", "image:sakooon-quilted-bed-sheet-set-dusty-blue.webp"], "collection": "collection:bed-sheets", "related_products": ["product:fixture-quilted-bed-sheet-set"], "swatch_color": "#EDE8E0", "sort_order": 1 } },
-      { "handle": "sateen", "fields": { "name": "Sateen", "tagline": "Smooth with a soft sheen", "summary": "A satin weave that feels silky and drapes close to the body. Placeholder copy.", "description": "<p>Placeholder description for sateen.</p>", "fibre": "cotton", "weave": "sateen", "texture": "Smooth", "feel": "Silky", "softness": { "rating": 5 }, "breathability": { "rating": 3 }, "warmth": { "rating": 3 }, "durability": { "rating": 3 }, "best_for": ["Cooler nights", "Soft hand feel"], "seasons": ["all-season"], "care": "<p>Placeholder care text for sateen.</p>", "care_symbols": ["wash-40", "no-bleach", "tumble-low", "iron-low"], "texture_image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp", "collection": "collection:duvet-covers", "related_products": ["product:fixture-two-tone-duvet-cover-set"], "certifications": ["metaobject:certification/example-standard"], "swatch_color": "#D9D4CC", "sort_order": 2 } },
-      { "handle": "linen", "fields": { "name": "Linen", "tagline": "Textured and airy", "summary": "Flax fibre with a relaxed, lived-in texture. Placeholder copy.", "fibre": "linen", "weave": "plain", "finish": "stonewashed", "softness": { "rating": 3 }, "breathability": { "rating": 5 }, "warmth": { "rating": 2 }, "durability": { "rating": 5 }, "best_for": ["Hot sleepers"], "seasons": ["warm-weather"], "care_symbols": ["wash-30", "no-bleach", "tumble-none", "no-iron"], "texture_image": "image:sakooon-quilted-bed-sheet-set-butter-yellow.webp", "swatch_color": "#CFC7B8", "sort_order": 3 } },
-      { "handle": "draft-waffle", "published": false, "fields": { "name": "Waffle (draft)", "weave": "waffle", "sort_order": 9 } }
+      {
+        "handle": "cotton-satin",
+        "fields": {
+          "name": "Cotton satin",
+          "tagline": "Smooth, with a soft sheen",
+          "summary": "A smooth cotton satin with a subtle sheen. We use it for our yarn-dyed bed sheet sets and our two-tone reversible duvet cover sets.",
+          "description": "<p>Cotton satin has a smooth finish that feels gentle on the skin and a subtle sheen that makes a bed look put-together.</p><p>Our yarn-dyed bed sheet sets are coloured before the fabric is woven, which gives them rich, long-lasting colour. Our two-tone duvet cover sets pair a deep shade on one side with a lighter tone on the other, so you can flip the cover and change the mood of the room.</p><p>The bed sheets in both sets resist wrinkles, so the bed stays neat with very little effort.</p>",
+          "composition": "Cotton satin",
+          "fibre": "cotton",
+          "texture": "Smooth, with a subtle sheen",
+          "feel": "Smooth, Soft sheen",
+          "care_guide": "page:care-bedsheets",
+          "texture_image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp",
+          "lifestyle_image": "image:sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+          "gallery": [
+            "image:sakooon-yarn-dyed-bed-sheet-set-peach-floral.webp",
+            "image:sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+            "image:sakooon-yarn-dyed-bed-sheet-set-grey-gingham_daae4f68-d687-4934-9c8c-8306a5cf9d58.webp"
+          ],
+          "related_products": [
+            "product:yarn-dyed-cotton-satin-bed-sheet-set-king",
+            "product:two-tone-duvet-cover-set-king"
+          ],
+          "sort_order": 1
+        }
+      },
+      {
+        "handle": "quilted-cotton",
+        "fields": {
+          "name": "Quilted cotton",
+          "tagline": "A raised pattern with no loose threads",
+          "summary": "Soft cotton with ultrasonic quilting: a raised, embossed pattern that stays neat, light enough for summer and a cosy layer in winter.",
+          "description": "<p>Our quilted bed sheet sets are made from soft cotton. Instead of thread, the layers are joined with ultrasonic heat to create a raised, embossed pattern, so there are no stitches to break and no loose threads to pull or fray.</p><p>It is light enough for summer nights and adds a cosy layer in winter, so it can stay on the bed all year. The fabric resists wrinkles, so the bed looks freshly made with very little effort.</p>",
+          "composition": "Cotton",
+          "fibre": "cotton",
+          "texture": "Ultrasonic quilted, embossed",
+          "feel": "Soft, Raised pattern",
+          "seasons": [
+            "all-season"
+          ],
+          "care": "<p>Machine wash at 40°C. Do not bleach. Tumble dry on low.</p>",
+          "care_symbols": [
+            "wash-40",
+            "no-bleach",
+            "tumble-low"
+          ],
+          "care_guide": "page:care-bedsheets",
+          "texture_image": "image:sakooon-quilted-bed-sheet-set-ivory.webp",
+          "lifestyle_image": "image:sakooon-quilted-bed-sheet-set-sage-green.webp",
+          "gallery": [
+            "image:sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+            "image:sakooon-quilted-bed-sheet-set-rust.webp",
+            "image:sakooon-quilted-bed-sheet-set-charcoal-grey.webp"
+          ],
+          "related_products": [
+            "product:quilted-bed-sheet-set-king"
+          ],
+          "sort_order": 2
+        }
+      },
+      {
+        "handle": "microfibre-fill",
+        "fields": {
+          "name": "Microfibre duvet fill",
+          "tagline": "Winter warmth without the weight",
+          "summary": "A silky microfibre shell around a 100% polyester fill, in a clean white that slips into any duvet cover.",
+          "description": "<p>Our Duvet Comfort Filling is the insert that goes inside a duvet cover. The silky microfibre shell feels smooth and breathable, and the 100% polyester fill stays light and evenly spread.</p><p>The 220 GSM fill weight gives dependable winter warmth with a balanced loft that does not feel heavy. GSM is the weight of the filling per square metre.</p>",
+          "composition": "Microfibre shell, 100% polyester fill",
+          "texture": "Smooth, silky shell",
+          "feel": "Plush, Light",
+          "seasons": [
+            "cold-weather"
+          ],
+          "care_guide": "page:care-comforters",
+          "texture_image": "image:sakooon-duvet-comfort-filling-220-gsm.webp",
+          "related_products": [
+            "product:duvet-comfort-filling-220-gsm"
+          ],
+          "sort_order": 3
+        }
+      },
+      {
+        "handle": "cotton-microfibre",
+        "fields": {
+          "name": "Cotton cover, microfibre fill",
+          "tagline": "Soft support that holds its shape",
+          "summary": "A 100% pure cotton cover filled with 100% polyester microfibre, used for our Duvet Comfort Pillow.",
+          "description": "<p>Each Duvet Comfort Pillow has a 100% pure cotton cover that feels soft and breathable against the skin. Inside, 100% polyester microfibre gives plush, even support that holds its shape night after night.</p><p>The pillows are light, airy and comfortable in every season, and the white finish goes with any pillow cover.</p>",
+          "composition": "100% cotton cover, 100% polyester microfibre fill",
+          "fibre": "cotton",
+          "texture": "Soft cotton cover",
+          "feel": "Plush, Breathable",
+          "seasons": [
+            "all-season"
+          ],
+          "care_guide": "page:care-pillows",
+          "texture_image": "image:sakooon-duvet-comfort-pillow-piping-detail.webp",
+          "lifestyle_image": "image:sakooon-duvet-comfort-pillow-pack-of-2.webp",
+          "related_products": [
+            "product:duvet-comfort-pillow-pack-of-2"
+          ],
+          "sort_order": 4
+        }
+      }
     ]
   },
   "metafields": {
-    "fixture-two-tone-duvet-cover-set": { "sakooon": { "fabric": "metaobject:fabric/sateen", "package_contents": ["1 duvet cover", "2 pillowcases"], "care_guide": "page:about", "size_guide": "page:size-guide" } },
-    "page:about": { "sakooon": { "related_fabrics": ["metaobject:fabric/percale", "metaobject:fabric/sateen", "metaobject:fabric/linen"] } },
-    "collection:bed-sheets": { "sakooon": { "fabric": "metaobject:fabric/percale", "banner_heading": "Placeholder banner heading" } }
+    "page:about": {
+      "sakooon": {
+        "related_fabrics": [
+          "metaobject:fabric/cotton-satin",
+          "metaobject:fabric/quilted-cotton",
+          "metaobject:fabric/microfibre-fill",
+          "metaobject:fabric/cotton-microfibre"
+        ]
+      }
+    },
+    "page:fabric-guide": {
+      "sakooon": {
+        "related_fabrics": [
+          "metaobject:fabric/cotton-satin",
+          "metaobject:fabric/quilted-cotton",
+          "metaobject:fabric/microfibre-fill",
+          "metaobject:fabric/cotton-microfibre"
+        ]
+      }
+    }
   }
 }
