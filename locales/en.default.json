@@ -579,6 +579,8 @@
       "shop": "Shop {{ name }}",
       "care_guide": "Care guide",
       "read_care_guide": "Read the care guide",
+      "eyebrow": "Fabric",
+      "about_link": "About this fabric",
       "seasons": "Seasons",
       "licence": "Licence",
       "verify": "Verify certificate",

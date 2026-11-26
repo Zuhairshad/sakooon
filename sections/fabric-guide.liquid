@@ -49,12 +49,18 @@
       </div>
     {%- endif -%}
     {%- if s.layout == 'panels' and handles != blank -%}
-      <div class="fabric-guide__panels">
+      {%- comment -%}
+        Panels (Phase 2): one unboxed band per fabric in the homepage "Choose by fabric" language. Copy (eyebrow,
+        serif name, chips, overview, facts, accordions, link) beside one large close-up, then the products made
+        from it as standard product cards. Bands alternate paper / white; sides alternate on desktop.
+      {%- endcomment -%}
+      <div class="fabric-guide__bands">
         {%- for h in handle_list -%}
           {%- assign f = shop.metaobjects.fabric[h] -%}
           {%- if f == blank -%}{%- continue -%}{%- endif -%}
           {%- liquid
-            assign banner = f.texture_image.value | default: f.lifestyle_image.value
+            assign closeup = f.closeup_image.value | default: f.texture_image.value | default: f.lifestyle_image.value
+            assign region = f.closeup_region.value
             assign chips = f.feel.value | split: ','
             if chips.size == 0 and f.best_for.value != blank
               assign chips = f.best_for.value
@@ -64,31 +70,56 @@
               assign products = f.collection.value.products
             endif
             assign panel_id = 'fabric-panel-' | append: section.id | append: '-' | append: h
-            assign banner_priority = false
+            assign media_priority = false
             if forloop.first and section.index <= 2
-              assign banner_priority = true
+              assign media_priority = true
             endif
             assign sub_tag = 'h4'
             if item_tag == 'h2'
               assign sub_tag = 'h3'
             endif
+            assign band_scheme = s.color_scheme
+            assign flip = false
+            assign band_n = forloop.index | modulo: 2
+            if band_n == 0
+              assign band_scheme = 'white'
+              assign flip = true
+            endif
           -%}
-          <article class="fabric-panel fabric-guide__item" data-weave="{{ f.weave.value | handleize }}" data-fibre="{{ f.fibre.value | handleize }}" aria-labelledby="{{ panel_id }}-title">
-            <div class="fabric-panel__banner media">
-              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, calc(100vw - 32px)', widths: '480,768,1024,1280,1600', aspect: '21/10', crop: 'center', alt: '', placeholder: 'collection-1', priority: banner_priority %}
-              <{{ item_tag }} class="fabric-panel__name h2" id="{{ panel_id }}-title">
-                {%- if f.system.url != blank -%}<a href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
-              </{{ item_tag }}>
-            </div>
-            <div class="fabric-panel__body">
-              <div class="fabric-panel__info">
+          <article class="fabric-band fabric-guide__item color-scheme-{{ band_scheme }}{% if flip %} fabric-band--flip{% endif %}" data-weave="{{ f.weave.value | handleize }}" data-fibre="{{ f.fibre.value | handleize }}" aria-labelledby="{{ panel_id }}-title">
+            <div class="fabric-band__grid">
+              <div class="fabric-band__head">
+                <p class="eyebrow">{{ 'editorial.fabric.eyebrow' | t }}</p>
+                <{{ item_tag }} class="fabric-band__name" id="{{ panel_id }}-title">{{ f.name.value }}</{{ item_tag }}>
                 {%- if chips.size > 0 -%}
                   <ul class="fabric-panel__chips list-unstyled" role="list">{%- for c in chips limit: 4 -%}{%- assign chip = c | strip -%}{%- if chip != blank -%}<li>{{ chip | capitalize }}</li>{%- endif -%}{%- endfor -%}</ul>
                 {%- endif -%}
-                {%- if f.summary.value != blank -%}<p class="fabric-panel__statement">{{ f.summary.value }}</p>{%- endif -%}
+              </div>
+              {%- if closeup != blank -%}
+                <div class="fabric-band__media media" style="--aspect: 4/5">
+                  {% render 'image', image: closeup, sizes: '(min-width: 1440px) 760px, (min-width: 1024px) 52vw, calc(100vw - 32px)', widths: '480,640,800,1000,1200', aspect: '4/5', crop: 'center', region: region, alt: '', placeholder: 'collection-1', priority: media_priority %}
+                </div>
+              {%- endif -%}
+              <div class="fabric-band__body">
+                {%- if f.overview.value != blank -%}
+                  <p class="fabric-band__overview">{{ f.overview.value | newline_to_br }}</p>
+                {%- elsif f.summary.value != blank -%}
+                  <p class="fabric-band__overview">{{ f.summary.value }}</p>
+                {%- endif -%}
+                {%- capture facts -%}
+                  {%- if f.composition.value != blank -%}<div><dt>{{ 'editorial.fabric_compare.rows.composition' | t }}</dt><dd>{{ f.composition.value }}</dd></div>{%- endif -%}
+                  {%- if f.feel.value != blank -%}<div><dt>{{ 'editorial.fabric_compare.rows.feel' | t }}</dt><dd>{{ f.feel.value }}</dd></div>{%- endif -%}
+                {%- endcapture -%}
+                {%- if facts != blank -%}<dl class="fabric-band__facts">{{ facts }}</dl>{%- endif -%}
                 <div class="fabric-panel__accordions">
                   {%- capture feel_content -%}
-                    {%- if f.overview.value != blank -%}<p>{{ f.overview.value | newline_to_br }}</p>{%- elsif f.description.value != blank -%}{{ f.description | metafield_tag }}{%- endif -%}
+                    {%- capture feel_rows -%}
+                      {%- if f.texture.value != blank -%}<div><dt>{{ 'editorial.fabric_compare.rows.texture' | t }}</dt><dd>{{ f.texture.value }}</dd></div>{%- endif -%}
+                      {%- if f.seasons.value != blank -%}<div><dt>{{ 'editorial.fabric.seasons' | t }}</dt><dd>{{ f.seasons.value | join: ', ' | replace: '-', ' ' | capitalize }}</dd></div>{%- endif -%}
+                      {%- if f.best_for.value != blank -%}<div><dt>{{ 'editorial.fabric.best_for' | t }}</dt><dd>{{ f.best_for.value | join: ', ' }}</dd></div>{%- endif -%}
+                    {%- endcapture -%}
+                    {%- if feel_rows != blank -%}<dl class="fabric-band__facts">{{ feel_rows }}</dl>{%- endif -%}
+                    {%- if f.description.value != blank and f.overview.value == blank -%}{{ f.description | metafield_tag }}{%- endif -%}
                     {%- if s.show_ratings -%}{% render 'fabric-rating', fabric: f, compact: true %}{%- endif -%}
                   {%- endcapture -%}
                   {%- if feel_content != blank -%}
@@ -107,21 +138,20 @@
                     {% render 'accordion', id: acc_id, title: s.panel_care_label, label: acc_label, content: care_content, icon: 'chevron-down', heading_tag: sub_tag %}
                   {%- endif -%}
                 </div>
+                {%- if f.system.url != blank -%}
+                  <a class="link link--arrow fabric-band__more" href="{{ f.system.url }}">{{ 'editorial.fabric.about_link' | t }}<span class="visually-hidden">: {{ f.name.value }}</span>{% render 'icon', icon: 'arrow-right', size: 16 %}</a>
+                {%- endif -%}
               </div>
-              {%- if products != blank or f.collection.value != blank -%}
-                <div class="fabric-panel__shop">
-                  {%- if products != blank -%}
-                    <ul class="fabric-panel__products list-unstyled" role="list" tabindex="0" aria-label="{{ 'editorial.fabric.shop' | t: name: f.name.value | escape }}">
-                      {%- for product in products limit: 6 -%}<li>{% render 'product-card', product: product, columns_desktop: 3, image_ratio: 'portrait', heading_tag: sub_tag, show_swatches: true, sizes: '(min-width: 1024px) 170px, 160px' %}</li>{%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                  {%- if f.collection.value != blank -%}
-                    {%- assign shop_label = 'editorial.fabric.shop_all' | t: name: f.name.value -%}
-                    {% render 'button', label: shop_label, url: f.collection.value.url, style: 'primary', full_width: true %}
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
             </div>
+            {%- if products != blank -%}
+              <ul class="fabric-band__products list-unstyled" role="list" aria-label="{{ 'editorial.fabric.shop' | t: name: f.name.value | escape }}">
+                {%- for product in products limit: 8 -%}<li>{% render 'product-card', product: product, columns_desktop: 4, image_ratio: 'portrait', heading_tag: sub_tag, show_swatches: true, sizes: '(min-width: 1440px) 336px, (min-width: 1024px) 23vw, calc(50vw - 24px)' %}</li>{%- endfor -%}
+              </ul>
+            {%- endif -%}
+            {%- if f.collection.value != blank -%}
+              {%- assign shop_label = 'editorial.fabric.shop_all' | t: name: f.name.value -%}
+              <div class="fabric-band__shop-all">{% render 'button', label: shop_label, url: f.collection.value.url, style: 'secondary' %}</div>
+            {%- endif -%}
           </article>
         {%- endfor -%}
       </div>

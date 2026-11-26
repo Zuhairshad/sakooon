@@ -47,6 +47,8 @@ Every field is optional except `name`. The theme hides any blank field together 
 | `care_symbols` | Care symbols | List of single line text | choices (exact): wash-30, wash-40, wash-60, hand-wash, no-bleach, tumble-low, tumble-none, line-dry, iron-low, iron-medium, iron-high, no-iron, dry-clean, no-dry-clean |
 | `care_guide` | Care guide | Page reference | for example the "Bedsheet care" page |
 | `texture_image` | Texture image | File (image) | 1:1 or 4:5, at least 1600px |
+| `closeup_image` | Close-up image | File (image) | the fabric guide's large close-up; falls back to texture_image |
+| `closeup_region` | Close-up region | Single line text | optional `x,y,w,h` in percent of the close-up image (a detail tile of a collage packshot), e.g. `35,71,30.5,29` |
 | `lifestyle_image` | Lifestyle image | File (image) | 4:5, at least 1600px |
 | `gallery` | Gallery | List of files (images) | |
 | `swatch_color` | Swatch colour | Color | |
