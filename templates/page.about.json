@@ -1,168 +1,224 @@
 {
   "sections": {
     "hero": {
-      "type": "editorial-hero",
-      "settings": {
-        "heading": "",
-        "alignment": "left",
-        "content_width": "narrow",
-        "text": "<p>Sakooon takes its name from sukoon, the Urdu word for calm and peace of mind. It is what we want a bed to feel like at the end of the day.</p>",
-        "padding_top": 80,
-        "padding_bottom": 40,
-        "heading_size": "h3",
-        "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
-        "image_ratio": "16/9",
-        "image_width": "column",
-        "show_image_placeholder": false
-      }
-    },
-    "story": {
-      "type": "editorial-text",
+      "type": "hero-full",
       "blocks": {
-        "h1": {
+        "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Why sukoon",
-            "tag": "h2",
-            "size": "h4"
+            "heading": "Our story",
+            "size": "h0",
+            "tag": "h1"
           }
         },
-        "t1": {
+        "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Most of us know the feeling. The house goes quiet, the lights go down and a clean, soft bed is waiting. For a moment nothing else needs doing. That small, ordinary calm is what we design for.</p><p>Sakooon is a bedding brand designed in Pakistan, for the way people here live and sleep: long warm evenings, cool winter nights and homes that are rarely empty.</p>"
-          }
-        },
-        "h2": {
-          "type": "heading",
-          "settings": {
-            "heading": "Cotton, kept plain",
-            "tag": "h2",
-            "size": "h4"
-          }
-        },
-        "t2": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We work mostly in cotton, because it is soft against the skin and easy to live with. Our bed sheet sets come in cotton satin, smooth with a gentle sheen, and in quilted cotton with a raised pattern. For colder months there is a duvet filling, and pillows to go with it.</p><p>We keep our designs simple on purpose: clear colours, classic checks and stripes, and a few quiet prints. Things that are easy to match and easy to come back to.</p>"
-          }
-        },
-        "h3": {
-          "type": "heading",
-          "settings": {
-            "heading": "Made to be cared for",
-            "tag": "h2",
-            "size": "h4"
-          }
-        },
-        "t3": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Good bedding should not feel precious. It is there to be slept in, washed and used every day. We write our care guides in plain language so your sheets keep their softness and colour, and we list exactly what comes in each set and what size it is, so you know what to expect before you order.</p>"
-          }
-        },
-        "h4": {
-          "type": "heading",
-          "settings": {
-            "heading": "What we hold ourselves to",
-            "tag": "h2",
-            "size": "h4"
-          }
-        },
-        "t4": {
-          "type": "list",
-          "settings": {
-            "style": "dash",
-            "text": "<ul><li>Say what a product is, plainly.</li><li>Only claim what we can stand behind.</li><li>Make a bed feel like rest, not like a showroom.</li></ul>"
-          }
-        },
-        "t5": {
-          "type": "text",
-          "settings": {
-            "text": "<p>The comfort in every thread. That is the promise in our name, and the one we try to keep.</p>"
-          }
-        },
-        "l1": {
-          "type": "link",
-          "settings": {
-            "label": "Read about our fabrics",
-            "url": "/pages/fabric-guide"
+            "text": "<p>Sakooon takes its name from sukoon, the Urdu word for calm and peace of mind.</p>"
           }
         }
       },
       "block_order": [
-        "h1",
-        "t1",
-        "h2",
-        "t2",
-        "h3",
-        "t3",
-        "h4",
-        "t4",
-        "t5",
-        "l1"
+        "heading",
+        "text"
       ],
       "settings": {
-        "content_width": "narrow",
-        "padding_top": 0,
-        "padding_bottom": 48
+        "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
+        "height": "large",
+        "content_position": "bottom-left",
+        "content_width": 760,
+        "text_color": "light",
+        "overlay_opacity": 40,
+        "allow_header_overlay": true,
+        "color_scheme": "ink"
       }
     },
-    "gallery": {
-      "type": "editorial-gallery",
+    "why": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-piping-detail.webp",
+        "image_position": "left",
+        "image_width": "half",
+        "image_ratio": "portrait",
+        "vertical_align": "center",
+        "eyebrow": "Why sukoon",
+        "heading": "That small, ordinary calm is what we design for.",
+        "heading_size": "h1",
+        "text": "<p>Most of us know the feeling. The house goes quiet, the lights go down and a clean, soft bed is waiting. For a moment nothing else needs doing. It is what we want a bed to feel like at the end of the day.</p><p>Sakooon is a bedding brand designed in Pakistan, for the way people here live and sleep: long warm evenings, cool winter nights and homes that are rarely empty.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "tertiary",
+        "color_scheme": "paper",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "cotton": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-grey-gingham_daae4f68-d687-4934-9c8c-8306a5cf9d58.webp",
+        "image_position": "right",
+        "image_width": "half",
+        "image_ratio": "portrait",
+        "vertical_align": "center",
+        "eyebrow": "Our fabrics",
+        "heading": "Cotton, kept plain",
+        "heading_size": "h1",
+        "text": "<p>We work mostly in cotton, because it is soft against the skin and easy to live with. Our bed sheet sets come in cotton satin, smooth with a gentle sheen, and in quilted cotton with a raised pattern. For colder months there is a duvet filling, and pillows to go with it.</p><p>We keep our designs simple on purpose: clear colours, classic checks and stripes, and a few quiet prints. Things that are easy to match and easy to come back to.</p>",
+        "button_label": "Read about our fabrics",
+        "button_link": "/pages/fabric-guide",
+        "button_style": "tertiary",
+        "color_scheme": "white",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "care": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-black-white_2.webp",
+        "image_position": "left",
+        "image_width": "half",
+        "image_ratio": "portrait",
+        "vertical_align": "center",
+        "eyebrow": "Care",
+        "heading": "Made to be cared for",
+        "heading_size": "h1",
+        "text": "<p>Good bedding should not feel precious. It is there to be slept in, washed and used every day. We write our care guides in plain language so your sheets keep their softness and colour, and we list exactly what comes in each set and what size it is, so you know what to expect before you order.</p>",
+        "button_label": "Read the care guide",
+        "button_link": "/pages/care-guide",
+        "button_style": "tertiary",
+        "color_scheme": "paper",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "values": {
+      "type": "brand-values",
       "blocks": {
-        "g1": {
-          "type": "image",
+        "v1": {
+          "type": "value",
           "settings": {
-            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
-            "caption": "Bed sheets",
-            "url": "/collections/bed-sheets"
+            "icon": "none",
+            "heading": "Say what a product is, plainly.",
+            "text": "",
+            "link_label": "",
+            "link": ""
           }
         },
-        "g2": {
-          "type": "image",
+        "v2": {
+          "type": "value",
           "settings": {
-            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
-            "caption": "Duvet covers",
-            "url": "/collections/duvet-covers"
+            "icon": "none",
+            "heading": "Only claim what we can stand behind.",
+            "text": "",
+            "link_label": "",
+            "link": ""
           }
         },
-        "g3": {
-          "type": "image",
+        "v3": {
+          "type": "value",
           "settings": {
-            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
-            "caption": "Duvets",
-            "url": "/collections/duvets"
-          }
-        },
-        "g4": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
-            "caption": "Pillows",
-            "url": "/collections/pillows"
+            "icon": "none",
+            "heading": "Make a bed feel like rest, not like a showroom.",
+            "text": "",
+            "link_label": "",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "g1",
-        "g2",
-        "g3",
-        "g4"
+        "v1",
+        "v2",
+        "v3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "What we hold ourselves to",
+        "heading_size": "h2",
+        "text": "",
+        "columns": 3,
+        "image_ratio": "4/5",
+        "align": "left",
+        "mobile_layout": "stack",
+        "color_scheme": "sand",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "footnote": "<p>The comfort in every thread. That is the promise in our name, and the one we try to keep.</p>"
+      }
+    },
+    "collections": {
+      "type": "collection-list",
+      "blocks": {
+        "category-1": {
+          "type": "category",
+          "settings": {
+            "collection": "bed-sheets",
+            "image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-seashell_11507b5e-7015-4618-a3fe-cd9bad0088dd.webp",
+            "label": ""
+          }
+        },
+        "category-2": {
+          "type": "category",
+          "settings": {
+            "collection": "duvet-covers",
+            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+            "label": ""
+          }
+        },
+        "category-3": {
+          "type": "category",
+          "settings": {
+            "collection": "bed-covers",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "label": ""
+          }
+        },
+        "category-4": {
+          "type": "category",
+          "settings": {
+            "collection": "duvets",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "label": ""
+          }
+        },
+        "category-5": {
+          "type": "category",
+          "settings": {
+            "collection": "pillows",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "category-1",
+        "category-2",
+        "category-3",
+        "category-4",
+        "category-5"
       ],
       "settings": {
         "heading": "Explore the collection",
-        "heading_size": "h4",
-        "columns": 4,
-        "content_width": "narrow",
-        "padding_top": 16,
-        "padding_bottom": 80
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "link_label": "",
+        "columns_desktop": 5,
+        "image_ratio": "portrait",
+        "label_style": "chip",
+        "mobile_layout": "scroll",
+        "color_scheme": "white",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     }
   },
   "order": [
     "hero",
-    "story",
-    "gallery"
+    "why",
+    "cotton",
+    "care",
+    "values",
+    "collections"
   ]
 }
