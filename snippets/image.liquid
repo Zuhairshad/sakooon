@@ -7,6 +7,8 @@
   so a portrait packshot shown in a 21:10 banner downloads only the banner pixels (Shopify image_url width + height + crop).
   region_height: 1-99 (with aspect + crop): first limit the source to its top N% (e.g. the main photograph of a collage packshot),
   then cut the aspect from that area, centred horizontally (Shopify image_url crop: 'region' + crop_left/top/width/height).
+  region: 'x,y,w,h' in percent of the source (with aspect + crop), e.g. '50,62,25,38' = a detail tile of a collage; the aspect is cut
+  from that rectangle, centred. Takes precedence over region_height.
 {%- endcomment -%}
 {%- liquid
   assign widths_str = widths | default: '320,480,640,768,960,1280,1600,1920,2400'
@@ -39,7 +41,29 @@
       endif
     endif
     assign use_region = false
-    if crop_ratio > 0 and region_height
+    if crop_ratio > 0 and region != blank
+      assign region_parts = region | split: ','
+      if region_parts.size == 4
+        assign use_region = true
+        assign area_left = region_parts[0] | strip | times: img.width | divided_by: 100 | floor
+        assign area_top = region_parts[1] | strip | times: img.height | divided_by: 100 | floor
+        assign area_w = region_parts[2] | strip | times: img.width | divided_by: 100 | floor
+        assign area_h = region_parts[3] | strip | times: img.height | divided_by: 100 | floor
+        assign rect_h = area_w | times: crop_ratio | floor
+        if rect_h <= area_h
+          assign rect_w = area_w
+          assign rect_left = area_left
+          assign rect_top = area_h | minus: rect_h | divided_by: 2 | floor | plus: area_top
+        else
+          assign rect_h = area_h
+          assign rect_w = area_h | divided_by: crop_ratio | floor
+          assign rect_left = area_w | minus: rect_w | divided_by: 2 | floor | plus: area_left
+          assign rect_top = area_top
+        endif
+        assign max_w = rect_w
+      endif
+    endif
+    if crop_ratio > 0 and region_height and use_region == false
       assign region_pct = region_height | plus: 0
       if region_pct > 0 and region_pct < 100
         assign use_region = true
