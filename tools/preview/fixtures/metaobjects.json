@@ -25,7 +25,9 @@
             "product:yarn-dyed-cotton-satin-bed-sheet-set-king",
             "product:two-tone-duvet-cover-set-king"
           ],
-          "sort_order": 1
+          "sort_order": 1,
+          "overview": "In general, cotton satin is woven so that more of each thread lies on the surface, which gives it a smooth feel and a soft sheen. Our yarn-dyed bed sheet sets use cotton satin that is coloured before it is woven, for rich, long-lasting colour, in checks, stripes, florals and other designs. Our two-tone reversible duvet cover sets pair a deep shade with a lighter one, with contrast piping on every piece. The bed sheets in both sets resist wrinkles, so the bed stays neat with very little effort.",
+          "care_summary": "General guidance, not specific to one product: wash cotton satin with similar colours in a cool or warm wash, around 30 to 40°C, with a mild detergent. Wash strongly coloured and two-tone pieces on their own for the first few washes, and avoid bleach, which can fade colour. Line dry in the shade or tumble dry on low. If you iron, use a low to medium setting on the reverse to protect the sheen. Always follow the care label on your item."
         }
       },
       {
@@ -59,7 +61,9 @@
           "related_products": [
             "product:quilted-bed-sheet-set-king"
           ],
-          "sort_order": 2
+          "sort_order": 2,
+          "overview": "Our quilted bed sheet sets are made from soft cotton with ultrasonic quilting. Instead of thread, the layers are joined with ultrasonic heat, which creates a raised, embossed pattern with no stitches to break and no loose threads to pull or fray. The fabric is light enough for summer nights and adds a cosy layer in winter, so it can stay on the bed all year. It resists wrinkles, so the bed looks freshly made with very little effort.",
+          "care_summary": "From the product description: machine wash at 40°C, do not bleach, and tumble dry on low. As general guidance, wash with similar colours, use a mild detergent and leave room in the drum so the fabric can move freely. Take it out promptly and smooth it by hand. We suggest not ironing, as heat and pressure can flatten a raised pattern."
         }
       },
       {
@@ -80,7 +84,9 @@
           "related_products": [
             "product:duvet-comfort-filling-220-gsm"
           ],
-          "sort_order": 3
+          "sort_order": 3,
+          "overview": "Our Duvet Comfort Filling is the insert that goes inside a duvet cover; the cover is sold separately. It has a silky, breathable microfibre shell and a 100% polyester fill that stays light and evenly spread. The 220 GSM fill gives dependable winter warmth with a balanced loft that does not feel heavy. GSM is the weight of the filling per square metre; in general, a higher GSM means a thicker, warmer duvet. It comes in a clean white that suits any duvet cover.",
+          "care_summary": "General guidance, not specific to one product: keep the filling in a duvet cover and wash the cover rather than the filling. Shake it each morning to spread the fill evenly, and air it now and then out of strong direct sun. Spot-clean small marks with a damp cloth and a little mild detergent. Only machine wash the filling if its care label allows it, and dry it completely before you use or store it."
         }
       },
       {
@@ -103,7 +109,9 @@
           "related_products": [
             "product:duvet-comfort-pillow-pack-of-2"
           ],
-          "sort_order": 4
+          "sort_order": 4,
+          "overview": "Our Duvet Comfort Pillow has a 100% pure cotton cover that feels soft and breathable against the skin. Inside, 100% polyester microfibre gives plush, even support that holds its shape night after night. The pillows are light, airy and comfortable in every season. Each pillow measures 20 x 30 inches (48 x 76 cm), a standard size that fits most pillow covers, and comes in a clean white that goes with any pillow cover.",
+          "care_summary": "General guidance, not specific to one product: use a pillow cover and wash it with your sheets. Plump the pillows each morning to keep the filling even, and air them now and then out of strong direct sun. Spot-clean small marks with a damp cloth. Only machine wash a filled pillow if its care label allows it, and dry it completely before use, as damp filling can clump."
         }
       }
     ]

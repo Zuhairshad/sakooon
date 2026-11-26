@@ -11,7 +11,7 @@
   assign categories = section.blocks | where: 'type', 'category'
 -%}
 <div class="section ed-section size-guide-section color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width page-width--text">
+  <div class="page-width ed-wide">
     <size-guide class="size-guide" data-size-guide data-default-unit="{{ s.default_unit }}">
       {% render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text %}
       <fieldset class="size-guide__units" hidden>
@@ -37,9 +37,14 @@
               assign cat_id = b.handle | default: b.title | handleize
               assign lines = b.table | strip | newline_to_br | split: '<br />'
             -%}
-            <div class="size-guide__category" id="{{ cat_id }}" {{ block.shopify_attributes }}>
+            {%- assign has_diagram = false -%}
+            {%- if b.diagram != blank and b.diagram != 'none' -%}{%- assign has_diagram = true -%}{%- endif -%}
+            <div class="size-guide__category{% if has_diagram %} size-guide__category--diagram{% endif %}" id="{{ cat_id }}" {{ block.shopify_attributes }}>
               <h2 class="size-guide__title h4" id="{{ cat_id }}-title" data-anchor-target>{{ b.title }}</h2>
               {%- if b.intro != blank -%}<div class="size-guide__intro rte">{{ b.intro }}</div>{%- endif -%}
+              <div class="size-guide__body">
+              {%- if has_diagram -%}<div class="size-guide__diagram">{% render 'size-diagram', type: b.diagram, id_prefix: cat_id %}</div>{%- endif -%}
+              <div class="size-guide__data">
               {%- if b.table != blank -%}
                 <div class="size-guide__scroll" role="region" aria-labelledby="{{ cat_id }}-title" tabindex="0">
                   <table class="size-guide__table{% if b.zebra %} size-guide__table--zebra{% endif %}">
@@ -67,6 +72,25 @@
                 </div>
               {%- endif -%}
               {%- if b.note != blank -%}<div class="size-guide__note rte">{{ b.note }}</div>{%- endif -%}
+              </div>
+              </div>
+            </div>
+          {%- when 'measure' -%}
+            {%- assign m = block.settings -%}
+            {%- assign m_id = 'measure-' | append: block.id -%}
+            <div class="size-guide__category size-guide__category--diagram size-guide__measure" id="{{ m_id }}" {{ block.shopify_attributes }}>
+              {%- if m.heading != blank -%}<h2 class="size-guide__title h4" id="{{ m_id }}-title">{{ m.heading }}</h2>{%- endif -%}
+              <div class="size-guide__body">
+                <div class="size-guide__diagram">{% render 'size-diagram', type: 'mattress', id_prefix: m_id %}</div>
+                <div class="size-guide__data">
+                  <ol class="size-guide__steps list-unstyled" role="list">
+                    {%- if m.step_1 != blank -%}<li><span class="size-guide__step-num" aria-hidden="true">1</span><div class="rte">{{ m.step_1 }}</div></li>{%- endif -%}
+                    {%- if m.step_2 != blank -%}<li><span class="size-guide__step-num" aria-hidden="true">2</span><div class="rte">{{ m.step_2 }}</div></li>{%- endif -%}
+                    {%- if m.step_3 != blank -%}<li><span class="size-guide__step-num" aria-hidden="true">3</span><div class="rte">{{ m.step_3 }}</div></li>{%- endif -%}
+                  </ol>
+                  {%- if m.note != blank -%}<div class="size-guide__note rte">{{ m.note }}</div>{%- endif -%}
+                </div>
+              </div>
             </div>
           {%- when 'note' -%}
             <div class="size-guide__aside" {{ block.shopify_attributes }}>
@@ -114,6 +138,21 @@
       { "type": "textarea", "id": "table", "label": "t:sections.size-guide.blocks.category.settings.table.label", "info": "t:sections.size-guide.blocks.category.settings.table.info", "default": "Size | Width | Length\nSingle | 140 | 200\nDouble | 200 | 200\nKing | 230 | 220" },
       { "type": "checkbox", "id": "convert", "label": "t:sections.size-guide.blocks.category.settings.convert.label", "default": true },
       { "type": "checkbox", "id": "zebra", "label": "t:sections.size-guide.blocks.category.settings.zebra.label", "default": true },
+      { "type": "richtext", "id": "note", "label": "t:sections.size-guide.blocks.category.settings.note.label" },
+      { "type": "select", "id": "diagram", "label": "t:sections.size-guide.blocks.category.settings.diagram.label", "default": "none", "options": [
+        { "value": "none", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.none" },
+        { "value": "flat", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.flat" },
+        { "value": "fitted", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.fitted" },
+        { "value": "duvet", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.duvet" },
+        { "value": "pillow", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.pillow" },
+        { "value": "mattress", "label": "t:sections.size-guide.blocks.category.settings.diagram.options.mattress" }
+      ] }
+    ] },
+    { "type": "measure", "name": "t:sections.size-guide.blocks.measure.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "How to measure your mattress" },
+      { "type": "richtext", "id": "step_1", "label": "t:sections.size-guide.blocks.measure.settings.step_1.label" },
+      { "type": "richtext", "id": "step_2", "label": "t:sections.size-guide.blocks.measure.settings.step_2.label" },
+      { "type": "richtext", "id": "step_3", "label": "t:sections.size-guide.blocks.measure.settings.step_3.label" },
       { "type": "richtext", "id": "note", "label": "t:sections.size-guide.blocks.category.settings.note.label" }
     ] },
     { "type": "note", "name": "t:sections.size-guide.blocks.note.name", "settings": [

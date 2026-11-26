@@ -1294,6 +1294,14 @@
         }
       },
       "blocks": {
+        "measure": {
+          "name": "Measuring steps",
+          "settings": {
+            "step_1": { "label": "Step 1" },
+            "step_2": { "label": "Step 2" },
+            "step_3": { "label": "Step 3" }
+          }
+        },
         "category": {
           "name": "Product category",
           "settings": {
@@ -1319,7 +1327,18 @@
             },
             "note": {
               "label": "Note below the table"
-            }
+            },
+              "diagram": {
+                "label": "Diagram",
+                "options": {
+                  "none": "None",
+                  "flat": "Flat sheet",
+                  "fitted": "Fitted sheet",
+                  "duvet": "Duvet in cover",
+                  "pillow": "Pillow and cover",
+                  "mattress": "Measuring a mattress"
+                }
+              }
           }
         },
         "note": {

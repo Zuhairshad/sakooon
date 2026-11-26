@@ -22,6 +22,15 @@ Source keys:
 | microfibre-fill | 220 GSM fill weight, winter warmth, balanced loft; definition of GSM; season "cold-weather" (Season: Winter) | P:duvet-comfort-filling-220-gsm |
 | cotton-microfibre | Composition "100% cotton cover, 100% polyester microfibre fill"; holds its shape; comfortable in every season; white | P:duvet-comfort-pillow-pack-of-2 |
 | all | Thread count, GSM field, weave, origin, ratings, swatch colour, certifications | **empty** (phase2-inputs §Still needed #3) |
+| cotton-satin `overview` | "In general, cotton satin is woven so more of each thread lies on the surface…" | G (labelled "In general") |
+| cotton-satin `overview` | yarn-dyed before weaving, rich long-lasting colour, checks/stripes/florals; two-tone deep and lighter shade; contrast piping; sheets resist wrinkles | P:yarn-dyed-cotton-satin-bed-sheet-set-king, P:two-tone-duvet-cover-set-king |
+| quilted-cotton `overview` | every sentence | P:quilted-bed-sheet-set-king |
+| microfibre-fill `overview` | insert, cover sold separately; shell, fill; 220 GSM warmth and loft; GSM definition; white | P:duvet-comfort-filling-220-gsm |
+| microfibre-fill `overview` | "in general, a higher GSM means a thicker, warmer duvet" | G (labelled) |
+| cotton-microfibre `overview` | every sentence, including "a standard size that fits most pillow covers" (the product FAQ) | P:duvet-comfort-pillow-pack-of-2 |
+| quilted-cotton `care_summary` | "machine wash at 40°C, do not bleach, tumble dry on low" | P:quilted-bed-sheet-set-king (introduced "From the product description") |
+| quilted-cotton `care_summary` | remaining sentences | G (introduced "As general guidance") |
+| cotton-satin, microfibre-fill, cotton-microfibre `care_summary` | every sentence | G (each starts "General guidance, not specific to one product") |
 
 ## Care guides (`page.care-*.json`)
 | Statement | Source |
@@ -39,6 +48,11 @@ Source keys:
 | Pillow: 20 × 30 in (48 × 76 cm), pack of two | P:duvet-comfort-pillow-pack-of-2 (same question, #9) |
 | Common mattress sizes in Pakistan (36/42/60/72/78 in wide; 78/84 in long) | G, labelled "For comparison only … not Sakooon products". Confirmation is Still needed #11 |
 | Measuring steps; flat-sheet allowance (depth plus about 15 cm / 6 in each side) | G |
+| Size guide "How to measure your mattress" steps 1–3 and note | G |
+| `editorial.size_guide.how_to_choose` (PDP size row): measure, compare with tables listed exactly as on each product; flat sheet or cover larger than the mattress | G, plus B (tables are verbatim product sizes) |
+| Size diagrams (`snippets/size-diagram.liquid`): mattress A/B/C, fitted sheet, flat-sheet tuck allowance, duvet overhang | G, lettered only, no numbers |
+| Pillow diagram "20 in (48 cm)", "30 in (76 cm)" | P:duvet-comfort-pillow-pack-of-2 (verbatim, including the 48 cm in Still needed #9) |
+| Pillow diagram "Opening" (not an envelope flap) | the cover closure is not stated in any description, so only an opening is drawn (Still needed #15) |
 
 ## FAQ, shipping, returns, contact
 | Statement | Source |

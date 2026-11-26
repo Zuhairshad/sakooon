@@ -4,7 +4,7 @@
       "type": "editorial-hero",
       "settings": {
         "heading": "",
-        "content_width": "text",
+        "content_width": "page",
         "text": "<p>The sizes of our bedding, exactly as listed on each product. Below them is a table of common mattress sizes in Pakistan, to help you compare with your own bed.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
@@ -14,6 +14,16 @@
     "guide": {
       "type": "size-guide",
       "blocks": {
+        "measure": {
+          "type": "measure",
+          "settings": {
+            "heading": "How to measure your mattress",
+            "step_1": "<p><strong>Width (A).</strong> Measure across the top of the mattress, from one side to the other.</p>",
+            "step_2": "<p><strong>Length (B).</strong> Measure from the head of the mattress to the foot.</p>",
+            "step_3": "<p><strong>Depth (C).</strong> Measure from the bottom seam to the top, including any topper you use.</p>",
+            "note": "<p>Measure the mattress itself, not the bed frame, and round up to the nearest inch. Then compare your numbers with the tables below.</p>"
+          }
+        },
         "bed-sheet-set": {
           "type": "category",
           "settings": {
@@ -23,7 +33,8 @@
             "table": "Piece | Size (inches)\nYarn-dyed cotton satin bed sheet | 94 × 96\nQuilted bed sheet | 96 × 106\nPillow cover, 2 in each set | 19 × 29",
             "convert": false,
             "zebra": true,
-            "note": ""
+            "note": "",
+            "diagram": "flat"
           }
         },
         "duvet-cover-set": {
@@ -35,7 +46,8 @@
             "table": "Piece | Size (inches)\n1 reversible duvet cover | 90 × 100\n1 bed sheet | 94 × 96\n4 pillow covers | 19 × 29",
             "convert": false,
             "zebra": true,
-            "note": ""
+            "note": "",
+            "diagram": "duvet"
           }
         },
         "duvet": {
@@ -47,7 +59,8 @@
             "table": "Size | Inches | Centimetres\nSingle | 60 × 90 | 152 × 240\nQueen | 90 × 95 | 230 × 240\nKing | 104 × 94 | 265 × 240",
             "convert": false,
             "zebra": true,
-            "note": "<p>For a full, fluffy look, choose a filling close to the size of your duvet cover.</p>"
+            "note": "<p>For a full, fluffy look, choose a filling close to the size of your duvet cover.</p>",
+            "diagram": "duvet"
           }
         },
         "pillow": {
@@ -59,7 +72,8 @@
             "table": "Piece | Inches | Centimetres\n1 pillow | 20 × 30 | 48 × 76",
             "convert": false,
             "zebra": true,
-            "note": ""
+            "note": "",
+            "diagram": "pillow"
           }
         },
         "mattress-sizes": {
@@ -71,7 +85,8 @@
             "table": "Mattress | Width | Length\nSingle | 91 | 198\nSingle, wide | 107 | 198\nQueen | 152 | 198\nKing | 183 | 198\nKing, long | 183 | 213\nSuper king | 198 | 213",
             "convert": true,
             "zebra": true,
-            "note": ""
+            "note": "",
+            "diagram": "none"
           }
         },
         "help": {
@@ -86,6 +101,7 @@
         }
       },
       "block_order": [
+        "measure",
         "bed-sheet-set",
         "duvet-cover-set",
         "duvet",
