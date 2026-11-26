@@ -1,6 +1,6 @@
 # Metafield and metaobject contracts
 
-Owner: Fable, co-authored with shad-8b. v0.2 (2026-11-26) incorporating docs/reference/fabric-model.md and the editorial review. Nothing here is created in the store yet; Shopify Admin setup is
+Owner: Fable, co-authored with shad-8b. v0.3 (2026-11-26) incorporating docs/reference/fabric-model.md and the editorial review. Nothing here is created in the store yet; Shopify Admin setup is
 documented at the end and requires the user's authorization.
 
 Rules
@@ -65,6 +65,8 @@ Free-text certifications are not allowed anywhere in the theme: a claim without 
 | key | type | used by |
 | --- | --- | --- |
 | fabric | metaobject_reference (fabric) | when fabric is a variant option; resolution order variant -> product, inline (render scopes are isolated, so no snippet): `assign fabric = variant.metafields.sakooon.fabric.value` then `if fabric == blank` -> `assign fabric = product.metafields.sakooon.fabric.value` |
+| swatch_color | color | chip colour for this variant's colour/design value (product cards, variant picker). Resolution order (shad-d8): native option-value swatch -> variant `sakooon.swatch_color` (+ `swatch_color_secondary`) -> variant image thumbnail -> text chip. No CSS named-colour guessing. Added v0.3, 2026-11-26. |
+| swatch_color_secondary | color, optional | second half of a split chip for two-tone/reversible colourways (e.g. "Grey / White"). Only read when `swatch_color` is set. Added v0.3. |
 
 ## Product metafields (namespace `sakooon`)
 | key | type | used by |

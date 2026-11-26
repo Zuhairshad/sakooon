@@ -61,7 +61,10 @@ function shopImage(ref) {
 const FIXTURE_DIR = path.join(__dirname, 'fixtures');
 const FIXTURES = exists(FIXTURE_DIR) ? fs.readdirSync(FIXTURE_DIR).filter((f) => f.endsWith('.json')).map((f) => readJson(path.join(FIXTURE_DIR, f))) : [];
 const FIXTURE_METAFIELDS = {};
+/* Per-variant metafields from fixtures: "variantMetafields": { "<variant id or gid>": { "<namespace>": { key: value } } } */
+const FIXTURE_VARIANT_METAFIELDS = {};
 for (const fx of FIXTURES) {
+  for (const [vid, ns] of Object.entries(fx.variantMetafields || {})) FIXTURE_VARIANT_METAFIELDS[String(gidNum(vid) || vid)] = ns;
   for (const fp of fx.products || []) if (!snapshot.products.some((p) => p.handle === fp.handle)) snapshot.products.push(fp);
   for (const [handle, handles] of Object.entries(fx.collectionProducts || {})) { const c = snapshot.collections.find((x) => x.handle === handle); if (c) c.productHandles = [...new Set([...(c.productHandles || []), ...handles])]; }
   Object.assign(FIXTURE_METAFIELDS, fx.metafields || {});
@@ -173,7 +176,11 @@ for (const fx of FIXTURES) for (const [type, entries] of Object.entries(fx.metao
 }
 for (const [type, byHandle] of Object.entries(METAOBJECTS)) for (const obj of Object.values(byHandle)) { for (const [k, v] of Object.entries(obj._fields)) obj[k] = metafield(v, k); delete obj._fields; }
 const SHOP_METAOBJECTS = Object.fromEntries(Object.entries(METAOBJECTS).map(([type, byHandle]) => [type, { ...byHandle, values: Object.values(byHandle).filter((o) => o.system.published) }]));
-for (const p of PRODUCTS) p.metafields = wrapNamespaces(FIXTURE_METAFIELDS[p.handle]);
+for (const p of PRODUCTS) {
+  p.metafields = wrapNamespaces(FIXTURE_METAFIELDS[p.handle]);
+  for (const v of p.variants) v.metafields = wrapNamespaces(FIXTURE_VARIANT_METAFIELDS[String(v.id)]);
+  if (p.selected_or_first_available_variant) p.selected_or_first_available_variant.metafields = p.variants.find((v) => v.id === p.selected_or_first_available_variant.id)?.metafields || wrapNamespaces();
+}
 for (const v of PRODUCTS.flatMap((p) => p.variants)) v.metafields = v.metafields || {};
 for (const c of COLLECTIONS) c.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`collection:${c.handle}`]);
 for (const pg of PAGES) pg.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`page:${pg.handle}`]);
