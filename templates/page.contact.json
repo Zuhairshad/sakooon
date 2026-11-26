@@ -1,0 +1,73 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "content_width": "page",
+        "text": "<p>We're here to help with orders, sizing, care and anything else. Choose the route that suits you.</p>",
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
+    "routes": {
+      "type": "info-columns",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "icon": "mail",
+            "heading": "Email",
+            "text": "<p>hello@example.com<br>We reply within one working day.</p>"
+          }
+        },
+        "c2": {
+          "type": "column",
+          "settings": {
+            "icon": "phone",
+            "heading": "Phone",
+            "text": "<p>+00 000 000 000<br>Monday to Friday, 9:00–17:00</p>"
+          }
+        },
+        "c3": {
+          "type": "column",
+          "settings": {
+            "icon": "info",
+            "heading": "Help with an order",
+            "text": "<p>Track a delivery, change an order or start a return.</p>",
+            "link_label": "Shipping and returns",
+            "link_url": "/pages/shipping"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "columns": 3,
+        "dividers": true,
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Send us a message",
+        "show_phone": true,
+        "show_order": true,
+        "show_topic": true,
+        "side_text": "<p><strong>Before you write</strong></p><p>Many answers are already in our FAQ, size guide and care guides.</p><p><a href=\"/pages/faq\">Read the FAQ</a></p>",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "routes",
+    "form"
+  ]
+}

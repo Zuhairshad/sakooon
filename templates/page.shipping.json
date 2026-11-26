@@ -1,0 +1,110 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Use this page to explain where you deliver, how long it takes and what it costs.</p>",
+        "padding_top": 60,
+        "padding_bottom": 32
+      }
+    },
+    "summary": {
+      "type": "info-columns",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "heading": "At a glance",
+            "text": "<p>Summarise the key points in one or two lines each.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "c1"
+      ],
+      "settings": {
+        "columns": 1,
+        "content_width": "text",
+        "dividers": true,
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "details": {
+      "type": "faq",
+      "blocks": {
+        "group_1": {
+          "type": "group",
+          "settings": {
+            "heading": "Delivery",
+            "size": "h4"
+          }
+        },
+        "q_1_1": {
+          "type": "question",
+          "settings": {
+            "question": "Where do you deliver?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "q_1_2": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "q_1_3": {
+          "type": "question",
+          "settings": {
+            "question": "How much does delivery cost?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "group_2": {
+          "type": "group",
+          "settings": {
+            "heading": "Tracking",
+            "size": "h4"
+          }
+        },
+        "q_2_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "q_2_2": {
+          "type": "question",
+          "settings": {
+            "question": "What if my order is late or damaged?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "group_1",
+        "q_1_1",
+        "q_1_2",
+        "q_1_3",
+        "group_2",
+        "q_2_1",
+        "q_2_2"
+      ],
+      "settings": {
+        "content_width": "text",
+        "structured_data": false,
+        "padding_top": 16,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "summary",
+    "details"
+  ]
+}
