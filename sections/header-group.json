@@ -33,7 +33,8 @@
         "sticky_mode": "always",
         "transparent_on_home": true,
         "transparent_text": "light",
-        "mobile_subnav_menu": ""
+        "mobile_subnav_menu": "",
+        "mobile_menu_style": "sheet"
       }
     },
     "cart-drawer": { "type": "cart-drawer", "settings": {} },

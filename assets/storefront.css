@@ -118,6 +118,15 @@ a.mega-menu__heading:hover { text-decoration: underline; }
 
 /* ---------- Mobile navigation drawer ---------- */
 .mobile-nav__drawer { --drawer-width: 420px; }
+.mobile-nav__group-label { display: flex; align-items: center; gap: var(--space-2); text-decoration: none; }
+/* Sheet (default): rises from the bottom like both references; rows 61px 16/500, level-2 headings 12/700 uppercase. */
+.mobile-nav--sheet .mobile-nav__drawer { height: auto; min-height: min(60dvh, 520px); max-height: 90dvh; }
+.mobile-nav--sheet .mobile-nav__top { height: 48px; }
+.mobile-nav--sheet .mobile-nav__link { min-height: 61px; font-size: 16px; font-weight: var(--font-body-weight-bold, 500); line-height: 1.8; }
+.mobile-nav--sheet .mobile-nav__back { min-height: 48px; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+.mobile-nav--sheet .mobile-nav__group-label { font-size: var(--text-xs); font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-foreground); }
+.mobile-nav--sheet .mobile-nav__sublink { padding-block: 3px; font-size: 15px; line-height: 27px; }
+@media (min-width: 768px) { .mobile-nav--sheet .mobile-nav__sublink { font-size: 16px; line-height: 28.8px; } }
 .mobile-nav__top { display: flex; align-items: center; height: var(--header-bar-height, 52px); padding-inline: calc(var(--page-gutter) - var(--space-2)); border-bottom: var(--border-width) solid var(--color-border); flex: none; }
 .mobile-nav__body { position: relative; flex: 1 1 auto; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .mobile-nav__body[data-level-active] { overflow-y: hidden; }
@@ -207,7 +216,10 @@ scroll-rail { display: block; }
 [data-rail-track]:focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; display: grid; overflow: hidden; background: var(--color-background); color: var(--color-foreground); --hero-min: clamp(420px, 70svh, 720px); }
+/* Static chrome offsets (announcement 40 + header bar 52/56): JS-measured --header-height/--announcement-height arrive after
+   first paint and would resize the hero (layout shift), so the hero never depends on them. */
+.hero { position: relative; display: grid; overflow: hidden; background: var(--color-background); color: var(--color-foreground); --hero-min: clamp(420px, 70svh, 720px); --hero-announcement: 40px; --hero-header: 52px; }
+@media (min-width: 1024px) { .hero { --hero-header: 56px; } }
 .hero--has-media.hero--text-light { color: #FFFFFF; }
 .hero--has-media.hero--text-dark { color: #1C1B19; }
 .hero__media, .hero__content { grid-area: 1 / 1; }
@@ -217,16 +229,16 @@ scroll-rail { display: block; }
 }
 .hero--has-media .hero__media::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, var(--hero-overlay, 0)); pointer-events: none; }
 .hero--has-media.hero--text-dark .hero__media::after { background: rgba(255, 255, 255, var(--hero-overlay, 0)); }
-.hero--screen { --hero-min: calc(100svh - var(--announcement-height, 0px) - var(--header-height, 56px)); }
-body:has(.header--transparent-capable) .hero--screen.hero--under-header { --hero-min: calc(100svh - var(--announcement-height, 0px)); }
+.hero--screen { --hero-min: calc(100svh - var(--hero-announcement) - var(--hero-header)); }
+body:has(.header--transparent-capable) .hero--screen.hero--under-header { --hero-min: calc(100svh - var(--hero-announcement)); }
 .hero--large { --hero-min: clamp(480px, 80svh, 860px); }
 .hero--medium { --hero-min: clamp(400px, 60svh, 640px); }
 .hero--adapt .hero__media { min-height: 0; }
 .hero--adapt .hero__media > img, .hero--adapt .hero__media > picture > img, .hero--adapt .hero__media .hero__img { position: static; height: auto; }
 .hero--adapt .hero__media > .placeholder { position: static; aspect-ratio: 16/9; }
-@media (max-width: 767.98px) { .hero--screen { --hero-min: max(480px, calc(100svh - var(--announcement-height, 0px) - var(--header-height, 52px))); } .hero--large { --hero-min: 70svh; } }
+@media (max-width: 767.98px) { .hero--screen { --hero-min: max(480px, calc(100svh - var(--hero-announcement) - var(--hero-header))); } .hero--large { --hero-min: 70svh; } }
 .hero__content { position: relative; z-index: 1; display: flex; padding-block: var(--space-10); pointer-events: none; }
-body:has(.header--transparent-capable) .hero--under-header .hero__content { padding-top: calc(var(--header-height, 56px) + var(--space-8)); }
+body:has(.header--transparent-capable) .hero--under-header .hero__content { padding-top: calc(var(--hero-header) + var(--space-8)); }
 .hero__copy { max-width: var(--hero-content-width, 640px); pointer-events: auto; --stack-gap: var(--space-5); }
 .hero--top-left .hero__content, .hero--top-center .hero__content, .hero--top-right .hero__content { align-items: flex-start; }
 .hero--middle-left .hero__content, .hero--middle-center .hero__content, .hero--middle-right .hero__content { align-items: center; }
@@ -411,7 +423,7 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .hero-split--mobile-text-first .hero-split__panel { order: -1; }
 @media (min-width: 768px) {
   .hero-split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hero-split--screen { min-height: calc(100svh - var(--announcement-height, 0px) - var(--header-height, 56px)); }
+  .hero-split--screen { min-height: calc(100svh - 96px); }
   .hero-split--large { min-height: clamp(520px, 80svh, 860px); }
   .hero-split--medium { min-height: clamp(420px, 60svh, 640px); }
   .hero-split__media { min-height: 100%; }
