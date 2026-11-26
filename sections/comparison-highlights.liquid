@@ -1,0 +1,63 @@
+{%- comment -%}
+  Comparison highlights: side-by-side columns comparing options (e.g. fabrics or weaves). Owner: shad-2d.
+  Each column: image, name, short descriptor, a list of attributes (rows align across columns by order), link.
+  Desktop: equal columns with hairline dividers; mobile: horizontal swipe.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section comparison color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --compare-columns: {{ section.blocks.size | at_least: 1 }};">
+  <div class="page-width page-width--full">
+    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link -%}
+    <ul class="comparison__list list-unstyled no-scrollbar" role="list">
+      {%- for block in section.blocks -%}
+        <li class="comparison__item" {{ block.shopify_attributes }}>
+          {%- if s.show_images -%}
+            <div class="media comparison__media" style="--aspect: 4/5">
+              {%- render 'image', image: block.settings.image, sizes: '(min-width: 1024px) 25vw, 70vw', aspect: '4/5', placeholder: 'product-1' -%}
+            </div>
+          {%- endif -%}
+          <h3 class="comparison__name h4">{{ block.settings.name | escape }}</h3>
+          {%- if block.settings.descriptor != blank -%}<p class="comparison__descriptor">{{ block.settings.descriptor | escape }}</p>{%- endif -%}
+          {%- if block.settings.attributes != blank -%}<div class="comparison__attributes rte">{{ block.settings.attributes }}</div>{%- endif -%}
+          {%- if block.settings.link_label != blank and block.settings.link != blank -%}
+            <a class="comparison__link link link--arrow" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Comparison highlights",
+  "tag": "section",
+  "class": "section-comparison",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find your fabric" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "checkbox", "id": "show_images", "label": "Show images", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "column", "name": "Column",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Option" },
+        { "type": "text", "id": "descriptor", "label": "Descriptor", "default": "Crisp and cool" },
+        { "type": "richtext", "id": "attributes", "label": "Attributes", "default": "<ul><li>Feel: describe it</li><li>Best for: describe it</li><li>Care: describe it</li></ul>", "info": "Use a list; keep the same order in every column so rows line up." },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Comparison highlights", "blocks": [ { "type": "column", "settings": { "name": "Option A" } }, { "type": "column", "settings": { "name": "Option B" } }, { "type": "column", "settings": { "name": "Option C" } } ] } ]
+}
+{% endschema %}

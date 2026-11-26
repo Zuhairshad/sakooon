@@ -1,5 +1,5 @@
 {%- comment -%}
-  Collection list / shop by category. Owner: shad-2d. Pattern: Parachute category grid (4 equal tiles, 8px gap,
+  Collection list / shop by category. Owner: shad-2d. Without blocks it lists every collection (list-collections page). Pattern: Parachute category grid (4 equal tiles, 8px gap,
   ~0.72 ratio, label as a light chip bottom-left; hidden below 768 there, a setting here) or labels below (Tekla).
 {%- endcomment -%}
 {%- liquid
@@ -17,11 +17,25 @@
   assign col_vw = 100 | divided_by: s.columns_desktop
   assign sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 33vw, 60vw'
 -%}
+{%- if section.settings.heading_tag == 'h1' -%}{%- assign heading_tag = 'h1' -%}{%- else -%}{%- assign heading_tag = 'h2' -%}{%- endif -%}
 <div class="section collection-list collection-list--{{ s.label_style }} collection-list--mobile-{{ s.mobile_layout }} color-scheme-{{ s.color_scheme }}"
   style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --tile-columns: {{ s.columns_desktop }}; --tile-gap: 8px;">
   <div class="page-width page-width--full">
-    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, link_label: s.link_label, link_url: routes.collections_url -%}
+    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, heading_tag: heading_tag, link_label: s.link_label, link_url: routes.collections_url -%}
     <ul class="collection-list__grid list-unstyled{% if s.mobile_layout == 'scroll' %} no-scrollbar{% endif %}" role="list">
+      {%- if section.blocks.size == 0 -%}
+        {%- for collection in collections -%}
+          {%- assign image = collection.featured_image | default: collection.image -%}
+          <li class="collection-list__item">
+            <a class="collection-list__link" href="{{ collection.url }}">
+              <div class="media collection-list__media" style="--aspect: {{ aspect }}">
+                {%- render 'image', image: image, sizes: sizes, aspect: aspect, placeholder: 'collection-1', class: 'collection-list__img' -%}
+              </div>
+              <span class="collection-list__label">{{ collection.title | escape }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
       {%- for block in section.blocks -%}
         {%- liquid
           assign collection = block.settings.collection
@@ -52,7 +66,8 @@
   "max_blocks": 12,
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading" },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "select", "id": "heading_tag", "label": "Heading level", "default": "h2", "options": [ { "value": "h1", "label": "H1 (main page heading)" }, { "value": "h2", "label": "H2" } ] },
     { "type": "text", "id": "link_label", "label": "Link to all collections label" },
     { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
     { "type": "select", "id": "image_ratio", "label": "Image shape", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait 3:4" }, { "value": "tall", "label": "Portrait 4:5" }, { "value": "square", "label": "Square" } ] },

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-list",
+      "settings": {
+        "heading": "Collections", "heading_size": "h1", "heading_tag": "h1", "link_label": "", "columns_desktop": 4, "image_ratio": "portrait",
+        "label_style": "below", "mobile_layout": "grid", "color_scheme": "white", "padding_top": 48, "padding_bottom": 88
+      }
+    }
+  },
+  "order": ["main"]
+}
