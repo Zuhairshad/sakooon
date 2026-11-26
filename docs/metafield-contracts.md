@@ -131,3 +131,34 @@ Page metafield `related_fabrics` drives fabric-guide and compare ordering; when 
 3. Install Shopify Search & Discovery for filters, complementary and related products.
 4. Navigation: menus `main-menu` (3 levels: item > group heading > links), `footer-shop`, `footer-help`, `footer-company`, `footer-guides`, `legal` (handles configurable in the header/footer section settings; the preview ships the same handles as fixtures).
 5. Create pages with the templates: page.fabric-guide, page.care-guide, page.size-guide, page.faq, page.about, page.contact, page.shipping, page.returns, page.measurement-guide.
+
+## Admin values
+Values to enter in Shopify Admin for the real catalogue (mirrored in `tools/preview/fixtures/products.json`). Appended by owner; each line says where the value comes from.
+
+### Commerce (shad-d8)
+Products, namespace `sakooon` (source: each product's own description in store.json, quoted, not extended):
+
+| Product handle | fabric | size_guide | package_contents | complementary_products |
+| --- | --- | --- | --- | --- |
+| duvet-comfort-filling-220-gsm | `microfibre-fill` | page `size-guide` | blank (the description has no "What's in" list) | two-tone-duvet-cover-set-king ("cover sold separately") |
+| duvet-comfort-pillow-pack-of-2 | `cotton-microfibre` | page `size-guide` | blank: the description says "2 x Pillows" but the product also sells "Pack of 1 Pillow" (parked in phase2-inputs "Still needed") | yarn-dyed and quilted sheet sets ("pair it with the matching pillow covers from our bed sheet sets") |
+| yarn-dyed-cotton-satin-bed-sheet-set-king | `cotton-satin` | page `size-guide` | "1 x Bed Sheet – 94 x 96 inches (King)", "2 x Pillow Covers – 19 x 29 inches" | blank (Search & Discovery) |
+| two-tone-duvet-cover-set-king | `cotton-satin` | page `size-guide` | "1 x Reversible Duvet Cover – 90 x 100 inches (King)", "1 x Bed Sheet – 94 x 96 inches (King)", "4 x Pillow Covers – 19 x 29 inches (2 in each tone)" | duvet-comfort-filling-220-gsm ("Pair it with our Duvet Comfort Filling") |
+| quilted-bed-sheet-set-king | `quilted-cotton` | page `size-guide` | "1 x Quilted Bed Sheet – 96 x 106 inches (King)", "2 x Quilted Pillow Covers – 19 x 29 inches" | blank (Search & Discovery) |
+
+`siblings`, `swatch_image`, `benefits`, `dimensions`, `weight`, `product_weight_gsm`, `origin`, `certifications` stay blank: colour and design are real variant options (D10), and the descriptions already carry sizes and benefits (the PDP splits them into accordions by heading).
+Product type must stay as it is in the store (`Duvet`, `Pillow`, `Bed Sheet Set`, `Duvet Cover Set`): the size-guide anchors are `#duvet`, `#pillow`, `#bed-sheet-set`, `#duvet-cover-set`.
+
+Variant `sakooon.swatch_color` (+ `swatch_color_secondary`). Source: median colour sampled from the lit bed area of each variant's packshot, then lifted out of shadow by eye. These are approximations; replace them with the merchant's own values when available. Yarn-dyed "Design" variants get none: their prints render as image chips from the variant image.
+
+| Product | Value | swatch_color | swatch_color_secondary |
+| --- | --- | --- | --- |
+| quilted-bed-sheet-set-king | Sage Green / Ivory / Dusty Blue / Emerald Green / Slate Grey / Blush Pink | #93a596 / #e9e1d0 / #7f9ab8 / #1f4d38 / #5a5d60 / #c49a8a | |
+| quilted-bed-sheet-set-king | Charcoal Grey / Rust / Butter Yellow / Periwinkle Blue / Black | #45433f / #8c4a2a / #d8c07e / #8c9bc0 / #1c1c1e | |
+| two-tone-duvet-cover-set-king | Grey / White | #6b6866 | #f2f0ec |
+| two-tone-duvet-cover-set-king | Black / White | #161616 | #f2f0ec |
+| two-tone-duvet-cover-set-king | Rust / Peach | #7a3419 | #d39066 |
+| two-tone-duvet-cover-set-king | Royal Blue / Sky Blue | #1f3d78 | #a9c6e0 |
+| two-tone-duvet-cover-set-king | Forest Green / Lime Green | #24392a | #b6c98c |
+
+Collections, `sakooon.banner_text` (or the collection description; claim-free copy, see docs/reference/commerce-admin.md §8).

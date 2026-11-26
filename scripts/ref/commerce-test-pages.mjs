@@ -1,11 +1,12 @@
 // Cart page + search results page.
-// Usage: node scripts/ref/commerce-test-pages.mjs --base http://localhost:9302 [--variant 900101] [--query quilt] [--shots dir]
+// Usage: node scripts/ref/commerce-test-pages.mjs --base http://localhost:9302 [--variant 50715209629799] [--query quilt] [--shots dir]
 import { chromium } from 'playwright';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 const BASE = arg('base', 'http://localhost:9302');
-const VARIANT = Number(arg('variant', 900101));
-const QUERY = arg('query', 'quilt');
+const VARIANT = Number(arg('variant', 50715209629799));
+const VARIANT2 = Number(arg('variant2', 50942970364007));
+const QUERY = arg('query', 'duvet');
 const SHOTS = arg('shots', null);
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? ` (${detail})` : ''}`); };
@@ -21,7 +22,7 @@ for (const width of [1440, 390]) {
 
   // Cart page
   await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
-  await page.evaluate(async (id) => { await fetch('/cart/clear.js', { method: 'POST' }); await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: [{ id, quantity: 1 }, { id: id + 1, quantity: 2 }] }) }); }, VARIANT);
+  await page.evaluate(async ([id, id2]) => { await fetch('/cart/clear.js', { method: 'POST' }); await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: [{ id, quantity: 1 }, { id: id2, quantity: 2 }] }) }); }, [VARIANT, VARIANT2]);
   await page.goto(`${BASE}/cart`, { waitUntil: 'networkidle' });
   await page.evaluate(() => { window.__noReload = true; });
   check(`cart page lines ${tag}`, await page.locator('.main-cart [data-line-item]').count() === 2);

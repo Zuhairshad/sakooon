@@ -1,14 +1,18 @@
 // Product page: variant picker (colour radios + size select), section re-render, sold-out state, add to cart,
 // sticky bar, accordions, gallery arrows, zoom, size guide.
-// Usage: node scripts/ref/commerce-test-product.mjs --base http://localhost:9302 [--product /products/fixture-quilted-bed-sheet-set]
+// Real catalogue (store.json): colour on the quilted set, size/price on the duvet filling, sold out on the pillow pack.
+// Usage: node scripts/ref/commerce-test-product.mjs --base http://localhost:9302 [--product /products/quilted-bed-sheet-set-king]
+//        [--sized /products/<handle with a size select>] [--soldout /products/<sold-out handle>]
 //        [--gallery /products/<handle with several images>] [--guide /products/<handle with sakooon.size_guide>] [--shots dir]
 import { chromium } from 'playwright';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 const BASE = arg('base', 'http://localhost:9302');
-const PRODUCT = arg('product', '/products/fixture-quilted-bed-sheet-set');
-const GALLERY = arg('gallery', '/products/yarn-dyed-cotton-satin-bed-sheet-set-king');
-const GUIDE = arg('guide', '/products/fixture-two-tone-duvet-cover-set');
+const PRODUCT = arg('product', '/products/quilted-bed-sheet-set-king');
+const SIZED = arg('sized', '/products/duvet-comfort-filling-220-gsm');
+const SOLDOUT = arg('soldout', '/products/duvet-comfort-pillow-pack-of-2');
+const GALLERY = arg('gallery', '/products/duvet-comfort-filling-220-gsm');
+const GUIDE = arg('guide', '/products/two-tone-duvet-cover-set-king');
 const SHOTS = arg('shots', null);
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? ` (${detail})` : ''}`); };
@@ -43,34 +47,39 @@ for (const width of [1440, 390]) {
   check(`selected value label updated ${tag}`, (await page.locator('.variant-picker__option--colour [data-selected-value]').first().textContent()).trim() === 'Dusty Blue');
   check(`focus stays on the chosen swatch ${tag}`, await page.evaluate(() => document.activeElement && document.activeElement.value === 'Dusty Blue'));
 
-  // Size change updates price
+  // Size change updates price (duvet filling: Single / Queen / King)
+  await page.goto(`${BASE}${SIZED}`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => { window.__noReload = true; });
   const before = (await page.locator('.buy-buttons__price').first().textContent()).trim();
   const r2 = page.waitForResponse((r) => r.url().includes('section_id='), { timeout: 5000 }).catch(() => null);
-  await page.locator('.variant-picker__select').first().selectOption({ label: 'King' });
+  if (await page.locator('.variant-picker__select').count()) await page.locator('.variant-picker__select').first().selectOption({ label: 'King' });
+  else await page.locator('.variant-picker__pill', { hasText: 'King' }).first().click();
   await r2; await page.waitForTimeout(300);
   const after = (await page.locator('.buy-buttons__price').first().textContent()).trim();
-  check(`size change updates price ${tag}`, before !== after, `${before} -> ${after}`);
+  check(`size change updates price ${tag}`, before !== after && /6,999/.test(after), `${before} -> ${after}`);
+  check(`compare-at shown ${tag}`, /7,999/.test(await page.locator('.buy-buttons__price').first().textContent()));
   const id = new URL(page.url()).searchParams.get('variant');
   check(`form id matches URL variant ${tag}`, (await page.locator('input[data-variant-id]').first().inputValue()) === id, id);
 
-  // Sold out (Rust / King in the fixture)
-  const r3 = page.waitForResponse((r) => r.url().includes('section_id='), { timeout: 5000 }).catch(() => null);
-  await page.locator('.variant-picker__option--colour label', { hasText: 'Rust' }).first().click();
-  await r3; await page.waitForTimeout(300);
-  const add = page.locator('[data-add-button]').first();
-  check(`sold-out variant disables add ${tag}`, await add.isDisabled() && /sold out/i.test(await add.textContent()));
-  check(`King marked sold out in select ${tag}`, /sold out/i.test(await page.locator('.variant-picker__select option', { hasText: 'King' }).first().textContent()));
+  // Sold out (pillow pack: every variant unavailable in the store)
+  await page.goto(`${BASE}${SOLDOUT}`, { waitUntil: 'networkidle' });
+  const soldAdd = page.locator('[data-add-button]').first();
+  check(`sold-out product disables add ${tag}`, await soldAdd.isDisabled() && /sold out/i.test(await soldAdd.textContent()));
+  check(`no notify-me or fake stock on sold out ${tag}`, !/notify|back in stock|only \d+ left/i.test(await page.locator('.main-product__info').first().textContent()));
+  check(`sold-out badge ${tag}`, /sold out/i.test(await page.locator('.main-product__info').first().textContent()));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/pdp-sold-out-${width}.png` });
 
-  // Back to an available variant and add to cart
+  // Add to cart (duvet filling, Queen)
+  await page.goto(`${BASE}${SIZED}`, { waitUntil: 'networkidle' });
   const r4 = page.waitForResponse((r) => r.url().includes('section_id='), { timeout: 5000 }).catch(() => null);
-  await page.locator('.variant-picker__select').first().selectOption({ label: 'Queen' });
+  if (await page.locator('.variant-picker__select').count()) await page.locator('.variant-picker__select').first().selectOption({ label: 'Queen' });
+  else await page.locator('.variant-picker__pill', { hasText: 'Queen' }).first().click();
   await r4; await page.waitForTimeout(300);
-  check(`available again ${tag}`, !(await page.locator('[data-add-button]').first().isDisabled()));
+  check(`available ${tag}`, !(await page.locator('[data-add-button]').first().isDisabled()));
   await page.locator('[data-add-button]').first().click();
   await page.waitForSelector('#cart-drawer[open] [data-line-item]', { timeout: 5000 }).catch(() => {});
   check(`add to cart opens drawer with the line ${tag}`, await page.locator('#cart-drawer[open] [data-line-item]').count() === 1);
-  check(`line is Rust / Queen ${tag}`, /Rust/.test(await page.locator('#cart-drawer [data-line-item]').first().textContent()) && /Queen/.test(await page.locator('#cart-drawer [data-line-item]').first().textContent()));
+  check(`line is Queen ${tag}`, /Queen/.test(await page.locator('#cart-drawer [data-line-item]').first().textContent()));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/pdp-added-${width}.png` });
   await page.keyboard.press('Escape'); await page.waitForTimeout(300);
 
