@@ -399,7 +399,8 @@ blog-load-more { display: block; }
 .main-article__footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); max-width: 612px; margin: var(--space-10) auto 0; padding-top: var(--space-6); border-top: var(--border-width) solid var(--color-border); font-size: var(--text-sm); }
 .main-article__back { gap: var(--space-2); }
 .main-article__back:hover .icon { transform: translateX(-3px); }
-.main-article__share { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.main-article__share { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-4); }
+.main-article__share a, .main-article__share button, .main-article__back { display: inline-flex; align-items: center; min-height: var(--touch-target); }
 .main-article__comments { max-width: 612px; margin: var(--space-16) auto 0; display: grid; gap: var(--space-6); }
 .main-article__comment { padding-bottom: var(--space-5); border-bottom: var(--border-width) solid var(--color-border); }
 .main-article__comment-form { display: grid; gap: var(--space-5); }

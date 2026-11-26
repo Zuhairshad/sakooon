@@ -20,7 +20,7 @@
     </a>
     {%- if show_date or show_tag and article.tags.size > 0 -%}
       <p class="article-card__meta">
-        {%- if show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>{%- endif -%}
+        {%- if show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%-d %B %Y' }}</time>{%- endif -%}
         {%- if show_date and show_tag and article.tags.size > 0 -%}<span class="article-card__sep" aria-hidden="true">|</span>{%- endif -%}
         {%- if show_tag and article.tags.size > 0 -%}<span>{{ article.tags.first }}</span>{%- endif -%}
       </p>

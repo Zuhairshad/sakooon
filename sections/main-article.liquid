@@ -23,7 +23,7 @@
     <h1 class="main-article__title {{ s.heading_size }}">{{ article.title }}</h1>
     {%- if s.show_date or s.show_author -%}
       <p class="main-article__meta">
-        {%- if s.show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>{%- endif -%}
+        {%- if s.show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%-d %B %Y' }}</time>{%- endif -%}
         {%- if s.show_date and s.show_author and article.author != blank -%}<span aria-hidden="true">|</span>{%- endif -%}
         {%- if s.show_author and article.author != blank -%}<span>{{ article.author }}</span>{%- endif -%}
       </p>
@@ -62,7 +62,7 @@
           {%- for comment in article.comments -%}
             <div class="main-article__comment">
               <div class="rte">{{ comment.content }}</div>
-              <p class="text-caption">{{ comment.author }} · <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: format: 'date' }}</time></p>
+              <p class="text-caption">{{ comment.author }} · <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: '%-d %B %Y' }}</time></p>
             </div>
           {%- endfor -%}
           {% render 'pagination', paginate: paginate %}

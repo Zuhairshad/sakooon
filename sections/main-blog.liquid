@@ -21,7 +21,17 @@
         <ul class="list-unstyled" role="list">
           <li><a class="main-blog__tag" href="{{ blog.url }}"{% if current_tags == blank %} aria-current="page"{% endif %}>{{ 'editorial.blog.all' | t }}</a></li>
           {%- for tag in blog.all_tags -%}
-            <li><a class="main-blog__tag" href="{{ blog.url }}/tagged/{{ tag | handleize }}"{% if current_tags contains tag %} aria-current="page"{% endif %}>{{ tag }}</a></li>
+            {%- liquid
+              assign tag_handle = tag | handleize
+              assign active = false
+              for ct in current_tags
+                assign ct_handle = ct | handleize
+                if ct_handle == tag_handle
+                  assign active = true
+                endif
+              endfor
+            -%}
+            <li><a class="main-blog__tag" href="{{ blog.url }}/tagged/{{ tag_handle }}"{% if active %} aria-current="page"{% endif %}>{{ tag }}</a></li>
           {%- endfor -%}
         </ul>
       </nav>
