@@ -119,6 +119,8 @@ function SORT_OPTIONS() {
 for (const p of PRODUCTS) p.collections = COLLECTIONS.filter((c) => c.products.includes(p));
 const ALL = { id: 0, handle: 'all', title: 'All products', description: '', url: '/collections/all', products: PRODUCTS, products_count: PRODUCTS.length, all_products_count: PRODUCTS.length, filters: [], sort_options: SORT_OPTIONS(), all_tags: [] };
 const collectionByHandle = Object.fromEntries([...COLLECTIONS, ALL].map((c) => [c.handle, c]));
+/* `collections` iterates like an array on Shopify but also answers collections['handle']; an array with named props does both. */
+const COLLECTIONS_DROP = Object.assign([...COLLECTIONS], collectionByHandle);
 
 const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handle: p.handle, title: p.title, body: p.body }))].map((p) => ({
   id: gidNum(p.id), handle: p.handle, title: p.title, content: p.body || p.bodyHtml || '', url: `/pages/${p.handle}`, template_suffix: null,
@@ -687,7 +689,7 @@ const pageExcerpt = (route) => {
 function globalsFor(route, url) {
   return {
     shop: SHOP, settings: THEME_SETTINGS, routes: ROUTES, cart: cartObject(), customer: null,
-    linklists: LINKLISTS, collections: { ...collectionByHandle, size: COLLECTIONS.length }, all_products: productByHandle,
+    linklists: LINKLISTS, collections: COLLECTIONS_DROP, all_products: productByHandle,
     pages: pageByHandle, blogs: blogByHandle, images: {}, localization: { language: { iso_code: 'en' }, country: { iso_code: 'PK', currency: { iso_code: 'PKR' } }, available_languages: [], available_countries: [] },
     request: { locale: { iso_code: 'en', primary: true }, page_type: route.page_type, path: url.pathname, host: url.host, origin: `http://${url.host}`, design_mode: false, visual_preview_mode: false, _url: url.toString() },
     template: { name: route.name.replace(/^customers\//, ''), suffix: route.suffix, directory: route.name.startsWith('customers/') ? 'customers' : null },

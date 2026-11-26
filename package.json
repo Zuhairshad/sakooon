@@ -12,9 +12,12 @@
     "capture:theme": "node scripts/capture-theme.mjs",
     "compare": "node scripts/compare-screenshots.mjs",
     "test:responsive": "node scripts/test-responsive.mjs",
-    "test:interactions": "node scripts/test-interactions.mjs"
+    "test:interactions": "node scripts/test-interactions.mjs",
+    "test:a11y": "node scripts/test-a11y.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
     "liquidjs": "^10.30.1",
     "pixelmatch": "^7.1.0",
     "playwright": "^1.58.0",
