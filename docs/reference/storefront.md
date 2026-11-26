@@ -11,6 +11,20 @@ References: **Parachute** (primary, `parachutehome.com`) and **Tekla** (secondar
 - Output (not in git): `/Users/shad/sakooon-qa/references/<site>/home/` holds `<vw>-full.png`, `<vw>-fold.png`, `measure.json` (all computed values below), `states/*.png`, `states.json`, `breakpoints.json`, `sticky-*.json`.
 - Values come from `getComputedStyle` and `getBoundingClientRect`. "Inset" = distance from the section edge to the first or last visible content.
 
+### Evidence levels
+
+Every number and behaviour in this document is **measured** unless it carries a tag:
+
+| Tag | Meaning |
+|---|---|
+| (none) | **Measured**: computed style or bounding box from a live page, stored in `measure.json`, `states.json`, `states-l2.json`, `breakpoints.json` or `sticky-*.json`. |
+| **[visual]** | Read from a screenshot; no computed value was captured (e.g. colours of elements that report transparent backgrounds). |
+| **[DOM]** | Structure read from markup (element order, class names, child counts); no geometry, because the state could not be opened. |
+| **[inferred]** | Derived from other measurements or from naming; not observed directly. Re-verify before relying on it. |
+| **[proposal]** | Our recommendation, not a reference fact. |
+
+See also "Inferred and unverified claims" at the end.
+
 ### Popups dismissed before capture
 
 | Site | What | How |
@@ -28,8 +42,9 @@ Tekla geolocates to DKK/Denmark (`Ship to Denmark (DKK)`, `1.000 DKK` copy). Tha
 | Site | State | Reason |
 |---|---|---|
 | Parachute | 768/390/375 on the first run | Cloudflare "Just a moment…" interstitial. Captures discarded, not bypassed. 768 and 390 were recaptured later. |
-| Parachute | 375 full page | Chromium screenshot protocol error on the recapture; 375 measurements are pending a retry (390 is representative). |
-| Parachute | All interaction states (mega menu per item, sticky sequence, mobile drawer + nested level, card hovers) | HTTP 429 to the shared IP (three attempts with 90s back-off). The mega menu **structure** below comes from the DOM captured on the first successful load (panels are present but hidden). Pixel measurements of open panels are **PENDING**; the script is ready (`node scripts/ref/storefront-states.mjs parachute`). The breakpoint sweep succeeded on a later run. |
+| Parachute | 375 full page | Recaptured on the third run (document 7739px, header 110, announcement 58, 9 sections). |
+| Parachute | Interaction states | First runs: HTTP 429 (three attempts with 90s back-off, not bypassed). Third run (after widening popup dismissal to the late Alia overlay): sticky sequence, mobile drawer + nested level at 390 and 768, and card hover captured (`states.json`, `states/*.png`). |
+| Parachute | Desktop mega panels | **Not reproducible headlessly**: neither `locator.hover` nor a stepped pointer path flips `aria-expanded` on the triggers (panel height stays 0 for 2s; `storefront-parachute-mega.mjs`). Structure stays **[DOM]**; widths, link pitch, heading style and timing are unmeasured. |
 | Parachute | 390 full-page PNG | The Alia mobile popup and the Rebuy cart flyout are painted over the top of the full-page image. The measurements in `measure.json` are unaffected; use `390-fold.png` or the JSON. |
 | Parachute | Category-grid images 2–4 and the hero video frame in full-page PNGs | Lazy and video content is not painted in the stitched full-page image. Use `*-fold.png` for the hero. |
 
@@ -39,7 +54,7 @@ Tekla geolocates to DKK/Denmark (`Ship to Denmark (DKK)`, `1.000 DKK` copy). Tha
 |---|---|---|
 | Sans (UI/body) | "Suisse Intl" 400/500/700 | "unica77" 300/400 |
 | Display serif | "Canela" 300/400 | none (single sans family, weight 300 throughout) |
-| Substitute proposal | Sans: Inter or system-ui (licensed). Serif: a licensed light display serif (for example Cormorant/Fraunces at 300) | Inter 300 or system-ui |
+| Substitute **[proposal]** | Sans: Inter or system-ui (licensed). Serif: a licensed light display serif (for example Cormorant/Fraunces at 300) | Inter 300 or system-ui |
 
 ### Parachute type scale (computed)
 
@@ -65,9 +80,9 @@ All text 14px / 21px weight 300 (nav, captions, footer links, announcement). Foo
 |---|---|---|
 | Primary (solid) | 48px high, padding 0 24px, radius 4px, brand fill (deep wine), white 14/400 text, 1px border | none on homepage (text links only) |
 | On-image button | 40–44px high, padding 0 32px (or 12px 20px), radius 2–4px, light warm fill `#f1eee9`, dark text 14/400 | – |
-| Tab pills (rail filters) | 14/400 text-only buttons; the active tab has a 1px underline bar running under the whole tab row | – |
+| Tab pills (rail filters) | 14/400 text-only buttons; the active tab has a 1px underline bar running under the whole tab row **[visual]** | – |
 | Text link on image | 16px uppercase, `text-decoration: underline`, transition 0.3s linear | 14/300, no underline; colour shifts `#5c5c5c` → `#181818` on hover/active |
-| Hover transitions | Header background/colour 0.2s; links 0.3s linear | 0.25s `cubic-bezier(.4,0,.2,1)` (header), mega panel `transform .3s` same curve, mobile menu `opacity/visibility .2s`, backdrop `opacity .3s` |
+| Hover transitions | Header background/colour 0.2s; links 0.3s linear; product cards cross-fade to a second image (opacity 0 → 1, `opacity .2s`), no zoom, no quick-add | 0.25s `cubic-bezier(.4,0,.2,1)` (header), mega panel `transform .3s` same curve, mobile menu `opacity/visibility .2s`, backdrop `opacity .3s` |
 
 ## Header and announcement
 
@@ -83,8 +98,8 @@ All text 14px / 21px weight 300 (nav, captions, footer links, announcement). Foo
 | 390 | 58 (wraps to 2 lines) | 56 + 54 | 110 | 140×12 left x=16 | hamburger | search, cart, menu |
 
 - Layout: **nav left, logo and utilities grouped right** (desktop). On mobile: logo left, icons right, and below that a **horizontally scrolling sub-nav row** of the top-level links (sale items in an accent colour).
-- Header is `position: sticky; top: 0; z-index: 100`. On the homepage it is **transparent over the hero** (white text and logo) and turns solid (light background, dark text) on scroll and when a mega menu opens. Transition: `background-color .2s, color .2s`. The full scroll sequence is PENDING (429).
-- The announcement bar is a solid brand-colour band with a single centred or left message link; it scrolls away (it is not sticky).
+- Header is `position: sticky; top: 0; z-index: 100`. On the homepage it is **transparent over the hero** (computed `rgba(0,0,0,0)` background, white text at scrollY 0). On scroll (from scrollY 120 onward) it gains `cv-header--scrolled` and the text turns dark `rgb(53,51,49)`; it stays at top 0 while scrolling down and up (no hide). The solid background is painted by an inner layer (the element's own background stays transparent) **[visual]**. Turning solid when a mega menu opens is **[inferred]** (panels could not be opened).
+- The announcement bar is a solid brand-colour band **[visual]** (its computed background is transparent; the colour comes from a wrapper) with a single left message link; it scrolls away (not sticky; it sits outside the sticky header section).
 
 ### Tekla
 
@@ -102,19 +117,19 @@ See `storefront-nav.md` for the full structure. Summary:
 
 | | Parachute | Tekla |
 |---|---|---|
-| Trigger | hover (and focus) on a top-level link; the link is also a real URL | hover on a top-level link (also a real URL) |
-| Panel | full width below the header, columns of link groups + 1–3 promo image cards | full width below the header, height ≈ 490px at 1440, `transform .3s cubic-bezier(.4,0,.2,1)`; page behind gets a blurred translucent overlay (`backdrop-filter: blur(12.5px)`) |
-| Columns | 1–5 link columns + 1–3 promo cells per item | Level 1: 1/4 left list + 3/4 promo row (3 cards, 4:5). Level 2 (hover a left item): a 6-column grid, 240px each at 1440: list, "Category" group, "Collection" group, then 2 promo cards spanning 3 columns. 1px `#e3e3e3` column rules, 16px padding |
+| Trigger | top-level link with `aria-expanded` + `aria-controls` **[DOM]**; did not open on synthetic hover (see "Could not capture"); the link is also a real URL | hover on a top-level link (also a real URL) |
+| Panel | full width below the header, columns of link groups + 1–3 promo image cards **[DOM]** | full width below the header, height ≈ 490px at 1440, `transform .3s cubic-bezier(.4,0,.2,1)`; page behind gets a blurred translucent overlay (`backdrop-filter: blur(12.5px)`) |
+| Columns | 1–5 link columns + 1–3 promo cells per item **[DOM]** (child counts of each hidden panel) | Level 1: 1/4 left list + 3/4 promo row (3 cards, 4:5). Level 2 (hover a left item): a 6-column grid, 240px each at 1440: list, "Category" group, "Collection" group, then 2 promo cards spanning 3 columns. 1px `#e3e3e3` column rules, 16px padding |
 | Open timing | PENDING (429) | panel present ~60–75ms after hover (first frame); no visible delay |
 
 ## Mobile navigation drawer
 
-| | Parachute (structure from DOM) | Tekla (measured) |
+| | Parachute (measured, 390 and 768) | Tekla (measured) |
 |---|---|---|
-| Container | `#cv-mobile-drawer` off-canvas drawer + backdrop | full-width sheet under the header (`top: 52px`, height `100dvh − 52px`), bg `#f6f6f6`, 1px top rule, fade `.2s` |
-| Top | "Close" and "Back to menu" buttons (icon + label), utilities: currency selector, store locator, account | the header stays visible; the hamburger turns into × |
-| Level 1 | list of top-level sections, each a row with a right arrow | tab row (Shop / Gift Shop / About / New), then the list of categories 16/24 300, 48px rows, then 3 promo cards (4:5), then Sign in / Online support / Ship-to selector |
-| Level 2 | slides in from the right, "Back to menu" | "← Back" row, a "Discover <category>" row, then **group label (muted 16px)** + links (16/24, 45px pitch) for "Category" and "Collection", then promo cards 224px wide (4:5) in a horizontal row; groups separated by 1px rules |
+| Container | **bottom sheet**, full width, 582px tall at 844 viewport, white; slides up `translateY(582px → 0)` with `transform .3s` (ease-out curve in the sampled timeline); the 110px header stays visible above | full-width sheet under the header (`top: 52px`, height `100dvh − 52px`), bg `#f6f6f6`, 1px top rule, fade `.2s` |
+| Top | the hamburger stays in the header; inside the sheet: "Back to menu" (12/400 uppercase, arrow icon) plus currency selector, store locator, account icons | the header stays visible; the hamburger turns into × |
+| Level 1 | 8 rows, 16/500 lh 28.8, 61px tall, 1px rules between rows | tab row (Shop / Gift Shop / About / New), then the list of categories 16/24 300, 48px rows, then 3 promo cards (4:5), then Sign in / Online support / Ship-to selector |
+| Level 2 | replaces the list: group headings 12/700 uppercase with a → arrow (each heading is a link), links 15/400 lh 27 (390) or 16/400 lh 28.8 (768), ~33px pitch, 1px rules between groups, no promo images (26 links for a large category) | "← Back" row, a "Discover <category>" row, then **group label (muted 16px)** + links (16/24, 45px pitch) for "Category" and "Collection", then promo cards 224px wide (4:5) in a horizontal row; groups separated by 1px rules |
 
 ## Footer
 
@@ -122,7 +137,7 @@ See `storefront-nav.md` for the full structure. Summary:
 
 | Viewport | Height | Structure |
 |---|---|---|
-| 1920 | 845 | Background a warm off-white. Padding 20px. **Left**: newsletter (serif 24/300 title, 16px subtitle, a dark full-width input bar ~344px wide with an arrow submit, 12px disclaimer) and an image card underneath (~344 square-ish). **Right**: link columns on a CSS subgrid, 3 columns per row with 8px gaps (Shop / Inspiration / Help, then Company / Social on a second row); column titles 14px medium, links 14px, ~22px pitch. Currency selector top-right. **Bottom row**: wordmark centred, legal links and © right (14px, muted `#696663`). |
+| 1920 | 845 | Background a warm off-white **[visual]**. Padding 20px. **Left**: newsletter (serif 24/300 title, 16px subtitle, a dark full-width input bar ~344px wide with an arrow submit, 12px disclaimer) and an image card underneath (~344 square-ish). **Right**: link columns on a CSS subgrid, 3 columns per row with 8px gaps (Shop / Inspiration / Help, then Company / Social on a second row); column titles 14px medium, links 14px, ~22px pitch **[visual]**. Currency selector top-right. **Bottom row**: wordmark centred, legal links and © right (14px, muted `#696663`). |
 | 1440 | 725 | same, columns 227px wide |
 | 1280 | 661 | newsletter title 20/24 |
 | 1024 | 612 | columns 155px |
@@ -143,16 +158,16 @@ See `storefront-nav.md` for the full structure. Summary:
 
 | # | Type | Height 1920 / 1440 / 1280 / 1024 / 768 / 390 | Structure | Maps to (our section) |
 |---|---|---|---|---|
-| 0 | **Full-bleed video hero** | 810 / 810 / 810 / 810 / 810 / 754 | Video or image `object-fit: cover`, height = `100svh − 90px` (810 at 900 tall, 754 at 844). Transparent header overlays it. Centred CTA button near the bottom (≈32px from the bottom edge) and campaign type baked into the media. | `hero` (full width) |
-| 1 | **Promo message band** | 139 / 139 / 139 / 139 / 157 / 215 | Solid brand colour. Content max-width 800px, centred. Desktop: two columns (serif h2 32px left, 16/300 text right). Mobile: stacked. Inset 48 top / 56 bottom. | `promo-band` (rich text band) / `service-info` variant |
+| 0 | **Full-bleed video hero** | 810 / 810 / 810 / 810 / 810 / 754 | Video or image `object-fit: cover`, height = `100svh − 90px` **[inferred]** from 810 at 900 tall and 754 at 844. Transparent header overlays it. Centred CTA button near the bottom (≈32px from the bottom edge) and campaign type baked into the media **[visual]**. | `hero` (full width) |
+| 1 | **Promo message band** | 139 / 139 / 139 / 139 / 157 / 215 | Solid brand colour. Content max-width 800px, centred. Desktop: two columns (serif h2 32px left, 16/300 text right; 2 columns measured at 768, desktop **[visual]**). Mobile: stacked. Inset 48 top / 56 bottom. | `promo-band` (rich text band) / `service-info` variant |
 | 2 | **Product rail** (sale collection) | 860 / 860 / 860 / 860 / 860 / 814 | Title (serif 28/300) + text-link tab under it, prev/next arrows top-right. Cards **fixed 256px wide**, 16px gap, image 256×341 (3:4), horizontal scroll (`overflow-x: auto`), 48px left gutter. 6.9 / 5.1 / 4.6 / 3.6 / 2.7 cards visible; mobile 195px cards, 1.9 visible, 8px gutter. "View all" solid button below. Inset 64 top / 88 bottom. | `featured-collection` (carousel layout) |
 | 3 | **Split campaign tiles** | 1352 / 1039 / 935 / 768 / 601 / 1068 | Two tiles, 8px gap, 24px gutters, image ratio ≈ 0.76 (3:4). Overlay copy bottom-left: serif h2 42/400 + light on-image button. Mobile: stacked, 16px gutters. Inset 64/64. | `split-hero` / `campaign-tiles` |
 | 4 | **Product rail with tabs** | 860 … | As #2 plus filter tabs (All / Bedding / Bath / Decor) that switch the rail's collection. | `bestsellers` (tabbed featured collection) |
-| 5 | **Lifestyle feature** | 2517 / 1877 / 1664 / 1323 / 981 / 693 | Near-full-bleed image (16px inset) at about 3:4 on desktop, display h1 80/300 top-left with a light button, plus a small **shoppable hotspot** card (168×224 product thumbnail with a badge). Mobile: full-bleed, h1 48px. | `lifestyle-story` (image + hotspot blocks) |
+| 5 | **Lifestyle feature** | 2517 / 1877 / 1664 / 1323 / 981 / 693 | Near-full-bleed image (16px inset) at about 3:4 on desktop, display h1 80/300 top-left with a light button, plus a small **shoppable hotspot** card (168×224 product thumbnail; the badge is **[visual]**). Mobile: full-bleed, h1 48px. | `lifestyle-story` (image + hotspot blocks) |
 | 6 | **Campaign banner** | 1142 / 885 / 799 / 662 / 524 / 329 | Image 24px inset, ratio ≈ 1.84 desktop (1.78 mobile, 16px inset). Overlay bottom-left: serif h2 28/300 + uppercase underlined text link. Inset 64/64. | `campaign-image` |
 | 7 | **Product rail with tabs** | 860 … | Repeat of #4 (different collection). | `bestsellers` / `new-arrivals` |
-| 8 | **Shop by category** | 768 / 605 / 550 / 455 / hidden / hidden | 4 equal tiles, 8px gap, 24px gutters, image ratio ≈ 0.72; label as a light chip button bottom-left. Only the first image showed in the capture (the others are lazy or revealed on hover); confirming is PENDING. **Hidden below 768.** | `shop-by-category` |
-| 9 | **Shade / fabric discovery** | 1057 / 1057 / 874 / 874 / 914 / 854 | Wide inset (120px gutters desktop, 16 mobile). Header row: serif h2 28/300 + 18px lead on the left, **swatch grid** (2 rows × 7 squares, ~24px) on the right. "Discover by shade: <name>" + arrows. Rail of tall images, 343×610 (9:16), 8px gap (240px wide at ≤1280). Inset 160 top / 105 bottom (80/104 mobile). | `fabric-discovery` |
+| 8 | **Shop by category** | 768 / 605 / 550 / 455 / hidden / hidden | 4 equal tiles, 8px gap, 24px gutters, image ratio ≈ 0.72; label as a light chip button bottom-left. Only the first image showed in the capture; whether the others are lazy or revealed on hover is **[inferred]**, confirmation PENDING. **Hidden below 768.** | `shop-by-category` |
+| 9 | **Shade / fabric discovery** | 1057 / 1057 / 874 / 874 / 914 / 854 | Wide inset (120px gutters desktop, 16 mobile). Header row: serif h2 28/300 + 18px lead on the left, **swatch grid** (2 rows × 7 squares, ~24px **[visual]**) on the right. "Discover by shade: <name>" + arrows. Rail of tall images, 343×610 (9:16), 8px gap (240px wide at ≤1280). Inset 160 top / 105 bottom (80/104 mobile). | `fabric-discovery` |
 | F | Footer | see above | | `footer` |
 
 ### Tekla (order)
@@ -186,7 +201,9 @@ See `storefront-nav.md` for the full structure. Summary:
 | Parachute | 768 | ≤768: display h1 80 → 48px, promo band h2 32 → 24, discovery block switches to stacked; ≤767: campaign tiles stack, rails 2.7 → 1.9 visible cards (256 → 195px), promo band 2 → 1 column, banner/section h2 28 → 24 | sweep |
 | Parachute | 1440 | discovery rail items 343 → 240px wide (5.2 visible below) | sweep |
 
-## Proposed Shopify settings per homepage section
+## Proposed Shopify settings per homepage section **[proposal]**
+
+Superseded by the implementation; see "Implemented as" below for the actual section files and settings.
 
 Every section also gets `color_scheme`, `padding_top`, `padding_bottom` (standard).
 
@@ -209,3 +226,29 @@ Every section also gets `color_scheme`, `padding_top`, `padding_bottom` (standar
 | `header` | `menu` (main), `mobile_subnav_menu`, `logo`, `logo_width`, `logo_position` (left / right-group), `sticky_mode` (`always` / `hide-on-scroll-down` / `none`), `transparent_on_home` (bool), `transparent_text_color`, `show_store_locator` + link | `mega_menu` (menu_item handle to match, promo cards ×3: image, title, link) |
 | `announcement-bar` | `autoplay`, `speed`, `dismissible` | `announcement` (text, link) |
 | `footer` | `newsletter_enable`, `newsletter_heading`, `newsletter_text`, `image`, `show_currency_selector`, `show_payment_icons`, `copyright` | `link_list` (menu, heading), `text`, `social` |
+
+## Implemented as
+
+| Reference section | Theme file | Notes |
+|---|---|---|
+| Announcement | `sections/announcement-bar.liquid` | rotating blocks, pause button, optional dismiss |
+| Header, mega menu, mobile nav | `sections/header.liquid`, `snippets/mega-menu.liquid`, `snippets/mobile-nav.liquid`, `assets/header.js` | see `storefront-nav.md` |
+| Hero | `sections/hero-full.liquid` | sets `[data-header-overlay]` only with media |
+| Promo band | `sections/rich-text.liquid` | |
+| Product rail / tabbed rail | `sections/featured-collection.liquid`, `sections/product-highlights.liquid` | `snippets/product-card.liquid` (commerce) |
+| Split campaign tiles (Parachute) / 2-up (Tekla) | `sections/editorial-grid.liquid` | overlay or caption below, gap, bleed |
+| Lifestyle feature, campaign banner | `sections/image-banner.liquid` | hotspot blocks; "Lifestyle story" preset |
+| Shop by category | `sections/collection-list.liquid` | mobile hide/swipe/grid setting |
+| Shade discovery | `sections/fabric-discovery.liquid` | |
+| Others in scope | `hero-split`, `image-with-text`, `comparison-highlights`, `room-collection`, `newsletter`, `service-info`, `brand-values` | presets, not on the default homepage |
+| Footer | `sections/footer.liquid` | |
+
+## Inferred and unverified claims
+
+1. Parachute header: text turning dark on scroll is measured; the solid background colour is visual; solid-on-mega-open is inferred.
+2. Parachute hero height formula `100svh − 90px`: inferred from two viewport heights.
+3. Parachute mega menu: column and promo counts come from hidden-panel DOM; panels do not open under headless hover, so widths, link pitch, heading style and timing are unmeasured.
+4. Parachute mobile drawer: measured (bottom sheet); the level-2 transition was not sampled.
+5. Parachute category tiles 2–4: lazy loading vs hover reveal unconfirmed.
+6. Parachute colours of the announcement band, footer background and the swatch size: visual estimates.
+
