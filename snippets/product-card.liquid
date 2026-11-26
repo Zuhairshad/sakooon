@@ -1,0 +1,121 @@
+{%- comment -%}
+  Product card. Owner: shad-d8. Contract: docs/component-contracts.md section 4.
+  {% render 'product-card', product: product, columns_desktop: 4, lazy: forloop.index > 4 %}
+  Params:
+    product (required; renders an onboarding placeholder card when blank)
+    show_swatches, show_secondary_image, show_vendor (default: theme settings card_*)
+    image_ratio ('adapt' | 'portrait' | 'square', default settings.card_image_ratio)
+    sizes (sizes attribute; default derived from columns_desktop), columns_desktop (default 4)
+    lazy (default true; false = eager + high fetch priority for above-the-fold cards)
+    heading_tag (default 'h3'), swatch_limit (default 3)
+{%- endcomment -%}
+{%- liquid
+  if show_swatches == nil
+    assign show_swatches = settings.card_show_swatches
+  endif
+  if show_secondary_image == nil
+    assign show_secondary_image = settings.card_show_secondary_image
+  endif
+  if show_vendor == nil
+    assign show_vendor = settings.card_show_vendor
+  endif
+  assign image_ratio = image_ratio | default: settings.card_image_ratio | default: 'portrait'
+  assign heading_tag = heading_tag | default: 'h3'
+  assign swatch_limit = swatch_limit | default: 3
+  assign columns_desktop = columns_desktop | default: 4
+
+  case image_ratio
+    when 'square'
+      assign aspect = '1/1'
+    when 'adapt'
+      assign aspect = 'natural'
+    else
+      assign aspect = '3/4'
+  endcase
+
+  if sizes == blank
+    assign col_vw = 100 | divided_by: columns_desktop
+    assign sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 33vw, 50vw'
+  endif
+
+  assign priority = false
+  if lazy == false
+    assign priority = true
+  endif
+-%}
+{%- if product != blank and product.id != blank -%}
+  {%- liquid
+    assign primary = product.featured_media
+    assign secondary = nil
+    if show_secondary_image and product.media.size > 1
+      assign secondary = product.media[1]
+    endif
+
+    assign badge = ''
+    assign badge_class = ''
+    unless product.available
+      assign badge = 'products.product.sold_out' | t
+      assign badge_class = 'card__badge--sold-out'
+    else
+      assign v = product.selected_or_first_available_variant
+      assign compare = 0
+      assign current = 0
+      if v.compare_at_price > v.price
+        assign compare = v.compare_at_price
+        assign current = v.price
+      elsif product.compare_at_price > product.price
+        assign compare = product.compare_at_price
+        assign current = product.price
+      endif
+      if compare > 0
+        assign percent = compare | minus: current | times: 100 | divided_by: compare | floor
+        if percent > 0
+          assign badge = 'products.product.badge_percent_off' | t: percent: percent
+          assign badge_class = 'card__badge--sale'
+        endif
+      endif
+    endunless
+  -%}
+  <div class="product-card{% if settings.card_text_align == 'center' %} product-card--center{% endif %}{% if secondary %} product-card--has-secondary{% endif %}" data-product-card data-product-id="{{ product.id }}">
+    <a href="{{ product.url }}" class="product-card__media media{% if aspect == 'natural' %} media--natural{% endif %}"{% if aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif %} tabindex="-1" aria-hidden="true">
+      {%- if primary != blank -%}
+        {%- render 'image', image: primary, sizes: sizes, aspect: aspect, priority: priority, class: 'product-card__image' -%}
+        {%- if secondary -%}
+          {%- render 'image', image: secondary, sizes: sizes, aspect: aspect, class: 'product-card__image product-card__image--secondary' -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- render 'placeholder', name: 'product-1', aspect: aspect, class: 'product-card__image' -%}
+      {%- endif -%}
+      {%- if badge != blank -%}
+        <span class="product-card__badge {{ badge_class }}">{{ badge }}</span>
+      {%- endif -%}
+    </a>
+    <div class="product-card__info">
+      <div class="product-card__text">
+        {%- if show_vendor and product.vendor != blank -%}
+          <p class="product-card__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+        <{{ heading_tag }} class="product-card__title">
+          <a href="{{ product.url }}" class="product-card__link">{{ product.title }}</a>
+        </{{ heading_tag }}>
+        {%- render 'price', product: product, price_class: 'product-card__price' -%}
+      </div>
+      {%- if show_swatches -%}
+        {%- render 'swatches', product: product, limit: swatch_limit, size: 'sm', class: 'product-card__swatches' -%}
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  {%- comment -%} Onboarding card for empty section blocks in the theme editor. {%- endcomment -%}
+  <div class="product-card product-card--placeholder">
+    <div class="product-card__media media"{% if aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif %}>
+      {%- render 'placeholder', name: 'product-1', aspect: aspect, class: 'product-card__image' -%}
+    </div>
+    <div class="product-card__info">
+      <div class="product-card__text">
+        <{{ heading_tag }} class="product-card__title">{{ 'onboarding.product_title' | t }}</{{ heading_tag }}>
+        <div class="price product-card__price"><span class="price__current">{{ 1999 | money }}</span></div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

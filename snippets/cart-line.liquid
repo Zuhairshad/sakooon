@@ -1,0 +1,80 @@
+{%- comment -%}
+  One cart line, shared by the cart drawer and the cart page. Owner: shad-d8.
+  {% render 'cart-line', item: item, index: forloop.index, id_prefix: section.id %}
+  Quantity and remove are handled by <cart-items> (assets/cart.js) via /cart/change.js with `line: index`.
+  Without JS the quantity input is a field of the surrounding cart form (`updates[]`) and remove is a /cart/change link.
+{%- endcomment -%}
+{%- liquid
+  assign id_prefix = id_prefix | default: 'cart'
+  assign line_id = id_prefix | append: '-line-' | append: index
+-%}
+<li class="cart-line" data-line-item data-index="{{ index }}" data-key="{{ item.key }}">
+  <a href="{{ item.url }}" class="cart-line__media media" style="--aspect: 3/4" tabindex="-1" aria-hidden="true">
+    {%- if item.image -%}
+      {%- render 'image', image: item.image, sizes: '96px', widths: '96,192,288', aspect: '3/4', alt: item.product.title -%}
+    {%- else -%}
+      {%- render 'placeholder', name: 'product-1', aspect: '3/4' -%}
+    {%- endif -%}
+  </a>
+  <div class="cart-line__details">
+    <div class="cart-line__head">
+      <div class="cart-line__heading">
+        {%- if settings.cart_show_vendor and item.vendor != blank -%}
+          <p class="cart-line__vendor">{{ item.vendor }}</p>
+        {%- endif -%}
+        <a href="{{ item.url }}" class="cart-line__title" id="{{ line_id }}-title">{{ item.product.title | escape }}</a>
+      </div>
+      <div class="cart-line__price">
+        {%- if item.original_line_price != item.final_line_price -%}
+          <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+          <span class="cart-line__final price--on-sale">{{ item.final_line_price | money }}</span>
+          <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+          <s class="cart-line__original">{{ item.original_line_price | money }}</s>
+        {%- else -%}
+          <span class="cart-line__final">{{ item.final_line_price | money }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- unless item.product.has_only_default_variant and item.properties == empty and item.selling_plan_allocation == nil -%}
+      <dl class="cart-line__options">
+        {%- unless item.product.has_only_default_variant -%}
+          {%- for option in item.options_with_values -%}
+            <div class="cart-line__option"><dt>{{ option.name }}:</dt> <dd>{{ option.value }}</dd></div>
+          {%- endfor -%}
+        {%- endunless -%}
+        {%- for property in item.properties -%}
+          {%- assign first_char = property.first | slice: 0 -%}
+          {%- if property.last != blank and first_char != '_' -%}
+            <div class="cart-line__option"><dt>{{ property.first }}:</dt> <dd>{{ property.last }}</dd></div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if item.selling_plan_allocation -%}
+          <div class="cart-line__option"><dd>{{ item.selling_plan_allocation.selling_plan.name }}</dd></div>
+        {%- endif -%}
+      </dl>
+    {%- endunless -%}
+
+    {%- if item.line_level_discount_allocations.size > 0 -%}
+      <ul class="cart-line__discounts list-unstyled">
+        {%- for allocation in item.line_level_discount_allocations -%}
+          <li>{{ allocation.discount_application.title }} (&minus;{{ allocation.amount | money }})</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if item.unit_price_measurement -%}
+      <p class="cart-line__unit">
+        {{- item.unit_price | money -}}/{%- if item.unit_price_measurement.reference_value != 1 -%}{{ item.unit_price_measurement.reference_value }}{%- endif -%}{{ item.unit_price_measurement.reference_unit }}
+      </p>
+    {%- endif -%}
+
+    <div class="cart-line__actions">
+      {%- render 'quantity-input', id: line_id, name: 'updates[]', value: item.quantity, product_title: item.product.title, line: index, variant: item.variant, size: 'sm' -%}
+      <a href="{{ item.url_to_remove }}" class="cart-line__remove" data-cart-remove aria-label="{{ 'sections.cart.remove_title' | t: title: item.product.title | escape }}">
+        {{- 'sections.cart.remove' | t -}}
+      </a>
+    </div>
+    <p class="cart-line__error" role="alert" data-line-error hidden></p>
+  </div>
+</li>

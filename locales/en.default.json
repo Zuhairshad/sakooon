@@ -138,6 +138,11 @@
         "pick_up_unavailable_at_html": "Pickup currently unavailable at <span class=\"color-foreground\">{{ location_name }}</span>",
         "unavailable": "Couldn't load pickup availability",
         "refresh": "Refresh"
+      },
+      "badge_percent_off": "{{ percent }}% off",
+      "more_colours": {
+        "one": "{{ count }} more colour",
+        "other": "{{ count }} more colours"
       }
     },
     "facets": {
@@ -256,7 +261,10 @@
       "free_shipping_remaining_html": "You are {{ remaining }} away from free shipping",
       "free_shipping_reached": "You qualify for free shipping",
       "complementary_heading": "Complete the bed",
-      "updated": "Cart updated"
+      "updated": "Cart updated",
+      "remove": "Remove",
+      "continue_shopping": "Continue shopping",
+      "view_cart": "View cart"
     },
     "footer": {
       "payment": "Payment methods",

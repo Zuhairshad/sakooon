@@ -1,0 +1,83 @@
+{%- comment -%}
+  Price. Owner: shad-d8. Contract: docs/component-contracts.md section 5.
+  Pass a variant for an exact price (PDP, cart), or a product for a card (range when variant prices differ).
+  {% render 'price', product: product %}
+  {% render 'price', variant: product.selected_or_first_available_variant, price_class: 'price--large' %}
+  Params: product | variant, show_compare_at (default true), price_class, use_range (default true: "min – max"; false: "From min").
+  Sale state is derived only from compare_at_price > price. Nothing is computed or simulated.
+{%- endcomment -%}
+{%- liquid
+  assign show_compare = true
+  if show_compare_at == false
+    assign show_compare = false
+  endif
+  assign range = true
+  if use_range == false
+    assign range = false
+  endif
+
+  assign on_sale = false
+  assign sold_out = false
+  assign varies = false
+  if variant != blank
+    assign price_min = variant.price
+    assign compare_min = variant.compare_at_price
+    if variant.compare_at_price > variant.price
+      assign on_sale = true
+    endif
+    unless variant.available
+      assign sold_out = true
+    endunless
+    assign unit_source = variant
+  elsif product != blank
+    assign price_min = product.price_min
+    assign price_max = product.price_max
+    assign compare_min = product.compare_at_price_min
+    assign compare_max = product.compare_at_price_max
+    assign varies = product.price_varies
+    if product.compare_at_price > product.price
+      assign on_sale = true
+    endif
+    unless product.available
+      assign sold_out = true
+    endunless
+    assign unit_source = product.selected_or_first_available_variant
+  endif
+-%}
+{%- if variant != blank or product != blank -%}
+  <div class="price{% if on_sale %} price--on-sale{% endif %}{% if sold_out %} price--sold-out{% endif %}{% if price_class %} {{ price_class }}{% endif %}" data-price>
+    <span class="visually-hidden">
+      {%- if on_sale -%}{{ 'products.product.price.sale_price' | t }}{%- else -%}{{ 'products.product.price.regular_price' | t }}{%- endif -%}
+    </span>
+    <span class="price__current">
+      {%- if varies and range -%}
+        {{ price_min | money }} &ndash; {{ price_max | money }}
+      {%- elsif varies -%}
+        {{ 'products.product.price.from_price_html' | t: price: price_min | money }}
+      {%- else -%}
+        {{ price_min | money }}
+      {%- endif -%}
+    </span>
+    {%- if on_sale and show_compare -%}
+      <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+      <s class="price__compare">
+        {%- if varies and range and compare_max > compare_min and compare_min > 0 -%}
+          {{ compare_min | money }} &ndash; {{ compare_max | money }}
+        {%- elsif varies and compare_max > 0 -%}
+          {{ compare_max | money }}
+        {%- else -%}
+          {{ compare_min | money }}
+        {%- endif -%}
+      </s>
+    {%- endif -%}
+    {%- if unit_source.unit_price_measurement and variant != blank -%}
+      <span class="price__unit">
+        <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+        {{- unit_source.unit_price | money -}}
+        <span aria-hidden="true">/</span><span class="visually-hidden">&nbsp;{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+        {%- if unit_source.unit_price_measurement.reference_value != 1 -%}{{ unit_source.unit_price_measurement.reference_value }}{%- endif -%}
+        {{- unit_source.unit_price_measurement.reference_unit -}}
+      </span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
