@@ -8,13 +8,13 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [~] Reference investigation: storefront (shad-2d) ETA 60-90 min
 - [~] Reference investigation: commerce (shad-d8) ETA 75-90 min
 - [~] Reference investigation: editorial (shad-8b) ETA 60-90 min
-- [~] Foundation: docs, settings, layout, tokens, global.js, snippets, customer templates (Fable)
-- [ ] QA scripts: capture-references, capture-theme, compare-screenshots, test-responsive, test-interactions (Fable)
-- [ ] Preview server adapted to new theme (Fable)
+- [x] Foundation: docs, settings, layout, tokens, global.js, snippets, customer templates (Fable) 60f1346
+- [x] QA scripts: capture-references, capture-theme, compare-screenshots, test-responsive, test-interactions (Fable)
+- [x] Preview server adapted to new theme (Fable) 7822650
 - [!] `shopify theme dev` login for juj1hc-qf.myshopify.com (user action required)
 
 ## Phase 1: implementation
-- [ ] CONTRACTS READY sent; workers rebase onto sakooon/foundation
+- [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
 - [ ] Header, announcement, mega menu, mobile nav, sticky (shad-2d)
 - [ ] Footer (shad-2d)
 - [ ] Homepage sections + index.json (shad-2d)

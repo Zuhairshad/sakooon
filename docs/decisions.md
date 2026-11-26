@@ -42,3 +42,9 @@ Events are documented in docs/component-contracts.md.
 ## 2026-11-26 D8: Fabric is a metaobject; products reference it
 One fabric definition reused by products, collections, and guides. Product-level metafields hold
 only product-specific facts (dimensions, package contents). See docs/metafield-contracts.md.
+
+## 2026-11-26 D9: Preview ports per session, one shared QA output dir
+Local preview (`npm run preview`, LiquidJS) ports: Fable 9292, shad-2d 9301, shad-d8 9302, shad-8b 9303 (`PORT=9301 npm run preview`).
+QA scripts take `--base http://localhost:<port>`. Output always goes to /Users/shad/sakooon-qa (shared, not in git).
+`shopify theme dev --store juj1hc-qf.myshopify.com` is the authoritative preview once the user has logged the CLI in;
+only Fable runs it (single development theme) and workers test against the preview or ask Fable for a push to it.

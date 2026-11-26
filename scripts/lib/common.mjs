@@ -114,7 +114,7 @@ export async function measureGeometry(page) {
       url: location.href, viewport: { w: innerWidth, h: innerHeight }, docHeight: document.documentElement.scrollHeight, scrollWidth: document.documentElement.scrollWidth,
       header: header ? { ...rect(header), position: cs(header).position } : null,
       contentWidth: (() => { const c = document.querySelector('.page-width, .container, [class*="container"], [class*="wrapper"]'); return c ? rect(c).w : null; })(),
-      sections, type, grids, imgs, h1Count: document.querySelectorAll('h1').length,
+      sections, type, grids, imgs, h1Count: Array.from(document.querySelectorAll('h1')).filter((h) => h.getClientRects().length > 0 && !h.closest('[hidden]')).length,
       imagesMissingAlt: Array.from(document.images).filter((i) => !i.hasAttribute('alt')).length,
     };
   });

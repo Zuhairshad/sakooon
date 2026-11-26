@@ -18,7 +18,7 @@ for (const p of paths) for (const vp of viewports) {
   const issues = [];
   page.on('console', (m) => { if (m.type() === 'error') issues.push(`console: ${m.text().slice(0, 200)}`); });
   page.on('pageerror', (e) => issues.push(`pageerror: ${String(e).slice(0, 200)}`));
-  page.on('response', (r) => { if (r.status() >= 400 && !/favicon|\/cart\.js|predictive_search/.test(r.url()) && r.url().startsWith(base)) issues.push(`http ${r.status()}: ${r.url().replace(base, '')}`); });
+  page.on('response', (r) => { if (r.status() >= 400 && r.request().resourceType() !== 'document' && !/favicon|\/cart\.js|predictive_search/.test(r.url()) && r.url().startsWith(base)) issues.push(`http ${r.status()}: ${r.url().replace(base, '')}`); });
   try {
     await gotoPolite(page, base + p, { settle: 500 });
     await primeLazyContent(page, 900);
@@ -26,8 +26,11 @@ for (const p of paths) for (const vp of viewports) {
     if (g.scrollWidth > g.viewport.w) issues.push(`overflow: scrollWidth ${g.scrollWidth} > ${g.viewport.w}`);
     if (g.h1Count !== 1) issues.push(`h1 count: ${g.h1Count}`);
     if (g.imagesMissingAlt) issues.push(`images missing alt: ${g.imagesMissingAlt}`);
-    const focusables = await page.evaluate(() => Array.from(document.querySelectorAll('a,button,input,select,textarea')).filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.height < 24 && e.closest('nav, header, footer, .product-form'); }).length);
-    if (focusables > 0 && vp.mobile) issues.push(`small touch targets (<24px tall) in nav/header/footer: ${focusables}`);
+    // WCAG 2.5.8: 24px minimum for controls; inline text links are exempt, so only buttons and icon-only links are checked.
+    const smallTargets = await page.evaluate(() => Array.from(document.querySelectorAll('button, a')).filter((e) => { const r = e.getBoundingClientRect(); const iconOnly = e.tagName === 'A' && !e.textContent.trim(); return r.width > 0 && r.height > 0 && (e.tagName === 'BUTTON' || iconOnly) && (r.height < 24 || r.width < 24); }).map((e) => (e.getAttribute('aria-label') || e.className || e.tagName).toString().slice(0, 40)));
+    if (smallTargets.length && vp.mobile) issues.push(`small touch targets (<24px): ${smallTargets.join(', ')}`);
+    // console 404 for the document itself on a 404 page is expected
+    const idx = issues.findIndex((i) => /console: Failed to load resource.*404/.test(i)); if (idx >= 0 && /does-not-exist|nope|404/.test(p)) issues.splice(idx, 1);
   } catch (e) { issues.push(`load failed: ${e.message}`); }
   finally { await context.close(); }
   const ok = issues.length === 0; if (!ok) failures++;
