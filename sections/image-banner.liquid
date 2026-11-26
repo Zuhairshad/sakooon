@@ -1,0 +1,106 @@
+{%- comment -%}
+  Image banner / lifestyle story. Owner: shad-2d.
+  Patterns: Parachute campaign banner (inset image ~1.84:1, copy bottom-left, underlined text link) and the lifestyle
+  feature (tall image, display heading top-left, shoppable hotspots). Hotspot blocks pin a product to x/y percent.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign has_image = false
+  if s.image != blank
+    assign has_image = true
+  endif
+-%}
+<div class="section image-banner image-banner--{{ s.content_position }}{% if s.inset %} image-banner--inset{% endif %}{% if has_image %} image-banner--has-media image-banner--text-{{ s.text_color }}{% endif %} color-scheme-{{ s.color_scheme }}"
+  style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --banner-ratio: {{ s.desktop_ratio }}; --banner-ratio-mobile: {{ s.mobile_ratio }}; --banner-overlay: {{ s.overlay_opacity | divided_by: 100.0 }};">
+  <div class="{% if s.inset %}page-width page-width--full{% else %}full-bleed{% endif %}">
+    <div class="image-banner__frame">
+      <div class="image-banner__media">
+        {%- if has_image -%}
+          {%- if s.image_mobile != blank -%}
+            <picture>
+              <source media="(max-width: 767px)" srcset="{{ s.image_mobile | image_url: width: 480 }} 480w, {{ s.image_mobile | image_url: width: 750 }} 750w, {{ s.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw" width="{{ s.image_mobile.width }}" height="{{ s.image_mobile.height }}">
+              {%- render 'image', image: s.image, sizes: '100vw', class: 'image-banner__img' -%}
+            </picture>
+          {%- else -%}
+            {%- render 'image', image: s.image, sizes: '100vw', class: 'image-banner__img' -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- render 'placeholder', name: 'lifestyle-2', class: 'image-banner__placeholder' -%}
+        {%- endif -%}
+      </div>
+      {%- if s.heading != blank or s.text != blank or s.link_label != blank -%}
+        <div class="image-banner__content">
+          <div class="image-banner__copy stack">
+            {%- if s.heading != blank -%}<h2 class="image-banner__heading {{ s.heading_size }}">{{ s.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            {%- if s.text != blank -%}<div class="image-banner__text rte">{{ s.text }}</div>{%- endif -%}
+            {%- if s.link_label != blank -%}
+              {%- render 'button', label: s.link_label, url: s.link, style: s.link_style -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+        {%- assign card_id = 'Hotspot-' | append: section.id | append: '-' | append: forloop.index -%}
+        {%- liquid
+          assign pin_title = product.title | default: block.settings.label
+          if pin_title == blank
+            assign pin_title = 'onboarding.product_title' | t
+          endif
+        -%}
+        <hotspot-pin class="hotspot hotspot--{% if block.settings.x > 60 %}left{% else %}right{% endif %}{% if block.settings.y > 60 %} hotspot--up{% endif %}" style="--x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%;" {{ block.shopify_attributes }}>
+          <button type="button" class="hotspot__pin" aria-expanded="false" aria-controls="{{ card_id }}" aria-label="{{ 'storefront.sections.hotspot' | t: title: pin_title }}">
+            {%- if block.settings.label != blank -%}<span class="hotspot__badge">{{ block.settings.label | escape }}</span>{%- else -%}<span class="hotspot__dot" aria-hidden="true"></span>{%- endif -%}
+          </button>
+          <div id="{{ card_id }}" class="hotspot__card color-scheme-white" hidden>
+            {%- render 'product-card', product: product, show_swatches: false, image_ratio: 'portrait', sizes: '200px', heading_tag: 'p' -%}
+          </div>
+        </hotspot-pin>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "tag": "section",
+  "class": "section-image-banner",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image" },
+    { "type": "select", "id": "desktop_ratio", "label": "Desktop shape", "default": "1.84", "options": [ { "value": "2.33", "label": "Wide 21:9" }, { "value": "1.84", "label": "Banner 1.85:1" }, { "value": "1.78", "label": "16:9" }, { "value": "1.33", "label": "4:3" }, { "value": "0.75", "label": "Tall 3:4" } ] },
+    { "type": "select", "id": "mobile_ratio", "label": "Mobile shape", "default": "1.78", "options": [ { "value": "1.78", "label": "16:9" }, { "value": "1", "label": "Square" }, { "value": "0.8", "label": "Portrait 4:5" }, { "value": "0.56", "label": "Tall 9:16" } ] },
+    { "type": "checkbox", "id": "inset", "label": "Inset from the page edges", "default": true },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Campaign headline" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h0", "label": "Display" }, { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "select", "id": "link_style", "label": "Link style", "default": "tertiary", "options": [ { "value": "primary", "label": "Solid button" }, { "value": "secondary", "label": "Outline button" }, { "value": "tertiary", "label": "Text link" } ] },
+    {
+      "type": "select", "id": "content_position", "label": "Content position", "default": "bottom-left",
+      "options": [ { "value": "top-left", "label": "Top left" }, { "value": "middle-left", "label": "Middle left" }, { "value": "bottom-left", "label": "Bottom left" }, { "value": "middle-center", "label": "Centre" }, { "value": "bottom-center", "label": "Bottom centre" }, { "value": "top-right", "label": "Top right" }, { "value": "bottom-right", "label": "Bottom right" } ]
+    },
+    { "type": "select", "id": "text_color", "label": "Text on image", "default": "light", "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ] },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 15 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot", "name": "Product hotspot",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "range", "id": "x", "label": "Horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+        { "type": "range", "id": "y", "label": "Vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 70 },
+        { "type": "text", "id": "label", "label": "Badge text", "info": "Optional, e.g. a short offer. Otherwise a dot is shown." }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Image banner" }, { "name": "Lifestyle story", "settings": { "desktop_ratio": "0.75", "mobile_ratio": "0.56", "heading": "Display headline", "heading_size": "h0", "content_position": "top-left", "link_style": "primary" }, "blocks": [ { "type": "hotspot" } ] } ]
+}
+{% endschema %}

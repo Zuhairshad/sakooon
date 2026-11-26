@@ -1,0 +1,134 @@
+{%- comment -%}
+  Full-width hero. Owner: shad-2d. Pattern: Parachute homepage section 0 (docs/reference/storefront.md).
+  Image (with optional mobile image) or video, cover-fit, height = screen / large / medium / adapt.
+  When it has media and is the first section, it adds [data-header-overlay] so a header with
+  transparent_on_home sits over it. Without media it renders a neutral placeholder and the header stays solid.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign has_video = false
+  if s.video != blank
+    assign has_video = true
+  endif
+  assign has_media = false
+  if s.image != blank or has_video
+    assign has_media = true
+  endif
+  assign overlay_header = false
+  if has_media and s.allow_header_overlay and section.index == 1
+    assign overlay_header = true
+  endif
+  assign priority = false
+  if section.index <= 2
+    assign priority = true
+  endif
+-%}
+<div
+  class="section section--flush hero hero--{{ s.height }} hero--{{ s.content_position }}{% if has_media %} hero--has-media hero--text-{{ s.text_color }}{% endif %} color-scheme-{{ s.color_scheme }}{% if overlay_header %} hero--under-header{% endif %}"
+  style="--hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px;"
+  {% if overlay_header %}data-header-overlay{% endif %}
+>
+  <div class="hero__media">
+    {%- if has_video -%}
+      <hero-video class="hero__video">
+        {{- s.video | video_tag: autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '1920x', class: 'hero__video-el' -}}
+        <button type="button" class="hero__video-toggle" data-video-toggle aria-pressed="false"
+          aria-label="{{ 'storefront.sections.pause_video' | t }}" data-label-pause="{{ 'storefront.sections.pause_video' | t }}" data-label-play="{{ 'storefront.sections.play_video' | t }}">
+          <span data-icon="pause">{% render 'icon', icon: 'pause', size: 16 %}</span><span data-icon="play" hidden>{% render 'icon', icon: 'play', size: 16 %}</span>
+        </button>
+      </hero-video>
+    {%- elsif s.image != blank -%}
+      {%- if s.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 767px)" srcset="{{ s.image_mobile | image_url: width: 480 }} 480w, {{ s.image_mobile | image_url: width: 750 }} 750w, {{ s.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw" width="{{ s.image_mobile.width }}" height="{{ s.image_mobile.height }}">
+          {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img', alt: s.image.alt -%}
+        </picture>
+      {%- else -%}
+        {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img' -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- render 'placeholder', name: 'hero-apparel-1', class: 'hero__placeholder' -%}
+    {%- endif -%}
+  </div>
+  {%- if section.blocks.size > 0 -%}
+    <div class="hero__content page-width page-width--full">
+      <div class="hero__copy stack">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <p class="eyebrow hero__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+            {%- when 'heading' -%}
+              <{{ block.settings.tag }} class="hero__heading {{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.heading | escape | newline_to_br }}</{{ block.settings.tag }}>
+            {%- when 'text' -%}
+              <div class="hero__text rte text-large" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'buttons' -%}
+              <div class="hero__buttons" {{ block.shopify_attributes }}>
+                {%- render 'button', label: block.settings.label_1, url: block.settings.link_1, style: block.settings.style_1 -%}
+                {%- render 'button', label: block.settings.label_2, url: block.settings.link_2, style: block.settings.style_2 -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "Optional. Shown below 768px." },
+    { "type": "video", "id": "video", "label": "Video", "info": "Optional. Plays muted on a loop instead of the image, with a pause button. Paused when visitors prefer reduced motion." },
+    {
+      "type": "select", "id": "height", "label": "Height", "default": "screen",
+      "options": [
+        { "value": "screen", "label": "Fill the screen" },
+        { "value": "large", "label": "Large" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "adapt", "label": "Adapt to image" }
+      ]
+    },
+    {
+      "type": "select", "id": "content_position", "label": "Content position", "default": "bottom-left",
+      "options": [
+        { "value": "top-left", "label": "Top left" }, { "value": "top-center", "label": "Top centre" }, { "value": "top-right", "label": "Top right" },
+        { "value": "middle-left", "label": "Middle left" }, { "value": "middle-center", "label": "Middle centre" }, { "value": "middle-right", "label": "Middle right" },
+        { "value": "bottom-left", "label": "Bottom left" }, { "value": "bottom-center", "label": "Bottom centre" }, { "value": "bottom-right", "label": "Bottom right" }
+      ]
+    },
+    { "type": "range", "id": "content_width", "label": "Content width", "min": 320, "max": 960, "step": 20, "unit": "px", "default": 640 },
+    { "type": "select", "id": "text_color", "label": "Text on media", "default": "light", "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ] },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 15 },
+    { "type": "checkbox", "id": "allow_header_overlay", "label": "Let a transparent header sit over this section", "default": true, "info": "Only when this is the first section and it has an image or video." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "sand", "info": "Used behind the placeholder and while media loads." }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Eyebrow", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Eyebrow" } ] },
+    {
+      "type": "heading", "name": "Heading", "limit": 1,
+      "settings": [
+        { "type": "textarea", "id": "heading", "label": "Heading", "default": "Headline for the season" },
+        { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h0", "options": [ { "value": "h0", "label": "Display" }, { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" } ] },
+        { "type": "select", "id": "tag", "label": "Heading level", "default": "h1", "options": [ { "value": "h1", "label": "H1 (main page heading)" }, { "value": "h2", "label": "H2" } ], "info": "Use H1 only once per page." }
+      ]
+    },
+    { "type": "text", "name": "Text", "limit": 1, "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pair a short line of copy with the image.</p>" } ] },
+    {
+      "type": "buttons", "name": "Buttons", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label_1", "label": "First button label", "default": "Shop now" },
+        { "type": "url", "id": "link_1", "label": "First button link" },
+        { "type": "select", "id": "style_1", "label": "First button style", "default": "primary", "options": [ { "value": "primary", "label": "Solid" }, { "value": "secondary", "label": "Outline" }, { "value": "tertiary", "label": "Text link" } ] },
+        { "type": "text", "id": "label_2", "label": "Second button label" },
+        { "type": "url", "id": "link_2", "label": "Second button link" },
+        { "type": "select", "id": "style_2", "label": "Second button style", "default": "secondary", "options": [ { "value": "primary", "label": "Solid" }, { "value": "secondary", "label": "Outline" }, { "value": "tertiary", "label": "Text link" } ] }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Hero", "blocks": [ { "type": "heading" }, { "type": "text" }, { "type": "buttons" } ] } ]
+}
+{% endschema %}
