@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const p = await ctx.newPage();
+const r = await p.goto('https://www.parachutehome.com/', { waitUntil: 'domcontentloaded', timeout: 60000 });
+console.log('status', r.status(), p.url());
+await p.waitForTimeout(6000);
+console.log('title', await p.title());
+const dialogs = await p.$$eval('[role=dialog],[aria-modal=true],iframe', els => els.filter(e=>e.offsetParent||e.tagName==='IFRAME').map(e => e.tagName+' '+(e.id||'')+' '+(e.className+'').slice(0,80)+' '+(e.src||'').slice(0,80)));
+console.log('dialogs', dialogs);
+const links = await p.$$eval('a[href]', as => [...new Set(as.map(a => a.href))].filter(h => /\/(collections|products|search)/.test(h)).slice(0,80));
+console.log(links.join('\n'));
+await p.screenshot({ path: '/tmp/../private/tmp/claude-501/-Users-shad/a350c532-bb9b-4e1a-bc19-ce54530650a2/scratchpad/home.png' });
+await b.close();

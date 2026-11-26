@@ -327,8 +327,10 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
 .reveal.is-visible, html:not(.js) .reveal, html.reveal-off .reveal { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  /* 0s (not .01ms): a .01ms transition still defers inherited visibility by a frame and swallows focus() on drawer contents. Nothing in the theme relies on transitionend. */
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: 0s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   /* Drawers/dialogs must flip visibility synchronously so focus() lands on open (a .01ms transition still defers it a frame). */
-  .drawer, .dialog, .overlay, [open] > .drawer, [open] > .dialog, [open] > .overlay, .drawer.is-open, .overlay.is-open { transition: none !important; }
+  .drawer, .dialog, .overlay, [open] > .drawer, [open] > .dialog, [open] > .overlay, .drawer.is-open, .overlay.is-open,
+  theme-drawer[open] *, theme-dialog[open] *, .drawer.is-open * { transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }

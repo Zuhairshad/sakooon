@@ -1,0 +1,89 @@
+{%- comment -%}
+  Desktop mega menu panel for one top-level menu link. Owner: shad-2d.
+  Layout: one row on a 6-column grid. Childless level-2 links share a single column, each level-2 link
+  with children becomes a group column (heading + level-3 links), then promo cards align to the right end.
+  Params: link (level-1 link), section (header section; its mega_promo blocks whose menu_item matches the link
+  handle or title become promo cards, max 3), id (panel id).
+{%- endcomment -%}
+{%- liquid
+  assign singles_count = 0
+  assign groups_count = 0
+  for child in link.links
+    if child.links.size > 0
+      assign groups_count = groups_count | plus: 1
+    else
+      assign singles_count = singles_count | plus: 1
+    endif
+  endfor
+  assign link_cols = groups_count
+  if singles_count > 0
+    assign link_cols = link_cols | plus: 1
+  endif
+  assign link_handle = link.handle | default: link.title | handleize
+  assign promo_count = 0
+  for block in section.blocks
+    if block.type == 'mega_promo'
+      assign target = block.settings.menu_item | handleize
+      if target == link_handle
+        assign promo_count = promo_count | plus: 1
+      endif
+    endif
+  endfor
+  assign promo_count = promo_count | at_most: 3
+  assign used = link_cols | plus: promo_count
+  assign spacer = 6 | minus: used
+-%}
+<div id="{{ id }}" class="mega-menu" data-mega-panel>
+  <div class="mega-menu__inner page-width page-width--full">
+    <div class="mega-menu__grid">
+      {%- if singles_count > 0 -%}
+        <div class="mega-menu__col">
+          <ul class="mega-menu__links list-unstyled" role="list">
+            {%- for child in link.links -%}
+              {%- if child.links.size == 0 -%}
+                <li><a class="mega-menu__link" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      {%- for child in link.links -%}
+        {%- if child.links.size > 0 -%}
+          <div class="mega-menu__col">
+            {%- if child.url != blank and child.url != '#' -%}
+              <a class="mega-menu__heading" href="{{ child.url }}">{{ child.title | escape }}</a>
+            {%- else -%}
+              <p class="mega-menu__heading">{{ child.title | escape }}</p>
+            {%- endif -%}
+            <ul class="mega-menu__links list-unstyled" role="list">
+              {%- for grandchild in child.links -%}
+                <li><a class="mega-menu__link" href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if spacer > 0 and promo_count > 0 -%}
+        <div class="mega-menu__spacer" style="grid-column: span {{ spacer }}" aria-hidden="true"></div>
+      {%- endif -%}
+      {%- assign shown = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type != 'mega_promo' or shown >= 3 -%}{%- continue -%}{%- endif -%}
+        {%- assign target = block.settings.menu_item | handleize -%}
+        {%- if target != link_handle -%}{%- continue -%}{%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <a class="mega-menu__promo" href="{{ block.settings.link | default: link.url }}" {{ block.shopify_attributes }}>
+          <div class="media mega-menu__promo-media" style="--aspect: 4/5">
+            {%- render 'image', image: block.settings.image, sizes: '(min-width: 1440px) 220px, 16vw', widths: '240,360,480,640', aspect: '4/5', placeholder: 'lifestyle-1' -%}
+          </div>
+          {%- if block.settings.heading != blank -%}
+            <span class="mega-menu__promo-title">{{ block.settings.heading | escape }}</span>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+    {%- if link.url != blank and link.url != '#' -%}
+      <a class="mega-menu__all link link--arrow" href="{{ link.url }}">{{ 'storefront.header.view_all' | t: title: link.title }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a>
+    {%- endif -%}
+  </div>
+</div>

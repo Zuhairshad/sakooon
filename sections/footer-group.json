@@ -2,7 +2,28 @@
   "type": "footer",
   "name": "t:sections.footer.name",
   "sections": {
-    "footer": { "type": "footer", "settings": { "color_scheme": "sand", "menu": "footer" } }
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "newsletter": { "type": "newsletter", "settings": { "heading": "Stay in touch", "text": "<p>Sign up for news, new arrivals and offers.</p>", "disclaimer": "<p>You can unsubscribe at any time.</p>", "width": "wide" } },
+        "menu-shop": { "type": "link_list", "settings": { "heading": "Shop", "menu": "footer-shop", "width": "narrow" } },
+        "menu-help": { "type": "link_list", "settings": { "heading": "Help", "menu": "footer-help", "width": "narrow" } },
+        "menu-company": { "type": "link_list", "settings": { "heading": "Company", "menu": "footer-company", "width": "narrow" } },
+        "social": { "type": "social", "settings": { "heading": "Follow", "width": "narrow" } }
+      },
+      "block_order": ["newsletter", "menu-shop", "menu-help", "menu-company", "social"],
+      "settings": {
+        "color_scheme": "sand",
+        "dividers": false,
+        "show_wordmark": true,
+        "show_country_selector": true,
+        "legal_menu": "legal",
+        "show_payment_icons": true,
+        "copyright": "All rights reserved",
+        "padding_top": 48,
+        "padding_bottom": 24
+      }
+    }
   },
   "order": ["footer"]
 }

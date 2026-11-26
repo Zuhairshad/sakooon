@@ -276,7 +276,8 @@ const cartJson = () => JSON.parse(JSON.stringify(cartObject(), (k, v) => (k === 
 /* -------------------------------------------------------------- liquid */
 
 function tr(key, vars = {}) {
-  const val = key.split('.').reduce((o, k) => (o == null ? o : o[k]), getLocale());
+  let val = key.split('.').reduce((o, k) => (o == null ? o : o[k]), getLocale());
+  if (val && typeof val === 'object' && ('one' in val || 'other' in val)) { const n = Number(vars.count); val = n === 1 ? (val.one ?? val.other) : n === 0 && val.zero ? val.zero : (val.other ?? val.one); }
   if (typeof val !== 'string') return key.includes('.') ? titleCase(key.split('.').pop()) : key;
   return val.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, n) => (vars[n] ?? ''));
 }
@@ -498,7 +499,15 @@ async function renderJsonSections(file, globals, prefix = '') {
 
 /** Resolve a Section Rendering API id. Group ids look like `sections--header-group__cart-drawer` and carry that entry's settings;
     anything else is treated as a section file name (what Shopify does for predictive search / recommendations). */
-function resolveSectionId(id) {
+function resolveSectionId(id, url) {
+  const t = /^template--([a-z0-9-]+)__(.+)$/i.exec(id);
+  if (t) {
+    // the id carries the template file name (dots became dashes); find the matching templates/*.json
+    const candidates = fs.readdirSync(path.join(THEME, 'templates')).filter((f) => f.endsWith('.json') && f.replace(/\.json$/, '').replace(/[^a-z0-9]+/gi, '-') === t[1]);
+    for (const f of candidates) { const tpl = readJson(path.join(THEME, 'templates', f)); const entry = tpl.sections?.[t[2]]; if (entry) return { type: entry.type, data: entry }; }
+    const sub = fs.existsSync(path.join(THEME, 'templates', 'customers')) ? fs.readdirSync(path.join(THEME, 'templates', 'customers')).filter((f) => `customers-${f.replace(/\.json$/, '')}` === t[1]) : [];
+    for (const f of sub) { const tpl = readJson(path.join(THEME, 'templates', 'customers', f)); const entry = tpl.sections?.[t[2]]; if (entry) return { type: entry.type, data: entry }; }
+  }
   const m = /^sections--([a-z0-9-]+)__(.+)$/i.exec(id);
   if (m) {
     const file = path.join(THEME, 'sections', `${m[1]}.json`);
@@ -653,7 +662,7 @@ async function renderPage(url) {
   const globals = globalsFor(route, url);
   const tplPath = path.join(THEME, 'templates', route.file);
   let content;
-  if (exists(tplPath)) content = await renderJsonSections(tplPath, globals);
+  if (exists(tplPath)) content = await renderJsonSections(tplPath, globals, `template--${route.file.replace(/\.json$/, '').replace(/[^a-z0-9]+/gi, '-')}__`);
   else if (exists(tplPath.replace(/\.json$/, '.liquid'))) content = await engine.parseAndRender(fs.readFileSync(tplPath.replace(/\.json$/, '.liquid'), 'utf8'), {}, { globals });
   else content = `<div style="padding:120px 24px;text-align:center"><h1>No <code>templates/${route.file}</code> in this theme</h1><p>Shopify would fall back to a default; this preview has nothing to render.</p></div>`;
   const layout = fs.readFileSync(path.join(THEME, 'layout', `${route.layout || 'theme'}.liquid`), 'utf8');
