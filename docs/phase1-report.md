@@ -36,8 +36,32 @@ Status date: 2026-11-26. Deliverable branch: `sakooon/integration` (156 commits,
 - Checkout navigation: the cart's Check out button posts to Shopify's checkout; verified as a form action only (no real purchase, no checkout in the preview).
 
 ## 8. Performance
-scripts/lighthouse.mjs on the preview with CDN-like image resizing (indicative; fonts come from a Google import in the preview and from Shopify's font CDN on the store). Latest full table: /Users/shad/sakooon-qa/lighthouse/summary.md.
-Mid-run figures (mobile): home 89 / 100 / 100 / 100, collection 88 / 98 / 100 / 100, product 83 / 100 / 100 / 100; desktop performance 94-99; CLS <= 0.04 everywhere; TBT 0-10 ms. Remaining mobile cost is render-blocking CSS (four theme stylesheets). Real figures require the Shopify development theme.
+scripts/lighthouse.mjs on the preview with CDN-like image resizing (indicative: fonts come from a Google import in the preview and from Shopify's font CDN on the store; no Shopify CDN caching). Reports: /Users/shad/sakooon-qa/lighthouse/.
+
+| page | form | perf | a11y | best | seo | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| / | mobile | 89 | 100 | 100 | 100 | 3.3 s | 0 | 0 ms |
+| / | desktop | 95 | 100 | 100 | 100 | 1.1 s | 0 | 0 ms |
+| /collections/all | mobile | 80 | 100 | 100 | 100 | 4.6 s | 0.001 | 0 ms |
+| /collections/all | desktop | 97 | 100 | 100 | 100 | 1.0 s | 0.001 | 0 ms |
+| /products/fixture-quilted-bed-sheet-set | mobile | 77 | 100 | 100 | 100 | 5.0 s | 0.001 | 10 ms |
+| /products/fixture-quilted-bed-sheet-set | desktop | 91 | 100 | 100 | 100 | 1.2 s | 0.013 | 0 ms |
+| /cart | mobile | 95 | 100 | 100 | 100 | 2.6 s | 0.001 | 0 ms |
+| /cart | desktop | 99 | 100 | 100 | 100 | 0.7 s | 0.002 | 0 ms |
+| /search?q=sheet | mobile | 81 | 100 | 100 | 100 | 4.4 s | 0.001 | 0 ms |
+| /search?q=sheet | desktop | 91 | 100 | 100 | 100 | 1.4 s | 0 | 0 ms |
+| /pages/fabric/percale | mobile | 87 | 100 | 100 | 100 | 3.8 s | 0 | 0 ms |
+| /pages/fabric/percale | desktop | 75 | 100 | 100 | 100 | 2.3 s | 0 | 0 ms |
+| /pages/about?view=fabric-guide | mobile | 83 | 100 | 100 | 100 | 4.1 s | 0 | 0 ms |
+| /pages/about?view=fabric-guide | desktop | 98 | 100 | 100 | 100 | 1.1 s | 0.002 | 0 ms |
+| /pages/about?view=faq | mobile | 95 | 100 | 100 | 100 | 2.6 s | 0.001 | 0 ms |
+| /pages/about?view=faq | desktop | 99 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
+| /pages/size-guide | mobile | 93 | 100 | 100 | 100 | 2.6 s | 0.054 | 0 ms |
+| /pages/size-guide | desktop | 99 | 100 | 100 | 100 | 0.7 s | 0.02 | 0 ms |
+| /blogs/journal | mobile | 81 | 100 | 100 | 100 | 4.7 s | 0 | 0 ms |
+| /blogs/journal | desktop | 99 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
+
+Accessibility, best practices and SEO are 100 on every template. Mobile performance is 77-95: the remaining cost is render-blocking CSS (four theme stylesheets) and image-heavy templates' LCP on a throttled 4G profile. Real figures require the Shopify development theme.
 
 ## 9. Implemented sections and templates
 Sections (61): announcement-bar, header, footer, hero-full, hero-split, rich-text, featured-collection, editorial-grid, product-highlights, image-banner, image-with-text, collection-list, fabric-discovery, comparison-highlights, room-collection, brand-values, newsletter, service-info; main-collection, collection-banner, main-product, product-recommendations, complementary-products, cart-drawer, main-cart, search-drawer, main-search; editorial-hero, editorial-text, editorial-image-text, editorial-gallery, editorial-quote, editorial-stats, editorial-timeline, guide-anchor-nav, faq, info-columns, contact-form, main-page, main-metaobject-fabric, fabric-detail, fabric-guide, fabric-compare, related-products-editorial, care-guide, size-guide, measurement-guide, main-blog, main-article; main-404, main-password, apps, custom-liquid, spacer, main-login, main-register, main-account, main-addresses, main-order, main-activate, main-reset. Section groups: header-group (announcement, header, cart-drawer, search-drawer), footer-group.
