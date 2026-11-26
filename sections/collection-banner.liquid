@@ -1,0 +1,72 @@
+{%- comment -%}
+  Collection header. Owner: shad-d8. Reference: Parachute collection header (docs/reference/commerce.md section 1).
+  Desktop: 12-column grid; portrait image spans 3 columns, large title with a superscript product count beside it,
+  description bottom-aligned with the image, optional "back to" link bottom right. Phones: stacked.
+  Content: collection.metafields.sakooon.banner_heading / banner_text / banner_image override the collection's own
+  title / description / image (docs/metafield-contracts.md). Blank fields are hidden.
+{%- endcomment -%}
+{%- liquid
+  assign heading = collection.metafields.sakooon.banner_heading.value | default: collection.title
+  assign text = collection.metafields.sakooon.banner_text | metafield_tag
+  if collection.metafields.sakooon.banner_text == blank
+    assign text = collection.description
+  endif
+  assign image = section.settings.image | default: collection.metafields.sakooon.banner_image.value | default: collection.image
+  if section.settings.show_image == false
+    assign image = nil
+  endif
+  if collection == blank
+    assign heading = 'onboarding.collection_title' | t
+  endif
+-%}
+<div
+  class="section collection-banner color-scheme-{{ section.settings.color_scheme }}{% if image == blank %} collection-banner--no-image{% endif %}"
+  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="collection-banner__grid page-width page-width--full">
+    {%- if image != blank -%}
+      <div class="collection-banner__media media{% unless section.settings.show_image_mobile %} collection-banner__media--desktop-only{% endunless %}" style="--aspect: 3/4">
+        {%- render 'image', image: image, sizes: '(min-width: 1024px) 25vw, 100vw', aspect: '3/4', priority: true -%}
+      </div>
+    {%- endif -%}
+    <div class="collection-banner__text">
+      <h1 class="collection-banner__title">
+        {{- heading | escape -}}
+        {%- if section.settings.show_count and collection.all_products_count > 0 -%}
+          <sup class="collection-banner__count" aria-hidden="true">{{ collection.all_products_count }}</sup>
+          <span class="visually-hidden">({{ 'products.facets.product_count_simple' | t: count: collection.all_products_count }})</span>
+        {%- endif -%}
+      </h1>
+      {%- if section.settings.show_description and text != blank -%}
+        <div class="collection-banner__description rte">{{ text }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.back_link != blank and section.settings.back_label != blank -%}
+      <a href="{{ section.settings.back_link }}" class="collection-banner__back link--arrow">
+        {%- render 'icon', icon: 'arrow-left', size: 16 -%}<span>{{ section.settings.back_label | escape }}</span>
+      </a>
+    {%- endif -%}
+  </div>
+  {%- if section.settings.show_divider -%}<hr class="collection-banner__divider page-width page-width--full">{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.collection-banner.name",
+  "class": "section-collection-banner",
+  "settings": [
+    { "type": "checkbox", "id": "show_image", "label": "t:sections.collection-banner.settings.show_image.label", "default": true },
+    { "type": "checkbox", "id": "show_image_mobile", "label": "t:sections.collection-banner.settings.show_image_mobile.label", "default": false },
+    { "type": "image_picker", "id": "image", "label": "t:sections.collection-banner.settings.image.label", "info": "t:sections.collection-banner.settings.image.info" },
+    { "type": "checkbox", "id": "show_count", "label": "t:sections.collection-banner.settings.show_count.label", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "t:sections.collection-banner.settings.show_description.label", "default": true },
+    { "type": "text", "id": "back_label", "label": "t:sections.collection-banner.settings.back_label.label", "info": "t:sections.collection-banner.settings.back_label.info" },
+    { "type": "url", "id": "back_link", "label": "t:sections.collection-banner.settings.back_link.label" },
+    { "type": "checkbox", "id": "show_divider", "label": "t:sections.collection-banner.settings.show_divider.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 0 }
+  ]
+}
+{% endschema %}

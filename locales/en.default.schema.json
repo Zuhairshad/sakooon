@@ -432,6 +432,46 @@
         "featured_collection": { "label": "Featured products collection" },
         "featured_heading": { "label": "Featured products heading", "info": "Defaults to the collection title" }
       }
+    },
+    "main-collection": {
+      "name": "Collection products",
+      "settings": {
+        "products_per_page": { "label": "Products per page" },
+        "columns_desktop": { "label": "Columns on desktop" },
+        "swatch_limit": { "label": "Colour swatches per card", "info": "More colours collapse into +N" },
+        "filtering": { "header": "Filtering and sorting" },
+        "enable_filtering": { "label": "Enable filtering", "info": "Customise filters with the Search & Discovery app" },
+        "enable_sorting": { "label": "Enable sorting" },
+        "drawer_color_scheme": { "label": "Filter drawer colour scheme" },
+        "empty_link": { "label": "Empty collection button link" }
+      },
+      "blocks": {
+        "promo": {
+          "name": "Promo tile",
+          "settings": {
+            "position": { "label": "Show before product number" },
+            "span": { "label": "Width", "options": { "one": "One column", "two": "Two columns" } },
+            "image": { "label": "Image" },
+            "eyebrow": { "label": "Eyebrow" },
+            "heading": { "label": "Heading" },
+            "link_label": { "label": "Link label" },
+            "link": { "label": "Link" }
+          }
+        }
+      }
+    },
+    "collection-banner": {
+      "name": "Collection banner",
+      "settings": {
+        "show_image": { "label": "Show image" },
+        "show_image_mobile": { "label": "Show image on phones" },
+        "image": { "label": "Image", "info": "Overrides the collection banner metafield and the collection image" },
+        "show_count": { "label": "Show product count" },
+        "show_description": { "label": "Show description" },
+        "back_label": { "label": "Back link label", "info": "e.g. Sheets" },
+        "back_link": { "label": "Back link" },
+        "show_divider": { "label": "Show divider below" }
+      }
     }
   }
 }
