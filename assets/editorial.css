@@ -543,3 +543,8 @@ guide-anchor-nav.guide-sidebar[data-empty] .guide-anchor-nav__nav { display: non
 .size-guide__measure .size-guide__note { margin-top: var(--space-6); }
 .size-guide__body > * { min-width: 0; }
 @media (max-width: 599.98px) { .size-diagram text { font-size: 15px; } .size-diagram .sd-callout text { font-size: 13px; } }
+
+/* Pages with the page header (editorial-hero layout "page"): wide editorial containers share its left edge at the
+   theme page width instead of the centred 1168px column; prose keeps a readable measure. */
+main:has(.editorial-hero--page) .page-width.ed-wide:not(.page-width--text, .page-width--narrow, .page-width--full) { max-width: var(--page-width); }
+main:has(.editorial-hero--page) .size-guide__intro, main:has(.editorial-hero--page) .size-guide .section-heading__body { max-width: 72ch; }

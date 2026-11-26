@@ -3,12 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "page",
+        "heading_size": "h1",
         "text": "<p>The sizes of our bedding, exactly as listed on each product. Below them is a table of common mattress sizes in Pakistan, to help you compare with your own bed.</p>",
-        "padding_top": 80,
-        "padding_bottom": 32,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "guide": {

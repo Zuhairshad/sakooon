@@ -3,13 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "show_breadcrumbs": true,
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "text",
+        "heading_size": "h1",
         "text": "<p>Three measurements are all you need to choose bedding that fits well.</p>",
-        "padding_top": 80,
-        "padding_bottom": 32,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "measure": {
@@ -58,7 +60,8 @@
         "image_ratio": "1/1",
         "show_placeholders": false,
         "padding_top": 16,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "content_width": "page"
       }
     },
     "faq": {
@@ -86,7 +89,7 @@
       "settings": {
         "heading": "Questions",
         "heading_size": "h4",
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 80
       }
