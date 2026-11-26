@@ -35,3 +35,9 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 
 ## Open decisions
 - Typography: resolved by D11 (one grotesk, 14px/300 defaults); serif display revisited in Phase 2 branding.
+
+## Closing docs
+- [x] docs/reference/storefront-admin.md + storefront-review.md (shad-2d) 6800d75, 1b741bf, merged
+- [ ] docs/reference/commerce-admin.md (shad-d8)
+- [ ] docs/reference/editorial-admin.md + editorial-visual-pass.md (shad-8b)
+- [ ] docs/phase1-report.md final (Fable)
