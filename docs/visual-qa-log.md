@@ -39,3 +39,10 @@ Format: date | template/state | viewport | observation | action | status.
 - product / add to cart | 1440 | Cart drawer opens from the right (500px) with line (image, title, options, qty stepper, Remove), "Complete the bed" rail, subtotal, tax note, Check out, View cart. Matches the Rebuy flyout geometry recorded by commerce. | none | OK
 - product | 390 | Gallery full width, buy box stacked, sticky add-to-cart bar appears after the main button scrolls away, rails scroll horizontally, no overflow. | none | OK
 - disclosure | all | Collapsed accordions showed ~20px of content (padding inside the 0fr row). Fixed in base.css (min-height 0). | fixed | OK
+
+## 2026-11-26 Pixel/side-by-side comparisons (scripts/compare-screenshots.mjs, /Users/shad/sakooon-qa/diff/)
+- parachute/home vs home | 1440 59% / 390 46% mismatch | page height 9520 vs 9914 (pass within 10%). Placeholder imagery and copy drive the pixel number; structure matches (see homepage entry). | none | OK
+- parachute/collection vs collection | 1440 50% / 390 46% | reference 48 products over 6763px vs 4 fixture products over 1899px; the header, banner, toolbar and grid rows align at the top. Height check is content-driven, not a layout defect. | none | OK (content)
+- parachute/product vs product | 1440 48% / 390 46% | reference 5378px includes a long editorial story, "Complete your set", reviews banner, materials and recently-viewed blocks below the fold; ours ends after two rails (2793px). The above-the-fold split, buy box and rails match. Below-fold editorial sections exist as presets (image-with-text, comparison-highlights, featured-collection) and can be added to product.json in Phase 2 content work. | Phase 2 | OK (documented)
+- tekla/size-guide vs size-guide | 1440 0.9% | reference 1033px shows only the index (tables open in a panel); ours 3536px shows the index plus inline tables. Index geometry matches (0.9% mismatch above the fold). | documented earlier | OK
+- tekla/stories vs journal | 1440 38% | page heights pass; 3-up grid and caption rhythm match, imagery differs. | none | OK
