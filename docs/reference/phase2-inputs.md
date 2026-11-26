@@ -33,3 +33,5 @@ The logo is green, not navy/gold, so Phase 2 derives the palette from the logo (
 4. Policies: delivery fees and zones, COD, delivery times, exchange/return window and conditions, payment methods (COD, card, bank transfer, Easypaisa/JazzCash?).
 5. Real contact channels: WhatsApp number, phone, hours, city/address, social handles.
 6. Shopify CLI login for the development theme (`shopify theme dev --store juj1hc-qf.myshopify.com`), never a publish.
+7. (shad-d8) Pillow pack: the product `duvet-comfort-pillow-pack-of-2` sells "Pack of 1 Pillow" (Rs 2,499) and "Pack of 2 Pillows" (Rs 4,999), but its title, description and FAQ say a pack holds two pillows. Which is right? Until answered the PDP shows no "What's included" chips for it. Both variants are sold out; is that intended, and when do they return?
+8. (shad-d8) Swatch colours: the variant swatch colours were eyedropped from the packshots (docs/metafield-contracts.md §Admin values). Confirm them or send your own hex values.
