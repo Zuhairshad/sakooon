@@ -1,0 +1,121 @@
+{%- comment -%}
+  Grouped accordions with FAQPage structured data. Owner: shad-8b.
+  Reference: Tekla shipping & returns (docs/reference/editorial.md 2.9): label per group, 14px rows,
+  hairline dividers, + icon, instant open (animation is a setting, default off).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    when 'page'
+      assign width_class = 'page-width'
+    else
+      assign width_class = 'page-width page-width--text'
+  endcase
+  assign icon = 'plus'
+  if s.icon == 'chevron'
+    assign icon = 'chevron-down'
+  endif
+  assign group_name = ''
+  if s.single_open
+    assign group_name = section.id
+  endif
+  assign qa_count = 0
+-%}
+<div class="section ed-section faq{% unless s.animate %} faq--instant{% endunless %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    <div class="faq__groups">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'group' -%}
+            {%- if block.settings.heading != blank -%}
+              {%- assign anchor = block.settings.heading | handleize -%}
+              <h2 id="{{ anchor }}" class="faq__group-heading {{ block.settings.size }}" data-anchor-target {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+            {%- endif -%}
+          {%- when 'question' -%}
+            {%- liquid
+              assign qa_count = qa_count | plus: 1
+              assign open = false
+              if s.open_first and qa_count == 1
+                assign open = true
+              endif
+              assign item_id = 'faq-' | append: block.id
+              assign attrs = block.shopify_attributes
+            -%}
+            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: 'h3', attrs: attrs %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{%- if s.structured_data and qa_count > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- assign first = true -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'question' and block.settings.question != blank and block.settings.answer != blank -%}
+        {%- unless first %},{% endunless -%}
+        { "@type": "Question", "name": {{ block.settings.question | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | json }} } }
+        {%- assign first = false -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.faq.name",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "select", "id": "icon", "label": "t:sections.faq.settings.icon.label", "default": "plus", "options": [
+      { "value": "plus", "label": "t:sections.faq.settings.icon.options.plus" },
+      { "value": "chevron", "label": "t:sections.faq.settings.icon.options.chevron" }
+    ] },
+    { "type": "checkbox", "id": "open_first", "label": "t:sections.faq.settings.open_first.label", "default": false },
+    { "type": "checkbox", "id": "single_open", "label": "t:sections.faq.settings.single_open.label", "default": false },
+    { "type": "checkbox", "id": "animate", "label": "t:sections.faq.settings.animate.label", "default": false },
+    { "type": "checkbox", "id": "structured_data", "label": "t:sections.faq.settings.structured_data.label", "info": "t:sections.faq.settings.structured_data.info", "default": true },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "text", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "group", "name": "t:sections.faq.blocks.group.name", "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Topic" },
+      { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h4", "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+        { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+        { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+      ] }
+    ] },
+    { "type": "question", "name": "t:sections.faq.blocks.question.name", "settings": [
+      { "type": "text", "id": "question", "label": "t:sections.faq.blocks.question.settings.question.label", "default": "Question" },
+      { "type": "richtext", "id": "answer", "label": "t:sections.faq.blocks.question.settings.answer.label", "default": "<p>Answer the question in a few clear sentences. Link to a policy page if more detail is needed.</p>" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.faq.presets.name", "blocks": [ { "type": "group" }, { "type": "question" }, { "type": "question" }, { "type": "question" } ] } ]
+}
+{% endschema %}

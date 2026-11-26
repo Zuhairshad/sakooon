@@ -1,1 +1,97 @@
-/* editorial.js: owned by shad-8b (editorial). */
+/* editorial.js: owned by shad-8b (editorial). Loaded deferred from layout/theme.liquid.
+   Custom elements for editorial sections. Each initialises in connectedCallback and cleans up in
+   disconnectedCallback so theme-editor section reloads work. */
+(() => {
+  /* ---------- <guide-anchor-nav> ----------
+     Builds its link list from [data-anchor-target] headings when it has no link blocks (data-auto="true"),
+     then marks the link whose target is in view with aria-current="true". */
+  class GuideAnchorNav extends HTMLElement {
+    connectedCallback() {
+      this.list = this.querySelector('.guide-anchor-nav__list');
+      if (!this.list) return;
+      if (this.dataset.auto === 'true') this.build();
+      this.links = Array.from(this.list.querySelectorAll('a[href^="#"]'));
+      this.toggleAttribute('data-empty', this.links.length === 0);
+      if (!this.links.length) return;
+      this.targets = this.links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1)))).filter(Boolean);
+      this.observe();
+      this._onClick = (e) => {
+        const a = e.target.closest('a[href^="#"]'); if (!a) return;
+        this.setCurrent(a);
+      };
+      this.list.addEventListener('click', this._onClick);
+    }
+    disconnectedCallback() {
+      if (this.io) this.io.disconnect();
+      if (this.list && this._onClick) this.list.removeEventListener('click', this._onClick);
+    }
+    build() {
+      this.list.textContent = '';
+      document.querySelectorAll('[data-anchor-target][id]').forEach((h) => {
+        if (this.contains(h)) return;
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.className = 'guide-anchor-nav__link';
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent.trim();
+        li.append(a);
+        this.list.append(li);
+      });
+    }
+    observe() {
+      if (!('IntersectionObserver' in window)) return;
+      const visible = new Map();
+      this.io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => visible.set(en.target, en.isIntersecting));
+        const current = this.targets.find((t) => visible.get(t));
+        if (current) this.setCurrent(this.links.find((a) => decodeURIComponent(a.hash.slice(1)) === current.id));
+      }, { rootMargin: '-20% 0px -65% 0px' });
+      this.targets.forEach((t) => this.io.observe(t));
+    }
+    setCurrent(link) {
+      if (!link || link === this.current) return;
+      this.links.forEach((a) => a.removeAttribute('aria-current'));
+      link.setAttribute('aria-current', 'true');
+      this.current = link;
+      // Keep the active link visible in the horizontally scrolling list without moving the page.
+      const l = this.list, r = link.getBoundingClientRect(), lr = l.getBoundingClientRect();
+      if (r.left < lr.left || r.right > lr.right) l.scrollTo({ left: l.scrollLeft + (r.left - lr.left) - 16, behavior: 'smooth' });
+    }
+  }
+  if (!customElements.get('guide-anchor-nav')) customElements.define('guide-anchor-nav', GuideAnchorNav);
+
+  /* --ed-sticky-offset: how far the site header currently covers the top of the viewport (0 when it has
+     scrolled away or hides on scroll), so sticky editorial bars and anchor targets sit just below it. */
+  let ticking = false;
+  const setStickyOffset = () => {
+    ticking = false;
+    const header = document.querySelector('.header, [data-header]');
+    const bottom = header ? Math.max(0, Math.round(header.getBoundingClientRect().bottom)) : 0;
+    document.documentElement.style.setProperty('--ed-sticky-offset', `${bottom}px`);
+    // Anchor targets need a scroll-independent offset: the header only counts if it really sticks
+    // (fixed, or sticky inside a parent taller than itself), plus the sticky nav and a little air.
+    let headerOffset = 0;
+    if (header) {
+      const pos = getComputedStyle(header).position;
+      if (pos === 'fixed' || (pos === 'sticky' && header.parentElement && header.parentElement.offsetHeight > header.offsetHeight + 1)) headerOffset = header.offsetHeight;
+    }
+    const nav = document.querySelector('.section-guide-anchor-nav');
+    document.documentElement.style.setProperty('--ed-anchor-offset', `${headerOffset + (nav ? nav.offsetHeight : 0) + 24}px`);
+  };
+  const requestOffset = () => { if (!ticking) { ticking = true; requestAnimationFrame(setStickyOffset); } };
+  if (document.querySelector('.section-guide-anchor-nav, [data-anchor-target]')) {
+    setStickyOffset();
+    window.addEventListener('scroll', requestOffset, { passive: true });
+    window.addEventListener('resize', requestOffset);
+  }
+
+  /* Open an accordion when the URL hash targets it (e.g. a PDP linking to /pages/faq#faq-<id>). */
+  const openFromHash = () => {
+    if (!location.hash) return;
+    const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const item = el && (el.matches('theme-disclosure') ? el : el.closest('theme-disclosure'));
+    if (item && typeof item.set === 'function') { item.set(true); item.scrollIntoView({ block: 'start' }); }
+  };
+  window.addEventListener('hashchange', openFromHash);
+  if (document.readyState === 'complete') openFromHash(); else window.addEventListener('load', openFromHash);
+})();

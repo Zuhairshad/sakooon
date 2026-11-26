@@ -1,0 +1,77 @@
+{%- comment -%} Columns of short headed information: hours, contact routes, delivery zones, policies. Owner: shad-8b. {%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    when 'text'
+      assign width_class = 'page-width page-width--text'
+    else
+      assign width_class = 'page-width'
+  endcase
+-%}
+<div class="section ed-section info-columns{% if s.dividers %} info-columns--dividers{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    <div class="info-columns__grid">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <div class="info-columns__item" {{ block.shopify_attributes }}>
+          {%- if b.icon != 'none' -%}<span class="info-columns__icon">{% render 'icon', icon: b.icon, size: 24 %}</span>{%- endif -%}
+          {%- if b.heading != blank -%}<h3 class="info-columns__heading text-body">{{ b.heading }}</h3>{%- endif -%}
+          {%- if b.text != blank -%}<div class="info-columns__text rte">{{ b.text }}</div>{%- endif -%}
+          {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.info-columns.name",
+  "tag": "section",
+  "class": "section-info-columns",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "range", "id": "columns", "min": 1, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "checkbox", "id": "dividers", "label": "t:sections.info-columns.settings.dividers.label", "default": true },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ],
+  "blocks": [
+    { "type": "column", "name": "t:sections.info-columns.blocks.column.name", "settings": [
+      { "type": "select", "id": "icon", "label": "t:sections.info-columns.blocks.column.settings.icon.label", "default": "none", "options": [
+        { "value": "none", "label": "t:sections.info-columns.blocks.column.settings.icon.options.none" },
+        { "value": "mail", "label": "t:sections.info-columns.blocks.column.settings.icon.options.mail" },
+        { "value": "phone", "label": "t:sections.info-columns.blocks.column.settings.icon.options.phone" },
+        { "value": "truck", "label": "t:sections.info-columns.blocks.column.settings.icon.options.truck" },
+        { "value": "refresh", "label": "t:sections.info-columns.blocks.column.settings.icon.options.refresh" },
+        { "value": "map-pin", "label": "t:sections.info-columns.blocks.column.settings.icon.options.map_pin" },
+        { "value": "info", "label": "t:sections.info-columns.blocks.column.settings.icon.options.info" },
+        { "value": "shield", "label": "t:sections.info-columns.blocks.column.settings.icon.options.shield" }
+      ] },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Heading" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Short, practical information your customers need.</p>" },
+      { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+      { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.info-columns.presets.name", "blocks": [ { "type": "column" }, { "type": "column" }, { "type": "column" } ] } ]
+}
+{% endschema %}

@@ -1,0 +1,56 @@
+{%- comment -%}
+  Fabric characteristic ratings. Owner: shad-8b.
+  {% render 'fabric-rating', fabric: fabric, fields: 'softness,breathability,durability,warmth', compact: false %}
+  Reads rating metaobject fields (value.rating / value.scale_max). Fields that are blank are skipped; nothing
+  renders when all are blank. `warmth` is a position (1 cool to 5 warm), drawn as a scale with a marker,
+  not as filled bars.
+{%- endcomment -%}
+{%- liquid
+  assign fields = fields | default: 'softness,breathability,durability,warmth' | split: ','
+  assign has_any = false
+  for f in fields
+    assign key = f | strip
+    if fabric[key] != blank and fabric[key].value != blank
+      assign has_any = true
+    endif
+  endfor
+-%}
+{%- if has_any -%}
+<dl class="fabric-rating{% if compact %} fabric-rating--compact{% endif %}">
+  {%- for f in fields -%}
+    {%- liquid
+      assign key = f | strip
+      assign field = fabric[key]
+      if field == blank or field.value == blank
+        continue
+      endif
+      assign rating = field.value.rating | default: field.value | plus: 0
+      assign scale_max = field.value.scale_max | default: 5 | plus: 0
+      assign scale_min = field.value.scale_min | default: 1 | plus: 0
+      assign label_key = 'editorial.fabric_rating.' | append: key
+    -%}
+    <div class="fabric-rating__row">
+      <dt class="fabric-rating__label">{{ label_key | t }}</dt>
+      <dd class="fabric-rating__value">
+        {%- if key == 'warmth' -%}
+          {%- liquid
+            assign span = scale_max | minus: scale_min
+            if span < 1
+              assign span = 1
+            endif
+            assign pos = rating | minus: scale_min | times: 100 | divided_by: span
+          -%}
+          <span class="fabric-rating__spectrum" role="img" aria-label="{{ 'editorial.fabric_rating.warmth_value' | t: value: rating, max: scale_max }}">
+            <span class="fabric-rating__track"><span class="fabric-rating__marker" style="--pos: {{ pos }}%"></span></span>
+            <span class="fabric-rating__ends" aria-hidden="true"><span>{{ 'editorial.fabric_rating.cool' | t }}</span><span>{{ 'editorial.fabric_rating.warm' | t }}</span></span>
+          </span>
+        {%- else -%}
+          <span class="fabric-rating__bars" role="img" aria-label="{{ 'editorial.fabric_rating.value' | t: value: rating, max: scale_max }}">
+            {%- for i in (1..scale_max) -%}<span class="fabric-rating__bar{% if i <= rating %} is-filled{% endif %}"></span>{%- endfor -%}
+          </span>
+        {%- endif -%}
+      </dd>
+    </div>
+  {%- endfor -%}
+</dl>
+{%- endif -%}

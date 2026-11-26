@@ -1,0 +1,98 @@
+{%- comment -%} Shopify contact form with an optional side column. Owner: shad-8b. {%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section ed-section contact-form{% if s.side_text != blank %} contact-form--split{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width{% if s.side_text == blank %} page-width--text{% endif %}">
+    <div class="contact-form__layout">
+      <div class="contact-form__main">
+        {% render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text %}
+        {%- form 'contact', id: 'ContactForm', class: 'contact-form__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form__message form__message--success" role="status" tabindex="-1" autofocus>{% render 'icon', icon: 'success', size: 16 %}{{ 'editorial.contact.success' | t }}</p>
+          {%- elsif form.errors -%}
+            <div class="form__message form__message--error" role="alert" tabindex="-1" autofocus>
+              {% render 'icon', icon: 'error', size: 16 %}
+              <div>
+                <p>{{ 'editorial.contact.error_heading' | t }}</p>
+                <ul>
+                  {%- for field in form.errors -%}
+                    <li>{% if field == 'form' %}{{ form.errors.messages[field] }}{% else %}<a href="#ContactForm-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a>{% endif %}</li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          {%- endif -%}
+          <div class="contact-form__fields">
+            <div class="field">
+              <label class="field__label" for="ContactForm-name">{{ 'editorial.contact.name' | t }}</label>
+              <input class="field__input" type="text" id="ContactForm-name" name="contact[{{ 'editorial.contact.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" autocomplete="name">
+            </div>
+            <div class="field">
+              <label class="field__label" for="ContactForm-email">{{ 'editorial.contact.email' | t }} <span aria-hidden="true">*</span></label>
+              <input class="field__input" type="email" id="ContactForm-email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" autocomplete="email" spellcheck="false" autocapitalize="off" required aria-required="true"{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="ContactForm-email-error"{% endif %}>
+              {%- if form.errors contains 'email' -%}<p class="field__error" id="ContactForm-email-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+            </div>
+            {%- if s.show_phone -%}
+              <div class="field">
+                <label class="field__label" for="ContactForm-phone">{{ 'editorial.contact.phone' | t }}</label>
+                <input class="field__input" type="tel" id="ContactForm-phone" name="contact[{{ 'editorial.contact.phone' | t }}]" value="{{ form.phone }}" autocomplete="tel">
+              </div>
+            {%- endif -%}
+            {%- if s.show_order -%}
+              <div class="field">
+                <label class="field__label" for="ContactForm-order">{{ 'editorial.contact.order' | t }}</label>
+                <input class="field__input" type="text" id="ContactForm-order" name="contact[{{ 'editorial.contact.order' | t }}]" autocomplete="off">
+              </div>
+            {%- endif -%}
+            {%- if s.show_topic and s.topics != blank -%}
+              <div class="field">
+                <label class="field__label" for="ContactForm-topic">{{ 'editorial.contact.topic' | t }}</label>
+                <select class="field__input" id="ContactForm-topic" name="contact[{{ 'editorial.contact.topic' | t }}]">
+                  {%- assign topics = s.topics | newline_to_br | split: '<br />' -%}
+                  {%- for topic in topics -%}{%- assign t = topic | strip -%}{%- if t != blank -%}<option value="{{ t | escape }}">{{ t }}</option>{%- endif -%}{%- endfor -%}
+                </select>
+              </div>
+            {%- endif -%}
+            <div class="field contact-form__message">
+              <label class="field__label" for="ContactForm-body">{{ 'editorial.contact.message' | t }} <span aria-hidden="true">*</span></label>
+              <textarea class="field__input" id="ContactForm-body" name="contact[body]" rows="6" required aria-required="true">{{ form.body }}</textarea>
+            </div>
+          </div>
+          <p class="field__hint">{{ 'editorial.contact.required' | t }}</p>
+          <div class="contact-form__submit">
+            <button type="submit" class="button">{{ 'editorial.contact.send' | t }}</button>
+          </div>
+        {%- endform -%}
+      </div>
+      {%- if s.side_text != blank -%}
+        <aside class="contact-form__side rte">{{ s.side_text }}</aside>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section-contact-form",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Send us a message" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h4", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "checkbox", "id": "show_phone", "label": "t:sections.contact-form.settings.show_phone.label", "default": true },
+    { "type": "checkbox", "id": "show_order", "label": "t:sections.contact-form.settings.show_order.label", "default": true },
+    { "type": "checkbox", "id": "show_topic", "label": "t:sections.contact-form.settings.show_topic.label", "default": false },
+    { "type": "textarea", "id": "topics", "label": "t:sections.contact-form.settings.topics.label", "info": "t:sections.contact-form.settings.topics.info", "default": "Order help\nProduct question\nReturns and exchanges\nOther" },
+    { "type": "richtext", "id": "side_text", "label": "t:sections.contact-form.settings.side_text.label" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "presets": [ { "name": "t:sections.contact-form.presets.name" } ]
+}
+{% endschema %}

@@ -1,0 +1,59 @@
+{%- comment -%}
+  Figures in a row. Owner: shad-8b.
+  Only publish figures that can be substantiated; there is no default number, so an empty value hides the stat.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section ed-section editorial-stats color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="page-width">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    <dl class="editorial-stats__list">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.value != blank -%}
+          <div class="editorial-stats__item" {{ block.shopify_attributes }}>
+            <dt class="editorial-stats__label">{{ block.settings.label }}</dt>
+            <dd class="editorial-stats__value h1">{{ block.settings.value }}</dd>
+            {%- if block.settings.note != blank -%}<dd class="editorial-stats__note">{{ block.settings.note }}</dd>{%- endif -%}
+          </div>
+        {%- elsif request.design_mode -%}
+          <div class="editorial-stats__item editorial-stats__item--empty" {{ block.shopify_attributes }}>
+            <dt class="editorial-stats__label">{{ block.settings.label }}</dt>
+            <dd class="editorial-stats__value h1" aria-hidden="true">—</dd>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </dl>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-stats.name",
+  "tag": "section",
+  "class": "section-editorial-stats",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "paragraph", "content": "t:sections.editorial-stats.settings.claims.content" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "t:sections.editorial-stats.blocks.stat.name", "settings": [
+      { "type": "text", "id": "value", "label": "t:sections.editorial-stats.blocks.stat.settings.value.label", "info": "t:sections.editorial-stats.blocks.stat.settings.value.info" },
+      { "type": "text", "id": "label", "label": "t:sections.editorial-stats.blocks.stat.settings.label.label", "default": "Describe the figure" },
+      { "type": "text", "id": "note", "label": "t:sections.editorial-stats.blocks.stat.settings.note.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.editorial-stats.presets.name", "blocks": [ { "type": "stat" }, { "type": "stat" }, { "type": "stat" } ] } ]
+}
+{% endschema %}

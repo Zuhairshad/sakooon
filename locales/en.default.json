@@ -435,5 +435,48 @@
     "fabric_name": "Fabric name",
     "article_title": "Article title",
     "article_excerpt": "A short summary of the article appears here."
+  },
+  "editorial": {
+    "anchor_nav": {
+      "label": "On this page"
+    },
+    "fabric_rating": {
+      "softness": "Softness",
+      "breathability": "Breathability",
+      "durability": "Durability",
+      "warmth": "Warmth",
+      "cool": "Cool",
+      "warm": "Warm",
+      "value": "{{ value }} out of {{ max }}",
+      "warmth_value": "Warmth {{ value }} of {{ max }}, from cool to warm"
+    },
+    "care_symbols": {
+      "wash-30": "Machine wash at 30°C",
+      "wash-40": "Machine wash at 40°C",
+      "wash-60": "Machine wash at 60°C",
+      "hand-wash": "Hand wash",
+      "no-bleach": "Do not bleach",
+      "tumble-low": "Tumble dry low",
+      "tumble-none": "Do not tumble dry",
+      "line-dry": "Line dry",
+      "iron-low": "Iron on low heat",
+      "iron-medium": "Iron on medium heat",
+      "iron-high": "Iron on high heat",
+      "no-iron": "Do not iron",
+      "dry-clean": "Dry clean",
+      "no-dry-clean": "Do not dry clean"
+    },
+    "contact": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone number",
+      "order": "Order number",
+      "topic": "Topic",
+      "message": "Message",
+      "send": "Send message",
+      "required": "* Required fields",
+      "success": "Thank you for your message. We will get back to you as soon as possible.",
+      "error_heading": "Please check the following:"
+    }
   }
 }
