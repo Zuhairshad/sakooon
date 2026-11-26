@@ -91,6 +91,7 @@
           {%- endif -%}
         </div>
       {%- else -%}
+        <h2 class="visually-hidden">{{ 'general.search.products' | t }}</h2>
         <ul class="product-grid" id="ProductGrid-{{ section.id }}" role="list" aria-labelledby="ProductCount-{{ section.id }}">
           {%- for product in collection.products -%}
             {%- assign position = paginate.current_offset | plus: forloop.index -%}

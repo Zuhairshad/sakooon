@@ -26,7 +26,7 @@
 >
   <div class="main-search__header page-width page-width--full">
     <h1 class="main-search__title">{{ 'templates.search.title' | t }}</h1>
-    <form action="{{ routes.search_url }}" method="get" role="search" class="main-search__form">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="main-search__form" aria-label="{{ 'templates.search.title' | t }}">
       <label for="MainSearchInput-{{ section.id }}" class="visually-hidden">{{ 'general.search.search' | t }}</label>
       <div class="search-drawer__field main-search__field">
         {%- render 'icon', icon: 'search', size: 20, class: 'search-drawer__icon' -%}
@@ -84,6 +84,7 @@
             endfor
           -%}
           {%- if has_products -%}
+        <h2 class="visually-hidden">{{ 'general.search.products' | t }}</h2>
             <ul class="product-grid" role="list" aria-labelledby="SearchCount-{{ section.id }}">
               {%- for item in search.results -%}
                 {%- if item.object_type == 'product' -%}

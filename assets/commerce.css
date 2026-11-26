@@ -358,10 +358,7 @@ predictive-search.is-loading .search-drawer__body { opacity: .6; }
 .product-accordion__trigger { min-height: 64px; padding-block: var(--space-3); }
 .product-accordion__titles { display: grid; gap: 2px; font-size: var(--text-sm); }
 .product-accordion__subtitle { color: var(--color-foreground-muted); }
-/* base .disclosure__content pads the overflow:hidden child, which leaks a line when collapsed: pad via the last child instead */
-.product-accordion .disclosure__panel > .product-accordion__content { padding-bottom: 0; }
 .product-accordion__content { display: grid; gap: var(--space-4); font-size: var(--text-sm); color: var(--color-foreground); }
-.product-accordion__content > :last-child { margin-bottom: var(--space-5); }
 .product-accordion__lead { color: var(--color-foreground); }
 .product-accordion__list { display: grid; gap: var(--space-1); padding-inline-start: 1.1em; }
 .product-accordion__specs { display: grid; gap: var(--space-2); margin: 0; }
