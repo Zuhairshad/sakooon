@@ -89,7 +89,8 @@
                   {%- endcapture -%}
                   {%- if feel_content != blank -%}
                     {%- assign acc_id = panel_id | append: '-feel' -%}
-                    {% render 'accordion', id: acc_id, title: s.panel_feel_label, content: feel_content, icon: 'chevron-down', heading_tag: sub_tag %}
+                    {%- assign acc_label = s.panel_feel_label | append: ': ' | append: f.name.value -%}
+                    {% render 'accordion', id: acc_id, title: s.panel_feel_label, label: acc_label, content: feel_content, icon: 'chevron-down', heading_tag: sub_tag %}
                   {%- endif -%}
                   {%- capture care_content -%}
                     {%- if f.care_symbols.value != blank -%}{% render 'care-icons', symbols: f.care_symbols.value %}{%- endif -%}
@@ -98,7 +99,8 @@
                   {%- endcapture -%}
                   {%- if care_content != blank -%}
                     {%- assign acc_id = panel_id | append: '-care' -%}
-                    {% render 'accordion', id: acc_id, title: s.panel_care_label, content: care_content, icon: 'chevron-down', heading_tag: sub_tag %}
+                    {%- assign acc_label = s.panel_care_label | append: ': ' | append: f.name.value -%}
+                    {% render 'accordion', id: acc_id, title: s.panel_care_label, label: acc_label, content: care_content, icon: 'chevron-down', heading_tag: sub_tag %}
                   {%- endif -%}
                 </div>
               </div>
