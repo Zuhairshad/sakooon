@@ -7,8 +7,24 @@
   assign collection = s.collection
   assign limit = s.products_to_show
   assign heading_id = 'FeaturedCollection-' | append: section.id
+  comment
+    Fewer products than desktop columns: at >=1024 the cards fill the row as equal columns (max ~480px each) instead of
+    leaving the rest of a 4-5 column row empty.
+  endcomment
+  assign count = 0
+  if collection != blank
+    assign count = collection.products.size | at_most: limit
+  endif
+  assign fit = false
+  if count > 0 and count <= s.columns_desktop
+    assign fit = true
+  endif
+  assign card_sizes = '(min-width: 768px) 320px, 60vw'
+  if fit
+    assign card_sizes = '(min-width: 1024px) min(480px, 30vw), (min-width: 768px) 320px, 60vw'
+  endif
 -%}
-<div class="section product-rail product-rail--{{ s.layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --rail-card: {{ s.card_width }}px; --rail-columns: {{ s.columns_desktop }};">
+<div class="section product-rail product-rail--{{ s.layout }}{% if fit %} product-rail--fit{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --rail-card: {{ s.card_width }}px; --rail-columns: {{ s.columns_desktop }}; --rail-count: {{ count }};">
   <scroll-rail class="page-width page-width--full product-rail__inner">
     <div class="product-rail__head">
       {%- render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: collection.url -%}
@@ -19,11 +35,11 @@
         </div>
       {%- endif -%}
     </div>
-    <ul id="{{ heading_id }}-track" class="product-rail__track list-unstyled{% if s.layout == 'carousel' %} no-scrollbar{% endif %}" role="list" data-rail-track{% if s.layout == 'carousel' %} tabindex="0" aria-label="{{ s.heading | default: collection.title | escape }}"{% endif %}>
+    <ul id="{{ heading_id }}-track" class="product-rail__track list-unstyled{% if s.layout == 'carousel' %} no-scrollbar{% endif %}{% if fit %} product-rail__track--fit{% endif %}" role="list" data-rail-track{% if s.layout == 'carousel' %} tabindex="0" aria-label="{{ s.heading | default: collection.title | escape }}"{% endif %}>
       {%- if collection != blank and collection.products.size > 0 -%}
         {%- for product in collection.products limit: limit -%}
           <li class="product-rail__item">
-            {%- render 'product-card', product: product, columns_desktop: s.columns_desktop, image_ratio: s.image_ratio, lazy: true, sizes: '(min-width: 768px) 320px, 60vw' -%}
+            {%- render 'product-card', product: product, columns_desktop: s.columns_desktop, image_ratio: s.image_ratio, lazy: true, sizes: card_sizes -%}
           </li>
         {%- endfor -%}
       {%- else -%}

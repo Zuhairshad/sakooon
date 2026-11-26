@@ -539,3 +539,16 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 @media (max-width: 767px) {
   .rich-text--statement.section, .brand-values--editorial.section { padding-top: calc(var(--section-pt) * .6); padding-bottom: calc(var(--section-pb) * .6); }
 }
+
+/* ---------- Product rails with few products (>=1024) ----------
+   When the products fit in one row, they fill it as equal columns (max ~480px each) inside the 1440px cap,
+   instead of fixed 256px cards leaving the row half empty. Mobile keeps the rail / 2-up grid. */
+@media (min-width: 1024px) {
+  .product-rail--fit .product-rail__inner { max-width: calc(1440px + 2 * var(--page-gutter)); }
+  .product-rail .product-rail__track--fit {
+    grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(var(--rail-count, 3), minmax(0, 1fr));
+    max-width: calc(var(--rail-count, 3) * 480px + (var(--rail-count, 3) - 1) * var(--grid-gap));
+    gap: var(--space-8) var(--grid-gap); overflow: visible;
+  }
+  .product-rail--fit:not(.product-highlights) .rail-buttons, .product-highlights__panel--fit .rail-buttons { display: none; }
+}

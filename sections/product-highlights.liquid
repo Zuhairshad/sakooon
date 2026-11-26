@@ -7,8 +7,20 @@
   assign s = section.settings
   assign tab_count = section.blocks.size
   assign base_id = 'Highlights-' | append: section.id
+  comment
+    Tabs with up to 4 products fill the row at >=1024 as equal columns (max ~480px each) instead of a part-empty rail;
+    the section caps at 1440px when every tab fits.
+  endcomment
+  assign fit_max = 4
+  assign all_fit = true
+  for block in section.blocks
+    assign n = block.settings.collection.products.size | default: 0 | at_most: s.products_to_show
+    if n == 0 or n > fit_max
+      assign all_fit = false
+    endif
+  endfor
 -%}
-<div class="section product-rail product-rail--carousel product-highlights color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --rail-card: {{ s.card_width }}px;">
+<div class="section product-rail product-rail--carousel product-highlights{% if all_fit %} product-rail--fit{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --rail-card: {{ s.card_width }}px;">
   <div class="page-width page-width--full product-rail__inner">
     <theme-tabs class="product-highlights__tabs">
       <div class="product-rail__head product-rail__head--stacked">
@@ -24,16 +36,27 @@
         {%- endif -%}
       </div>
       {%- for block in section.blocks -%}
-        {%- assign collection = block.settings.collection -%}
-        <scroll-rail class="product-highlights__panel" id="{{ base_id }}-panel-{{ forloop.index }}"{% if tab_count > 1 %} role="tabpanel" aria-labelledby="{{ base_id }}-tab-{{ forloop.index }}"{% endif %}{% unless forloop.first %} hidden{% endunless %}>
+        {%- liquid
+          assign collection = block.settings.collection
+          assign count = collection.products.size | default: 0 | at_most: s.products_to_show
+          assign fit = false
+          if count > 0 and count <= fit_max
+            assign fit = true
+          endif
+          assign card_sizes = '(min-width: 768px) 320px, 60vw'
+          if fit
+            assign card_sizes = '(min-width: 1024px) min(480px, 30vw), (min-width: 768px) 320px, 60vw'
+          endif
+        -%}
+        <scroll-rail class="product-highlights__panel{% if fit %} product-highlights__panel--fit{% endif %}" id="{{ base_id }}-panel-{{ forloop.index }}"{% if tab_count > 1 %} role="tabpanel" aria-labelledby="{{ base_id }}-tab-{{ forloop.index }}"{% endif %}{% unless forloop.first %} hidden{% endunless %}>
           <div class="rail-buttons rail-buttons--end">
             <button type="button" class="rail-button" data-rail-prev aria-label="{{ 'storefront.sections.previous' | t }}">{% render 'icon', icon: 'chevron-left', size: 18 %}</button>
             <button type="button" class="rail-button" data-rail-next aria-label="{{ 'storefront.sections.next' | t }}">{% render 'icon', icon: 'chevron-right', size: 18 %}</button>
           </div>
-          <ul class="product-rail__track list-unstyled no-scrollbar" role="list" data-rail-track tabindex="0" aria-label="{{ block.settings.label | default: collection.title | default: s.heading | escape }}">
+          <ul class="product-rail__track list-unstyled no-scrollbar{% if fit %} product-rail__track--fit{% endif %}"{% if fit %} style="--rail-count: {{ count }}"{% endif %} role="list" data-rail-track tabindex="0" aria-label="{{ block.settings.label | default: collection.title | default: s.heading | escape }}">
             {%- if collection != blank and collection.products.size > 0 -%}
               {%- for product in collection.products limit: s.products_to_show -%}
-                <li class="product-rail__item">{%- render 'product-card', product: product, image_ratio: s.image_ratio, sizes: '(min-width: 768px) 320px, 60vw' -%}</li>
+                <li class="product-rail__item">{%- render 'product-card', product: product, image_ratio: s.image_ratio, sizes: card_sizes -%}</li>
               {%- endfor -%}
             {%- else -%}
               {%- for i in (1..s.products_to_show) -%}
