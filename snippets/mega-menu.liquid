@@ -74,7 +74,7 @@
         {%- assign shown = shown | plus: 1 -%}
         <a class="mega-menu__promo" href="{{ block.settings.link | default: link.url }}" {{ block.shopify_attributes }}>
           <div class="media mega-menu__promo-media" style="--aspect: 4/5">
-            {%- render 'image', image: block.settings.image, sizes: '(min-width: 1440px) 220px, 16vw', widths: '240,360,480,640', aspect: '4/5', placeholder: 'lifestyle-1' -%}
+            <template data-deferred-media>{%- render 'image', image: block.settings.image, sizes: '(min-width: 1440px) 220px, 16vw', widths: '240,360,480,640', aspect: '4/5', placeholder: 'lifestyle-1' -%}</template>
           </div>
           {%- if block.settings.heading != blank -%}
             <span class="mega-menu__promo-title">{{ block.settings.heading | escape }}</span>

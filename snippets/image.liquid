@@ -3,6 +3,8 @@
   {% render 'image', image: product.featured_image, sizes: '(min-width: 1024px) 50vw, 100vw', aspect: '4/5', priority: true, class: 'card__img' %}
   Renders a placeholder when image is blank (placeholder: 'product-1' etc.).
   decorative: true (or alt: '') renders alt="" for images next to visible text (cards), avoiding redundant alt.
+  crop: 'center' | 'top' | 'bottom' | 'left' | 'right' (with aspect): every srcset candidate is cropped server-side to the aspect ratio,
+  so a portrait packshot shown in a 21:10 banner downloads only the banner pixels (Shopify image_url width + height + crop).
 {%- endcomment -%}
 {%- liquid
   assign widths_str = widths | default: '320,480,640,768,960,1280,1600,1920,2400'
@@ -27,19 +29,51 @@
 {%- if img != blank -%}
   {%- liquid
     assign max_w = img.width
+    assign crop_ratio = 0
+    if crop and aspect and aspect != 'natural'
+      assign crop_parts = aspect | split: '/'
+      if crop_parts.size == 2
+        assign crop_ratio = crop_parts[1] | plus: 0.0 | divided_by: crop_parts[0]
+      endif
+    endif
+    if crop_ratio > 0
+      comment
+        Cropped candidates: the source can only be cropped as far as its own height allows (no enlargement).
+      endcomment
+      assign crop_max_w = img.height | divided_by: crop_ratio | floor
+      if crop_max_w < max_w
+        assign max_w = crop_max_w
+      endif
+    endif
     assign srcset = ''
     for w in widths_arr
       assign wn = w | strip | plus: 0
-      if wn <= max_w
-        assign src_w = img | image_url: width: wn
+      if wn < max_w
+        if crop_ratio > 0
+          assign hn = wn | times: crop_ratio | round
+          assign src_w = img | image_url: width: wn, height: hn, crop: crop
+        else
+          assign src_w = img | image_url: width: wn
+        endif
         assign srcset = srcset | append: src_w | append: ' ' | append: wn | append: 'w, '
       endif
     endfor
-    assign src_max = img | image_url: width: max_w
+    if crop_ratio > 0
+      assign hmax = max_w | times: crop_ratio | round
+      assign src_max = img | image_url: width: max_w, height: hmax, crop: crop
+    else
+      assign src_max = img | image_url: width: max_w
+    endif
     assign srcset = srcset | append: src_max | append: ' ' | append: max_w | append: 'w'
     assign base_w = 1600
     if max_w < base_w
       assign base_w = max_w
+    endif
+    if crop_ratio > 0
+      assign base_h = base_w | times: crop_ratio | round
+      assign src_base = img | image_url: width: base_w, height: base_h, crop: crop
+    else
+      assign src_base = img | image_url: width: base_w
     endif
     assign out_h = img.height
     assign out_w = img.width
@@ -52,7 +86,7 @@
     endif
   -%}
   <img
-    src="{{ img | image_url: width: base_w }}"
+    src="{{ src_base }}"
     srcset="{{ srcset }}"
     sizes="{{ sizes }}"
     width="{{ out_w }}"
