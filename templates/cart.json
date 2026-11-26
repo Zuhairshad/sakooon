@@ -1,7 +1,6 @@
 {
   "sections": {
-    "main": { "type": "main-cart", "settings": {} },
-    "complementary": { "type": "product-recommendations", "disabled": true, "settings": { "heading": "You may also like", "intent": "related", "limit": 8 } }
+    "main": { "type": "main-cart", "settings": {} }
   },
-  "order": ["main", "complementary"]
+  "order": ["main"]
 }

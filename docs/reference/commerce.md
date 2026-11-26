@@ -9,7 +9,7 @@ Only layout, proportions, behaviour and timing are recorded here. Fonts are name
 
 - **Rate limiting.** parachutehome.com returned HTTP 429 from about 06:18 UTC after parallel runs (several sessions share this Mac's IP). Scripts now run one browser at a time, wait 20 s between page loads and back off 90 s on a 429. Nothing is bypassed.
 - **Measured so far:** collection at 1920 and 1440; product, search results and search overlay at 1920, plus structure and geometry at 1440 from probes; filter drawer at 1440.
-- **Pending:** the remaining viewports (1280/1024/768/390/375) and the scripted state screenshots (card hover, swatch hover/selected, size selected, sold-out, gallery next/zoom, detail drawer, sticky bar, cart drawer with 1 and 2 items, quantity change, cart page, search states, mobile filter drawer). `commerce-run-all.sh` is still running. A follow-up commit will add those tables. Responsive behaviour below 1440 is inferred from the stylesheet grid tokens and will be checked against those captures.
+- **Completed later:** all viewports and most states; see "Follow-up captures" below for what is still missing.
 - **Popups:** none appeared in the first 8 s at 1440 on the collection or product page. Always present: Gorgias chat launcher iframe (bottom right), a Shop Pay "hop" iframe, and the Rebuy cart flyout, which stays in the DOM off-canvas.
 - **Third-party widgets:** cart drawer = **Rebuy Smart Cart**, search overlay = **Rebuy Smart Search**, recommendations = Rebuy. We rebuild these natively (Shopify AJAX Cart, Predictive Search, Product Recommendations). Only their geometry and behaviour are the reference.
 
@@ -119,6 +119,96 @@ Only layout, proportions, behaviour and timing are recorded here. Fonts are name
 ## 5. Mobile filter drawer
 
 Same left `<dialog>`; at ≤ 768 it is expected to be full width. Pending the 390/768 captures.
+
+## Follow-up captures (throttled run, completed 07:01 UTC)
+
+Full pages are now captured at every viewport for collection, product and search (`<page>/<viewport>-full.png`, `metrics-<viewport>.json`).
+States captured: collection @1440 and @768, product @1440 and @390, search @1440. Still missing because of timeouts or rate limits:
+collection states @390, search states @390, and every cart state (the Rebuy flyout did not open within the throttled window).
+The cart drawer geometry above (500px right flyout) comes from the earlier probe.
+
+Findings that changed the build:
+- Filter drawer width is about 50vw on tablet (384px at 768) and 600px on desktop, so the theme uses `min(600px, 50vw)`.
+- Size selection on Parachute also changes the product handle (`-f-q` to `-k-ck`): sizes are split across sibling products as well as colours. We keep size as a real option (D10).
+- Sold-out variants show an enabled "Notify me when back in stock" button (an app). We show a disabled "Sold out" button until a back-in-stock app is chosen.
+- There is no sticky add-to-cart bar on Parachute: only the header and the chat launcher are sticky. Ours is a project requirement and appears only after the main button scrolls away.
+- The detail rows open a 600px right drawer (settles in 192ms). We use inline accordions per the component contract; the size guide uses the right drawer.
+- Gallery arrows settle in about 430ms. On phones it is a scroll-snap track (`x mandatory`), the same technique the theme uses.
+
+### Collection, all viewports (measured)
+
+| Metric | 1920 | 1440 | 1280 | 1024 | 768 | 390 | 375 |
+|---|---|---|---|---|---|---|---|
+| Header height | 678.7 | 518.7 | 465.3 | 380 | 310 | 434.6 | 434.6 |
+| Header image w | 464 | 344 | 304 | 240 | 240 | 297 | 284.5 |
+| Title size | 80px | 80px | 64px | 64px | 40px | 40px | 40px |
+| Title line-height | 68px | 68px | 54.4px | 54.4px | 34px | 34px | 34px |
+| Description size | 18px | 18px | 16px | 16px | – | – | – |
+| Grid columns | 4 × 466px | 4 × 346px | 4 × 306px | 4 × 242px | 4 × 178px | 2 × 175px | 2 × 167.5px |
+| Column gap | 8px | 8px | 8px | 8px | 8px | 8px | 8px |
+| Row gap | 32px | 32px | 32px | 32px | 32px | 32px | 32px |
+| Grid side padding | 16px | 16px | 16px | 16px | 16px | 16px | 16px |
+| Card width | 466 | 346 | 306 | 242 | 178 | 175 | 167.5 |
+| Card media height | 621.3 | 461.3 | 408 | 322.7 | 237.3 | 233.3 | 223.3 |
+| Card title size | 16px | 16px | 16px | 16px | 16px | 16px | 16px |
+| Price size | 14px | 14px | 14px | 14px | 14px | 14px | 14px |
+| Swatch hit / chip | 20 | 20 | 20 | 20 | 20 | 20 | 20 |
+| Swatch chip | 16 | 16 | 16 | 16 | 16 | 16 | 16 |
+| Filter bar height | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 |
+
+### Product, all viewports (measured)
+
+| Metric | 1920 | 1440 | 1280 | 1024 | 768 | 390 | 375 |
+|---|---|---|---|---|---|---|---|
+| Gallery column w | 960 | 720 | 640 | 512 | 384 | 390 | 375 |
+| Slide w | 960 | 720 | 640 | 512 | 384 | 390 | 375 |
+| Slide h | 1280 | 960 | 853.3 | 682.7 | 512 | 520 | 500 |
+| Info column w | 960 | 720 | 640 | 512 | 322.5 | 390 | 375 |
+| Buy box w | 460 | 460 | 456 | 460 | 302.5 | 350 | 335 |
+| Buy box padding-top | 160px | 160px | 160px | 160px | 160px | 16px | 16px |
+| Title size | 28px | 28px | 28px | 28px | 28px | 24px | 24px |
+| Swatch hit w | 48 | 48 | 48 | 48 | 48 | 44 | 44 |
+| Swatch hit h | 36 | 36 | 36 | 36 | 36 | 36 | 36 |
+| Swatch chip | 20 | 20 | 20 | 20 | 20 | 20 | 20 |
+| Option row h | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 |
+| ATC h | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 | 43.6 |
+| ATC w | 460 | 460 | 456 | 460 | 302.5 | 350 | 335 |
+| Detail row h | 64.2 | 64.2 | 64.2 | 64.2 | 64.2 | 64.2 | 64.2 |
+| Pairing card h | 92 | 92 | 92 | 92 | 92 | 92 | 92 |
+| Recs heading size | 20px | 20px | 20px | 20px | 20px | 20px | 20px |
+
+### Search results page, all viewports (measured)
+
+| Metric | 1920 | 1440 | 1280 | 1024 | 768 | 390 | 375 |
+|---|---|---|---|---|---|---|---|
+| Main x (container start) | 410 | 170 | 90 | 50 | 50 | – | 20 |
+| Input w | 1022 | 1022 | 1022 | 846 | 590 | – | 258 |
+| Heading size | 20px | 20px | 20px | 20px | 20px | – | 18px |
+| Price size | 13px | 13px | 13px | 13px | 13px | – | 13px |
+
+### Product states @1440 (measured)
+
+- **swatchSelected**: `{"after": "\"\" 20pxx20px 1px solid color(srgb 0.207843 0.2 0.192157 / 0.25) 0px", "before": "none autoxauto 0px none rgb(0, 0, 238) none", "outline": "3px none rgb(0, 0, 238)"}`
+- **sizeSelected**: `{"urlBefore": "https://parachutehome.com/products/percale-sheet-set-evergreen-f-q?variant=39754539237637", "urlAfter": "https://parachutehome.com/products/percale-sheet-set-evergreen-k-ck?variant=39754539368709", "priceBefore": "$207.20\nRegular price\n$259", "priceAfter": "$239.20\nRegular price\n$299", "galleryChanged": false, "lowStock": "ONLY A FEW ITEMS IN STOCK"}`
+- **galleryArrow**: `{"settleMs": 431, "count": "2/4"}`
+- **zoom**: `["DIV.fancybox__slide has-image is-selected can-zoom_in is-done 1440x805"]`
+- **detailRows**: `["Size Guide / Find the Right Fit", "Details + Care / Designed in LA, Crafted with Care", "Shipping + Returns / Free Shipping & 60 Day Returns"]`
+- **detailDrawer**: `{"settleMs": 192, "dialog": {"x": 840, "w": 600, "h": 900}}`
+- **sticky**: `["DIV.cv-chat-reveal__sticky pos=sticky [0,826 1440x74] text=", "DIV.shopify-section shopify-section-group-header-group cv-header pos=sticky [0,0 1440x56] text=Black Friday Sale New Bedding Pillows & Duvets Mattress Bath & Robes Decor Archi"]`
+- **infoColSticky**: `{"pos": "static", "top": "32px"}`
+- **soldOut**: `{"handle": "heirloom-tencel-linen-sheet-set-warm-grey-f-q", "variant": 39747146973445, "title": "Full / Side Open", "button": {"text": "Notify Me When Back In Stock", "disabled": false, "bg": "rgb(53, 51, 49)"}, "options": ["Full | Queen | King | Cal King", "Back Envelope | Side Open (Sold out) | Side Envelope"]}`
+- **soldOutCandidate**: `{"handle": "heirloom-tencel-linen-sheet-set-warm-grey-f-q", "variant": 39747146973445, "title": "Full / Side Open"}`
+
+### Product states @390
+
+- **gallerySwipe**: `{"box": {"x": 0, "y": -944, "width": 390, "height": 520}, "overflowX": "auto", "snap": "x mandatory", "sw": 1560, "cw": 390, "count": "2/4"}`
+- **sticky**: `["DIV.cv-chat-reveal__sticky pos=sticky [0,770 390x74] text=", "DIV.shopify-section shopify-section-group-header-group cv-header pos=sticky [0,0 390x56] text="]`
+- **soldOut**: `{"handle": "heirloom-tencel-linen-sheet-set-warm-grey-f-q", "variant": 39747146973445, "title": "Full / Side Open", "button": {"text": "Notify Me When Back In Stock", "disabled": false, "bg": "rgb(53, 51, 49)"}, "options": ["Full | Queen | King | Cal King", "Back Envelope | Side Open (Sold out) | Side Envelope"]}`
+
+### Collection filter drawer @768
+
+- dialog: `{"x": 0, "w": 384, "h": 900}`, settle 180 ms
+
 
 ## Proposed Shopify structure
 

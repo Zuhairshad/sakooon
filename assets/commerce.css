@@ -230,7 +230,7 @@ predictive-search.is-loading .search-drawer__body { opacity: .6; }
 .main-collection .pagination { margin-top: var(--space-16); }
 
 /* ---------- Facets drawer + form (snippets/facets.liquid) ---------- */
-.facets-drawer .drawer { --drawer-width: 600px; }
+.facets-drawer .drawer { --drawer-width: min(600px, 50vw); } /* reference: 384px at 768, 600px at 1440 */
 @media (max-width: 767.98px) { .facets-drawer .drawer { width: 100%; } }
 .facets-drawer .drawer__body { padding: 0; }
 .facets__form { display: flex; flex-direction: column; min-height: 100%; }
