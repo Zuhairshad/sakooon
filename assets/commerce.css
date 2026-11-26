@@ -44,7 +44,7 @@ product-recommendations, cart-recommendations, facets-form, product-gallery, var
   font-size: 11px; line-height: var(--swatch-size); white-space: nowrap; background: transparent;
 }
 .swatch--text::after { width: 100%; height: calc(var(--swatch-size) + 4px); border-radius: 999px; }
-.swatches__more-link { display: inline-flex; align-items: center; height: var(--swatch-hit); padding-inline: var(--space-1); font-size: var(--text-sm); color: var(--color-foreground-muted); text-decoration: none; }
+.swatches__more-link { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; height: var(--swatch-hit); padding-inline: var(--space-1); font-size: var(--text-sm); color: var(--color-foreground-muted); text-decoration: none; }
 .swatches__more-link:hover { color: var(--color-foreground); }
 
 /* ---------- Product card (snippets/product-card.liquid) ---------- */
@@ -70,9 +70,12 @@ product-recommendations, cart-recommendations, facets-form, product-gallery, var
 .product-card__vendor { font-size: var(--text-xs); color: var(--color-foreground-muted); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
 .product-card__title {
   font-family: var(--font-heading-family); font-weight: var(--font-heading-weight); font-size: 17px; line-height: 1.3; letter-spacing: var(--tracking-normal);
-  /* D22a: serif heading, clamped to 2 lines with a 2-line minimum so prices line up across a row. */
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; min-height: calc(2 * 1.3em);
+  /* D22a: serif heading, 2-line minimum so prices line up across a row. */
+  min-height: calc(2 * 1.3em);
 }
+/* The clamp sits on the link, not the heading: a clamped heading leaves the inline link's box spanning every hidden line,
+   which overlaps the swatches below (Lighthouse target-size). */
+.product-card__title > .product-card__link { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 @media (min-width: 1024px) { .product-card__title { font-size: 19px; } }
 .product-card__link { color: inherit; text-decoration: none; }
 .product-card__link:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -465,8 +468,8 @@ predictive-search.is-loading .search-drawer__body { opacity: .6; }
 /* Long real titles ("Two-Tone Reversible Duvet Cover Set – King Size with Bed Sheet & 4 Pillow Covers"): two lines with an
    ellipsis in cart lines and drawer cards; the full title stays the link's accessible name. */
 .cart-line__title,
-#search-drawer .product-card__title,
-#cart-drawer .product-card__title,
+#search-drawer .product-card__link,
+#cart-drawer .product-card__link,
 .predictive-search__link {
   display: -webkit-box;
   -webkit-box-orient: vertical;
