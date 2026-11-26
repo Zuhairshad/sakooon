@@ -484,7 +484,13 @@
       "pause_video": "Pause video",
       "hotspot": "View {{ title }}",
       "slide_label": "{{ index }} of {{ count }}",
-      "about_fabric": "About {{ name }}"
+      "about_this_fabric": "About this fabric",
+      "shop_fabric": "Shop {{ name }}",
+      "fabric_composition": "Composition",
+      "fabric_feel": "Feel",
+      "fabric_care": "Care",
+      "fabric_care_guide": "See the care guide",
+      "price_from": "From {{ price }}"
     }
   },
   "onboarding": {

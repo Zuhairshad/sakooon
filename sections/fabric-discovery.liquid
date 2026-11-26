@@ -1,119 +1,166 @@
 {%- comment -%}
-  Fabric / shade discovery. Owner: shad-2d. Pattern: Parachute "palette" section: wide side padding, heading + lead
-  on the left, a grid of swatches on the right; choosing a swatch swaps the rail of tall (9:16) images below.
-  Swatches are tabs (<theme-tabs>, global.js); each shade block holds up to 6 images and a link.
+  Fabric discovery ("Choose by fabric"). Owner: shad-2d.
+  A band of its own: section heading + intro, then large fabric tabs (heading serif + round texture swatch, a real
+  tablist via <theme-tabs>: arrow keys, one tab stop, horizontal scroll row on phones). Each panel is a 5/7 split at
+  >=1024: name at display size, the fabric's overview, hairline fact rows (composition, feel, care; only the ones that
+  exist), "Shop <fabric>" + "About this fabric". The media side (7/12) leads with a large close-up of the fabric (a
+  detail tile of the packshot collage via `region`, or a separate detail image), then a smaller context shot of the
+  whole bed (region_height keeps the collage's main photo) and up to two compact product links (title + price).
+  Data: each block picks a fabric metaobject (sakooon fabric definition). Block settings override name, image and products.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
-  assign base_id = 'Discovery-' | append: section.id
+  assign base_id = 'Fabrics-' | append: section.id
 -%}
-<div class="section fabric-discovery color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --discovery-card: {{ s.card_width }}px;">
-  <theme-tabs class="fabric-discovery__inner page-width page-width--full">
-    <div class="fabric-discovery__head">
-      <div class="fabric-discovery__intro">
+<div class="section fabric-discovery color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px;">
+  <theme-tabs class="page-width fabric-discovery__inner">
+    {%- if s.heading != blank or s.text != blank -%}
+      <div class="fabric-discovery__head">
         {%- if s.heading != blank -%}<h2 class="fabric-discovery__heading {{ s.heading_size }}">{{ s.heading | escape }}</h2>{%- endif -%}
-        {%- if s.text != blank -%}<div class="fabric-discovery__text rte text-large">{{ s.text }}</div>{%- endif -%}
+        {%- if s.text != blank -%}<div class="fabric-discovery__text rte">{{ s.text }}</div>{%- endif -%}
       </div>
-      {%- if section.blocks.size > 0 -%}
-        <div class="fabric-discovery__swatches" role="tablist" aria-label="{{ s.swatch_label | escape }}">
-          {%- for block in section.blocks -%}
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="fabric-discovery__tabs no-scrollbar" role="tablist" aria-label="{{ s.heading | default: 'Fabrics' | escape }}">
+        {%- for block in section.blocks -%}
           {%- liquid
             assign fabric = block.settings.fabric
             if fabric != blank and fabric.system == blank
               assign fabric = shop.metaobjects.fabric[block.settings.fabric]
             endif
-            assign shade_name = block.settings.name
-            if shade_name == blank
-              assign shade_name = fabric.name.value | default: fabric.name
+            assign tab_name = block.settings.name | default: fabric.name.value | default: fabric.name
+            comment
+              Swatch: explicit swatch image, else the panel's close-up crop (so the circle shows texture), else the fabric texture image.
+            endcomment
+            assign swatch = block.settings.swatch_image
+            assign swatch_region = nil
+            if swatch == blank and block.settings.closeup_image != blank
+              assign swatch = block.settings.closeup_image
+              assign swatch_region = block.settings.region | strip
+              if swatch_region == blank
+                assign swatch_region = nil
+              endif
             endif
-            assign shade_swatch = block.settings.swatch_image | default: fabric.texture_image.value
-            assign shade_link = block.settings.link | default: fabric.system.url | default: routes.all_products_collection_url
+            if swatch == blank
+              assign swatch = fabric.texture_image.value
+            endif
           -%}
-            <button type="button" role="tab" class="fabric-discovery__swatch" id="{{ base_id }}-tab-{{ forloop.index }}" aria-controls="{{ base_id }}-panel-{{ forloop.index }}"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ block.shopify_attributes }}
-              style="{% if block.settings.color != blank %}--swatch: {{ block.settings.color }};{% endif %}{% if shade_swatch != blank %} --swatch-image: url('{{ shade_swatch | image_url: width: 96 }}');{% endif %}">
-              <span class="visually-hidden">{{ shade_name | escape }}</span>
-            </button>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-    </div>
-    {%- for block in section.blocks -%}
-      {%- liquid
-        assign fabric = block.settings.fabric
-        if fabric != blank and fabric.system == blank
-          assign fabric = shop.metaobjects.fabric[block.settings.fabric]
-        endif
-        assign shade_name = block.settings.name
-        if shade_name == blank
-          assign shade_name = fabric.name.value | default: fabric.name
-        endif
-        assign shade_swatch = block.settings.swatch_image | default: fabric.texture_image.value
-        assign shade_link = block.settings.link | default: fabric.system.url | default: routes.all_products_collection_url
-      -%}
-      {%- liquid
-        assign own_images = 0
-        for i in (1..6)
-          assign key = 'image_' | append: i
-          if block.settings[key] != blank
-            assign own_images = own_images | plus: 1
+          <button type="button" role="tab" class="fabric-discovery__tab" id="{{ base_id }}-tab-{{ forloop.index }}" aria-controls="{{ base_id }}-panel-{{ forloop.index }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>
+            <span class="fabric-discovery__swatch" aria-hidden="true">
+              {%- if swatch != blank -%}
+                {%- render 'image', image: swatch, sizes: '48px', widths: '96,144', aspect: '1/1', crop: 'center', region: swatch_region, class: 'fabric-discovery__swatch-img', alt: '' -%}
+              {%- endif -%}
+            </span>
+            <span class="fabric-discovery__tab-label">{{ tab_name | escape }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign fabric = b.fabric
+          if fabric != blank and fabric.system == blank
+            assign fabric = shop.metaobjects.fabric[b.fabric]
           endif
-        endfor
-        assign fabric_images = false
-        if own_images == 0 and fabric != blank
-          if fabric.texture_image.value != blank or fabric.lifestyle_image.value != blank
-            assign fabric_images = true
+          assign full_name = fabric.name.value | default: fabric.name | default: b.name
+          assign tab_name = b.name | default: full_name
+          assign products = b.products
+          if products == blank or products.size == 0
+            assign products = fabric.related_products.value
           endif
-        endif
-      -%}
-      <scroll-rail class="fabric-discovery__panel" id="{{ base_id }}-panel-{{ forloop.index }}" role="tabpanel" aria-labelledby="{{ base_id }}-tab-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
-        <div class="fabric-discovery__bar">
-          <p class="fabric-discovery__current"><span class="text-muted">{{ s.swatch_label | escape }}:</span> {{ shade_name | escape }}</p>
-          <div class="rail-buttons">
-            <button type="button" class="rail-button" data-rail-prev aria-label="{{ 'storefront.sections.previous' | t }}">{% render 'icon', icon: 'chevron-left', size: 18 %}</button>
-            <button type="button" class="rail-button" data-rail-next aria-label="{{ 'storefront.sections.next' | t }}">{% render 'icon', icon: 'chevron-right', size: 18 %}</button>
+          assign photo = b.image
+          if photo == blank and products.size > 0
+            assign photo = products.first.featured_image
+          endif
+          assign region = nil
+          if b.region_height < 100
+            assign region = b.region_height
+          endif
+          assign shop_url = b.shop_link
+          if shop_url == blank and products.size > 0
+            assign shop_url = products.first.url
+          endif
+          assign about_url = fabric.system.url
+          assign care_line = ''
+          if fabric.care.value != blank
+            assign care_line = fabric.care.value | strip_html | split: '. ' | first | strip | remove: '.' | append: '.'
+          endif
+          assign care_guide_url = fabric.care_guide.value.url
+          assign shop_name = tab_name | downcase
+        -%}
+        <div class="fabric-discovery__panel" id="{{ base_id }}-panel-{{ forloop.index }}" role="tabpanel" aria-labelledby="{{ base_id }}-tab-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %} tabindex="0">
+          <div class="fabric-discovery__copy">
+            {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+            <h3 class="fabric-discovery__name">{{ full_name | escape }}</h3>
+            {%- assign overview = fabric.overview.value | default: fabric.summary.value -%}
+            {%- if overview != blank -%}<p class="fabric-discovery__overview">{{ overview | escape }}</p>{%- endif -%}
+            {%- if fabric.composition.value != blank or fabric.feel.value != blank or care_line != '' or care_guide_url != blank -%}
+              <dl class="fabric-discovery__facts">
+                {%- if fabric.composition.value != blank -%}<div class="fabric-discovery__fact"><dt>{{ 'storefront.sections.fabric_composition' | t }}</dt><dd>{{ fabric.composition.value | escape }}</dd></div>{%- endif -%}
+                {%- if fabric.feel.value != blank -%}<div class="fabric-discovery__fact"><dt>{{ 'storefront.sections.fabric_feel' | t }}</dt><dd>{{ fabric.feel.value | escape }}</dd></div>{%- endif -%}
+                {%- if care_line != '' -%}
+                  <div class="fabric-discovery__fact"><dt>{{ 'storefront.sections.fabric_care' | t }}</dt><dd>{{ care_line | escape }}</dd></div>
+                {%- elsif care_guide_url != blank -%}
+                  <div class="fabric-discovery__fact"><dt>{{ 'storefront.sections.fabric_care' | t }}</dt><dd><a class="link" href="{{ care_guide_url }}">{{ 'storefront.sections.fabric_care_guide' | t }}</a></dd></div>
+                {%- endif -%}
+              </dl>
+            {%- endif -%}
+            <div class="fabric-discovery__actions">
+              {%- if shop_url != blank -%}
+                {%- assign shop_label = b.shop_label | default: 'storefront.sections.shop_fabric' -%}
+                {%- if b.shop_label == blank -%}{%- assign shop_label = 'storefront.sections.shop_fabric' | t: name: shop_name -%}{%- endif -%}
+                {%- render 'button', label: shop_label, url: shop_url -%}
+              {%- endif -%}
+              {%- if about_url != blank -%}
+                <a class="link link--arrow fabric-discovery__about" href="{{ about_url }}">{{ 'storefront.sections.about_this_fabric' | t }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="fabric-discovery__media">
+            {%- liquid
+              assign closeup = b.closeup_image | default: photo
+              assign closeup_region = b.region | strip
+              if closeup_region == blank
+                assign closeup_region = nil
+              endif
+            -%}
+            <a class="media fabric-discovery__closeup" style="--aspect: 1/1" href="{{ shop_url | default: about_url }}" tabindex="-1" aria-hidden="true">
+              {%- render 'image', image: closeup, sizes: '(min-width: 1440px) 600px, (min-width: 1024px) 42vw, 100vw', widths: '360,480,600,800,1000,1200', aspect: '1/1', crop: 'center', region: closeup_region, placeholder: 'lifestyle-1', alt: '' -%}
+            </a>
+            <div class="fabric-discovery__aside">
+              {%- if photo != blank and b.show_context -%}
+                <a class="media fabric-discovery__context" style="--aspect: 4/5" href="{{ shop_url | default: about_url }}" tabindex="-1" aria-hidden="true">
+                  {%- render 'image', image: photo, sizes: '(min-width: 1024px) 260px, 45vw', widths: '240,360,480,560', aspect: '4/5', crop: 'top', region_height: region, alt: '' -%}
+                </a>
+              {%- endif -%}
+            {%- if products.size > 0 -%}
+              <ul class="fabric-discovery__products list-unstyled" role="list">
+                {%- for product in products limit: 2 -%}
+                  <li>
+                    <a class="fabric-discovery__product" href="{{ product.url }}">
+                      <span class="media fabric-discovery__product-media" style="--aspect: 1/1">
+                        {%- render 'image', image: product.featured_image, sizes: '88px', widths: '120,180', aspect: '1/1', crop: 'top', alt: '' -%}
+                      </span>
+                      <span class="fabric-discovery__product-text">
+                        <span class="fabric-discovery__product-title">{{ product.title | escape }}</span>
+                        <span class="fabric-discovery__product-price">
+                          {%- if product.price_varies -%}{%- assign from_price = product.price_min | money_without_trailing_zeros -%}{{ 'storefront.sections.price_from' | t: price: from_price }}{%- else -%}{{ product.price | money_without_trailing_zeros }}{%- endif -%}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+            </div>
           </div>
         </div>
-        <ul class="fabric-discovery__track list-unstyled no-scrollbar" role="list" data-rail-track tabindex="0" aria-label="{{ shade_name | escape }}">
-          {%- if fabric_images -%}
-            {%- assign fabric_keys = 'texture_image,lifestyle_image' | split: ',' -%}
-            {%- for fabric_key in fabric_keys -%}
-              {%- assign img = fabric[fabric_key].value -%}
-              {%- if img == blank -%}{%- continue -%}{%- endif -%}
-              <li class="fabric-discovery__item">
-                <a class="fabric-discovery__card" href="{{ shade_link }}">
-                  <div class="media" style="--aspect: 9/16">
-                    {%- render 'image', image: img, sizes: '(min-width: 1280px) 343px, (min-width: 768px) 240px, 62vw', widths: '240,360,480,720', aspect: '9/16' -%}
-                  </div>
-                  <span class="fabric-discovery__arrow" aria-hidden="true">{% render 'icon', icon: 'arrow-right', size: 14 %}</span>
-                  <span class="visually-hidden">{{ shade_name | escape }}</span>
-                </a>
-              </li>
-            {%- endfor -%}
-          {%- else -%}
-          {%- for i in (1..6) -%}
-            {%- assign key = 'image_' | append: i -%}
-            {%- assign img = block.settings[key] -%}
-            {%- if img == blank and own_images > 0 -%}{%- continue -%}{%- endif -%}
-            {%- if img == blank and i > 4 -%}{%- continue -%}{%- endif -%}
-            <li class="fabric-discovery__item">
-              <a class="fabric-discovery__card" href="{{ shade_link }}">
-                <div class="media" style="--aspect: 9/16">
-                  {%- render 'image', image: img, sizes: '(min-width: 1280px) 343px, (min-width: 768px) 240px, 62vw', widths: '240,360,480,720', aspect: '9/16', placeholder: 'lifestyle-1' -%}
-                </div>
-                <span class="fabric-discovery__arrow" aria-hidden="true">{% render 'icon', icon: 'arrow-right', size: 14 %}</span>
-                <span class="visually-hidden">{{ shade_name | escape }}</span>
-              </a>
-            </li>
-          {%- endfor -%}
-          {%- endif -%}
-        </ul>
-        {%- assign summary = fabric.summary.value -%}
-        {%- if summary != blank -%}
-          <p class="fabric-discovery__summary">{{ summary | escape }} <a class="link" href="{{ shade_link }}">{{ 'storefront.sections.about_fabric' | t: name: shade_name }}</a></p>
-        {%- endif -%}
-      </scroll-rail>
-    {%- endfor -%}
+      {%- endfor -%}
+    {%- endif -%}
   </theme-tabs>
 </div>
 
@@ -122,33 +169,32 @@
   "name": "Fabric discovery",
   "tag": "section",
   "class": "section-fabric-discovery",
-  "max_blocks": 16,
+  "max_blocks": 8,
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Choose by fabric" },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [ { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pick a fabric to see it up close.</p>" },
-    { "type": "text", "id": "swatch_label", "label": "Swatch label", "default": "Fabric" },
-    { "type": "range", "id": "card_width", "label": "Image width (desktop)", "min": 200, "max": 400, "step": 8, "unit": "px", "default": 344 },
-    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "text", "id": "eyebrow", "label": "Label above each fabric name", "default": "Fabric" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "sage" },
     { "type": "header", "content": "t:sections.all.padding.header" },
-    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 160 },
-    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 104 }
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 }
   ],
   "blocks": [
     {
-      "type": "shade", "name": "Shade or fabric",
+      "type": "shade", "name": "Fabric",
       "settings": [
-        { "type": "metaobject", "id": "fabric", "label": "Fabric", "metaobject_type": "fabric", "info": "Optional. Fills the name, swatch, link, summary and (when no images are set) the images from the fabric entry." },
-        { "type": "text", "id": "name", "label": "Name", "info": "Leave empty to use the fabric name." },
-        { "type": "color", "id": "color", "label": "Swatch colour", "info": "Optional. Used when there is no swatch image or fabric texture." },
-        { "type": "image_picker", "id": "swatch_image", "label": "Swatch image", "info": "Optional. A fabric close-up used instead of the colour." },
-        { "type": "url", "id": "link", "label": "Link" },
-        { "type": "image_picker", "id": "image_1", "label": "Image 1" },
-        { "type": "image_picker", "id": "image_2", "label": "Image 2" },
-        { "type": "image_picker", "id": "image_3", "label": "Image 3" },
-        { "type": "image_picker", "id": "image_4", "label": "Image 4" },
-        { "type": "image_picker", "id": "image_5", "label": "Image 5" },
-        { "type": "image_picker", "id": "image_6", "label": "Image 6" }
+        { "type": "metaobject", "id": "fabric", "label": "Fabric", "metaobject_type": "fabric", "info": "Fills the name, overview, facts, swatch, products and link from the fabric entry." },
+        { "type": "text", "id": "name", "label": "Tab name", "info": "Optional short name for the tab. The panel shows the fabric's full name." },
+        { "type": "image_picker", "id": "swatch_image", "label": "Swatch image", "info": "Optional. Defaults to the close-up, then the fabric's texture image." },
+        { "type": "image_picker", "id": "closeup_image", "label": "Close-up image", "info": "Optional. Defaults to the context photograph. Use a detail or macro shot so the texture shows." },
+        { "type": "text", "id": "region", "label": "Close-up area", "info": "x,y,w,h in % of the image to show as the close-up" },
+        { "type": "image_picker", "id": "image", "label": "Context photograph", "info": "Optional. Defaults to the first product's main image." },
+        { "type": "checkbox", "id": "show_context", "label": "Show context photograph", "default": true },
+        { "type": "range", "id": "region_height", "label": "Context: use top part of image (%)", "min": 20, "max": 100, "step": 1, "default": 100, "info": "For collage packshots: the share of the image height that holds the main photo" },
+        { "type": "product_list", "id": "products", "label": "Products", "limit": 2, "info": "Optional. Defaults to the fabric's related products." },
+        { "type": "text", "id": "shop_label", "label": "Button label", "info": "Defaults to \"Shop <tab name>\"." },
+        { "type": "url", "id": "shop_link", "label": "Button link", "info": "Defaults to the first product." }
       ]
     }
   ],
