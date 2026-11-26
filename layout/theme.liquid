@@ -64,6 +64,9 @@
       loading: {{ 'general.accessibility.loading' | t | json }},
       close: {{ 'general.accessibility.close' | t | json }},
       searchNoResults: {{ 'general.search.no_results' | t: terms: '[terms]' | json }},
+      searchResults: {{ 'general.search.results_with_count' | t: count: '[count]', terms: '[terms]' | json }},
+      searchError: {{ 'general.search.error' | t | json }},
+      cartUpdated: {{ 'sections.cart.updated' | t | json }},
       shareSuccess: {{ 'general.share.success_message' | t | json }}
     };
   </script>
