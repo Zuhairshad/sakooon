@@ -127,5 +127,5 @@ Page metafield `related_fabrics` drives fabric-guide and compare ordering; when 
 1. Settings > Custom data > Metaobjects: create `Fabric` (storefront access, publishable, web pages), `Certification` and `Colour family` with the fields above.
 2. Settings > Custom data > Products / Collections / Pages: create the `sakooon.*` definitions above, storefront access on.
 3. Install Shopify Search & Discovery for filters, complementary and related products.
-4. Navigation: menus `main-menu`, `footer`, `footer-support`, `footer-shop`, `footer-guides`, `legal` (names configurable in theme settings).
+4. Navigation: menus `main-menu` (3 levels: item > group heading > links), `footer-shop`, `footer-help`, `footer-company`, `footer-guides`, `legal` (handles configurable in the header/footer section settings; the preview ships the same handles as fixtures).
 5. Create pages with the templates: page.fabric-guide, page.care-guide, page.size-guide, page.faq, page.about, page.contact, page.shipping, page.returns, page.measurement-guide.
