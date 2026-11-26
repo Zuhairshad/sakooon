@@ -6,7 +6,7 @@
         "show_breadcrumbs": true,
         "heading": "",
         "content_width": "text",
-        "text": "<p>Introduce how to care for your bedsheets: what matters most and how often.</p>",
+        "text": "<p>Cotton sheets get softer with use when they are washed gently and dried with a little patience. Here is what helps.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
@@ -30,7 +30,7 @@
           "settings": {
             "icon": "wash",
             "heading": "Washing",
-            "text": "<ul><li>Wash before first use.</li><li>Wash every week, separating light and dark colours.</li><li>Use a mild detergent and a gentle spin.</li></ul>"
+            "text": "<ul><li>Wash new sheets and pillow covers once before you use them.</li><li>Wash with similar colours. Strong shades and two-tone sets are best washed on their own for the first few washes.</li><li>Use a mild detergent and a cool or warm wash, around 30 to 40°C, unless the label says otherwise.</li><li>Avoid bleach. It weakens cotton and can fade colour.</li><li>Leave room in the drum so the sheets can move and rinse properly.</li></ul>"
           }
         },
         "t1": {
@@ -38,7 +38,7 @@
           "settings": {
             "icon": "tumble",
             "heading": "Drying",
-            "text": "<ul><li>Line dry where possible, or tumble dry on low heat.</li><li>Remove promptly to limit creasing.</li></ul>"
+            "text": "<ul><li>Line dry in the shade where you can. Strong sun can fade colour over time.</li><li>If you use a dryer, choose a low heat and take the sheets out while they are still very slightly damp.</li><li>Shake each piece out and smooth it by hand to keep creases down.</li></ul>"
           }
         },
         "t2": {
@@ -46,15 +46,15 @@
           "settings": {
             "icon": "iron",
             "heading": "Ironing",
-            "text": "<ul><li>Iron while slightly damp for a crisp finish, or skip it for a relaxed look.</li></ul>"
+            "text": "<ul><li>Cotton satin: if you iron, use a low to medium setting on the reverse to protect the sheen.</li><li>Quilted and embossed fabric: we suggest not ironing, as heat and pressure can flatten a raised pattern.</li></ul>"
           }
         },
         "t3": {
           "type": "topic",
           "settings": {
             "icon": "moon",
-            "heading": "Storage",
-            "text": "<ul><li>Store clean and fully dry in a cool, ventilated cupboard.</li></ul>"
+            "heading": "Storing",
+            "text": "<ul><li>Store sheets clean and completely dry.</li><li>Fold them loosely and keep them in a cool, dry cupboard, away from damp walls.</li><li>A cotton bag or pillowcase lets fabric breathe better than plastic.</li></ul>"
           }
         }
       },
@@ -82,7 +82,7 @@
           "type": "symbols",
           "settings": {
             "heading": "",
-            "symbols": "wash-40, no-bleach, tumble-low, iron-medium",
+            "symbols": "wash-40, no-bleach, tumble-low",
             "show_labels": true
           }
         }
@@ -91,9 +91,9 @@
         "s"
       ],
       "settings": {
-        "heading": "Care symbols",
+        "heading": "Care label: Quilted Bed Sheet Set",
         "heading_size": "h4",
-        "text": "<p>Always follow the care label on your product.</p>",
+        "text": "<p>These are the care instructions given for our Quilted Bed Sheet Set. Other products may differ, so check each label.</p>",
         "layout": "stacked",
         "content_width": "text",
         "padding_top": 0,
@@ -103,22 +103,30 @@
     "faq": {
       "type": "faq",
       "blocks": {
+        "q0": {
+          "type": "question",
+          "settings": {
+            "question": "How often should I wash my sheets?",
+            "answer": "<p>Many people wash sheets once a week, or more often in hot weather. Pillow covers can be washed more often, as they are closest to skin and hair.</p>"
+          }
+        },
         "q1": {
           "type": "question",
           "settings": {
-            "question": "How often should I wash them?",
-            "answer": "<p>Give a recommended frequency and explain why.</p>"
+            "question": "How do I treat a stain?",
+            "answer": "<p>Act quickly. Blot, do not rub, then rinse from the back with cool water. Try a little mild detergent on the spot before a normal wash, and check the stain has gone before drying, as heat can set it.</p>"
           }
         },
         "q2": {
           "type": "question",
           "settings": {
-            "question": "How do I remove stains?",
-            "answer": "<p>Explain safe stain treatment for this product.</p>"
+            "question": "Why do sheets pill?",
+            "answer": "<p>Pilling usually comes from friction. Washing with rough items such as towels or jeans makes it worse. Wash sheets with similar fabrics, use a gentle cycle and avoid over-drying.</p>"
           }
         }
       },
       "block_order": [
+        "q0",
         "q1",
         "q2"
       ],
@@ -134,41 +142,32 @@
     "more": {
       "type": "care-guide",
       "blocks": {
-        "pillows": {
-          "type": "topic",
-          "settings": {
-            "icon": "none",
-            "heading": "Pillows",
-            "text": "",
-            "link_label": "Read the guide",
-            "link_url": "/pages/care-pillows"
-          }
-        },
         "comforters": {
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Duvets and comforters",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "heading": "Duvets and duvet covers",
             "text": "",
             "link_label": "Read the guide",
             "link_url": "/pages/care-comforters"
           }
         },
-        "towels": {
+        "pillows": {
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Towels",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "heading": "Pillows",
             "text": "",
             "link_label": "Read the guide",
-            "link_url": "/pages/care-towels"
+            "link_url": "/pages/care-pillows"
           }
         }
       },
       "block_order": [
-        "pillows",
         "comforters",
-        "towels"
+        "pillows"
       ],
       "settings": {
         "heading": "More care guides",

@@ -6,7 +6,7 @@
         "show_breadcrumbs": true,
         "heading": "",
         "content_width": "page",
-        "text": "<p>A little care goes a long way. These guides explain how to wash, dry and store each product so it keeps its feel for years.</p>",
+        "text": "<p>A little care keeps bedding soft and its colour fresh. These guides cover washing, drying and storing sheets, duvets and pillows.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
         "padding_top": 80,
         "padding_bottom": 64,
         "heading_size": "h3"
@@ -19,53 +19,45 @@
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Bedsheets",
-            "text": "<p>How to wash, dry and store your bedsheets so they stay soft and last longer.</p>",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "heading": "Bed sheets",
+            "text": "<p>Cotton, cotton satin and quilted cotton sheets and pillow covers.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-bedsheets"
-          }
-        },
-        "pillows": {
-          "type": "topic",
-          "settings": {
-            "icon": "none",
-            "heading": "Pillows",
-            "text": "<p>How to wash, dry and store your pillows so they stay soft and last longer.</p>",
-            "link_label": "Read the guide",
-            "link_url": "/pages/care-pillows"
           }
         },
         "comforters": {
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Duvets and comforters",
-            "text": "<p>How to wash, dry and store your duvets and comforters so they stay soft and last longer.</p>",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "heading": "Duvets and duvet covers",
+            "text": "<p>Duvet fillings and the covers that protect them.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-comforters"
           }
         },
-        "towels": {
+        "pillows": {
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Towels",
-            "text": "<p>How to wash, dry and store your towels so they stay soft and last longer.</p>",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "heading": "Pillows",
+            "text": "<p>Filled pillows with a cotton cover and a polyester fill.</p>",
             "link_label": "Read the guide",
-            "link_url": "/pages/care-towels"
+            "link_url": "/pages/care-pillows"
           }
         }
       },
       "block_order": [
         "bedsheets",
-        "pillows",
         "comforters",
-        "towels"
+        "pillows"
       ],
       "settings": {
         "heading": "",
         "layout": "cards",
-        "columns": 2,
+        "columns": 3,
         "image_ratio": "4/5",
         "item_heading_size": "h4",
         "padding_top": 0,
@@ -106,7 +98,7 @@
       "settings": {
         "heading": "Care symbols explained",
         "heading_size": "h4",
-        "text": "<p>The symbols on our care labels, and what each one means.</p>",
+        "text": "<p>The common laundry symbols you may find on a care label, and what each one means.</p>",
         "layout": "stacked",
         "content_width": "text",
         "padding_top": 0,
@@ -119,7 +111,7 @@
         "h": {
           "type": "heading",
           "settings": {
-            "heading": "Making it last",
+            "heading": "Making bedding last",
             "tag": "h2",
             "size": "h4"
           }
@@ -128,7 +120,7 @@
           "type": "list",
           "settings": {
             "style": "dash",
-            "text": "<ul><li>Wash at lower temperatures and with a gentle spin where the label allows.</li><li>Use a mild detergent and skip fabric softener.</li><li>Rotate between two sets so each rests between uses.</li><li>Treat stains as soon as possible.</li></ul>"
+            "text": "<ul><li>Wash at the lowest temperature that gets things clean.</li><li>Use a mild detergent, and measure it: too much leaves fabric stiff.</li><li>Keep two sets of sheets and swap them, so each one rests between washes.</li><li>Treat stains straight away, before they dry.</li><li>Dry everything fully before you put it away.</li></ul>"
           }
         }
       },
