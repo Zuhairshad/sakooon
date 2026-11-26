@@ -1,8 +1,9 @@
 {%- comment -%}
   Rich text / promo band. Owner: shad-2d. Pattern: Parachute homepage section 1 (solid colour band, 800px measure,
   heading left + text right on desktop, stacked on mobile) or a centred text block.
-  Statement layout: content on 7 of 12 columns and the Sakooon calligraphy mark on the other 5 (mark above the text on
-  mobile); light artwork on the ink scheme, dark elsewhere.
+  Statement layout: a centred "title page" in a 960px column: calligraphy mark, heading, a dictionary-entry line between
+  two short hairlines, the paragraph and a text link. Depth comes from the colour scheme's background gradient (flat when
+  the scheme has none) and an optional oversized watermark of the mark. Light artwork on the ink scheme, dark elsewhere.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 {%- if s.layout == 'statement' -%}
@@ -11,21 +12,48 @@
     if s.color_scheme == 'ink'
       assign mark_tone = 'light'
     endif
+    comment
+      The gradient is a colour scheme setting (Theme settings > Colours); color_scheme may arrive as the scheme or its id.
+    endcomment
+    assign scheme_gradient = s.color_scheme.settings.background_gradient
+    if scheme_gradient == blank
+      for scheme in settings.color_schemes
+        if scheme.id == s.color_scheme
+          assign scheme_gradient = scheme.settings.background_gradient
+        endif
+      endfor
+    endif
+    assign reveal = ''
+    if settings.animations_reveal
+      assign reveal = ' reveal'
+    endif
+    assign terms = s.dictionary_terms | split: ' · '
   -%}
-<div class="section rich-text rich-text--statement color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width rich-text__statement">
-    <div class="rich-text__statement-copy">
-      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
-      {%- if s.heading != blank -%}<h2 class="rich-text__heading {{ s.heading_size }}">{{ s.heading | escape }}</h2>{%- endif -%}
-      {%- if s.text != blank -%}<div class="rte rich-text__text">{{ s.text }}</div>{%- endif -%}
-      {%- if s.button_label != blank and s.button_link != blank -%}
-        <div class="rich-text__button">{%- render 'button', label: s.button_label, url: s.button_link, style: s.button_style -%}</div>
-      {%- endif -%}
+<div class="section rich-text rich-text--statement color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --statement-mark: {{ s.mark_size }}px;{% if scheme_gradient != blank %} background: {{ scheme_gradient }};{% endif %}">
+  {%- if s.show_watermark -%}
+    <div class="rich-text__watermark" aria-hidden="true">
+      {%- render 'brand-logo', variant: 'mark', tone: mark_tone, width: 1400, class: 'rich-text__watermark-img' -%}
     </div>
+  {%- endif -%}
+  <div class="page-width rich-text__statement">
     {%- if s.show_mark -%}
-      <div class="rich-text__mark" aria-hidden="true">
-        {%- render 'brand-logo', variant: 'mark', tone: mark_tone, width: 240, class: 'rich-text__mark-img' -%}
+      <div class="rich-text__mark{{ reveal }}" aria-hidden="true">
+        {%- render 'brand-logo', variant: 'mark', tone: mark_tone, width: s.mark_size, class: 'rich-text__mark-img' -%}
       </div>
+    {%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="rich-text__statement-title{{ reveal }}">{{ s.heading | escape }}</h2>{%- endif -%}
+    {%- if s.dictionary_terms != blank or s.dictionary_meaning != blank -%}
+      <p class="rich-text__definition">
+        {%- for term in terms -%}
+          <span class="rich-text__definition-term">{{ term | strip | escape }}</span>
+          {%- unless forloop.last and s.dictionary_meaning == blank -%}<span class="rich-text__definition-sep" aria-hidden="true">·</span>{%- endunless -%}
+        {%- endfor -%}
+        {%- if s.dictionary_meaning != blank -%}<span class="rich-text__definition-meaning">{{ s.dictionary_meaning | escape }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+    {%- if s.text != blank -%}<div class="rte rich-text__statement-text">{{ s.text }}</div>{%- endif -%}
+    {%- if s.button_label != blank and s.button_link != blank -%}
+      <a class="rich-text__statement-link" href="{{ s.button_link }}">{{ s.button_label | escape }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a>
     {%- endif -%}
   </div>
 </div>
@@ -57,7 +85,12 @@
   "class": "section-rich-text",
   "settings": [
     { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [ { "value": "split", "label": "Heading beside text" }, { "value": "center", "label": "Centred" }, { "value": "left", "label": "Left aligned" }, { "value": "statement", "label": "Statement with logo mark" } ] },
-    { "type": "checkbox", "id": "show_mark", "label": "Show the Sakooon calligraphy mark", "default": true, "info": "Statement layout only." },
+    { "type": "header", "content": "Statement layout" },
+    { "type": "checkbox", "id": "show_mark", "label": "Show the Sakooon calligraphy mark", "default": true },
+    { "type": "range", "id": "mark_size", "label": "Mark width (desktop)", "min": 200, "max": 560, "step": 20, "unit": "px", "default": 440, "info": "Half this width on mobile." },
+    { "type": "checkbox", "id": "show_watermark", "label": "Show the large watermark", "default": true },
+    { "type": "text", "id": "dictionary_terms", "label": "Dictionary line: word and labels", "default": "su·koon · noun · Urdu", "info": "Separate parts with \" · \". Shown in small capitals." },
+    { "type": "text", "id": "dictionary_meaning", "label": "Dictionary line: meaning", "default": "peace of mind; calm" },
     { "type": "select", "id": "width", "label": "Width", "default": "narrow", "options": [ { "value": "narrow", "label": "Narrow (800px)" }, { "value": "page", "label": "Page" } ] },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Sukoon means calm" },
@@ -68,8 +101,8 @@
     { "type": "select", "id": "button_style", "label": "Button style", "default": "tertiary", "options": [ { "value": "primary", "label": "Solid" }, { "value": "secondary", "label": "Outline" }, { "value": "tertiary", "label": "Text link" } ] },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "ink" },
     { "type": "header", "content": "t:sections.all.padding.header" },
-    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 }
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 56 }
   ],
   "presets": [ { "name": "Rich text" } ]
 }

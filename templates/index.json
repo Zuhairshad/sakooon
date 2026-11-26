@@ -50,17 +50,21 @@
       "settings": {
         "layout": "statement",
         "width": "page",
-        "eyebrow": "Sukoon · سکون",
+        "eyebrow": "",
         "heading": "Sukoon means calm",
         "heading_size": "h1",
-        "text": "<p>It is the Urdu word for peace of mind. It is also how we want a bed to feel at the end of the day: soft, simple and easy to come home to.</p>",
+        "text": "<p>It is also how we want a bed to feel at the end of the day: soft, simple and easy to come home to.</p>",
         "button_label": "Our story",
         "button_link": "/pages/about",
-        "button_style": "secondary",
+        "button_style": "tertiary",
         "color_scheme": "ink",
-        "padding_top": 128,
-        "padding_bottom": 128,
-        "show_mark": true
+        "padding_top": 160,
+        "padding_bottom": 176,
+        "show_mark": true,
+        "mark_size": 440,
+        "show_watermark": true,
+        "dictionary_terms": "su·koon · noun · Urdu",
+        "dictionary_meaning": "peace of mind; calm"
       }
     },
     "featured": {
