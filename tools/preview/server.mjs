@@ -337,8 +337,9 @@ const F = {
   image_url: (x, ...args) => {
     const src = srcOf(x);
     if (!src) return '';
-    const { width } = kw(args);
-    return width ? `${src}${src.includes('?') ? '&' : '?'}width=${width}` : src;
+    const { width, height, crop } = kw(args);
+    const q = [width && `width=${width}`, height && `height=${height}`, crop && `crop=${crop}`].filter(Boolean).join('&');
+    return q ? `${src}${src.includes('?') ? '&' : '?'}${q}` : src;
   },
   img_url: (x) => srcOf(x),
   image_tag: (url, ...args) => {
@@ -738,17 +739,21 @@ async function renderPage(url) {
 const MIME = { '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json' };
 /* Resize images on the fly like Shopify's CDN does for ?width= (sharp, cached under tools/preview/.cache). Falls back to the original. */
 let sharpMod = null;
-async function sendImage(res, file, width) {
+/* Shopify-like resizing: ?width=, optional ?height= + ?crop=center|top|bottom|left|right (cover crop). */
+async function sendImage(res, file, width, height = 0, crop = '') {
   if (!exists(file) || !fs.statSync(file).isFile()) return send(res, 404, 'Not found', 'text/plain');
-  if (!width || width >= 2400) return sendFile(res, file);
+  if ((!width || width >= 2400) && !height) return sendFile(res, file);
   try {
     if (sharpMod === null) { try { sharpMod = (await import('sharp')).default; } catch { sharpMod = false; } }
     if (!sharpMod) return sendFile(res, file);
     const cacheDir = path.join(__dirname, '.cache'); fs.mkdirSync(cacheDir, { recursive: true });
     const ext = path.extname(file).toLowerCase() === '.png' ? '.png' : '.webp';
-    const cached = path.join(cacheDir, `${path.basename(file, path.extname(file))}-${width}${ext}`);
+    const cached = path.join(cacheDir, `${path.basename(file, path.extname(file))}-${width || 'auto'}${height ? `x${height}-${crop || 'center'}` : ''}${ext}`);
     if (!exists(cached)) {
-      const img = sharpMod(file).resize({ width, withoutEnlargement: true });
+      const positions = { top: 'top', bottom: 'bottom', left: 'left', right: 'right', center: 'centre' };
+      const img = height && crop
+        ? sharpMod(file).resize({ width: width || undefined, height, fit: 'cover', position: positions[crop] || 'centre', withoutEnlargement: true })
+        : sharpMod(file).resize({ width: width || undefined, height: height || undefined, fit: 'inside', withoutEnlargement: true });
       await (ext === '.png' ? img.png({ compressionLevel: 9 }) : img.webp({ quality: 78 })).toFile(cached);
     }
     return sendFile(res, cached);
@@ -785,7 +790,7 @@ http.createServer(async (req, res) => {
   const started = Date.now();
   try {
     if (p.startsWith('/assets/')) return sendFile(res, path.join(THEME, 'assets', path.basename(p)));
-    if (p.startsWith('/images/')) return sendImage(res, path.join(IMAGES, path.basename(p)), Number(url.searchParams.get('width')) || 0);
+    if (p.startsWith('/images/')) return sendImage(res, path.join(IMAGES, path.basename(p)), Number(url.searchParams.get('width')) || 0, Number(url.searchParams.get('height')) || 0, url.searchParams.get('crop') || '');
     if (p === '/cart.js' || p === '/cart.json') return sendJson(res, cartJson());
     if (p === '/cart/add.js' || p === '/cart/add') {
       const body = await readBody(req);
