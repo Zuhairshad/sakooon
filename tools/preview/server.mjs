@@ -138,6 +138,11 @@ const LINKLISTS = {
   'main-menu': { handle: 'main-menu', title: 'Main menu', links: [link('Home', '/'), link('Shop', '/collections/all', COLLECTIONS.map((c) => link(c.title, c.url))), link('About', '/pages/about'), link('Contact', '/pages/contact')] },
   footer: { handle: 'footer', title: 'Footer', links: PAGES.map((p) => link(p.title, p.url)) },
 };
+/* Fixture link lists (tools/preview/fixtures/*.json "linklists": { handle: { title, links: [{ title, url, links: [...] }] } }) override the defaults. */
+const fixtureLink = (l, level = 1) => ({ ...link(l.title, l.url, (l.links || []).map((c) => fixtureLink(c, level + 1))), levels: depth(l), handle: String(l.title).toLowerCase().replace(/[^a-z0-9]+/g, '-') });
+function depth(l) { return l.links && l.links.length ? 1 + Math.max(...l.links.map(depth)) : 0; }
+for (const fx of FIXTURES) for (const [handle, ll] of Object.entries(fx.linklists || {})) LINKLISTS[handle] = { handle, title: ll.title || handle, links: (ll.links || []).map((l) => fixtureLink(l)), levels: Math.max(0, ...(ll.links || []).map(depth)) + 1 };
+for (const ll of Object.values(LINKLISTS)) if (ll.levels === undefined) ll.levels = Math.max(0, ...ll.links.map(depth)) + 1;
 
 /* ------------------------------------------------------------- settings */
 
