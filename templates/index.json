@@ -48,18 +48,19 @@
     "promo-band": {
       "type": "rich-text",
       "settings": {
-        "layout": "split",
-        "width": "narrow",
-        "eyebrow": "",
+        "layout": "statement",
+        "width": "page",
+        "eyebrow": "Sukoon · سکون",
         "heading": "Sukoon means calm",
-        "heading_size": "h3",
+        "heading_size": "h1",
         "text": "<p>It is the Urdu word for peace of mind. It is also how we want a bed to feel at the end of the day: soft, simple and easy to come home to.</p>",
         "button_label": "Our story",
         "button_link": "/pages/about",
-        "button_style": "tertiary",
-        "color_scheme": "sage",
-        "padding_top": 48,
-        "padding_bottom": 56
+        "button_style": "secondary",
+        "color_scheme": "ink",
+        "padding_top": 128,
+        "padding_bottom": 128,
+        "show_mark": true
       }
     },
     "featured": {
@@ -309,25 +310,31 @@
         "value-1": {
           "type": "value",
           "settings": {
-            "icon": "map-pin",
+            "icon": "none",
             "heading": "Designed in Pakistan",
-            "text": "<p>Bedding planned for the homes we know.</p>"
+            "text": "<p>Bedding planned for the homes we know.</p>",
+            "link_label": "Size guide",
+            "link": "/pages/size-guide"
           }
         },
         "value-2": {
           "type": "value",
           "settings": {
-            "icon": "leaf",
-            "heading": "Cotton sheet sets",
-            "text": "<p>Quilted cotton and yarn-dyed cotton satin. The fabric guide explains each one.</p>"
+            "icon": "none",
+            "heading": "Cotton, kept plain",
+            "text": "<p>Quilted cotton and yarn-dyed cotton satin, nothing fussy.</p>",
+            "link_label": "Fabric guide",
+            "link": "/pages/fabric-guide"
           }
         },
         "value-3": {
           "type": "value",
           "settings": {
-            "icon": "drop",
+            "icon": "none",
             "heading": "Easy to care for",
-            "text": "<p>Simple washing and drying advice lives in the care guide.</p>"
+            "text": "<p>Plain washing and drying advice, all in one place.</p>",
+            "link_label": "Care guide",
+            "link": "/pages/care-guide"
           }
         }
       },
@@ -337,81 +344,19 @@
         "value-3"
       ],
       "settings": {
-        "eyebrow": "",
-        "heading": "Why Sakooon",
-        "heading_size": "h3",
+        "eyebrow": "Why Sakooon",
+        "heading": "Bedding that keeps things simple",
+        "heading_size": "h1",
         "text": "",
+        "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
+        "media_position": "left",
         "columns": 3,
         "image_ratio": "4/5",
         "align": "left",
         "mobile_layout": "stack",
         "color_scheme": "paper",
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "settings": {
-        "layout": "split",
-        "heading": "Letters from Sakooon",
-        "heading_size": "h3",
-        "text": "<p>New colours, care tips and the odd quiet note. Not too often.</p>",
-        "button_label": "Subscribe",
-        "disclaimer": "<p>You can unsubscribe at any time.</p>",
-        "color_scheme": "sand",
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
-    "service": {
-      "type": "service-info",
-      "blocks": {
-        "item-1": {
-          "type": "item",
-          "settings": {
-            "icon": "info",
-            "heading": "Size guide",
-            "text": "<p>Check your mattress before you choose.</p>",
-            "link_label": "Find your size",
-            "link": "/pages/size-guide"
-          }
-        },
-        "item-2": {
-          "type": "item",
-          "settings": {
-            "icon": "wash",
-            "heading": "Care guide",
-            "text": "<p>Keep your bedding soft for longer.</p>",
-            "link_label": "Read the guide",
-            "link": "/pages/care-guide"
-          }
-        },
-        "item-3": {
-          "type": "item",
-          "settings": {
-            "icon": "mail",
-            "heading": "Questions",
-            "text": "<p>We are happy to help.</p>",
-            "link_label": "Contact us",
-            "link": "/pages/contact"
-          }
-        }
-      },
-      "block_order": [
-        "item-1",
-        "item-2",
-        "item-3"
-      ],
-      "settings": {
-        "heading": "",
-        "heading_size": "h3",
-        "columns": 3,
-        "align": "left",
-        "dividers": true,
-        "color_scheme": "paper",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "padding_top": 96,
+        "padding_bottom": 96
       }
     }
   },
@@ -423,8 +368,6 @@
     "highlights",
     "campaign-tiles",
     "discovery",
-    "values",
-    "newsletter",
-    "service"
+    "values"
   ]
 }
