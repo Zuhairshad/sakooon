@@ -4,6 +4,9 @@
    Uses tokens from base.css only; per-instance values come in through section settings as custom properties.
    ========================================================================= */
 
+/* Text and buttons over photography (not tied to a colour scheme): paper white and the brand green-black (design-system.md §Brand). */
+:root { --on-media-light: #FFFFFF; --on-media-dark: #1A2420; }
+
 /* ---------- Announcement bar ---------- */
 .announcement-bar { font-size: var(--text-sm); line-height: 1.4; }
 .announcement-bar__inner { display: grid; grid-template-columns: 1fr; align-items: center; min-height: 40px; padding-inline: var(--page-gutter); column-gap: var(--space-2); }
@@ -32,8 +35,8 @@ sticky-header { display: block; }
 .header[data-hidden] { transform: translateY(-100%); }
 
 /* Transparent over the first section on the home page (the first section opts in with [data-header-overlay]). */
-.header--transparent-light { --header-transparent-fg: #FFFFFF; --header-transparent-ink: #1C1B19; }
-.header--transparent-dark { --header-transparent-fg: #1C1B19; --header-transparent-ink: #FFFFFF; }
+.header--transparent-light { --header-transparent-fg: var(--on-media-light); --header-transparent-ink: var(--on-media-dark); }
+.header--transparent-dark { --header-transparent-fg: var(--on-media-dark); --header-transparent-ink: var(--on-media-light); }
 @media (max-width: 1023.98px) { .section-header:has(.header__subnav) { --header-overlay-height: calc(var(--header-bar-height) + 45px); } }
 body:has(#MainContent > .shopify-section:first-child [data-header-overlay]) .section-header:has(.header--transparent-capable) { margin-bottom: calc(-1 * var(--header-overlay-height)); }
 body:has(#MainContent > .shopify-section:first-child [data-header-overlay]) .header--transparent-capable:not([data-scrolled]):not([data-menu-open]) {
@@ -191,7 +194,12 @@ a.footer__link:hover, .footer__link[aria-current="page"] { color: var(--color-fo
 
 .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-8); margin-top: var(--space-12); padding-top: var(--space-6); border-top: var(--border-width) solid var(--color-border); }
 .footer__wordmark { font-size: var(--text-md); font-weight: var(--font-body-weight-bold, 500); letter-spacing: 0.24em; text-transform: uppercase; text-decoration: none; color: inherit; }
-.footer__logo { width: min(var(--logo-width, 120px), 160px); }
+.footer__logo { width: 128px; height: auto; }
+.footer__block:not(:has(*)) { display: none; }
+.footer__brand { display: inline-block; color: inherit; }
+.footer__brand-logo { width: 176px; max-width: 100%; height: auto; }
+.footer__brand + .footer__text { margin-top: var(--space-4); }
+.footer__contact-link { display: inline-flex; align-items: center; gap: var(--space-2); }
 .footer__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); }
 .footer__legal { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
 .footer__copyright { font-size: var(--text-xs); color: var(--color-foreground-muted); }
@@ -220,8 +228,8 @@ scroll-rail { display: block; }
    first paint and would resize the hero (layout shift), so the hero never depends on them. */
 .hero { position: relative; display: grid; overflow: hidden; background: var(--color-background); color: var(--color-foreground); --hero-min: clamp(420px, 70svh, 720px); --hero-announcement: 40px; --hero-header: 52px; }
 @media (min-width: 1024px) { .hero { --hero-header: 56px; } }
-.hero--has-media.hero--text-light { color: #FFFFFF; }
-.hero--has-media.hero--text-dark { color: #1C1B19; }
+.hero--has-media.hero--text-light { color: var(--on-media-light); }
+.hero--has-media.hero--text-dark { color: var(--on-media-dark); }
 .hero__media, .hero__content { grid-area: 1 / 1; }
 .hero__media { position: relative; min-height: var(--hero-min); }
 .hero__media > img, .hero__media > picture, .hero__media > picture > img, .hero__media .hero__img, .hero__media > .placeholder, .hero__video, .hero__video video {
@@ -249,11 +257,11 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .hero__buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .hero--top-center .hero__buttons, .hero--middle-center .hero__buttons, .hero--bottom-center .hero__buttons { justify-content: center; }
 .hero--top-right .hero__buttons, .hero--middle-right .hero__buttons, .hero--bottom-right .hero__buttons { justify-content: flex-end; }
-.hero--has-media.hero--text-light .hero__buttons .button { --btn-bg: #FFFFFF; --btn-text: #1C1B19; --btn-border: #FFFFFF; }
-.hero--has-media.hero--text-light .hero__buttons .button--secondary, .hero--has-media.hero--text-light .hero__buttons .button--tertiary { --btn-bg: transparent; --btn-text: #FFFFFF; }
-.hero--has-media.hero--text-light .hero__buttons .button--secondary:hover { background: #FFFFFF; color: #1C1B19; }
+.hero--has-media.hero--text-light .hero__buttons .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
+.hero--has-media.hero--text-light .hero__buttons .button--secondary, .hero--has-media.hero--text-light .hero__buttons .button--tertiary { --btn-bg: transparent; --btn-text: var(--on-media-light); }
+.hero--has-media.hero--text-light .hero__buttons .button--secondary:hover { background: var(--on-media-light); color: var(--on-media-dark); }
 .hero--has-media .hero__eyebrow { color: inherit; opacity: .85; }
-.hero__video-toggle { position: absolute; right: var(--page-gutter); bottom: var(--space-4); z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: #FFFFFF; background: rgba(0, 0, 0, .35); border-radius: var(--radius); }
+.hero__video-toggle { position: absolute; right: var(--page-gutter); bottom: var(--space-4); z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--on-media-light); background: rgba(0, 0, 0, .35); border-radius: var(--radius); }
 
 /* ---------- Rich text / promo band ---------- */
 .rich-text__inner { display: grid; gap: var(--space-4); }
@@ -300,8 +308,8 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .editorial-grid__media img { transition: transform var(--duration-slow) var(--ease); }
 .editorial-grid__link:hover .editorial-grid__media img { transform: scale(1.02); }
 .editorial-grid--overlay .editorial-grid__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--space-6); display: grid; justify-items: start; gap: var(--space-3); }
-.editorial-grid--overlay .editorial-grid__copy--light { color: #FFFFFF; background: linear-gradient(to top, rgba(0, 0, 0, .28), rgba(0, 0, 0, 0) 60%); }
-.editorial-grid--overlay .editorial-grid__copy--light .button { --btn-bg: #FFFFFF; --btn-text: #1C1B19; --btn-border: #FFFFFF; }
+.editorial-grid--overlay .editorial-grid__copy--light { color: var(--on-media-light); background: linear-gradient(to top, rgba(0, 0, 0, .28), rgba(0, 0, 0, 0) 60%); }
+.editorial-grid--overlay .editorial-grid__copy--light .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
 .editorial-grid--below .editorial-grid__copy { display: grid; justify-items: start; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-4); }
 .editorial-grid--below.editorial-grid--bleed .editorial-grid__copy { padding-inline: var(--page-gutter); }
 .editorial-grid--below .editorial-grid__button { padding: 0; min-height: 0; background: none; border: 0; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
@@ -316,9 +324,9 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .image-banner__media img, .image-banner__media picture, .image-banner__media .placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .image-banner--has-media .image-banner__media::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, var(--banner-overlay, 0)); }
 .image-banner--has-media.image-banner--text-dark .image-banner__media::after { background: rgba(255, 255, 255, var(--banner-overlay, 0)); }
-.image-banner--has-media.image-banner--text-light .image-banner__content { color: #FFFFFF; }
-.image-banner--has-media.image-banner--text-light .button { --btn-bg: #FFFFFF; --btn-text: #1C1B19; --btn-border: #FFFFFF; }
-.image-banner--has-media.image-banner--text-light .button--tertiary { --btn-bg: transparent; --btn-text: #FFFFFF; text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+.image-banner--has-media.image-banner--text-light .image-banner__content { color: var(--on-media-light); }
+.image-banner--has-media.image-banner--text-light .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
+.image-banner--has-media.image-banner--text-light .button--tertiary { --btn-bg: transparent; --btn-text: var(--on-media-light); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
 .image-banner__content { position: relative; z-index: 1; display: flex; padding: var(--space-6); pointer-events: none; }
 @media (min-width: 1024px) { .image-banner__content { padding: var(--space-8) var(--space-10); } }
 .image-banner__copy { max-width: 560px; pointer-events: auto; --stack-gap: var(--space-4); justify-items: start; }
@@ -334,7 +342,7 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .hotspot__pin { display: inline-flex; align-items: center; justify-content: center; min-width: var(--touch-target); min-height: var(--touch-target); }
 .hotspot__dot { width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 255, 255, .92); box-shadow: 0 0 0 6px rgba(255, 255, 255, .35); transition: transform var(--duration) var(--ease); }
 .hotspot__pin:hover .hotspot__dot, .hotspot[data-open] .hotspot__dot { transform: scale(1.12); }
-.hotspot__badge { padding: 2px var(--space-2); font-size: var(--text-xs); letter-spacing: var(--tracking-wide); text-transform: uppercase; background: var(--color-sale); color: #FFFFFF; }
+.hotspot__badge { padding: 2px var(--space-2); font-size: var(--text-xs); letter-spacing: var(--tracking-wide); text-transform: uppercase; background: var(--color-sale); color: var(--on-media-light); }
 .hotspot__card { position: absolute; top: 50%; width: 200px; padding: var(--space-3); transform: translateY(-50%); background: var(--color-background); color: var(--color-foreground); }
 .hotspot--right .hotspot__card { left: calc(100% + var(--space-2)); }
 .hotspot--left .hotspot__card { right: calc(100% + var(--space-2)); }

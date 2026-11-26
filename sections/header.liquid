@@ -31,14 +31,15 @@
 
 {%- capture logo -%}
   <a class="header__logo" href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>
-    {%- if settings.logo != blank -%}
-      <span class="visually-hidden">{{ shop.name }}</span>
-      {%- render 'image', image: settings.logo, sizes: '240px', widths: '120,240,360,480', priority: true, class: 'header__logo-img header__logo-img--default', alt: '' -%}
-      {%- if transparent and section.settings.transparent_logo != blank -%}
+    {%- if settings.logo != blank -%}<span class="visually-hidden">{{ shop.name }}</span>{%- endif -%}
+    {%- render 'brand-logo', variant: 'wordmark', tone: 'dark', width: settings.logo_width, priority: true, class: 'header__logo-img header__logo-img--default' -%}
+    {%- if transparent -%}
+      {%- if section.settings.transparent_logo != blank -%}
         {%- render 'image', image: section.settings.transparent_logo, sizes: '240px', widths: '120,240,360,480', priority: true, class: 'header__logo-img header__logo-img--transparent', alt: '' -%}
+      {%- elsif settings.logo == blank and section.settings.transparent_text == 'light' -%}
+        {%- comment -%} Bundled paper wordmark while the header sits over hero media. {%- endcomment -%}
+        {%- render 'brand-logo', variant: 'wordmark', tone: 'light', width: settings.logo_width, priority: true, class: 'header__logo-img header__logo-img--transparent' -%}
       {%- endif -%}
-    {%- else -%}
-      <span class="header__wordmark">{{ shop.name | escape }}</span>
     {%- endif -%}
   </a>
 {%- endcapture -%}
