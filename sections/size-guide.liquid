@@ -35,7 +35,7 @@
             {%- liquid
               assign b = block.settings
               assign cat_id = b.handle | default: b.title | handleize
-              assign lines = b.table | newline_to_br | split: '<br />'
+              assign lines = b.table | strip | newline_to_br | split: '<br />'
             -%}
             <section class="size-guide__category" id="{{ cat_id }}" aria-labelledby="{{ cat_id }}-title" {{ block.shopify_attributes }}>
               <h2 class="size-guide__title h4" id="{{ cat_id }}-title" data-anchor-target>{{ b.title }}</h2>
@@ -44,14 +44,13 @@
                 <div class="size-guide__scroll" role="region" aria-labelledby="{{ cat_id }}-title" tabindex="0">
                   <table class="size-guide__table{% if b.zebra %} size-guide__table--zebra{% endif %}">
                     {%- if b.convert -%}<caption class="size-guide__caption">{{ 'editorial.size_guide.measured_in' | t }} <span data-unit-name>{% if s.default_unit == 'in' %}{{ 'editorial.size_guide.in' | t }}{% else %}{{ 'editorial.size_guide.cm' | t }}{% endif %}</span></caption>{%- endif -%}
-                    {%- assign row_index = 0 -%}
-                    {%- for raw_line in lines -%}
-                      {%- assign line = raw_line | strip -%}
-                      {%- if line == blank -%}{%- continue -%}{%- endif -%}
-                      {%- assign cells = line | split: '|' -%}
-                      {%- if row_index == 0 -%}
-                        <thead><tr>{%- for c in cells -%}<th scope="col">{{ c | strip }}</th>{%- endfor -%}</tr></thead><tbody>
-                      {%- else -%}
+                    {%- assign head_cells = lines.first | strip | split: '|' -%}
+                    <thead><tr>{%- for c in head_cells -%}<th scope="col">{{ c | strip }}</th>{%- endfor -%}</tr></thead>
+                    <tbody>
+                      {%- for raw_line in lines offset: 1 -%}
+                        {%- assign line = raw_line | strip -%}
+                        {%- if line == blank -%}{%- continue -%}{%- endif -%}
+                        {%- assign cells = line | split: '|' -%}
                         <tr>
                           {%- for c in cells -%}
                             {%- assign cell = c | strip -%}
@@ -62,9 +61,7 @@
                             {%- endif -%}
                           {%- endfor -%}
                         </tr>
-                      {%- endif -%}
-                      {%- assign row_index = row_index | plus: 1 -%}
-                    {%- endfor -%}
+                      {%- endfor -%}
                     </tbody>
                   </table>
                 </div>
