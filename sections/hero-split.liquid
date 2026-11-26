@@ -1,0 +1,43 @@
+{%- comment -%}
+  Split hero: media on one half, a content panel on the other. Owner: shad-2d.
+  Stacks on mobile (media first or text first). Heading level is a setting (one h1 per page).
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section section--flush hero-split hero-split--media-{{ s.media_position }} hero-split--{{ s.height }} hero-split--mobile-{{ s.mobile_order }} color-scheme-{{ s.color_scheme }}">
+  <div class="hero-split__media">
+    {%- render 'image', image: s.image, sizes: '(min-width: 768px) 50vw, 100vw', priority: s.priority, class: 'hero-split__img', placeholder: 'lifestyle-1' -%}
+  </div>
+  <div class="hero-split__panel">
+    <div class="hero-split__copy stack">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<{{ s.heading_tag }} class="hero-split__heading {{ s.heading_size }}">{{ s.heading | escape | newline_to_br }}</{{ s.heading_tag }}>{%- endif -%}
+      {%- if s.text != blank -%}<div class="rte text-large hero-split__text">{{ s.text }}</div>{%- endif -%}
+      {%- if s.button_label != blank and s.button_link != blank -%}<div>{%- render 'button', label: s.button_label, url: s.button_link, style: s.button_style -%}</div>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split hero",
+  "tag": "section",
+  "class": "section-hero-split",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "select", "id": "media_position", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+    { "type": "select", "id": "height", "label": "Height", "default": "large", "options": [ { "value": "screen", "label": "Fill the screen" }, { "value": "large", "label": "Large" }, { "value": "medium", "label": "Medium" } ] },
+    { "type": "select", "id": "mobile_order", "label": "Mobile order", "default": "media-first", "options": [ { "value": "media-first", "label": "Image first" }, { "value": "text-first", "label": "Text first" } ] },
+    { "type": "checkbox", "id": "priority", "label": "Load the image first", "default": false, "info": "Turn on when this section is at the top of the page." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Split headline" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h1", "options": [ { "value": "h0", "label": "Display" }, { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" } ] },
+    { "type": "select", "id": "heading_tag", "label": "Heading level", "default": "h2", "options": [ { "value": "h1", "label": "H1 (main page heading)" }, { "value": "h2", "label": "H2" } ] },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pair the image with a short introduction.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "select", "id": "button_style", "label": "Button style", "default": "primary", "options": [ { "value": "primary", "label": "Solid" }, { "value": "secondary", "label": "Outline" }, { "value": "tertiary", "label": "Text link" } ] },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" }
+  ],
+  "presets": [ { "name": "Split hero" } ]
+}
+{% endschema %}

@@ -33,7 +33,7 @@
           <div class="image-banner__copy stack">
             {%- if s.heading != blank -%}<h2 class="image-banner__heading {{ s.heading_size }}">{{ s.heading | escape | newline_to_br }}</h2>{%- endif -%}
             {%- if s.text != blank -%}<div class="image-banner__text rte">{{ s.text }}</div>{%- endif -%}
-            {%- if s.link_label != blank -%}
+            {%- if s.link_label != blank and s.link != blank -%}
               {%- render 'button', label: s.link_label, url: s.link, style: s.link_style -%}
             {%- endif -%}
           </div>

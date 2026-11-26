@@ -1,0 +1,71 @@
+{%- comment -%}
+  Curated room collection ("shop the room"). Owner: shad-2d.
+  Each room block: a large room image beside up to 4 product cards (2x2), alternating sides between rooms.
+  Mobile: image, then the cards in a 2-column grid. Cards: snippets/product-card.liquid (owner shad-d8).
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section room-collection color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width page-width--full">
+    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text -%}
+    <div class="room-collection__rooms">
+      {%- for block in section.blocks -%}
+        {%- assign odd = forloop.index0 | modulo: 2 -%}
+        <div class="room-collection__room{% if odd == 1 %} room-collection__room--reverse{% endif %}" {{ block.shopify_attributes }}>
+          <div class="room-collection__media-wrap">
+            <div class="media room-collection__media" style="--aspect: 4/5">
+              {%- render 'image', image: block.settings.image, sizes: '(min-width: 1024px) 50vw, 100vw', aspect: '4/5', placeholder: 'lifestyle-1' -%}
+            </div>
+            {%- if block.settings.title != blank or block.settings.link_label != blank -%}
+              <div class="room-collection__caption">
+                {%- if block.settings.title != blank -%}<h3 class="room-collection__title h4">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                {%- if block.settings.link_label != blank and block.settings.link != blank -%}<a class="link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }}</a>{%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+          <ul class="room-collection__products list-unstyled" role="list">
+            {%- for i in (1..4) -%}
+              {%- assign key = 'product_' | append: i -%}
+              {%- assign product = block.settings[key] -%}
+              {%- if product == blank and i > 2 and block.settings.product_1 != blank -%}{%- continue -%}{%- endif -%}
+              <li>{%- render 'product-card', product: product, columns_desktop: 4, show_swatches: false, sizes: '(min-width: 1024px) 22vw, 45vw' -%}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Room collection",
+  "tag": "section",
+  "class": "section-room-collection",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Curated rooms" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "room", "name": "Room",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Room image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "The bedroom" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the room" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "product", "id": "product_1", "label": "Product 1" },
+        { "type": "product", "id": "product_2", "label": "Product 2" },
+        { "type": "product", "id": "product_3", "label": "Product 3" },
+        { "type": "product", "id": "product_4", "label": "Product 4" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Room collection", "blocks": [ { "type": "room" } ] } ]
+}
+{% endschema %}

@@ -63,8 +63,8 @@
               <div class="hero__text rte text-large" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
             {%- when 'buttons' -%}
               <div class="hero__buttons" {{ block.shopify_attributes }}>
-                {%- render 'button', label: block.settings.label_1, url: block.settings.link_1, style: block.settings.style_1 -%}
-                {%- render 'button', label: block.settings.label_2, url: block.settings.link_2, style: block.settings.style_2 -%}
+                {%- if block.settings.link_1 != blank -%}{%- render 'button', label: block.settings.label_1, url: block.settings.link_1, style: block.settings.style_1 -%}{%- endif -%}
+                {%- if block.settings.link_2 != blank -%}{%- render 'button', label: block.settings.label_2, url: block.settings.link_2, style: block.settings.style_2 -%}{%- endif -%}
               </div>
           {%- endcase -%}
         {%- endfor -%}
@@ -93,7 +93,7 @@
       ]
     },
     {
-      "type": "select", "id": "content_position", "label": "Content position", "default": "bottom-left",
+      "type": "select", "id": "content_position", "label": "Content position", "default": "bottom-center",
       "options": [
         { "value": "top-left", "label": "Top left" }, { "value": "top-center", "label": "Top centre" }, { "value": "top-right", "label": "Top right" },
         { "value": "middle-left", "label": "Middle left" }, { "value": "middle-center", "label": "Middle centre" }, { "value": "middle-right", "label": "Middle right" },
@@ -129,6 +129,6 @@
       ]
     }
   ],
-  "presets": [ { "name": "Hero", "blocks": [ { "type": "heading" }, { "type": "text" }, { "type": "buttons" } ] } ]
+  "presets": [ { "name": "Hero", "blocks": [ { "type": "buttons", "settings": { "link_1": "/collections/all" } } ] } ]
 }
 {% endschema %}

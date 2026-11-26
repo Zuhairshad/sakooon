@@ -11,10 +11,10 @@
         {%- if s.heading != blank -%}<h2 class="rich-text__heading {{ s.heading_size }}">{{ s.heading | escape }}</h2>{%- endif -%}
       </div>
     {%- endif -%}
-    {%- if s.text != blank or s.button_label != blank -%}
+    {%- if s.text != blank or s.button_link != blank -%}
       <div class="rich-text__body">
         {%- if s.text != blank -%}<div class="rte rich-text__text">{{ s.text }}</div>{%- endif -%}
-        {%- if s.button_label != blank -%}
+        {%- if s.button_label != blank and s.button_link != blank -%}
           <div class="rich-text__button">{%- render 'button', label: s.button_label, url: s.button_link, style: s.button_style -%}</div>
         {%- endif -%}
       </div>
