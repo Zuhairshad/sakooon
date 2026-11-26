@@ -57,7 +57,7 @@ visually-hidden labels (`products.product.price.regular_price` / `sale_price`).
 ## 6. Images (snippets/image.liquid, owner Fable)
 Parameters: `image` (image or media object), `sizes` (required string), `widths` (default '320,480,640,768,960,1280,1600,1920,2400'),
 `aspect` ('natural'|'3/4'|'4/5'|'1/1'|'4/3'|'16/9'|'21/9' or any CSS ratio), `priority` (bool: eager + fetchpriority high),
-`class`, `alt` (override), `decorative` (true -> alt=""; use for card images beside a visible title), `crop` ('center' etc.), `placeholder` (name for placeholder_svg_tag when image blank).
+`class`, `alt` (override), `decorative` (true -> alt=""; use for card images beside a visible title), `crop` ('center'|'top'|'bottom'|'left'|'right'; implemented 2026-11-26: with `aspect` every srcset candidate is requested as width+height+crop so banners download only the visible crop; candidates are capped at the width the source height allows), `placeholder` (name for placeholder_svg_tag when image blank).
 Renders `<img>` with width/height, srcset, loading, decoding. Wrap in `.media` with `style="--aspect: 3/4"` when a fixed ratio is needed.
 
 ## 7. Section heading (snippets/section-heading.liquid, owner Fable)

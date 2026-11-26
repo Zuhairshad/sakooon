@@ -25,7 +25,8 @@
     <input type="hidden" name="options[prefix]" value="last">
   {%- endif -%}
 
-  {%- if sort_enabled and results.sort_options.size > 0 -%}
+  {%- assign result_count = results.products_count | default: results.results_count | default: 0 -%}
+  {%- if sort_enabled and results.sort_options.size > 0 and result_count > 1 -%}
     <fieldset class="facets__group facets__group--sort">
       <legend class="facets__legend">{{ 'products.facets.sort_by_label' | t | remove: ':' }}</legend>
       <div class="facets__options facets__options--grid">
@@ -41,6 +42,23 @@
 
   {%- if filters_enabled -%}{%- assign filters = results.filters -%}{%- else -%}{%- assign filters = empty -%}{%- endif -%}
   {%- for filter in filters -%}
+    {%- comment -%} Hide groups that cannot narrow the results: one live value (or a price range over one product), unless active. {%- endcomment -%}
+    {%- liquid
+      assign live_values = 0
+      for value in filter.values
+        if value.count > 0 or value.active
+          assign live_values = live_values | plus: 1
+        endif
+      endfor
+      assign group_active = filter.active_values.size
+      if filter.type == 'price_range'
+        assign live_values = result_count
+        if filter.min_value.value != nil or filter.max_value.value != nil
+          assign group_active = 1
+        endif
+      endif
+    -%}
+    {%- if live_values <= 1 or result_count <= 1 -%}{%- if group_active == 0 -%}{%- continue -%}{%- endif -%}{%- endif -%}
     {%- assign group_id = form_id | append: '-' | append: forloop.index -%}
     {%- case filter.type -%}
       {%- when 'list', 'boolean' -%}

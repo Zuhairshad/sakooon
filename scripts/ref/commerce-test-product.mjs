@@ -66,6 +66,7 @@ for (const width of [1440, 390]) {
   const soldAdd = page.locator('[data-add-button]').first();
   check(`sold-out product disables add ${tag}`, await soldAdd.isDisabled() && /sold out/i.test(await soldAdd.textContent()));
   check(`no notify-me or fake stock on sold out ${tag}`, !/notify|back in stock|only \d+ left/i.test(await page.locator('.main-product__info').first().textContent()));
+  check(`sold-out button keeps the price ${tag}`, /2,499/.test(await soldAdd.textContent()));
   check(`sold-out badge ${tag}`, /sold out/i.test(await page.locator('.main-product__info').first().textContent()));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/pdp-sold-out-${width}.png` });
 
@@ -95,15 +96,27 @@ for (const width of [1440, 390]) {
   await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(400);
   check(`sticky bar hidden at top ${tag}`, await page.locator('sticky-buy-bar[hidden]').count() === 1);
 
-  // Accordion
-  const trig = page.locator('.product-accordion__trigger').first();
+  // Accordion (a closed row: Description starts open)
+  const trig = page.locator('.product-accordion__trigger[aria-expanded="false"]').first();
+  const panelSel = await trig.getAttribute('aria-controls');
   await trig.click(); await page.waitForTimeout(300);
-  check(`accordion opens ${tag}`, (await trig.getAttribute('aria-expanded')) === 'true');
-  const panelH = await page.locator('.product-accordion .disclosure__panel').first().evaluate((e) => e.getBoundingClientRect().height);
+  check(`accordion opens ${tag}`, (await page.locator(`[aria-controls="${panelSel}"]`).getAttribute('aria-expanded')) === 'true');
+  const panelH = await page.locator(`#${panelSel}`).evaluate((e) => e.getBoundingClientRect().height);
   check(`open panel has height ${tag}`, panelH > 10, `${Math.round(panelH)}px`);
-  await trig.click(); await page.waitForTimeout(300);
-  const closedH = await page.locator('.product-accordion .disclosure__panel').first().evaluate((e) => e.getBoundingClientRect().height);
+  await page.locator(`[aria-controls="${panelSel}"]`).click(); await page.waitForTimeout(300);
+  const closedH = await page.locator(`#${panelSel}`).evaluate((e) => e.getBoundingClientRect().height);
   check(`closed panel collapses to 0 ${tag}`, closedH < 1, `${closedH}px`);
+
+  // Description split into accordion rows by its headings (real copy)
+  await page.goto(`${BASE}${SIZED}`, { waitUntil: 'networkidle' });
+  const titles = (await page.locator('.product-accordion__title').allTextContents()).map((t) => t.trim());
+  check(`description rows by heading ${tag}`, ['Description', 'Available sizes', "Why you'll love it", 'Specifications', 'Frequently asked questions'].every((h) => titles.includes(h)), titles.join(' | '));
+  check(`description row open by default ${tag}`, (await page.locator('.product-accordion__trigger').first().getAttribute('aria-expanded')) === 'true');
+  check(`no heading text left inside rows ${tag}`, await page.locator('.product-accordion__rte h3').count() === 0);
+  await page.goto(`${BASE}${PRODUCT}`, { waitUntil: 'networkidle' });
+  const qTitles = (await page.locator('.product-accordion__title').allTextContents()).map((t) => t.trim());
+  check(`care heading rendered once ${tag}`, qTitles.filter((t) => /^care$/i.test(t)).length === 1, qTitles.join(' | '));
+  check(`single-value option is a static line ${tag}`, await page.locator('.variant-picker__option--static').count() === 1 && /King/.test(await page.locator('.variant-picker__option--static').textContent()));
 
   // Gallery arrows + zoom (product with several images)
   await page.goto(`${BASE}${GALLERY}`, { waitUntil: 'networkidle' });
