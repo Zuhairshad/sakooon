@@ -17,7 +17,7 @@ Link to a fabric page only via `fabric.system.url` (Shopify generates `/pages/<d
 | key | type | notes |
 | --- | --- | --- |
 | name (display name) | single_line_text | required |
-| handle | (system) | URL `/metaobjects/fabric/<handle>` or via page template |
+| handle | (system) | web page URL only via `fabric.system.url` (never hardcode the pattern) |
 | tagline | single_line_text | short descriptor |
 | summary | multi_line_text (<=280 chars) | cards, compare table, SEO description |
 | fibre | single_line_text, choices: cotton, linen, cotton-linen, lyocell, wool, other | |

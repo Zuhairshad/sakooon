@@ -17,7 +17,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
 - [x] Header, announcement, mega menu, mobile nav, sticky (shad-2d) 073f94c, merged to integration
 - [x] Footer (shad-2d) 0c1ca23, merged to integration
-- [x] Homepage sections + index.json (shad-2d) 087ac7e + presets f1566cd (hero-split, image-with-text, comparison-highlights, room-collection, brand-values, list-collections), merged to integration
+- [x] Homepage sections + index.json (shad-2d) 087ac7e + presets f1566cd + mobile sheet menu 2cd7e67 + storefront-admin.md 6800d75, merged to integration
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
 - [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
 - [x] Product template: gallery, variant picker, buy buttons, sticky bar, accordions, recommendations (shad-d8) b2f85dd, merged to integration
@@ -30,8 +30,14 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Size guide, measurement guide (shad-8b) ccedb41; FAQ, shipping, returns, contact 2519044; merged to integration
 - [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
 - [~] Visual comparison passes per template (Fable + owner): header, footer, collection, fabric, home logged; editorial self-pass assigned; product pending
-- [~] Functional tests, a11y, Lighthouse (Fable): axe sweep run (icons fixed; 3 editorial + 1 commerce findings assigned); Lighthouse trial on PDP mobile: perf 71 (preview-indicative), a11y 100, best 96, seo 100
+- [~] Functional tests, a11y, Lighthouse (Fable): axe sweep 0 serious/critical; Lighthouse mobile (preview with CDN-like resizing): home 89/100/100/100, collection 88/98/100/100, product 83/100/100/100; desktop 94-99 perf; full 7-viewport capture of 11 templates done (63 clean)
 - [ ] Final deliverables report (Fable)
 
 ## Open decisions
 - Typography: resolved by D11 (one grotesk, 14px/300 defaults); serif display revisited in Phase 2 branding.
+
+## Closing docs
+- [x] docs/reference/storefront-admin.md + storefront-review.md (shad-2d) 6800d75, 1b741bf, merged
+- [ ] docs/reference/commerce-admin.md (shad-d8)
+- [ ] docs/reference/editorial-admin.md + editorial-visual-pass.md (shad-8b)
+- [ ] docs/phase1-report.md final (Fable)
