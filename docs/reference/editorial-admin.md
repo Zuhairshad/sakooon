@@ -133,7 +133,9 @@ Menu names are configured in theme settings, and their handles are in the contra
 2. **Fabric page › Related products**: no setup needed. It uses each fabric's `related_products`, then its `collection`. An optional fallback collection can be picked.
 3. **Size guide**: replace the example dimensions in every category table (one row per line, cells separated by `|`, centimetres) and check each category's Anchor against the store's product types.
 4. **Care pages and FAQ**: replace the onboarding copy. The FAQ sections emit FAQPage structured data. Keep that on for one FAQ section per page.
-5. **Figures section** (if used): enter only figures that can be substantiated. An empty value hides the figure.
+5. **Fabric guide page** uses the "Panels with products" layout. Each fabric's product rail comes from its `related_products` (or its `collection`), and "Shop all <fabric>" needs `collection`. A fabric without either shows only its information column. Chips come from `feel` (comma-separated), falling back to `best_for`.
+6. **FAQ page** uses the "Topic list beside questions" layout. Every "Topic heading" block becomes a link in the sticky list, so give each group a heading.
+7. **Figures section** (if used): enter only figures that can be substantiated. An empty value hides the figure.
 
 ## 7. Preview vs store
 
