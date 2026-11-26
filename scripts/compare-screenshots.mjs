@@ -26,14 +26,14 @@ const readPng = (f) => PNG.sync.read(fs.readFileSync(f));
 function fit(png, w, h) {
   const out = new PNG({ width: w, height: h }); out.data.fill(255);
   for (let y = 0; y < Math.min(h, png.height); y++) for (let x = 0; x < Math.min(w, png.width); x++) {
-    const si = (png.width * y + x) << 2, di = (w * y + x) << 2; out.data.copy(png.data, di, si, si + 4);
+    const si = (png.width * y + x) << 2, di = (w * y + x) << 2; png.data.copy(out.data, di, si, si + 4);
   }
   return out;
 }
 function sideBySide(a, b) {
   const h = Math.max(a.height, b.height), gap = 16, w = a.width + gap + b.width;
   const out = new PNG({ width: w, height: h }); out.data.fill(230);
-  const blit = (src, ox) => { for (let y = 0; y < src.height; y++) for (let x = 0; x < src.width; x++) { const si = (src.width * y + x) << 2, di = (w * y + x + ox) << 2; out.data.copy(src.data, di, si, si + 4); } };
+  const blit = (src, ox) => { for (let y = 0; y < src.height; y++) for (let x = 0; x < src.width; x++) { const si = (src.width * y + x) << 2, di = (w * y + x + ox) << 2; src.data.copy(out.data, di, si, si + 4); } };
   blit(a, 0); blit(b, a.width + gap); return out;
 }
 const near = (a, b, t = tol) => a != null && b != null && Math.abs(a - b) <= t;
@@ -49,7 +49,8 @@ for (const vp of viewports) {
   const mismatched = pixelmatch(A.data, B.data, D.data, w, h, { threshold: 0.12, includeAA: false });
   fs.writeFileSync(path.join(outDir, `${vp.name}-diff.png`), PNG.sync.write(D));
   fs.writeFileSync(path.join(outDir, `${vp.name}-side-by-side.png`), PNG.sync.write(sideBySide(a, b)));
-  const report = { viewport: vp.name, pixelMismatchPct: +((mismatched / (w * h)) * 100).toFixed(2), checks: [] };
+  const report = { viewport: vp.name, pixelMismatchPct: +((mismatched / (w * h)) * 100).toFixed(2), checks: [], refHeight: a.height, themeHeight: b.height };
+  report.checks.push({ label: 'page height', reference: a.height, theme: b.height, pass: near(a.height, b.height, Math.round(a.height * 0.1)) });
   if (fs.existsSync(refGeo) && fs.existsSync(thGeo)) {
     const r = readJson(refGeo), t = readJson(thGeo);
     const check = (label, rv, tv, t2 = tol) => report.checks.push({ label, reference: rv, theme: tv, pass: near(rv, tv, t2) });

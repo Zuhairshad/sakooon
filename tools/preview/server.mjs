@@ -172,11 +172,20 @@ for (const v of PRODUCTS.flatMap((p) => p.variants)) v.metafields = v.metafields
 for (const c of COLLECTIONS) c.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`collection:${c.handle}`]);
 for (const pg of PAGES) pg.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`page:${pg.handle}`]);
 
-const BLOGS = snapshot.blogs.map((b) => ({
-  handle: b.handle, title: b.title, url: `/blogs/${b.handle}`, all_tags: [], tags: [],
-  articles: (b.articles || []).map((a) => ({ ...a, url: `/blogs/${b.handle}/${a.handle}`, image: image(a.image), tags: a.tags || [] })),
-  articles_count: (b.articles || []).length,
-}));
+const fixtureBlogs = FIXTURES.flatMap((fx) => fx.blogs || []);
+const blogsRaw = [...snapshot.blogs.filter((b) => !fixtureBlogs.some((f) => f.handle === b.handle)), ...fixtureBlogs];
+const fixtureImage = (ref) => (typeof ref === 'string' && ref.startsWith('image:') ? image({ url: `/images/${ref.slice(6)}`, altText: '', width: 1600, height: 2000 }) : image(ref));
+const BLOGS = blogsRaw.map((b) => {
+  const articles = (b.articles || []).map((a, i) => ({
+    id: i + 1, handle: a.handle, title: a.title, author: a.author || 'Sakooon', user: { first_name: (a.author || 'Sakooon').split(' ')[0], last_name: (a.author || '').split(' ').slice(1).join(' ') },
+    published_at: a.published_at || a.created_at, created_at: a.created_at || a.published_at, updated_at: a.updated_at || a.published_at,
+    excerpt: a.excerpt || '', content: a.content || '', excerpt_or_content: a.excerpt || String(a.content || '').replace(/<[^>]+>/g, ' ').slice(0, 200),
+    url: `/blogs/${b.handle}/${a.handle}`, image: fixtureImage(a.image), tags: a.tags || [], comments_count: 0, comments: [], moderated: true, comments_enabled: false, metafields: {}, object_type: 'article',
+  })).sort((x, y) => new Date(y.published_at) - new Date(x.published_at));
+  const blog = { id: 1, handle: b.handle, title: b.title, url: `/blogs/${b.handle}`, all_tags: [...new Set(articles.flatMap((a) => a.tags))].sort(), tags: [], articles, articles_count: articles.length, comments_enabled: false, moderated: true, metafields: {}, next_article: null, previous_article: null };
+  articles.forEach((a, i) => { a.blog = blog; a.next_article = articles[i - 1] || null; a.previous_article = articles[i + 1] || null; });
+  return blog;
+});
 const blogByHandle = Object.fromEntries(BLOGS.map((b) => [b.handle, b]));
 
 /* Linklists: theme settings leave the menu blank (header uses its own blocks), but provide the usual handles. */
@@ -420,9 +429,35 @@ blockTag('form', function* (ctx, emitter) {
 blockTag('paginate', function* (ctx, emitter) {
   const [, expr, by] = /^\s*([\s\S]+?)\s+by\s+([\s\S]+?)\s*$/.exec(this.args) || [];
   const list = (yield this.liquid.evalValue(expr, ctx)) || [];
-  const size = Number(yield this.liquid.evalValue(by, ctx)) || 12;
-  const items = Array.isArray(list) ? list.length : 0;
-  ctx.push({ paginate: { current_page: 1, current_offset: 0, items, page_size: size, pages: Math.max(1, Math.ceil(items / size)), parts: [], previous: null, next: null } });
+  const size = Math.max(1, Number(yield this.liquid.evalValue(by, ctx)) || 12);
+  const all = Array.isArray(list) ? list : [];
+  const items = all.length;
+  const pages = Math.max(1, Math.ceil(items / size));
+  const reqUrl = ctx.globals.request && ctx.globals.request._url ? new URL(ctx.globals.request._url) : new URL('http://localhost/');
+  const current = Math.min(pages, Math.max(1, Number(reqUrl.searchParams.get('page') || 1)));
+  const pageUrl = (n) => { const u = new URL(reqUrl); if (n <= 1) u.searchParams.delete('page'); else u.searchParams.set('page', String(n)); return u.pathname + u.search; };
+  const parts = [];
+  for (let n = 1; n <= pages; n++) {
+    if (pages > 7 && n > 2 && n < pages - 1 && Math.abs(n - current) > 1) { if (parts[parts.length - 1]?.title !== '…') parts.push({ title: '…', is_link: false, url: '' }); continue; }
+    parts.push({ title: String(n), is_link: n !== current, url: pageUrl(n) });
+  }
+  const slice = all.slice((current - 1) * size, current * size);
+  // Make the paginated expression yield only the current page inside the block (e.g. blog.articles, collection.products, search.results).
+  const segs = expr.trim().split('.');
+  const scope = {};
+  if (segs.length === 1) scope[segs[0]] = slice;
+  else {
+    const root = yield this.liquid.evalValue(segs[0], ctx);
+    const clone = { ...(root || {}) };
+    let cur = clone;
+    for (let i = 1; i < segs.length - 1; i++) { cur[segs[i]] = { ...(cur[segs[i]] || {}) }; cur = cur[segs[i]]; }
+    cur[segs[segs.length - 1]] = slice;
+    scope[segs[0]] = clone;
+  }
+  scope.paginate = { current_page: current, current_offset: (current - 1) * size, items, page_size: size, pages, parts,
+    previous: current > 1 ? { title: 'Previous', url: pageUrl(current - 1), is_link: true } : null,
+    next: current < pages ? { title: 'Next', url: pageUrl(current + 1), is_link: true } : null, page_param: 'page' };
+  ctx.push(scope);
   yield this.liquid.renderer.renderTemplates(this.tpls, ctx, emitter);
   ctx.pop();
 });
@@ -616,7 +651,15 @@ function resolveRoute(url) {
   if ((m = /^\/policies\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
     return { name: 'page', ...tplFor('page', 'policy'), page_type: 'page', title: pageByHandle[m[1]].title, vars: { page: pageByHandle[m[1]] } };
   }
-  if ((m = /^\/blogs\/([^/]+)$/.exec(p)) && blogByHandle[m[1]]) return { name: 'blog', ...tplFor('blog'), page_type: 'blog', title: blogByHandle[m[1]].title, vars: { blog: blogByHandle[m[1]] } };
+  if ((m = /^\/blogs\/([^/]+)$/.exec(p)) && blogByHandle[m[1]]) return { name: 'blog', ...tplFor('blog'), page_type: 'blog', title: blogByHandle[m[1]].title, vars: { blog: blogByHandle[m[1]], current_tags: null } };
+  if ((m = /^\/blogs\/([^/]+)\/tagged\/([^/]+)$/.exec(p)) && blogByHandle[m[1]]) {
+    const base = blogByHandle[m[1]];
+    const tags = m[2].split('+').map((t) => decodeURIComponent(t));
+    const match = (a) => tags.every((t) => a.tags.some((x) => x.toLowerCase().replace(/[^a-z0-9]+/g, '-') === t.toLowerCase() || x === t));
+    const articles = base.articles.filter(match);
+    const blog = { ...base, articles, articles_count: articles.length, tags };
+    return { name: 'blog', ...tplFor('blog'), page_type: 'blog', title: base.title, vars: { blog, current_tags: tags } };
+  }
   if ((m = /^\/blogs\/([^/]+)\/([^/]+)$/.exec(p)) && blogByHandle[m[1]]) {
     const blog = blogByHandle[m[1]];
     const article = blog.articles.find((a) => a.handle === m[2]);
@@ -646,12 +689,12 @@ function globalsFor(route, url) {
     shop: SHOP, settings: THEME_SETTINGS, routes: ROUTES, cart: cartObject(), customer: null,
     linklists: LINKLISTS, collections: { ...collectionByHandle, size: COLLECTIONS.length }, all_products: productByHandle,
     pages: pageByHandle, blogs: blogByHandle, images: {}, localization: { language: { iso_code: 'en' }, country: { iso_code: 'PK', currency: { iso_code: 'PKR' } }, available_languages: [], available_countries: [] },
-    request: { locale: { iso_code: 'en', primary: true }, page_type: route.page_type, path: url.pathname, host: url.host, origin: `http://${url.host}`, design_mode: false, visual_preview_mode: false },
+    request: { locale: { iso_code: 'en', primary: true }, page_type: route.page_type, path: url.pathname, host: url.host, origin: `http://${url.host}`, design_mode: false, visual_preview_mode: false, _url: url.toString() },
     template: { name: route.name.replace(/^customers\//, ''), suffix: route.suffix, directory: route.name.startsWith('customers/') ? 'customers' : null },
     page_title: route.title,
     // Shopify falls back to the page's own text, then the shop description
     page_description: route.description || pageExcerpt(route) || SHOP.description, canonical_url: `http://${url.host}${url.pathname}`,
-    content_for_header: '', content_for_additional_checkout_buttons: '', current_page: 1, current_tags: null, powered_by_link: '',
+    content_for_header: '', content_for_additional_checkout_buttons: '', current_page: Number(url.searchParams.get('page') || 1), current_tags: null, powered_by_link: '',
     product: null, collection: null, page: null, blog: null, article: null, search: null,
     ...(route.vars || {}),
   };
