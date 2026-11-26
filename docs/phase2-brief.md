@@ -8,7 +8,7 @@ Phase 1 is approved (D16). Phase 2 turns the reference-fidelity theme into **Sak
 3. Typography stays one grotesk (Inter via the font picker, D11/D16). Do not add fonts.
 4. Palette, colour schemes, logo and favicon are Fable's; sections only reference scheme ids (`paper`, `white`, `sand`, `sage`, `ink`). Hex values never appear in section files.
 5. Process: `git -c core.hooksPath=/dev/null`; first `merge origin/sakooon/integration` (head carries this brief, D17, the brand assets and the new schemes); merge, never rebase or force-push; one owner per file (`docs/file-ownership.md`); restart only your own preview port; `npm run check` clean before every push; report at boundaries with commit hash + test output.
-6. Prices are PKR. `shop.money_format` on the store is `Rs.{{amount}}` style; the preview's `moneyFormat` is set to `Rs. {{amount_no_decimals}}`. Never hardcode currency symbols.
+6. Prices are PKR. `shop.money_format` is a store setting (currently `Rs.{{amount}}`, which the preview mirrors). Always go through `money` filters and `window.theme.money`; never hardcode "Rs". I will ask the user to switch the store format to `Rs. {{amount_no_decimals}}`.
 
 ## Brand direction (Fable, see docs/design-system.md §Brand)
 - **Colour**: Sakooon green `#204830` (measured from the logo) is the single brand colour: buttons, links, focus, the dark "ink" scheme (`#163322` background). Neutrals are warm: paper `#F5F2EC`, white, sand `#E8E1D5`, pale sage `#E4E9E2` for promo/fabric bands. Text is a green-black `#1A2420`. No gold.

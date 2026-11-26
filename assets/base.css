@@ -336,3 +336,7 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
   theme-drawer[open] *, theme-dialog[open] *, .drawer.is-open * { transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+.password__brand { margin: 0 auto var(--space-6); max-width: 200px; }
+.password__brand .brand-logo { width: 100%; height: auto; }
+.brand-logo { display: block; max-width: 100%; height: auto; }

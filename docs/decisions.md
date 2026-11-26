@@ -82,3 +82,16 @@ text column is 732px plus gutters (`.page-width--text`), matching Tekla's measur
 ## 2026-11-26 D16: Phase 1 approved by the user; typography stays grotesk; Phase 2 begins
 The user approved the reference-based implementation on sakooon/integration (0d8b6c1) and kept the single grotesk typography (D4/D11).
 Phase 2 (Sakooon identity) starts after every session compacts its context. Live theme remains untouched; no publishing without explicit authorization.
+
+## 2026-11-26 D17: Brand palette derived from the logo; Nocturne navy/gold dropped
+The only brand asset is the green calligraphy logo (dominant pixel #204830). Phase 2 therefore uses one brand green for all interactive and
+dark surfaces, warm neutrals for everything else, and adds a `sage` scheme (#E4E9E2) for fabric and promo bands. The `ink` scheme id is kept
+(sections reference it) but its values become deep green #163322 / paper. Logo artwork is bundled as transparent PNGs rendered by
+`snippets/brand-logo.liquid`, overridable by the Theme settings logo. Proposal pending the user's sign-off; swapping hex values in
+`config/settings_data.json` is the only change needed if they prefer different ones.
+
+## 2026-11-26 D18: The live sakooon.com copy is not a source of facts
+The live Nocturne theme still carries its demo copy (placeholder phone numbers, three fictional studios, "12,000+ sleepers", "OEKO-TEX dyes",
+T200/T250/T300 families and bath ranges that do not exist in the catalogue). Phase 2 content may only state what `docs/reference/phase2-inputs.md`
+§Verified contains (store product data, collections, the logo, the brand email). Everything else renders conditionally and stays empty until the user supplies it.
+

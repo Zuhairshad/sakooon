@@ -17,7 +17,9 @@ Workers use the tokens, never raw values, except for one-off geometry that a sec
 --color-background, --color-foreground, --color-foreground-muted, --color-border,
 --color-accent (interactive ink), --color-accent-contrast, --color-button-bg, --color-button-text,
 --color-button-border, --color-sale, --color-error, --color-success.
-Schemes (provisional): `paper` (#F6F4F0 / #1C1B19), `white` (#FFFFFF / #1C1B19), `sand` (#E9E3DA / #1C1B19), `ink` (#1C1B19 / #F6F4F0).
+Schemes (Phase 2, D17, derived from the logo): `paper` (#F5F2EC / #1A2420), `white` (#FFFFFF / #1A2420), `sand` (#E8E1D5 / #1A2420),
+`sage` (#E4E9E2 / #1A2420, promo and fabric bands), `ink` (#163322 / #F5F2EC). Accent and buttons on every light scheme are Sakooon green #204830 with white text;
+on `ink` they invert to paper. Measured contrast (scripts in docs/visual-qa.md): foreground >= 12:1, muted >= 5.1:1, accent >= 7.9:1, button text >= 10:1 on every scheme.
 Muted text must hold AA on its background (min 4.5:1 for body, 3:1 for >=24px).
 
 ### Typography
@@ -73,3 +75,16 @@ Placeholder when missing: snippets/placeholder.liquid renders `placeholder_svg_t
 Skip link, landmark roles, visible focus ring everywhere (`:focus-visible`), 44px min hit targets on touch,
 `aria-expanded`/`aria-controls` on disclosures, dialogs with focus trap and Escape, live regions for cart/search updates,
 reduced-motion support, no information by colour alone (swatches have names).
+
+## Brand (Phase 2, D17)
+- **Sakooon green #204830**: the only brand colour, measured as the dominant pixel of `SAKOOON logo.png`. Used for buttons, links, focus rings, the `ink` scheme (#163322, a darker step of the same hue), swatch borders on selection. No gold, no navy.
+- **Neutrals**: paper #F5F2EC (default page), white (product grids, PDP), sand #E8E1D5 (footers, quiet bands), sage #E4E9E2 (fabric and promo bands). Text #1A2420 (green-black), muted #5C645E, hairline #D8D3C9.
+- **Logo artwork** (`assets/`, transparent PNG, generated from the source logo by `tools/`-free sharp script, re-run only when the source changes):
+  `sakooon-wordmark.png` 640×82 (header, 1 colour), `sakooon-mark.png` 480×331 (calligraphy "سکون"), `sakooon-logo-stacked.png` 640×559 (mark + wordmark + tagline),
+  each with a `-light` twin in paper for dark or transparent backgrounds; `sakooon-favicon-{32,180,512}.png` (paper mark on green).
+  Render via `{% render 'brand-logo', variant: 'wordmark'|'mark'|'stacked', tone: 'dark'|'light', priority: true %}`; a merchant upload in Theme settings > Logo overrides the bundled artwork.
+  Header logo width default 120px (wordmark), which gives a 15px cap height at desktop; mobile 90px.
+- **Typography** stays Inter (D11/D16). The wordmark's serif and the tagline's geometric sans live only inside the logo artwork.
+- **Tagline**: "The comfort in every thread". **Hook**: "sukoon" (Urdu: calm, peace of mind).
+- **Photography**: warm, daylight, unstyled beds; packshots on paper. No stock imagery. Current pool: `/Users/shad/sakooon/public/images` (39 files).
+

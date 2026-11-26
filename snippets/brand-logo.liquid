@@ -1,0 +1,50 @@
+{%- comment -%}
+  Brand logo. Owner: Fable (Phase 2, D17).
+  Renders the merchant-uploaded logo (settings.logo) when present, otherwise the theme's bundled Sakooon artwork.
+  Params:
+    variant: 'wordmark' (default; one-line SAKOOON for the header), 'mark' (calligraphy only), 'stacked' (mark + wordmark + tagline)
+    tone:    'dark' (default; brand green artwork) or 'light' (paper artwork for dark/transparent backgrounds)
+    width:   intrinsic display width in px used for `sizes` (default settings.logo_width)
+    class:   extra classes for the <img>
+    priority: true to eager-load (header)
+  Output is an <img> (or the responsive picture from snippets/image.liquid when settings.logo is set). Wrap it in the link yourself.
+{%- endcomment -%}
+{%- liquid
+  assign variant = variant | default: 'wordmark'
+  assign tone = tone | default: 'dark'
+  assign width = width | default: settings.logo_width | default: 120
+  assign sizes = width | append: 'px'
+  assign class = class | default: ''
+  assign alt = shop.name
+
+  if settings.logo != blank and tone == 'dark'
+    render 'image', image: settings.logo, sizes: sizes, widths: '120,240,360,480', priority: priority, class: class, alt: ''
+  else
+    case variant
+      when 'mark'
+        assign file = 'sakooon-mark'
+        assign w = 480
+        assign h = 331
+      when 'stacked'
+        assign file = 'sakooon-logo-stacked'
+        assign w = 640
+        assign h = 559
+      else
+        assign file = 'sakooon-wordmark'
+        assign w = 640
+        assign h = 82
+    endcase
+    if tone == 'light'
+      assign file = file | append: '-light'
+    endif
+    assign file = file | append: '.png'
+    assign src = file | asset_url
+    assign loading = 'lazy'
+    assign fetchpriority = 'auto'
+    if priority
+      assign loading = 'eager'
+      assign fetchpriority = 'high'
+    endif
+    echo '<img src="' | append: src | append: '" width="' | append: w | append: '" height="' | append: h | append: '" alt="' | append: alt | append: '" class="brand-logo brand-logo--' | append: variant | append: ' ' | append: class | append: '" loading="' | append: loading | append: '" fetchpriority="' | append: fetchpriority | append: '" decoding="async">'
+  endif
+-%}

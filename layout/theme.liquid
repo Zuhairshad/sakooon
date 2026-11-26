@@ -4,12 +4,16 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_schemes.paper.settings.background | default: '#F6F4F0' }}">
+  <meta name="theme-color" content="{{ settings.color_schemes.paper.settings.background | default: '#F5F2EC' }}">
   <link rel="canonical" href="{{ canonical_url }}">
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
   {%- else -%}
-    <link rel="icon" href="data:,">{%- comment -%} no favicon set: suppress the browser's /favicon.ico request {%- endcomment -%}
+    {%- comment -%} Bundled Sakooon favicon (D17); the Theme settings favicon overrides it. {%- endcomment -%}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'sakooon-favicon-32.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ 'sakooon-favicon-512.png' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'sakooon-favicon-180.png' | asset_url }}">
   {%- endif -%}
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
