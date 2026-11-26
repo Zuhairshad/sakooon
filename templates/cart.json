@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-cart", "settings": {} },
+    "complementary": { "type": "product-recommendations", "disabled": true, "settings": { "heading": "You may also like", "intent": "related", "limit": 8 } }
+  },
+  "order": ["main", "complementary"]
+}

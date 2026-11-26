@@ -49,7 +49,7 @@
               <div class="cart-drawer__shipping">
                 <p class="cart-drawer__shipping-text">
                   {%- if remaining > 0 -%}
-                    {{ 'sections.cart.free_shipping_remaining_html' | t: remaining: remaining | money }}
+                    {%- assign remaining_money = remaining | money -%}{{ 'sections.cart.free_shipping_remaining_html' | t: remaining: remaining_money }}
                   {%- else -%}
                     {{ 'sections.cart.free_shipping_reached' | t }}
                   {%- endif -%}
