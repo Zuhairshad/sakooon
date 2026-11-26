@@ -1,0 +1,171 @@
+{%- comment -%}
+  Care content by topic (washing, drying, ironing, storage, longevity), care symbols and per-fabric care.
+  Layouts: cards (Tekla product-care topic cards, also used as hub tiles with links), stacked (Tekla percale
+  "Care" list: icon + heading + text rows on hairlines) and split (heading column beside content).
+  Fabric blocks read fabric.care / care_symbols / care_guide; blank fabrics render nothing. Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    when 'text'
+      assign width_class = 'page-width page-width--text'
+    else
+      assign width_class = 'page-width'
+  endcase
+  assign col_vw = 100 | divided_by: s.columns
+  assign img_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
+-%}
+{%- assign anchor = s.anchor | default: s.heading | handleize -%}
+<div{% if s.heading != blank and s.show_in_nav %} id="{{ anchor }}" data-anchor-target data-anchor-label="{{ s.heading | escape }}"{% endif %} class="section ed-section care-guide care-guide--{{ s.layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
+    <div class="care-guide__items">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- case block.type -%}
+          {%- when 'topic' -%}
+            <article class="care-guide__item" {{ block.shopify_attributes }}>
+              {%- if s.layout == 'cards' and b.image != blank or s.layout == 'cards' and s.show_placeholders -%}
+                {%- if b.link_url != blank -%}<a class="care-guide__media-link" href="{{ b.link_url }}" tabindex="-1" aria-hidden="true">{%- endif -%}
+                <div class="media care-guide__media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: b.image, sizes: img_sizes, aspect: s.image_ratio, placeholder: 'lifestyle-2' %}</div>
+                {%- if b.link_url != blank -%}</a>{%- endif -%}
+              {%- endif -%}
+              {%- if b.icon != 'none' and s.layout != 'cards' -%}<span class="care-guide__icon">{% render 'icon', icon: b.icon, size: 24 %}</span>{%- endif -%}
+              <div class="care-guide__content">
+                {%- if b.heading != blank -%}
+                  <h3 class="care-guide__heading {{ s.item_heading_size }}">
+                    {%- if b.link_url != blank -%}<a class="care-guide__link" href="{{ b.link_url }}">{{ b.heading }}</a>{%- else -%}{{ b.heading }}{%- endif -%}
+                  </h3>
+                {%- endif -%}
+                {%- if b.text != blank -%}<div class="rte editorial-list editorial-list--{{ s.list_style }}">{{ b.text }}</div>{%- endif -%}
+                {%- if b.link_url != blank and b.link_label != blank -%}<a class="care-guide__more ed-link-fade" href="{{ b.link_url }}">{{ b.link_label }}</a>{%- endif -%}
+              </div>
+            </article>
+          {%- when 'symbols' -%}
+            {%- if b.symbols != blank -%}
+              <div class="care-guide__item care-guide__item--symbols" {{ block.shopify_attributes }}>
+                <div class="care-guide__content">
+                  {%- if b.heading != blank -%}<h3 class="care-guide__heading {{ s.item_heading_size }}">{{ b.heading }}</h3>{%- endif -%}
+                  {% render 'care-icons', symbols: b.symbols, show_labels: b.show_labels %}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- when 'fabric' -%}
+            {%- assign f = b.fabric -%}
+            {%- if f != blank -%}
+              <article class="care-guide__item care-guide__item--fabric" {{ block.shopify_attributes }}>
+                {%- if s.layout == 'cards' -%}
+                  {%- assign f_img = f.texture_image.value | default: f.lifestyle_image.value -%}
+                  <div class="media care-guide__media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: f_img, sizes: img_sizes, aspect: s.image_ratio, alt: f.name.value, placeholder: 'collection-1' %}</div>
+                {%- endif -%}
+                <div class="care-guide__content">
+                  <h3 class="care-guide__heading {{ s.item_heading_size }}">{{ f.name.value }}</h3>
+                  {%- if f.care_symbols.value != blank -%}{% render 'care-icons', symbols: f.care_symbols.value, show_labels: b.show_labels %}{%- endif -%}
+                  {%- if f.care.value != blank -%}<div class="rte">{{ f.care | metafield_tag }}</div>{%- endif -%}
+                  {%- if f.system.url != blank -%}<a class="care-guide__more ed-link-fade" href="{{ f.system.url }}">{{ 'editorial.care.about_fabric' | t: name: f.name.value }}</a>{%- endif -%}
+                </div>
+              </article>
+            {%- elsif request.design_mode -%}
+              <div class="care-guide__item" {{ block.shopify_attributes }}><p class="text-muted">{{ 'editorial.fabric.select_fabric' | t }}</p></div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.care-guide.name",
+  "tag": "section",
+  "class": "section-care-guide",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Care" },
+    { "type": "checkbox", "id": "show_in_nav", "label": "t:sections.care-guide.settings.show_in_nav.label", "default": true },
+    { "type": "text", "id": "anchor", "label": "t:sections.editorial-text.blocks.heading.settings.anchor.label", "info": "t:sections.editorial-text.blocks.heading.settings.anchor.info" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+    { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" },
+    { "type": "select", "id": "layout", "label": "t:sections.care-guide.settings.layout.label", "default": "cards", "options": [
+      { "value": "cards", "label": "t:sections.care-guide.settings.layout.options.cards" },
+      { "value": "stacked", "label": "t:sections.care-guide.settings.layout.options.stacked" },
+      { "value": "split", "label": "t:sections.care-guide.settings.layout.options.split" }
+    ] },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" }
+    ] },
+    { "type": "checkbox", "id": "show_placeholders", "label": "t:sections.care-guide.settings.show_placeholders.label", "default": true },
+    { "type": "select", "id": "item_heading_size", "label": "t:sections.care-guide.settings.item_heading_size.label", "default": "h4", "options": [
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" },
+      { "value": "text-body", "label": "t:sections.care-guide.settings.item_heading_size.options.body" }
+    ] },
+    { "type": "select", "id": "list_style", "label": "t:sections.editorial-text.blocks.list.settings.style.label", "default": "dash", "options": [
+      { "value": "dash", "label": "t:sections.editorial-text.blocks.list.settings.style.options.dash" },
+      { "value": "bullet", "label": "t:sections.editorial-text.blocks.list.settings.style.options.bullet" },
+      { "value": "plain", "label": "t:sections.editorial-text.blocks.list.settings.style.options.plain" }
+    ] },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "topic", "name": "t:sections.care-guide.blocks.topic.name", "settings": [
+      { "type": "select", "id": "icon", "label": "t:sections.care-guide.blocks.topic.settings.icon.label", "default": "none", "options": [
+        { "value": "none", "label": "t:sections.info-columns.blocks.column.settings.icon.options.none" },
+        { "value": "wash", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.wash" },
+        { "value": "tumble", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.tumble" },
+        { "value": "hang-dry", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.hang_dry" },
+        { "value": "iron", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.iron" },
+        { "value": "dry-clean", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.dry_clean" },
+        { "value": "no-bleach", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.no_bleach" },
+        { "value": "drop", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.drop" },
+        { "value": "sun", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.sun" },
+        { "value": "wind", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.wind" },
+        { "value": "thermometer", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.thermometer" },
+        { "value": "leaf", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.leaf" },
+        { "value": "moon", "label": "t:sections.care-guide.blocks.topic.settings.icon.options.moon" }
+      ] },
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Washing" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Give one or two practical tips for this step of caring for the product.</p>" },
+      { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+      { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] },
+    { "type": "symbols", "name": "t:sections.care-guide.blocks.symbols.name", "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Care symbols" },
+      { "type": "text", "id": "symbols", "label": "t:sections.care-guide.blocks.symbols.settings.symbols.label", "info": "t:sections.care-guide.blocks.symbols.settings.symbols.info", "default": "wash-40, no-bleach, tumble-low, iron-medium" },
+      { "type": "checkbox", "id": "show_labels", "label": "t:sections.care-guide.blocks.symbols.settings.show_labels.label", "default": true }
+    ] },
+    { "type": "fabric", "name": "t:sections.fabric-guide.blocks.fabric.name", "settings": [
+      { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.fabric-guide.blocks.fabric.settings.fabric.label" },
+      { "type": "checkbox", "id": "show_labels", "label": "t:sections.care-guide.blocks.symbols.settings.show_labels.label", "default": false }
+    ] }
+  ],
+  "presets": [ {
+    "name": "t:sections.care-guide.presets.name",
+    "blocks": [
+      { "type": "topic", "settings": { "heading": "Washing" } },
+      { "type": "topic", "settings": { "heading": "Drying" } },
+      { "type": "topic", "settings": { "heading": "Storage" } }
+    ]
+  } ]
+}
+{% endschema %}

@@ -1,0 +1,193 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "show_breadcrumbs": true,
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Introduce how to care for your bedsheets: what matters most and how often.</p>",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "nav": {
+      "type": "guide-anchor-nav",
+      "settings": {
+        "sticky": true,
+        "style": "links",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "care": {
+      "type": "care-guide",
+      "blocks": {
+        "t0": {
+          "type": "topic",
+          "settings": {
+            "icon": "wash",
+            "heading": "Washing",
+            "text": "<ul><li>Wash before first use.</li><li>Wash every week, separating light and dark colours.</li><li>Use a mild detergent and a gentle spin.</li></ul>"
+          }
+        },
+        "t1": {
+          "type": "topic",
+          "settings": {
+            "icon": "tumble",
+            "heading": "Drying",
+            "text": "<ul><li>Line dry where possible, or tumble dry on low heat.</li><li>Remove promptly to limit creasing.</li></ul>"
+          }
+        },
+        "t2": {
+          "type": "topic",
+          "settings": {
+            "icon": "iron",
+            "heading": "Ironing",
+            "text": "<ul><li>Iron while slightly damp for a crisp finish, or skip it for a relaxed look.</li></ul>"
+          }
+        },
+        "t3": {
+          "type": "topic",
+          "settings": {
+            "icon": "moon",
+            "heading": "Storage",
+            "text": "<ul><li>Store clean and fully dry in a cool, ventilated cupboard.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "t0",
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "heading": "Step by step",
+        "heading_size": "h4",
+        "layout": "split",
+        "content_width": "text",
+        "list_style": "dash",
+        "item_heading_size": "text-body",
+        "padding_top": 16,
+        "padding_bottom": 64
+      }
+    },
+    "symbols": {
+      "type": "care-guide",
+      "blocks": {
+        "s": {
+          "type": "symbols",
+          "settings": {
+            "heading": "",
+            "symbols": "wash-40, no-bleach, tumble-low, iron-medium",
+            "show_labels": true
+          }
+        }
+      },
+      "block_order": [
+        "s"
+      ],
+      "settings": {
+        "heading": "Care symbols",
+        "heading_size": "h4",
+        "text": "<p>Always follow the care label on your product.</p>",
+        "layout": "stacked",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How often should I wash them?",
+            "answer": "<p>Give a recommended frequency and explain why.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I remove stains?",
+            "answer": "<p>Explain safe stain treatment for this product.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "heading": "Questions",
+        "heading_size": "h4",
+        "content_width": "text",
+        "structured_data": true,
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
+    },
+    "more": {
+      "type": "care-guide",
+      "blocks": {
+        "pillows": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Pillows",
+            "text": "",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-pillows"
+          }
+        },
+        "comforters": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Duvets and comforters",
+            "text": "",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-comforters"
+          }
+        },
+        "towels": {
+          "type": "topic",
+          "settings": {
+            "icon": "none",
+            "heading": "Towels",
+            "text": "",
+            "link_label": "Read the guide",
+            "link_url": "/pages/care-towels"
+          }
+        }
+      },
+      "block_order": [
+        "pillows",
+        "comforters",
+        "towels"
+      ],
+      "settings": {
+        "heading": "More care guides",
+        "heading_size": "h4",
+        "layout": "cards",
+        "columns": 3,
+        "show_placeholders": false,
+        "item_heading_size": "h4",
+        "padding_top": 0,
+        "padding_bottom": 80,
+        "show_in_nav": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "nav",
+    "care",
+    "symbols",
+    "faq",
+    "more"
+  ]
+}

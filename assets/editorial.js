@@ -33,7 +33,7 @@
         const a = document.createElement('a');
         a.className = 'guide-anchor-nav__link';
         a.href = `#${h.id}`;
-        a.textContent = h.textContent.trim();
+        a.textContent = (h.dataset.anchorLabel || h.textContent).trim();
         li.append(a);
         this.list.append(li);
       });

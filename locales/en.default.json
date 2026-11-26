@@ -511,6 +511,9 @@
       "verify": "Verify certificate",
       "new_window": "(opens in a new window)",
       "select_fabric": "Select a fabric in this section's settings to preview its content."
+    },
+    "care": {
+      "about_fabric": "About {{ name }}"
     }
   }
 }
