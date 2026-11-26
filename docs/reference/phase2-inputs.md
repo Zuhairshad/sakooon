@@ -39,3 +39,5 @@ The logo is green, not navy/gold, so Phase 2 derives the palette from the logo (
 10. (shad-8b) Care instructions for every product except the Quilted Bed Sheet Set (only that description has care text). Until then care pages are labelled general guidance.
 11. (shad-8b) Are the common Pakistani mattress sizes in the size guide (36, 42, 60, 72 and 78 in wide; 78 or 84 in long) the sizes your customers ask about? Any to add or remove?
 12. (shad-8b) Confirm `hello@sakooon.com` for the contact page (shown now, flagged). Answers to the 17 FAQ/shipping/returns questions listed in docs/reference/editorial-admin.md §8 (all show "Details coming soon." until answered).
+13. (shad-2d) Confirm the homepage "Why Sakooon" statement "Designed in Pakistan" (used because the brief cites it as claim-free; remove it if not accurate).
+14. (shad-2d) Homepage and mega menu imagery is the product packshots (collages) plus the single bedroom shot. A second lifestyle image would let the campaign tiles and the mobile hero (currently a centre crop of a landscape shot) use proper crops.

@@ -5,13 +5,15 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "newsletter": { "type": "newsletter", "settings": { "heading": "Stay in touch", "text": "<p>Sign up for news, new arrivals and offers.</p>", "disclaimer": "<p>You can unsubscribe at any time.</p>", "width": "wide" } },
+        "logo": { "type": "logo", "settings": { "width": "narrow" } },
+        "newsletter": { "type": "newsletter", "settings": { "heading": "Stay in touch", "text": "<p>New colours, care tips and the odd quiet note.</p>", "disclaimer": "<p>You can unsubscribe at any time.</p>", "width": "wide" } },
         "menu-shop": { "type": "link_list", "settings": { "heading": "Shop", "menu": "footer-shop", "width": "narrow" } },
         "menu-help": { "type": "link_list", "settings": { "heading": "Help", "menu": "footer-help", "width": "narrow" } },
-        "menu-company": { "type": "link_list", "settings": { "heading": "Company", "menu": "footer-company", "width": "narrow" } },
+        "menu-company": { "type": "link_list", "settings": { "heading": "Sakooon", "menu": "footer-company", "width": "narrow" } },
+        "contact": { "type": "contact", "settings": { "heading": "Contact", "email": "", "phone": "", "hours": "", "width": "narrow" } },
         "social": { "type": "social", "settings": { "heading": "Follow", "width": "narrow" } }
       },
-      "block_order": ["newsletter", "menu-shop", "menu-help", "menu-company", "social"],
+      "block_order": ["logo", "newsletter", "menu-shop", "menu-help", "menu-company", "contact", "social"],
       "settings": {
         "color_scheme": "sand",
         "dividers": false,
