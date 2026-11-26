@@ -17,7 +17,7 @@
                   <td>{{ order.created_at | time_tag: format: 'date' }}</td>
                   <td>{{ order.financial_status_label }}</td>
                   <td>{{ order.fulfillment_status_label }}</td>
-                  <td>{{ order.total_net_amount | money }}</td>
+                  <td>{{ order.total_net_amount | money_without_trailing_zeros }}</td>
                 </tr>
               {%- endfor -%}
             </tbody>
