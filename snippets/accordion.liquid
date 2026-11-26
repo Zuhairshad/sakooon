@@ -4,11 +4,13 @@
   - id: unique per page (used for aria-controls and as the URL anchor)
   - group: optional; items sharing a group close each other (one open at a time)
   - icon: 'plus' (default) or 'chevron-down'
+  - label: optional accessible name for the panel region when several panels share a title (defaults to title)
   - attrs: optional extra attributes for the root (e.g. block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
   assign heading_tag = heading_tag | default: 'h3'
   assign icon = icon | default: 'plus'
+  assign region_label = label | default: title
 -%}
 {%- if title != blank -%}
 <theme-disclosure class="accordion" id="{{ id }}"{% if group != blank %} data-group="{{ group }}"{% endif %}{% if open %} open{% endif %} {{ attrs }}>
@@ -18,7 +20,7 @@
       {% render 'icon', icon: icon, size: 16 %}
     </button>
   </{{ heading_tag }}>
-  <div class="disclosure__panel accordion__panel" id="{{ id }}-panel" role="region" aria-label="{{ title | strip_html | escape }}"{% if open %} data-open{% endif %}>
+  <div class="disclosure__panel accordion__panel" id="{{ id }}-panel" role="region" aria-label="{{ region_label | strip_html | escape }}"{% if open %} data-open{% endif %}>
     <div>
       <div class="disclosure__content accordion__content rte">{{ content }}</div>
     </div>

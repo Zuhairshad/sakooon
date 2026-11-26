@@ -877,6 +877,10 @@
         },
         "side_text": {
           "label": "Side column text"
+        },
+        "show_whatsapp": {
+          "label": "Show WhatsApp button",
+          "info": "Appears only when a WhatsApp link is set in Theme settings › Social media."
         }
       }
     },

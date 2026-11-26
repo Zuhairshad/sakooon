@@ -4,196 +4,52 @@
    "title": "Main menu",
    "links": [
     {
-     "title": "New",
-     "url": "/collections/all",
-     "links": [
-      {
-       "title": "Featured",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Link 1",
-         "url": "/collections/bed-sheets"
-        },
-        {
-         "title": "Link 2",
-         "url": "/collections/duvet-covers"
-        },
-        {
-         "title": "Link 3",
-         "url": "/collections/duvets"
-        },
-        {
-         "title": "Link 4",
-         "url": "/collections/pillows"
-        }
-       ]
-      }
-     ]
-    },
-    {
      "title": "Bedding",
      "url": "/collections/all",
      "links": [
       {
-       "title": "Category",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Sheets",
-         "url": "/collections/bed-sheets"
-        },
-        {
-         "title": "Duvet covers",
-         "url": "/collections/duvet-covers"
-        },
-        {
-         "title": "Pillowcases",
-         "url": "/collections/pillows"
-        },
-        {
-         "title": "Quilts",
-         "url": "/collections/bed-covers"
-        },
-        {
-         "title": "Shop all",
-         "url": "/collections/all"
-        }
-       ]
+       "title": "Bed Sheets",
+       "url": "/collections/bed-sheets"
       },
       {
-       "title": "Fabric",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Percale",
-         "url": "/collections/bed-sheets"
-        },
-        {
-         "title": "Sateen",
-         "url": "/collections/bed-sheets"
-        },
-        {
-         "title": "Linen",
-         "url": "/collections/bed-sheets"
-        },
-        {
-         "title": "Brushed cotton",
-         "url": "/collections/bed-sheets"
-        }
-       ]
-      },
-      {
-       "title": "Collections",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Link A",
-         "url": "/collections/bed-covers"
-        },
-        {
-         "title": "Link B",
-         "url": "/collections/duvets"
-        },
-        {
-         "title": "Link C",
-         "url": "/collections/pillows"
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "title": "Bath",
-     "url": "/collections/all",
-     "links": [
-      {
-       "title": "Category",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Bath towels",
-         "url": "/collections/all"
-        },
-        {
-         "title": "Hand towels",
-         "url": "/collections/all"
-        },
-        {
-         "title": "Bath sheets",
-         "url": "/collections/all"
-        },
-        {
-         "title": "Bath mats",
-         "url": "/collections/all"
-        }
-       ]
-      },
-      {
-       "title": "Collection",
-       "url": "/collections/all",
-       "links": [
-        {
-         "title": "Link A",
-         "url": "/collections/all"
-        },
-        {
-         "title": "Link B",
-         "url": "/collections/all"
-        },
-        {
-         "title": "Link C",
-         "url": "/collections/all"
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "title": "Pillows & Duvets",
-     "url": "/collections/all",
-     "links": [
-      {
-       "title": "Pillows",
-       "url": "/collections/pillows",
-       "links": [
-        {
-         "title": "Comfort pillows",
-         "url": "/collections/pillows"
-        },
-        {
-         "title": "Pillow pairs",
-         "url": "/collections/pillows"
-        },
-        {
-         "title": "Shop all pillows",
-         "url": "/collections/pillows"
-        }
-       ]
+       "title": "Duvet Covers",
+       "url": "/collections/duvet-covers"
       },
       {
        "title": "Duvets",
-       "url": "/collections/duvets",
-       "links": [
-        {
-         "title": "Winter duvets",
-         "url": "/collections/duvets"
-        },
-        {
-         "title": "All-season duvets",
-         "url": "/collections/duvets"
-        },
-        {
-         "title": "Shop all duvets",
-         "url": "/collections/duvets"
-        }
-       ]
+       "url": "/collections/duvets"
+      },
+      {
+       "title": "Pillows",
+       "url": "/collections/pillows"
+      },
+      {
+       "title": "Bed Covers",
+       "url": "/collections/bed-covers"
       }
      ]
     },
     {
-     "title": "Sale",
-     "url": "/collections/all"
+     "title": "Guides",
+     "url": "#",
+     "links": [
+      {
+       "title": "Fabric guide",
+       "url": "/pages/fabric-guide"
+      },
+      {
+       "title": "Care guide",
+       "url": "/pages/care-guide"
+      },
+      {
+       "title": "Size guide",
+       "url": "/pages/size-guide"
+      },
+      {
+       "title": "Journal",
+       "url": "/blogs/journal"
+      }
+     ]
     },
     {
      "title": "About",
@@ -205,11 +61,11 @@
    "title": "Shop",
    "links": [
     {
-     "title": "Bed sheets",
+     "title": "Bed Sheets",
      "url": "/collections/bed-sheets"
     },
     {
-     "title": "Duvet covers",
+     "title": "Duvet Covers",
      "url": "/collections/duvet-covers"
     },
     {
@@ -219,6 +75,10 @@
     {
      "title": "Pillows",
      "url": "/collections/pillows"
+    },
+    {
+     "title": "Bed Covers",
+     "url": "/collections/bed-covers"
     },
     {
      "title": "Shop all",
@@ -234,45 +94,29 @@
      "url": "/pages/contact"
     },
     {
-     "title": "Size guide",
-     "url": "/pages/size-guide"
-    },
-    {
-     "title": "Shipping",
-     "url": "/pages/about"
-    },
-    {
-     "title": "Returns",
-     "url": "/pages/about"
-    },
-    {
      "title": "FAQ",
-     "url": "/pages/about"
+     "url": "/pages/faq"
+    },
+    {
+     "title": "Delivery",
+     "url": "/pages/shipping"
+    },
+    {
+     "title": "Exchanges and returns",
+     "url": "/pages/returns"
     }
    ]
   },
   "footer-company": {
-   "title": "Company",
+   "title": "Sakooon",
    "links": [
     {
      "title": "About",
      "url": "/pages/about"
     },
     {
-     "title": "Our fabrics",
-     "url": "/pages/about"
-    },
-    {
-     "title": "Care guide",
-     "url": "/pages/about"
-    },
-    {
      "title": "Journal",
-     "url": "/blogs/news"
-    },
-    {
-     "title": "Stores",
-     "url": "/pages/contact"
+     "url": "/blogs/journal"
     }
    ]
   },
@@ -281,11 +125,11 @@
    "links": [
     {
      "title": "Fabric guide",
-     "url": "/pages/about"
+     "url": "/pages/fabric-guide"
     },
     {
      "title": "Care guide",
-     "url": "/pages/about"
+     "url": "/pages/care-guide"
     },
     {
      "title": "Size guide",
@@ -299,14 +143,6 @@
     {
      "title": "Privacy policy",
      "url": "/policies/privacy-policy"
-    },
-    {
-     "title": "Terms of service",
-     "url": "/policies/terms-of-service"
-    },
-    {
-     "title": "Refund policy",
-     "url": "/policies/refund-policy"
     }
    ]
   }

@@ -6,7 +6,7 @@
         "show_breadcrumbs": true,
         "heading": "",
         "content_width": "text",
-        "text": "<p>Introduce how to care for your duvets and comforters: what matters most and how often.</p>",
+        "text": "<p>A duvet filling lasts longest when the cover does most of the work. Wash the cover often and the filling rarely.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
@@ -28,33 +28,41 @@
         "t0": {
           "type": "topic",
           "settings": {
-            "icon": "wash",
-            "heading": "Washing",
-            "text": "<ul><li>Wash only when needed, in a machine large enough for the filling to move freely.</li></ul>"
+            "icon": "moon",
+            "heading": "Everyday care",
+            "text": "<ul><li>Always use a duvet cover. It keeps the filling clean and is much easier to wash.</li><li>Shake the duvet each morning to spread the filling evenly and keep its loft.</li><li>Air it now and then in fresh air, out of strong direct sun.</li></ul>"
           }
         },
         "t1": {
           "type": "topic",
           "settings": {
-            "icon": "tumble",
-            "heading": "Drying",
-            "text": "<ul><li>Dry completely on low heat; damp filling can clump.</li></ul>"
+            "icon": "wash",
+            "heading": "Washing the cover",
+            "text": "<ul><li>Wash duvet covers as you would your sheets: similar colours, mild detergent, a cool or warm wash.</li><li>Close buttons or zips first and turn the cover inside out.</li><li>Wash two-tone and strongly coloured covers on their own for the first few washes.</li></ul>"
           }
         },
         "t2": {
           "type": "topic",
           "settings": {
-            "icon": "wind",
-            "heading": "Airing",
-            "text": "<ul><li>Shake and air every morning to keep the filling lofty.</li></ul>"
+            "icon": "wash",
+            "heading": "Cleaning the filling",
+            "text": "<ul><li>Spot-clean small marks on the shell with a damp cloth and a little mild detergent.</li><li>Only machine wash a filling if its care label allows it. A large duvet needs a large-capacity machine or a laundry service.</li><li>Rinse well. Detergent left in the fill can make it clump.</li></ul>"
           }
         },
         "t3": {
           "type": "topic",
           "settings": {
+            "icon": "tumble",
+            "heading": "Drying",
+            "text": "<ul><li>Dry the filling completely before using or storing it. Damp filling can clump and smell musty.</li><li>If the label allows a dryer, use a low heat and stop now and then to shake the duvet out.</li><li>Otherwise dry it flat or over a wide rail, turning it often.</li></ul>"
+          }
+        },
+        "t4": {
+          "type": "topic",
+          "settings": {
             "icon": "moon",
-            "heading": "Storage",
-            "text": "<ul><li>Store in a breathable cotton bag in a dry place.</li></ul>"
+            "heading": "Storing in warm months",
+            "text": "<ul><li>Store the duvet clean and fully dry when the weather warms up.</li><li>Use a breathable cotton bag rather than plastic, in a cool, dry place.</li><li>Avoid keeping it tightly compressed for long periods. Shake it out well when you bring it back.</li></ul>"
           }
         }
       },
@@ -62,7 +70,8 @@
         "t0",
         "t1",
         "t2",
-        "t3"
+        "t3",
+        "t4"
       ],
       "settings": {
         "heading": "Step by step",
@@ -75,52 +84,27 @@
         "padding_bottom": 64
       }
     },
-    "symbols": {
-      "type": "care-guide",
-      "blocks": {
-        "s": {
-          "type": "symbols",
-          "settings": {
-            "heading": "",
-            "symbols": "wash-40, no-bleach, tumble-low, iron-medium",
-            "show_labels": true
-          }
-        }
-      },
-      "block_order": [
-        "s"
-      ],
-      "settings": {
-        "heading": "Care symbols",
-        "heading_size": "h4",
-        "text": "<p>Always follow the care label on your product.</p>",
-        "layout": "stacked",
-        "content_width": "text",
-        "padding_top": 0,
-        "padding_bottom": 64
-      }
-    },
     "faq": {
       "type": "faq",
       "blocks": {
+        "q0": {
+          "type": "question",
+          "settings": {
+            "question": "How do I know a duvet filling needs replacing?",
+            "answer": "<p>If it stays flat after a good shake, has lumps that will not spread out, or feels thin in places, it may be time for a new one.</p>"
+          }
+        },
         "q1": {
           "type": "question",
           "settings": {
-            "question": "How often should I wash them?",
-            "answer": "<p>Give a recommended frequency and explain why.</p>"
-          }
-        },
-        "q2": {
-          "type": "question",
-          "settings": {
-            "question": "How do I remove stains?",
-            "answer": "<p>Explain safe stain treatment for this product.</p>"
+            "question": "Can I wash a duvet filling at home?",
+            "answer": "<p>Only if the care label allows it and it fits loosely in your machine. If in doubt, use a laundry service.</p>"
           }
         }
       },
       "block_order": [
-        "q1",
-        "q2"
+        "q0",
+        "q1"
       ],
       "settings": {
         "heading": "Questions",
@@ -138,7 +122,8 @@
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Bedsheets",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "heading": "Bed sheets",
             "text": "",
             "link_label": "Read the guide",
             "link_url": "/pages/care-bedsheets"
@@ -148,27 +133,17 @@
           "type": "topic",
           "settings": {
             "icon": "none",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
             "heading": "Pillows",
             "text": "",
             "link_label": "Read the guide",
             "link_url": "/pages/care-pillows"
           }
-        },
-        "towels": {
-          "type": "topic",
-          "settings": {
-            "icon": "none",
-            "heading": "Towels",
-            "text": "",
-            "link_label": "Read the guide",
-            "link_url": "/pages/care-towels"
-          }
         }
       },
       "block_order": [
         "bedsheets",
-        "pillows",
-        "towels"
+        "pillows"
       ],
       "settings": {
         "heading": "More care guides",
@@ -187,7 +162,6 @@
     "hero",
     "nav",
     "care",
-    "symbols",
     "faq",
     "more"
   ]

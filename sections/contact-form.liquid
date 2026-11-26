@@ -1,7 +1,7 @@
 {%- comment -%} Shopify contact form with an optional side column. Owner: shad-8b. {%- endcomment -%}
 {%- assign s = section.settings -%}
-<div class="section ed-section contact-form{% if s.side_text != blank %} contact-form--split{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width ed-wide{% if s.side_text == blank %} page-width--text{% endif %}">
+<div class="section ed-section contact-form{% if s.side_text != blank or s.show_whatsapp and settings.social_whatsapp_link != blank %} contact-form--split{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width ed-wide{% unless s.side_text != blank or s.show_whatsapp and settings.social_whatsapp_link != blank %} page-width--text{% endunless %}">
     <div class="contact-form__layout">
       <div class="contact-form__main">
         {% render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text %}
@@ -63,8 +63,19 @@
           </div>
         {%- endform -%}
       </div>
-      {%- if s.side_text != blank -%}
-        <aside class="contact-form__side rte">{{ s.side_text }}</aside>
+      {%- liquid
+        assign whatsapp = ''
+        if s.show_whatsapp and settings.social_whatsapp_link != blank
+          assign whatsapp = settings.social_whatsapp_link
+        endif
+      -%}
+      {%- if s.side_text != blank or whatsapp != blank -%}
+        <aside class="contact-form__side">
+          {%- if s.side_text != blank -%}<div class="rte">{{ s.side_text }}</div>{%- endif -%}
+          {%- if whatsapp != blank -%}
+            <p class="contact-form__whatsapp"><a class="button button--secondary" href="{{ whatsapp }}" target="_blank" rel="noopener">{{ 'editorial.contact.whatsapp' | t }}<span class="visually-hidden"> {{ 'editorial.fabric.new_window' | t }}</span></a></p>
+          {%- endif -%}
+        </aside>
       {%- endif -%}
     </div>
   </div>
@@ -88,6 +99,7 @@
     { "type": "checkbox", "id": "show_topic", "label": "t:sections.contact-form.settings.show_topic.label", "default": false },
     { "type": "textarea", "id": "topics", "label": "t:sections.contact-form.settings.topics.label", "info": "t:sections.contact-form.settings.topics.info", "default": "Order help\nProduct question\nReturns and exchanges\nOther" },
     { "type": "richtext", "id": "side_text", "label": "t:sections.contact-form.settings.side_text.label" },
+    { "type": "checkbox", "id": "show_whatsapp", "label": "t:sections.contact-form.settings.show_whatsapp.label", "info": "t:sections.contact-form.settings.show_whatsapp.info", "default": true },
     { "type": "header", "content": "t:sections.all.padding.header" },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },

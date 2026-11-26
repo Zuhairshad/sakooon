@@ -5,7 +5,7 @@
       "settings": {
         "heading": "",
         "content_width": "page",
-        "text": "<p>Answers to the questions we hear most. Can't find what you need? Get in touch and we'll help.</p>",
+        "text": "<p>Answers to the questions we hear most. Some answers about delivery and returns are still being finalised and will appear here soon.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
@@ -25,14 +25,21 @@
           "type": "question",
           "settings": {
             "question": "How do I change or cancel my order?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "answer": ""
           }
         },
         "q_1_2": {
           "type": "question",
           "settings": {
-            "question": "Can I add a gift message?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "Which payment methods do you accept?",
+            "answer": ""
+          }
+        },
+        "q_1_3": {
+          "type": "question",
+          "settings": {
+            "question": "Can I order by WhatsApp or phone?",
+            "answer": ""
           }
         },
         "group_2": {
@@ -45,57 +52,120 @@
         "q_2_1": {
           "type": "question",
           "settings": {
-            "question": "When will my order arrive?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "Where do you deliver?",
+            "answer": ""
           }
         },
         "q_2_2": {
           "type": "question",
           "settings": {
-            "question": "Do you deliver internationally?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "How long does delivery take?",
+            "answer": ""
+          }
+        },
+        "q_2_3": {
+          "type": "question",
+          "settings": {
+            "question": "How much does delivery cost?",
+            "answer": ""
+          }
+        },
+        "q_2_4": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer cash on delivery?",
+            "answer": ""
           }
         },
         "group_3": {
           "type": "group",
           "settings": {
-            "heading": "Products and care",
+            "heading": "Products and sizes",
             "size": "h4"
           }
         },
         "q_3_1": {
           "type": "question",
           "settings": {
-            "question": "How do I choose the right size?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "Is the duvet filling included with the duvet cover set?",
+            "answer": "<p>No. The Two-Tone Reversible Duvet Cover Set includes a reversible duvet cover, a bed sheet and four pillow covers. The <a href=\"/products/duvet-comfort-filling-220-gsm\">Duvet Comfort Filling</a> is sold separately.</p>"
           }
         },
         "q_3_2": {
           "type": "question",
           "settings": {
-            "question": "How should I wash my bedding the first time?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "Are the bed sheets fitted sheets?",
+            "answer": "<p>The Yarn-Dyed Cotton Satin Bed Sheet Set has a flat sheet that you tuck in around the mattress. Each product page lists exactly what comes in the set.</p>"
+          }
+        },
+        "q_3_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right size?",
+            "answer": "<p>Measure your mattress, then compare it with the sizes in our <a href=\"/pages/size-guide\">size guide</a>. Our <a href=\"/pages/measurement-guide\">measuring guide</a> shows how.</p>"
+          }
+        },
+        "q_3_4": {
+          "type": "question",
+          "settings": {
+            "question": "What does GSM mean?",
+            "answer": "<p>GSM is the weight of a duvet filling per square metre. Our Duvet Comfort Filling has a 220 GSM fill for winter warmth without feeling bulky.</p>"
+          }
+        },
+        "q_3_5": {
+          "type": "question",
+          "settings": {
+            "question": "What does yarn-dyed mean?",
+            "answer": "<p>The cotton threads are dyed before the fabric is woven. This helps the colour stay rich and last longer.</p>"
+          }
+        },
+        "q_3_6": {
+          "type": "question",
+          "settings": {
+            "question": "What is ultrasonic quilting?",
+            "answer": "<p>Instead of thread, the layers are joined with ultrasonic heat to create a raised pattern. That means no stitches to break and no loose threads.</p>"
           }
         },
         "group_4": {
           "type": "group",
           "settings": {
-            "heading": "Returns",
+            "heading": "Care",
             "size": "h4"
           }
         },
         "q_4_1": {
           "type": "question",
           "settings": {
-            "question": "What is your returns policy?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "How should I wash my bedding?",
+            "answer": "<p>Always follow the care label first. Our <a href=\"/pages/care-guide\">care guide</a> has general advice on washing, drying and storing sheets, duvets and pillows.</p>"
           }
         },
-        "q_4_2": {
+        "group_5": {
+          "type": "group",
+          "settings": {
+            "heading": "Returns and exchanges",
+            "size": "h4"
+          }
+        },
+        "q_5_1": {
           "type": "question",
           "settings": {
-            "question": "How do I start a return?",
-            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+            "question": "Can I exchange an item?",
+            "answer": ""
+          }
+        },
+        "q_5_2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return an item for a refund?",
+            "answer": ""
+          }
+        },
+        "q_5_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I start a return or exchange?",
+            "answer": ""
           }
         }
       },
@@ -103,15 +173,25 @@
         "group_1",
         "q_1_1",
         "q_1_2",
+        "q_1_3",
         "group_2",
         "q_2_1",
         "q_2_2",
+        "q_2_3",
+        "q_2_4",
         "group_3",
         "q_3_1",
         "q_3_2",
+        "q_3_3",
+        "q_3_4",
+        "q_3_5",
+        "q_3_6",
         "group_4",
         "q_4_1",
-        "q_4_2"
+        "group_5",
+        "q_5_1",
+        "q_5_2",
+        "q_5_3"
       ],
       "settings": {
         "content_width": "page",
@@ -129,7 +209,7 @@
           "settings": {
             "icon": "mail",
             "heading": "Still have a question?",
-            "text": "<p>Our team replies within one working day.</p>",
+            "text": "<p>Send us a message and we will help.</p>",
             "link_label": "Contact us",
             "link_url": "/pages/contact"
           }

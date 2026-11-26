@@ -5,32 +5,10 @@
       "settings": {
         "heading": "",
         "content_width": "text",
-        "text": "<p>Use this page to explain where you deliver, how long it takes and what it costs.</p>",
+        "text": "<p>How delivery works. We are finalising our delivery details, and each answer below will be filled in as soon as it is confirmed.</p>",
         "padding_top": 60,
         "padding_bottom": 32,
         "heading_size": "h3"
-      }
-    },
-    "summary": {
-      "type": "info-columns",
-      "blocks": {
-        "c1": {
-          "type": "column",
-          "settings": {
-            "heading": "At a glance",
-            "text": "<p>Summarise the key points in one or two lines each.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "c1"
-      ],
-      "settings": {
-        "columns": 1,
-        "content_width": "text",
-        "dividers": true,
-        "padding_top": 0,
-        "padding_bottom": 32
       }
     },
     "details": {
@@ -47,27 +25,34 @@
           "type": "question",
           "settings": {
             "question": "Where do you deliver?",
-            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+            "answer": ""
           }
         },
         "q_1_2": {
           "type": "question",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+            "answer": ""
           }
         },
         "q_1_3": {
           "type": "question",
           "settings": {
             "question": "How much does delivery cost?",
-            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+            "answer": ""
+          }
+        },
+        "q_1_4": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer cash on delivery?",
+            "answer": ""
           }
         },
         "group_2": {
           "type": "group",
           "settings": {
-            "heading": "Tracking",
+            "heading": "Tracking and problems",
             "size": "h4"
           }
         },
@@ -75,14 +60,21 @@
           "type": "question",
           "settings": {
             "question": "How do I track my order?",
-            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+            "answer": ""
           }
         },
         "q_2_2": {
           "type": "question",
           "settings": {
-            "question": "What if my order is late or damaged?",
-            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+            "question": "What if my order is late?",
+            "answer": ""
+          }
+        },
+        "q_2_3": {
+          "type": "question",
+          "settings": {
+            "question": "What if my order arrives damaged?",
+            "answer": ""
           }
         }
       },
@@ -91,9 +83,11 @@
         "q_1_1",
         "q_1_2",
         "q_1_3",
+        "q_1_4",
         "group_2",
         "q_2_1",
-        "q_2_2"
+        "q_2_2",
+        "q_2_3"
       ],
       "settings": {
         "content_width": "text",
@@ -101,11 +95,36 @@
         "padding_top": 16,
         "padding_bottom": 80
       }
+    },
+    "help": {
+      "type": "info-columns",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "icon": "mail",
+            "heading": "Need help now?",
+            "text": "<p>Send us a message and we will help.</p>",
+            "link_label": "Contact us",
+            "link_url": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "c1"
+      ],
+      "settings": {
+        "columns": 1,
+        "content_width": "text",
+        "dividers": true,
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "hero",
-    "summary",
-    "details"
+    "details",
+    "help"
   ]
 }

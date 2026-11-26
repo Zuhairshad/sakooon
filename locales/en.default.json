@@ -471,9 +471,10 @@
     "footer": {
       "newsletter_label": "Email address",
       "newsletter_submit": "Subscribe",
-      "newsletter_success": "Thanks for subscribing.",
+      "newsletter_success": "Thank you for signing up.",
       "country_label": "Country/region",
-      "back_to_top": "Back to top"
+      "back_to_top": "Back to top",
+      "whatsapp": "Message us on WhatsApp"
     },
     "sections": {
       "previous": "Previous",
@@ -482,7 +483,8 @@
       "play_video": "Play video",
       "pause_video": "Pause video",
       "hotspot": "View {{ title }}",
-      "slide_label": "{{ index }} of {{ count }}"
+      "slide_label": "{{ index }} of {{ count }}",
+      "about_fabric": "About {{ name }}"
     }
   },
   "onboarding": {
@@ -536,7 +538,11 @@
       "send": "Send message",
       "required": "* Required fields",
       "success": "Thank you for your message. We will get back to you as soon as possible.",
-      "error_heading": "Please check the following:"
+      "error_heading": "Please check the following:",
+      "whatsapp": "Message us on WhatsApp"
+    },
+    "faq": {
+      "details_coming_soon": "Details coming soon."
     },
     "fabric_guide": {
       "filter_label": "Filter fabrics",
@@ -579,10 +585,10 @@
     },
     "size_guide": {
       "units": "Units",
-      "cm": "cm",
-      "in": "in",
+      "cm": "Centimetres",
+      "in": "Inches",
       "index": "Size guide categories",
-      "measured_in": "Measurements in"
+      "measured_in": "Units:"
     },
     "measurement": {
       "label": "How to measure",

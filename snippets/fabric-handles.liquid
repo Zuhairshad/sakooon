@@ -25,7 +25,7 @@
     assign keyed = ''
     for f in shop.metaobjects.fabric.values
       assign order = f.sort_order.value | default: 9999 | plus: 10000
-      assign name_key = f.name.value | default: f.system.handle | downcase | replace: '|', ''
+      assign name_key = f.name.value | default: f.system.handle | downcase | remove: '|' | remove: ','
       assign keyed = keyed | append: order | append: '~' | append: name_key | append: '|' | append: f.system.handle | append: ','
     endfor
     assign sorted = keyed | split: ',' | sort

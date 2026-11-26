@@ -5,7 +5,7 @@
       "settings": {
         "heading": "",
         "content_width": "text",
-        "text": "<p>Find the right fit for your bed. Choose a product below, and switch between centimetres and inches.</p>",
+        "text": "<p>The sizes of our bedding, exactly as listed on each product. Below them is a table of common mattress sizes in Pakistan, to help you compare with your own bed.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
@@ -14,61 +14,61 @@
     "guide": {
       "type": "size-guide",
       "blocks": {
-        "duvet-covers": {
+        "bed-sheet-set": {
           "type": "category",
           "settings": {
-            "title": "Duvet covers",
-            "handle": "duvet-covers",
-            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
-            "table": "Size | Width | Length\nSingle | 135 | 200\nDouble | 200 | 200\nKing | 230 | 220\nSuper king | 260 | 220",
-            "convert": true,
+            "title": "Bed sheet sets",
+            "handle": "bed-sheet-set",
+            "intro": "<p>Flat bed sheets that tuck in around the mattress. Both sets are King size and come with two matching pillow covers. Sizes as listed in the product descriptions.</p>",
+            "table": "Piece | Size (inches)\nYarn-dyed cotton satin bed sheet | 94 × 96\nQuilted bed sheet | 96 × 106\nPillow cover, 2 in each set | 19 × 29",
+            "convert": false,
             "zebra": true,
             "note": ""
           }
         },
-        "fitted-sheets": {
+        "duvet-cover-set": {
           "type": "category",
           "settings": {
-            "title": "Fitted sheets",
-            "handle": "fitted-sheets",
-            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
-            "table": "Size | Width | Length | Mattress depth up to\nSingle | 90 | 190 | 30\nDouble | 135 | 190 | 30\nKing | 150 | 200 | 35\nSuper king | 180 | 200 | 35",
-            "convert": true,
+            "title": "Duvet cover sets",
+            "handle": "duvet-cover-set",
+            "intro": "<p>Two-Tone Reversible Duvet Cover Set, King size. The duvet filling is not included. Sizes as listed in the product description.</p>",
+            "table": "Piece | Size (inches)\n1 reversible duvet cover | 90 × 100\n1 bed sheet | 94 × 96\n4 pillow covers | 19 × 29",
+            "convert": false,
             "zebra": true,
             "note": ""
           }
         },
-        "flat-sheets": {
+        "duvet": {
           "type": "category",
           "settings": {
-            "title": "Flat sheets",
-            "handle": "flat-sheets",
-            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
-            "table": "Size | Width | Length\nSingle | 180 | 260\nDouble | 230 | 260\nKing | 260 | 280",
-            "convert": true,
+            "title": "Duvet fillings",
+            "handle": "duvet",
+            "intro": "<p>Duvet Comfort Filling, the insert that goes inside a duvet cover. Sizes as listed in the product description.</p>",
+            "table": "Size | Inches | Centimetres\nSingle | 60 × 90 | 152 × 240\nQueen | 90 × 95 | 230 × 240\nKing | 104 × 94 | 265 × 240",
+            "convert": false,
+            "zebra": true,
+            "note": "<p>For a full, fluffy look, choose a filling close to the size of your duvet cover.</p>"
+          }
+        },
+        "pillow": {
+          "type": "category",
+          "settings": {
+            "title": "Pillows",
+            "handle": "pillow",
+            "intro": "<p>Duvet Comfort Pillow, sold as a pack of two. Size as listed in the product description.</p>",
+            "table": "Piece | Inches | Centimetres\n1 pillow | 20 × 30 | 48 × 76",
+            "convert": false,
             "zebra": true,
             "note": ""
           }
         },
-        "pillowcases": {
+        "mattress-sizes": {
           "type": "category",
           "settings": {
-            "title": "Pillowcases",
-            "handle": "pillowcases",
-            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
-            "table": "Size | Width | Length\nStandard | 50 | 75\nSquare | 65 | 65\nKing | 50 | 90",
-            "convert": true,
-            "zebra": true,
-            "note": ""
-          }
-        },
-        "duvets": {
-          "type": "category",
-          "settings": {
-            "title": "Duvets",
-            "handle": "duvets",
-            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
-            "table": "Size | Width | Length\nSingle | 135 | 200\nDouble | 200 | 200\nKing | 230 | 220",
+            "title": "Common mattress sizes in Pakistan",
+            "handle": "mattress-sizes",
+            "intro": "<p><strong>For comparison only.</strong> These are typical mattress sizes sold in Pakistan, not Sakooon products. Sizes vary between makers, so measure your own mattress before you choose.</p>",
+            "table": "Mattress | Width | Length\nSingle | 91 | 198\nSingle, wide | 107 | 198\nQueen | 152 | 198\nKing | 183 | 198\nKing, long | 183 | 213\nSuper king | 198 | 213",
             "convert": true,
             "zebra": true,
             "note": ""
@@ -86,15 +86,15 @@
         }
       },
       "block_order": [
-        "duvet-covers",
-        "fitted-sheets",
-        "flat-sheets",
-        "pillowcases",
-        "duvets",
+        "bed-sheet-set",
+        "duvet-cover-set",
+        "duvet",
+        "pillow",
+        "mattress-sizes",
         "help"
       ],
       "settings": {
-        "default_unit": "cm",
+        "default_unit": "in",
         "show_index": true,
         "padding_top": 0,
         "padding_bottom": 80
