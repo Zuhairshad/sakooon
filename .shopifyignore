@@ -1,1 +1,9 @@
-local-preview/**
+docs/**
+scripts/**
+tools/**
+node_modules/**
+package.json
+package-lock.json
+README.md
+.theme-check.yml
+*.md

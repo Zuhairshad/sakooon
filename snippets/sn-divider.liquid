@@ -1,5 +1,0 @@
-{%- comment -%} Top edge for a section. Param: s (settings with divider) {%- endcomment -%}
-{%- case s.divider -%}
-  {%- when 'wave' -%}<div class="sn-div" aria-hidden="true"><svg viewBox="0 0 2880 46" preserveAspectRatio="none"><path d="M0 46V22C240 0 480 0 720 22S1200 44 1440 22 1920 0 2160 22 2640 44 2880 22V46Z"/></svg></div>
-  {%- when 'stitch' -%}<div class="sn-div sn-div--stitch" aria-hidden="true"></div>
-{%- endcase -%}

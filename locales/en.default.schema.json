@@ -1,0 +1,416 @@
+{
+  "settings_schema": {
+    "logo": {
+      "name": "Logo",
+      "settings": {
+        "logo": {
+          "label": "Logo"
+        },
+        "logo_width": {
+          "label": "Desktop logo width"
+        },
+        "favicon": {
+          "label": "Favicon",
+          "info": "Will be scaled down to 32 x 32px"
+        }
+      }
+    },
+    "colors": {
+      "name": "Colors",
+      "settings": {
+        "background": {
+          "label": "Background"
+        },
+        "foreground": {
+          "label": "Text"
+        },
+        "foreground_muted": {
+          "label": "Muted text"
+        },
+        "border": {
+          "label": "Borders and rules"
+        },
+        "accent": {
+          "label": "Links and accents"
+        },
+        "accent_contrast": {
+          "label": "Text on accent"
+        },
+        "button_background": {
+          "label": "Button background"
+        },
+        "button_text": {
+          "label": "Button text"
+        },
+        "button_border": {
+          "label": "Button border"
+        },
+        "semantic": {
+          "header": "Semantic colours (all schemes)"
+        },
+        "color_sale": {
+          "label": "Sale price"
+        },
+        "color_error": {
+          "label": "Error"
+        },
+        "color_success": {
+          "label": "Success"
+        },
+        "background_gradient": {
+          "label": "Background gradient"
+        }
+      }
+    },
+    "typography": {
+      "name": "Typography",
+      "settings": {
+        "headings": {
+          "header": "Headings"
+        },
+        "type_heading_font": {
+          "label": "Font"
+        },
+        "heading_weight": {
+          "label": "Weight"
+        },
+        "heading_scale": {
+          "label": "Size scale"
+        },
+        "heading_letter_spacing": {
+          "label": "Letter spacing",
+          "info": "Steps of 0.01em"
+        },
+        "heading_uppercase_eyebrows": {
+          "label": "Uppercase eyebrow labels"
+        },
+        "body": {
+          "header": "Body"
+        },
+        "type_body_font": {
+          "label": "Font"
+        },
+        "body_size": {
+          "label": "Base size"
+        },
+        "body_scale": {
+          "label": "Size scale"
+        }
+      }
+    },
+    "layout": {
+      "name": "Layout",
+      "settings": {
+        "page_width": {
+          "label": "Page width"
+        },
+        "page_gutter_desktop": {
+          "label": "Side gutter (desktop)"
+        },
+        "page_gutter_mobile": {
+          "label": "Side gutter (mobile)"
+        },
+        "section_spacing": {
+          "label": "Section spacing scale",
+          "info": "Scales every section's default top and bottom padding"
+        },
+        "grid_gap_desktop": {
+          "label": "Grid gap (desktop)"
+        },
+        "grid_gap_mobile": {
+          "label": "Grid gap (mobile)"
+        }
+      }
+    },
+    "shapes": {
+      "name": "Shapes, buttons and inputs",
+      "settings": {
+        "radius": {
+          "label": "Corner radius"
+        },
+        "border_width": {
+          "label": "Border width"
+        },
+        "buttons": {
+          "header": "Buttons"
+        },
+        "button_style": {
+          "label": "Primary button style",
+          "options": {
+            "solid": "Solid",
+            "outline": "Outline"
+          }
+        },
+        "button_uppercase": {
+          "label": "Uppercase button labels"
+        },
+        "button_height": {
+          "label": "Button height"
+        },
+        "inputs": {
+          "header": "Inputs"
+        },
+        "input_style": {
+          "label": "Input style",
+          "options": {
+            "outline": "Outlined",
+            "underline": "Underlined"
+          }
+        }
+      }
+    },
+    "animations": {
+      "name": "Motion",
+      "settings": {
+        "animations_reveal": {
+          "label": "Reveal sections on scroll",
+          "info": "Subtle fade-up when sections enter the viewport. Respects reduced-motion preferences."
+        },
+        "animations_hover": {
+          "label": "Hover effects",
+          "options": {
+            "none": "None",
+            "subtle": "Subtle"
+          }
+        }
+      }
+    },
+    "product_cards": {
+      "name": "Product cards",
+      "settings": {
+        "card_image_ratio": {
+          "label": "Image ratio",
+          "options": {
+            "adapt": "Adapt to image",
+            "portrait": "Portrait (4:5)",
+            "square": "Square"
+          }
+        },
+        "card_show_secondary_image": {
+          "label": "Show second image on hover"
+        },
+        "card_show_swatches": {
+          "label": "Show colour swatches"
+        },
+        "card_show_vendor": {
+          "label": "Show vendor"
+        },
+        "card_show_quick_add": {
+          "label": "Show quick add"
+        },
+        "card_text_align": {
+          "label": "Text alignment",
+          "options": {
+            "left": "Left",
+            "center": "Center"
+          }
+        },
+        "swatches": {
+          "header": "Swatches"
+        },
+        "swatch_option_names": {
+          "label": "Option names shown as swatches",
+          "info": "Comma separated. Swatch colours come from the variant option value or a product colour metafield."
+        }
+      }
+    },
+    "cart": {
+      "name": "Cart",
+      "settings": {
+        "cart_type": {
+          "label": "Cart type",
+          "options": {
+            "drawer": "Drawer",
+            "page": "Page"
+          }
+        },
+        "cart_show_note": {
+          "label": "Enable order note"
+        },
+        "cart_show_vendor": {
+          "label": "Show vendor"
+        },
+        "cart_free_shipping_bar": {
+          "label": "Show free shipping progress"
+        },
+        "cart_free_shipping_threshold": {
+          "label": "Free shipping threshold",
+          "info": "Amount in the store currency, e.g. 5000"
+        }
+      }
+    },
+    "search": {
+      "name": "Search",
+      "settings": {
+        "predictive_search_enabled": {
+          "label": "Enable predictive search"
+        },
+        "predictive_search_show_vendor": {
+          "label": "Show vendor in results"
+        },
+        "predictive_search_show_price": {
+          "label": "Show price in results"
+        }
+      }
+    },
+    "navigation": {
+      "name": "Navigation",
+      "settings": {
+        "menu_main": {
+          "label": "Main menu (fallback)"
+        },
+        "menu_footer": {
+          "label": "Footer menu (fallback)"
+        },
+        "menu_legal": {
+          "label": "Legal menu"
+        }
+      }
+    },
+    "social": {
+      "name": "Social media"
+    },
+    "seo": {
+      "name": "SEO",
+      "settings": {
+        "share_image": {
+          "label": "Default social sharing image",
+          "info": "Used when a page has no image of its own. 1200 x 630px."
+        },
+        "structured_data_organization": {
+          "label": "Output Organization structured data"
+        },
+        "structured_data_breadcrumbs": {
+          "label": "Output breadcrumb structured data"
+        }
+      }
+    },
+    "accessibility": {
+      "name": "Accessibility",
+      "settings": {
+        "focus_ring_visible_always": {
+          "label": "Always show focus rings",
+          "info": "By default focus rings show for keyboard users only."
+        }
+      }
+    }
+  },
+  "sections": {
+    "all": {
+      "colors": {
+        "label": "Colour scheme"
+      },
+      "padding": {
+        "header": "Section padding",
+        "padding_top": "Top padding",
+        "padding_bottom": "Bottom padding"
+      },
+      "heading_size": {
+        "label": "Heading size",
+        "options": {
+          "h1": "Extra large",
+          "h2": "Large",
+          "h3": "Medium",
+          "h4": "Small"
+        }
+      },
+      "layout": {
+        "header": "Layout",
+        "full_width": "Full width",
+        "content_width": {
+          "label": "Content width",
+          "options": {
+            "page": "Page width",
+            "narrow": "Narrow",
+            "text": "Text column",
+            "full": "Full bleed"
+          }
+        }
+      }
+    },
+    "main-404": {
+      "name": "404 page"
+    },
+    "main-password": {
+      "name": "Password page",
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "image": {
+          "label": "Image"
+        }
+      }
+    },
+    "apps": {
+      "name": "Apps",
+      "settings": {
+        "include_margins": {
+          "label": "Make section margins the same as theme"
+        }
+      },
+      "presets": {
+        "name": "Apps"
+      }
+    },
+    "custom-liquid": {
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": {
+          "label": "Liquid code",
+          "info": "Add app snippets or other code to create advanced customizations."
+        }
+      },
+      "presets": {
+        "name": "Custom Liquid"
+      }
+    },
+    "spacer": {
+      "name": "Spacer",
+      "settings": {
+        "height_desktop": {
+          "label": "Height (desktop)"
+        },
+        "height_mobile": {
+          "label": "Height (mobile)"
+        }
+      },
+      "presets": {
+        "name": "Spacer"
+      }
+    },
+    "main-login": {
+      "name": "Login"
+    },
+    "main-register": {
+      "name": "Register"
+    },
+    "main-account": {
+      "name": "Account"
+    },
+    "main-addresses": {
+      "name": "Addresses"
+    },
+    "main-order": {
+      "name": "Order"
+    },
+    "main-activate": {
+      "name": "Activate account"
+    },
+    "main-reset": {
+      "name": "Reset password"
+    },
+    "header": {
+      "name": "Header"
+    },
+    "footer": {
+      "name": "Footer"
+    },
+    "announcement-bar": {
+      "name": "Announcement bar"
+    }
+  }
+}

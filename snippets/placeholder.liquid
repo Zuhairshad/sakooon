@@ -1,0 +1,7 @@
+{%- comment -%} Neutral placeholder for missing images. name: product-1..6, collection-1..6, image, lifestyle-1/2, hero-apparel-1 etc. {%- endcomment -%}
+{%- liquid
+  assign name = name | default: 'image'
+-%}
+<div class="placeholder{% if class %} {{ class }}{% endif %}"{% if aspect and aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif %} aria-hidden="true">
+  {{ name | placeholder_svg_tag: 'placeholder__svg' }}
+</div>

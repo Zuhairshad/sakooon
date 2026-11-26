@@ -1,0 +1,82 @@
+{%- comment -%}
+  Design tokens. Owner: Fable. Values come from theme settings; see docs/design-system.md.
+  Colour schemes render one class per scheme; `body` and sections carry `color-scheme-<id>`.
+{%- endcomment -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign heading_font_bold = heading_font | font_modify: 'weight', 'bolder'
+  assign body_font_bold = body_font | font_modify: 'weight', 'bolder'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+  assign heading_scale = settings.heading_scale | times: 1.0 | divided_by: 100.0
+  assign body_scale = settings.body_scale | times: 1.0 | divided_by: 100.0
+  assign section_scale = settings.section_spacing | times: 1.0 | divided_by: 100.0
+  assign heading_tracking = settings.heading_letter_spacing | times: 0.01
+-%}
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {%- if heading_font_bold -%}{{ heading_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
+  {%- unless body_font == heading_font -%}{{ body_font | font_face: font_display: 'swap' }}{%- endunless -%}
+  {%- if body_font_bold -%}{{ body_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
+  {%- if body_font_italic -%}{{ body_font_italic | font_face: font_display: 'swap' }}{%- endif -%}
+
+  {%- for scheme in settings.color_schemes -%}
+    {%- assign s = scheme.settings -%}
+    {% if forloop.index == 1 %}:root,{% endif %}
+    .color-scheme-{{ scheme.id }} {
+      --color-background: {{ s.background }};
+      --color-background-rgb: {{ s.background.red }}, {{ s.background.green }}, {{ s.background.blue }};
+      --color-foreground: {{ s.foreground }};
+      --color-foreground-rgb: {{ s.foreground.red }}, {{ s.foreground.green }}, {{ s.foreground.blue }};
+      --color-foreground-muted: {{ s.foreground_muted }};
+      --color-border: {{ s.border }};
+      --color-accent: {{ s.accent }};
+      --color-accent-contrast: {{ s.accent_contrast }};
+      --color-button-bg: {{ s.button_background }};
+      --color-button-text: {{ s.button_text }};
+      --color-button-border: {{ s.button_border }};
+      color: var(--color-foreground);
+      background-color: var(--color-background);
+    }
+  {%- endfor -%}
+
+  :root {
+    --color-sale: {{ settings.color_sale }};
+    --color-error: {{ settings.color_error }};
+    --color-success: {{ settings.color_success }};
+
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-heading-weight: {{ settings.heading_weight }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-style: {{ body_font.style }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 600 }};
+    --font-body-size: {{ settings.body_size }}px;
+    --heading-scale: {{ heading_scale }};
+    --body-scale: {{ body_scale }};
+    --tracking-heading: {{ heading_tracking }}em;
+    --eyebrow-transform: {% if settings.heading_uppercase_eyebrows %}uppercase{% else %}none{% endif %};
+
+    --page-width: {{ settings.page_width }}px;
+    --page-gutter-mobile: {{ settings.page_gutter_mobile }}px;
+    --page-gutter-desktop: {{ settings.page_gutter_desktop }}px;
+    --page-gutter: var(--page-gutter-mobile);
+    --grid-gap-mobile: {{ settings.grid_gap_mobile }}px;
+    --grid-gap-desktop: {{ settings.grid_gap_desktop }}px;
+    --grid-gap: var(--grid-gap-mobile);
+    --section-scale: {{ section_scale }};
+
+    --radius: {{ settings.radius }}px;
+    --border-width: {{ settings.border_width }}px;
+    --button-height: {{ settings.button_height }}px;
+    --button-transform: {% if settings.button_uppercase %}uppercase{% else %}none{% endif %};
+    --button-tracking: {% if settings.button_uppercase %}0.08em{% else %}0.01em{% endif %};
+    --logo-width: {{ settings.logo_width }}px;
+    --header-height: 72px;
+    --announcement-height: 0px;
+  }
+  @media (min-width: 1024px) {
+    :root { --page-gutter: var(--page-gutter-desktop); --grid-gap: var(--grid-gap-desktop); }
+  }
+</style>

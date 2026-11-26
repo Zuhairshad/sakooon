@@ -1,0 +1,62 @@
+{%- comment -%}
+  Responsive image. Owner: Fable. See docs/component-contracts.md section 6.
+  {% render 'image', image: product.featured_image, sizes: '(min-width: 1024px) 50vw, 100vw', aspect: '4/5', priority: true, class: 'card__img' %}
+  Renders a placeholder when image is blank (placeholder: 'product-1' etc.).
+{%- endcomment -%}
+{%- liquid
+  assign widths_str = widths | default: '320,480,640,768,960,1280,1600,1920,2400'
+  assign widths_arr = widths_str | split: ','
+  assign sizes = sizes | default: '100vw'
+  assign loading = 'lazy'
+  assign fetchpriority = 'auto'
+  if priority
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  endif
+  assign img = image
+  if image.preview_image
+    assign img = image.preview_image
+  endif
+  assign alt_text = alt | default: img.alt | default: ''
+-%}
+{%- if img != blank -%}
+  {%- liquid
+    assign max_w = img.width
+    assign srcset = ''
+    for w in widths_arr
+      assign wn = w | strip | plus: 0
+      if wn <= max_w
+        assign srcset = srcset | append: img | image_url: width: wn | append: ' ' | append: wn | append: 'w, '
+      endif
+    endfor
+    assign srcset = srcset | append: img | image_url: width: max_w | append: ' ' | append: max_w | append: 'w'
+    assign base_w = 1600
+    if max_w < base_w
+      assign base_w = max_w
+    endif
+    assign out_h = img.height
+    assign out_w = img.width
+    if aspect and aspect != 'natural'
+      assign ratio_parts = aspect | split: '/'
+      if ratio_parts.size == 2
+        assign out_w = ratio_parts[0] | times: 100
+        assign out_h = ratio_parts[1] | times: 100
+      endif
+    endif
+  -%}
+  <img
+    src="{{ img | image_url: width: base_w }}"
+    srcset="{{ srcset }}"
+    sizes="{{ sizes }}"
+    width="{{ out_w }}"
+    height="{{ out_h }}"
+    alt="{{ alt_text | escape }}"
+    loading="{{ loading }}"
+    fetchpriority="{{ fetchpriority }}"
+    decoding="async"
+    class="image{% if class %} {{ class }}{% endif %}"
+    {%- if aspect and aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif -%}
+  >
+{%- else -%}
+  {% render 'placeholder', name: placeholder, class: class, aspect: aspect %}
+{%- endif -%}

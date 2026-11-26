@@ -1,0 +1,56 @@
+<div class="customer customer--narrow section page-width">
+  <div class="customer__panel stack stack--lg">
+    {%- form 'recover_customer_password', class: 'stack recover', id: 'RecoverPasswordForm' -%}
+      {%- if form.posted_successfully? -%}<p class="form__message form__message--success" role="status">{% render 'icon', icon: 'success', size: 16 %}{{ 'customer.recover_password.success' | t }}</p>{%- endif -%}
+      <div class="stack recover__fields" id="RecoverFields" hidden>
+        <h1 class="h2">{{ 'customer.recover_password.title' | t }}</h1>
+        <p class="text-muted">{{ 'customer.recover_password.subtext' | t }}</p>
+        <div class="field"><label for="RecoverEmail">{{ 'customer.login_page.email' | t }}</label><input type="email" class="field__input" value="" name="email" id="RecoverEmail" autocomplete="email" {% if form.errors %}aria-invalid="true" aria-describedby="RecoverEmail-error"{% endif %}></div>
+        {%- if form.errors -%}<p class="field__error" id="RecoverEmail-error" role="alert">{{ form.errors.messages.form }}</p>{%- endif -%}
+        <button type="submit" class="button button--full">{{ 'customer.login_page.submit' | t }}</button>
+        <a href="#login" class="link text-small" data-toggle-recover>{{ 'customer.login_page.cancel' | t }}</a>
+      </div>
+    {%- endform -%}
+    {%- form 'customer_login', class: 'stack login', id: 'LoginForm', novalidate: 'novalidate' -%}
+      <h1 class="h2" id="login">{{ 'customer.login_page.title' | t }}</h1>
+      {%- if form.errors -%}<div class="errors" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field"><label for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label><input type="email" name="customer[email]" id="CustomerEmail" class="field__input" autocomplete="email" autocorrect="off" autocapitalize="off" {% if form.errors contains 'form' %}aria-invalid="true"{% endif %}></div>
+      {%- if form.password_needed -%}
+        <div class="field"><label for="CustomerPassword">{{ 'customer.login_page.password' | t }}</label><input type="password" name="customer[password]" id="CustomerPassword" class="field__input" autocomplete="current-password"></div>
+        <a href="#recover" class="link text-small" data-toggle-recover>{{ 'customer.login_page.forgot_password' | t }}</a>
+      {%- endif -%}
+      <button type="submit" class="button button--full">{{ 'customer.login_page.sign_in' | t }}</button>
+      <p class="text-small text-center"><a class="link" href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a></p>
+    {%- endform -%}
+    {%- if shop.checkout.guest_login -%}
+      <div class="divider"></div>
+      {%- form 'guest_login', class: 'stack' -%}
+        <h2 class="h4">{{ 'customer.login_page.guest_title' | t }}</h2>
+        <button type="submit" class="button button--secondary button--full">{{ 'customer.login_page.guest_continue' | t }}</button>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</div>
+<script>
+  (function () {
+    var recover = document.getElementById('RecoverFields'), login = document.getElementById('LoginForm');
+    function show(r) { recover.hidden = !r; login.hidden = r; if (r) document.getElementById('RecoverEmail').focus(); }
+    document.querySelectorAll('[data-toggle-recover]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); show(a.getAttribute('href') === '#recover'); history.replaceState(null, '', a.getAttribute('href')); }); });
+    if (location.hash === '#recover' || document.querySelector('.recover .form__message--success, .recover .field__error')) show(true);
+  })();
+</script>
+{% style %}
+  .customer { --section-pt: var(--section-padding); --section-pb: var(--section-padding-lg); }
+  .customer--narrow .customer__panel { max-width: 440px; margin-inline: auto; }
+  .customer__header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-10); }
+  .customer table { font-size: var(--text-sm); }
+  .customer th, .customer td { text-align: start; padding: var(--space-3) var(--space-3) var(--space-3) 0; border-bottom: var(--border-width) solid var(--color-border); vertical-align: top; }
+  .customer th { font-weight: var(--font-body-weight-bold); color: var(--color-foreground-muted); font-size: var(--text-xs); letter-spacing: var(--tracking-caps); text-transform: var(--eyebrow-transform); }
+  .customer__grid { display: grid; gap: var(--space-10); }
+  @media (min-width: 1024px) { .customer__grid { grid-template-columns: 2fr 1fr; } }
+  .customer .field--row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .address-card { border: var(--border-width) solid var(--color-border); padding: var(--space-6); }
+{% endstyle %}
+{% schema %}
+{ "name": "t:sections.main-login.name", "settings": [] }
+{% endschema %}

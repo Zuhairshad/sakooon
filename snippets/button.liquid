@@ -1,0 +1,23 @@
+{%- comment -%} {% render 'button', label: 'Shop', url: '/collections/all', style: 'primary|secondary|tertiary', size: 'small', external: false, attrs: 'data-x' %} {%- endcomment -%}
+{%- liquid
+  assign style = style | default: 'primary'
+  assign classes = 'button'
+  if style == 'secondary'
+    assign classes = classes | append: ' button--secondary'
+  elsif style == 'tertiary'
+    assign classes = classes | append: ' button--tertiary'
+  endif
+  if size == 'small'
+    assign classes = classes | append: ' button--small'
+  endif
+  if full_width
+    assign classes = classes | append: ' button--full'
+  endif
+-%}
+{%- if label != blank -%}
+  {%- if url != blank -%}
+    <a class="{{ classes }}{% if class %} {{ class }}{% endif %}" href="{{ url }}"{% if external %} target="_blank" rel="noopener"{% endif %} {{ attrs }}>{{ label }}</a>
+  {%- else -%}
+    <button type="{{ type | default: 'button' }}" class="{{ classes }}{% if class %} {{ class }}{% endif %}" {{ attrs }}>{{ label }}</button>
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,18 @@
+{%- comment -%} {% render 'address-form', form: form, address: address, prefix: 'AddressNew' %} {%- endcomment -%}
+<div class="field--row">
+  <div class="field"><label for="{{ prefix }}FirstName">{{ 'customer.addresses.first_name' | t }}</label><input type="text" id="{{ prefix }}FirstName" name="address[first_name]" class="field__input" value="{{ address.first_name }}" autocomplete="given-name"></div>
+  <div class="field"><label for="{{ prefix }}LastName">{{ 'customer.addresses.last_name' | t }}</label><input type="text" id="{{ prefix }}LastName" name="address[last_name]" class="field__input" value="{{ address.last_name }}" autocomplete="family-name"></div>
+</div>
+<div class="field"><label for="{{ prefix }}Company">{{ 'customer.addresses.company' | t }}</label><input type="text" id="{{ prefix }}Company" name="address[company]" class="field__input" value="{{ address.company }}" autocomplete="organization"></div>
+<div class="field"><label for="{{ prefix }}Address1">{{ 'customer.addresses.address1' | t }}</label><input type="text" id="{{ prefix }}Address1" name="address[address1]" class="field__input" value="{{ address.address1 }}" autocomplete="address-line1"></div>
+<div class="field"><label for="{{ prefix }}Address2">{{ 'customer.addresses.address2' | t }}</label><input type="text" id="{{ prefix }}Address2" name="address[address2]" class="field__input" value="{{ address.address2 }}" autocomplete="address-line2"></div>
+<div class="field--row">
+  <div class="field"><label for="{{ prefix }}City">{{ 'customer.addresses.city' | t }}</label><input type="text" id="{{ prefix }}City" name="address[city]" class="field__input" value="{{ address.city }}" autocomplete="address-level2"></div>
+  <div class="field"><label for="{{ prefix }}Zip">{{ 'customer.addresses.zip' | t }}</label><input type="text" id="{{ prefix }}Zip" name="address[zip]" class="field__input" value="{{ address.zip }}" autocomplete="postal-code"></div>
+</div>
+<div class="field"><label for="{{ prefix }}Country">{{ 'customer.addresses.country' | t }}</label>
+  <select id="{{ prefix }}Country" name="address[country]" class="field__input" data-address-country-select data-default="{{ address.country }}" data-form-id="{{ form.id }}" autocomplete="country">{{ all_country_option_tags }}</select></div>
+<div class="field" id="{{ prefix }}ProvinceContainer" style="display:none"><label for="{{ prefix }}Province">{{ 'customer.addresses.province' | t }}</label>
+  <select id="{{ prefix }}Province" name="address[province]" class="field__input" data-default="{{ address.province }}" autocomplete="address-level1"></select></div>
+<div class="field"><label for="{{ prefix }}Phone">{{ 'customer.addresses.phone' | t }}</label><input type="tel" id="{{ prefix }}Phone" name="address[phone]" class="field__input" value="{{ address.phone }}" autocomplete="tel"></div>
+<label class="checkbox">{{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}</label>

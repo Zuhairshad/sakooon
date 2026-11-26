@@ -1,0 +1,65 @@
+{%- comment -%} STUB handed to shad-2d. Replace entirely; keep the data-drawer-open hooks (docs/component-contracts.md section 3). {%- endcomment -%}
+{%- assign menu = section.settings.menu | default: settings.menu_main -%}
+<header class="header color-scheme-{{ section.settings.color_scheme }}" data-header data-sticky="{{ section.settings.sticky }}">
+  <div class="page-width header__inner">
+    <button type="button" class="header__icon button--icon hide-desktop" data-drawer-open="mobile-nav" aria-label="{{ 'general.accessibility.open_menu' | t }}" aria-expanded="false">{% render 'icon', icon: 'menu', size: 24 %}</button>
+    <nav class="header__nav hide-mobile" aria-label="{{ 'sections.header.menu' | t }}">
+      <ul class="header__menu list-unstyled">
+        {%- for link in linklists[menu].links -%}
+          <li><a class="header__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      {%- if settings.logo != blank -%}
+        {% render 'image', image: settings.logo, sizes: '200px', widths: '120,240,360', priority: true, class: 'header__logo-img', alt: shop.name %}
+      {%- else -%}
+        <span class="header__wordmark h4">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+    <div class="header__actions">
+      <button type="button" class="header__icon button--icon" data-drawer-open="search-drawer" aria-label="{{ 'general.search.search' | t }}" aria-expanded="false">{% render 'icon', icon: 'search', size: 22 %}</button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="header__icon button--icon hide-mobile" href="{{ routes.account_url }}" aria-label="{{ 'customer.account_fallback' | t }}">{% render 'icon', icon: 'account', size: 22 %}</a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="header__icon button--icon header__cart" data-drawer-open="cart-drawer" aria-label="{{ 'general.cart.view' | t: count: cart.item_count }}" aria-expanded="false">
+        {% render 'icon', icon: 'bag', size: 22 %}<span class="header__cart-count text-caption" data-cart-count{% if cart.item_count == 0 %} data-empty{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+<theme-drawer id="mobile-nav" data-lock-scroll class="hide-desktop">
+  <div class="overlay" data-drawer-close></div>
+  <div class="drawer drawer--left" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}">
+    <div class="drawer__header"><span class="drawer__title">{{ 'sections.header.menu' | t }}</span><button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close_menu' | t }}">{% render 'icon', icon: 'close', size: 24 %}</button></div>
+    <nav class="drawer__body"><ul class="list-unstyled stack">{%- for link in linklists[menu].links -%}<li><a class="h4 link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
+  </div>
+</theme-drawer>
+{% style %}
+  .header { position: relative; z-index: var(--z-sticky); border-bottom: var(--border-width) solid var(--color-border); }
+  .header[data-sticky="true"] { position: sticky; top: 0; }
+  .header__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 64px; gap: var(--space-4); }
+  .header__logo { grid-column: 2; text-decoration: none; display: inline-flex; }
+  .header__logo-img { width: var(--logo-width); height: auto; }
+  .header__menu { display: flex; gap: var(--space-6); }
+  .header__link { text-decoration: none; font-size: var(--text-sm); }
+  .header__link:hover { text-decoration: underline; }
+  .header__actions { display: flex; justify-content: flex-end; gap: var(--space-1); }
+  .header__icon { display: inline-flex; align-items: center; justify-content: center; }
+  .header__cart { position: relative; text-decoration: none; }
+  .header__cart-count { position: absolute; top: 4px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: var(--color-foreground); color: var(--color-background); font-size: 10px; line-height: 16px; text-align: center; }
+  .header__cart-count[data-empty] { display: none; }
+  @media (min-width: 1024px) { .header__inner { min-height: 72px; } }
+{% endstyle %}
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

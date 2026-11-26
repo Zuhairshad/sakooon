@@ -1,0 +1,13 @@
+<div class="customer customer--narrow section page-width"><div class="customer__panel">
+  {%- form 'reset_customer_password', class: 'stack' -%}
+    <h1 class="h2">{{ 'customer.reset_password.title' | t }}</h1>
+    <p class="text-muted">{{ 'customer.reset_password.subtext' | t }}</p>
+    {%- if form.errors -%}<div class="errors" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="field"><label for="Password">{{ 'customer.reset_password.password' | t }}</label><input type="password" name="customer[password]" id="Password" class="field__input" autocomplete="new-password"></div>
+    <div class="field"><label for="PasswordConfirmation">{{ 'customer.reset_password.password_confirm' | t }}</label><input type="password" name="customer[password_confirmation]" id="PasswordConfirmation" class="field__input" autocomplete="new-password"></div>
+    <button type="submit" class="button button--full">{{ 'customer.reset_password.submit' | t }}</button>
+  {%- endform -%}
+</div></div>
+{% schema %}
+{ "name": "t:sections.main-reset.name", "settings": [] }
+{% endschema %}

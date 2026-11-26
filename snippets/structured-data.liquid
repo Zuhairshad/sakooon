@@ -1,0 +1,111 @@
+{%- comment -%} JSON-LD. Owner: Fable. One block per page type; sections must not emit their own Product/Breadcrumb JSON-LD. {%- endcomment -%}
+{%- if settings.structured_data_organization and request.page_type == 'index' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ request.origin | json }}
+    {%- if settings.logo != blank -%},"logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{%- endif -%}
+    {%- assign socials = '' -%}
+    {%- assign social_keys = 'social_instagram_link,social_facebook_link,social_tiktok_link,social_pinterest_link,social_youtube_link' | split: ',' -%}
+    {%- for key in social_keys -%}
+      {%- if settings[key] != blank -%}{%- assign socials = socials | append: '|' | append: settings[key] -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if socials != '' -%},"sameAs": {{ socials | remove_first: '|' | split: '|' | json }}{%- endif -%}
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": {{ shop.name | json }},
+    "url": {{ request.origin | json }},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {{ request.origin | append: routes.search_url | append: '?q={search_term_string}' | json }},
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+{%- endif -%}
+{%- if request.page_type == 'product' and product -%}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if product.featured_media -%}"image": {{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }},{%- endif -%}
+    "description": {{ product.description | strip_html | truncate: 500 | json }},
+    {%- if current_variant.sku != blank -%}"sku": {{ current_variant.sku | json }},{%- endif -%}
+    {%- if current_variant.barcode.size == 12 or current_variant.barcode.size == 13 -%}"gtin{{ current_variant.barcode.size }}": {{ current_variant.barcode | json }},{%- endif -%}
+    "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+    "offers": [
+      {%- for variant in product.variants -%}
+      {
+        "@type": "Offer",
+        "url": {{ request.origin | append: variant.url | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ variant.price | divided_by: 100.0 | json }},
+        {%- if variant.sku != blank -%}"sku": {{ variant.sku | json }},{%- endif -%}
+        "name": {{ variant.title | json }},
+        "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}"
+      }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+{%- if request.page_type == 'article' and article -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ article.title | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": { "@type": "Person", "name": {{ article.author | json }} },
+    {%- if article.image -%}"image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},{%- endif -%}
+    "publisher": { "@type": "Organization", "name": {{ shop.name | json }} },
+    "mainEntityOfPage": {{ request.origin | append: article.url | json }}
+  }
+  </script>
+{%- endif -%}
+{%- if settings.structured_data_breadcrumbs and request.page_type != 'index' and request.page_type != 'password' -%}
+  {%- liquid
+    assign crumbs = ''
+    case request.page_type
+      when 'product'
+        if collection
+          assign crumbs = crumbs | append: collection.title | append: '^' | append: collection.url | append: '|'
+        endif
+        assign crumbs = crumbs | append: product.title | append: '^' | append: product.url
+      when 'collection'
+        assign crumbs = crumbs | append: collection.title | append: '^' | append: collection.url
+      when 'page'
+        assign crumbs = crumbs | append: page.title | append: '^' | append: page.url
+      when 'blog'
+        assign crumbs = crumbs | append: blog.title | append: '^' | append: blog.url
+      when 'article'
+        assign crumbs = crumbs | append: blog.title | append: '^' | append: blog.url | append: '|' | append: article.title | append: '^' | append: article.url
+    endcase
+  -%}
+  {%- if crumbs != '' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.breadcrumbs.home' | t | json }}, "item": {{ request.origin | append: routes.root_url | json }} }
+      {%- assign parts = crumbs | split: '|' -%}
+      {%- for part in parts -%}
+        {%- assign kv = part | split: '^' -%}
+        ,{ "@type": "ListItem", "position": {{ forloop.index | plus: 1 }}, "name": {{ kv[0] | json }}, "item": {{ request.origin | append: kv[1] | json }} }
+      {%- endfor -%}
+    ]
+  }
+  </script>
+  {%- endif -%}
+{%- endif -%}

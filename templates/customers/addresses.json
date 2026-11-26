@@ -1,13 +1,1 @@
-{
- "sections": {
-  "main": {
-   "type": "sn-main-addresses",
-   "settings": {
-    "pad_top": 120
-   }
-  }
- },
- "order": [
-  "main"
- ]
-}
+{ "sections": { "main": { "type": "main-addresses", "settings": {} } }, "order": ["main"] }

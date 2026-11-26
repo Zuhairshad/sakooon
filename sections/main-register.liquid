@@ -1,0 +1,19 @@
+<div class="customer customer--narrow section page-width">
+  <div class="customer__panel">
+    {%- form 'create_customer', class: 'stack', novalidate: 'novalidate' -%}
+      <h1 class="h2">{{ 'customer.register.title' | t }}</h1>
+      {%- if form.errors -%}<div class="errors" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field--row">
+        <div class="field"><label for="RegisterFirstName">{{ 'customer.register.first_name' | t }}</label><input type="text" name="customer[first_name]" id="RegisterFirstName" class="field__input" autocomplete="given-name"></div>
+        <div class="field"><label for="RegisterLastName">{{ 'customer.register.last_name' | t }}</label><input type="text" name="customer[last_name]" id="RegisterLastName" class="field__input" autocomplete="family-name"></div>
+      </div>
+      <div class="field"><label for="RegisterEmail">{{ 'customer.register.email' | t }}</label><input type="email" name="customer[email]" id="RegisterEmail" class="field__input" autocomplete="email" {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}></div>
+      <div class="field"><label for="RegisterPassword">{{ 'customer.register.password' | t }}</label><input type="password" name="customer[password]" id="RegisterPassword" class="field__input" autocomplete="new-password" {% if form.errors contains 'password' %}aria-invalid="true"{% endif %}></div>
+      <button type="submit" class="button button--full">{{ 'customer.register.submit' | t }}</button>
+      <p class="text-small text-center"><a class="link" href="{{ routes.account_login_url }}">{{ 'customer.login_page.sign_in' | t }}</a></p>
+    {%- endform -%}
+  </div>
+</div>
+{% schema %}
+{ "name": "t:sections.main-register.name", "settings": [] }
+{% endschema %}

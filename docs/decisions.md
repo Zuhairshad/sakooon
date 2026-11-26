@@ -1,0 +1,44 @@
+# Decisions log
+
+Format: date, decision, why, consequences. Newest last.
+
+## 2026-11-26 D1: Clean foundation, not an extension of the Nocturne theme
+The live theme ("Sakooon Nocturne", sn-* files) is a dark, animation-heavy design with a WebGL
+"silk" shader, a preloader and JS-gated content. The target is the opposite (light, editorial,
+minimal JS). Its structure (section list, customer templates, facets, cart drawer) is ordinary
+Shopify scaffolding that is faster to rebuild in the new design system than to restyle.
+Consequence: all sn-* files were removed on sakooon/foundation. Anything worth consulting is in
+git history on `theme-code` (e.g. `git show theme-code:sections/sn-main-login.liquid`).
+
+## 2026-11-26 D2: Theme at repo root; dev tooling excluded by .shopifyignore
+Keeps Shopify GitHub integration and `shopify theme dev/push` conventions working without `--path`.
+docs/, scripts/, tools/, package.json are ignored for uploads.
+
+## 2026-11-26 D3: Section blocks (classic), not theme blocks (blocks/ dir), in Phase 1
+Theme blocks add schema complexity across every section and complicate ownership. The blocks/
+directory exists (empty, with a README) so we can adopt theme blocks for shared pieces later.
+
+## 2026-11-26 D4: One unified design language: Tekla typography/whitespace, Parachute layouts
+Single grotesk sans for everything (Shopify font library, default `inter`), modest display scale,
+warm off-white paper, ink text, hairline rules, square corners, generous vertical rhythm.
+Parachute supplies the commerce layout geometry (grids, PDP split, cart, mega menu), Tekla the
+editorial rhythm, measure and label treatment. Measured values from the reference investigation
+override the provisional token values in docs/design-system.md, never the other way around.
+
+## 2026-11-26 D5: Fonts via Shopify font_picker, no self-hosted font files in Phase 1
+Shopify library fonts are licensed for storefront use and preload/caching is handled by
+`font_face`/`font_url`. Phase 2 may introduce brand fonts as assets once licensed.
+
+## 2026-11-26 D6: Colour via colour schemes (settings `color_scheme_group`)
+Sections expose a `color_scheme` setting; the theme defines schemes (paper, sand, ink, white) and
+CSS custom properties per scheme. This is the OS 2.0 pattern the editor understands.
+
+## 2026-11-26 D7: JS architecture = small custom elements + one shared `theme` namespace
+assets/global.js defines utilities (pubsub, fetchConfig, trapFocus, debounce, section-render
+helper, drawer/dialog base element). Feature scripts (product.js, cart.js, search.js, facets.js,
+header.js) are loaded per section with `defer` only where the section renders.
+Events are documented in docs/component-contracts.md.
+
+## 2026-11-26 D8: Fabric is a metaobject; products reference it
+One fabric definition reused by products, collections, and guides. Product-level metafields hold
+only product-specific facts (dimensions, package contents). See docs/metafield-contracts.md.

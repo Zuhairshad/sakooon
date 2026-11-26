@@ -1,0 +1,12 @@
+<div class="spacer" style="--h-mobile: {{ section.settings.height_mobile }}px; --h-desktop: {{ section.settings.height_desktop }}px" aria-hidden="true"></div>
+{% style %}.spacer { height: var(--h-mobile); } @media (min-width: 1024px) { .spacer { height: var(--h-desktop); } }{% endstyle %}
+{% schema %}
+{
+  "name": "t:sections.spacer.name",
+  "settings": [
+    { "type": "range", "id": "height_desktop", "min": 0, "max": 200, "step": 8, "unit": "px", "label": "t:sections.spacer.settings.height_desktop.label", "default": 64 },
+    { "type": "range", "id": "height_mobile", "min": 0, "max": 120, "step": 8, "unit": "px", "label": "t:sections.spacer.settings.height_mobile.label", "default": 32 }
+  ],
+  "presets": [ { "name": "t:sections.spacer.presets.name" } ]
+}
+{% endschema %}

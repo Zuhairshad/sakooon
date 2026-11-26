@@ -2,214 +2,81 @@
 <html class="no-js" lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_dark_bg }}">
+  <meta name="theme-color" content="{{ settings.color_schemes.paper.settings.background | default: '#F6F4F0' }}">
   <link rel="canonical" href="{{ canonical_url }}">
   {%- if settings.favicon != blank -%}
-    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
-  {%- else -%}
-    <link rel="icon" type="image/svg+xml" href="{{ 'sn-favicon.svg' | asset_url }}">
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {%- endif -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
   <title>
-    {{ page_title }}
-    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+    {{ page_title -}}
+    {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
     {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   </title>
   {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
   {% render 'meta-tags' %}
+  {%- unless settings.type_heading_font.system? -%}{{ settings.type_heading_font | font_url | preload_tag: as: 'font' }}{%- endunless -%}
+  {%- unless settings.type_body_font.system? or settings.type_body_font == settings.type_heading_font -%}{{ settings.type_body_font | font_url | preload_tag: as: 'font' }}{%- endunless -%}
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+  {% render 'css-variables' %}
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {%- comment -%} Area stylesheets: each owner's single stylesheet. Loaded here once so sections never duplicate. {%- endcomment -%}
+  {{ 'storefront.css' | asset_url | stylesheet_tag }}
+  {{ 'commerce.css' | asset_url | stylesheet_tag }}
+  {{ 'editorial.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+  {%- if template.name == 'product' or template.name == 'collection' or template.name == 'search' or template.name == 'cart' or settings.cart_type == 'drawer' -%}
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+  {%- if template.name == 'product' -%}<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>{%- endif -%}
+  {%- if template.name == 'collection' or template.name == 'search' -%}<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>{%- endif -%}
+  {%- if settings.predictive_search_enabled -%}<script src="{{ 'search.js' | asset_url }}" defer="defer"></script>{%- endif -%}
+  <script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'editorial.js' | asset_url }}" defer="defer"></script>
   <script>
-    (function () {
-      var h = document.documentElement;
-      h.className = h.className.replace('no-js', 'sn-js');
-      // `sn-idle` lands once the page has loaded and the main thread is idle.
-      // Decorative infinite-loop animations (silk drift, etc.) wait for it via
-      // the CSS rule below, so they never compete with first paint / LCP.
-      addEventListener('load', function () {
-        var f = function () { h.classList.add('sn-idle'); document.dispatchEvent(new Event('sn:idle')); };
-        ('requestIdleCallback' in window) ? requestIdleCallback(f, { timeout: 2500 }) : setTimeout(f, 300);
-      });
-    })();
+    window.theme = window.theme || {};
+    window.theme.routes = {
+      root: '{{ routes.root_url }}',
+      cart: '{{ routes.cart_url }}',
+      cartAdd: '{{ routes.cart_add_url }}',
+      cartChange: '{{ routes.cart_change_url }}',
+      cartUpdate: '{{ routes.cart_update_url }}',
+      predictiveSearch: '{{ routes.predictive_search_url }}',
+      search: '{{ routes.search_url }}',
+      productRecommendations: '{{ routes.product_recommendations_url }}'
+    };
+    window.theme.moneyFormat = {{ shop.money_format | json }};
+    window.theme.moneyWithCurrencyFormat = {{ shop.money_with_currency_format | json }};
+    window.theme.settings = { cartType: {{ settings.cart_type | json }}, reveal: {{ settings.animations_reveal | json }} };
+    window.theme.strings = {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      unavailableWithOption: {{ 'products.product.value_unavailable' | t: option_value: '[value]' | json }},
+      soldOutWithOption: {{ 'products.product.value_sold_out' | t: option_value: '[value]' | json }},
+      cartError: {{ 'sections.cart.cart_error' | t | json }},
+      quantityError: {{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' | json }},
+      itemAdded: {{ 'general.cart.item_added' | t | json }},
+      loading: {{ 'general.accessibility.loading' | t | json }},
+      close: {{ 'general.accessibility.close' | t | json }},
+      searchNoResults: {{ 'general.search.no_results' | t: terms: '[terms]' | json }},
+      shareSuccess: {{ 'general.share.success_message' | t | json }}
+    };
   </script>
   {{ content_for_header }}
-  {% render 'sn-fonts' %}
-  {%- liquid
-    case settings.font_head
-      when 'cormorant'
-        assign fh = "'SN Cormorant', Georgia, serif"
-      when 'figtree'
-        assign fh = "'SN Figtree', system-ui, sans-serif"
-      else
-        assign fh = "'SN Fraunces', Georgia, serif"
-    endcase
-    if settings.font_body == 'jost'
-      assign fb = "'SN Jost', system-ui, sans-serif"
-    else
-      assign fb = "'SN Figtree', system-ui, sans-serif"
-    endif
-  -%}
-  <style>
-    :root {
-      --c-ink: {{ settings.color_ink }}; --c-ink-soft: {{ settings.color_ink_soft }}; --c-paper: {{ settings.color_paper }}; --c-surface: {{ settings.color_surface }};
-      --c-line: {{ settings.color_line }}; --c-accent: {{ settings.color_accent }}; --c-sage: {{ settings.color_sage }};
-      --c-dark: {{ settings.color_dark_bg }}; --c-dusk: {{ settings.color_dusk }}; --c-dark-text: {{ settings.color_dark_text }}; --c-moon: {{ settings.color_moon }};
-      --c-signal: {{ settings.color_signal }}; --c-danger: {{ settings.color_danger }};
-      --f-head: {{ fh }}; --f-body: {{ fb }}; --head-w: {{ settings.head_weight }};
-      --pw: {{ settings.page_width }}px; --r: {{ settings.corners }}px; --r-sm: calc(var(--r) * .55);
-      --bg: var(--c-paper); --tx: var(--c-ink); --ac: var(--c-accent);
-    }
-    body { font-size: {{ settings.body_size }}px; }
-  </style>
-  <style>
-    /* Looping decorative animations wait for the page to go idle (see the
-       sn-idle script above) so they never compete with first paint on phones.
-       This covers the loops defined in this file; sn-base.css and section
-       files gate their own infinite animations the same way. */
-    html:not(.sn-idle) [data-sn-silk]::before,
-    html:not(.sn-idle) [data-sn-silk]::after {
-      animation-play-state: paused !important;
-    }
-    {%- unless settings.silk -%}
-    /* "Silk" WebGL shader replacement: when settings.silk is off, sn-silk.js
-       never loads, so this is the only rendering [data-sn-silk] hosts get —
-       the same base gradient plus two blurred, compositor-only light bands
-       instead of a per-frame fragment shader. */
-    body[data-silk="off"] [data-sn-silk] {
-      --s1: var(--silk-c1, {{ settings.color_dark_bg }}); --s2: var(--silk-c2, {{ settings.color_dusk }}); --s3: var(--silk-c3, {{ settings.color_moon }});
-      background:
-        radial-gradient(120% 90% at 30% 20%, color-mix(in srgb, var(--s3) 20%, transparent), transparent 60%),
-        linear-gradient(160deg, var(--s2), var(--s1));
-      overflow: hidden;
-      contain: paint;
-    }
-    body[data-silk="off"] [data-sn-silk]:not([class]) { position: relative; }
-    body[data-silk="off"] [data-sn-silk]::before,
-    body[data-silk="off"] [data-sn-silk]::after {
-      content: "";
-      position: absolute;
-      inset: -35%;
-      pointer-events: none;
-      filter: blur(28px);
-      opacity: .9;
-      will-change: transform;
-      animation: sn-silk-drift 22s ease-in-out infinite alternate;
-    }
-    body[data-silk="off"] [data-sn-silk]::before {
-      background:
-        linear-gradient(118deg, transparent 34%, color-mix(in srgb, var(--s3) 26%, transparent) 43%, color-mix(in srgb, #fff 8%, transparent) 47%, transparent 56%),
-        linear-gradient(118deg, transparent 58%, color-mix(in srgb, var(--s3) 14%, transparent) 64%, transparent 71%);
-    }
-    body[data-silk="off"] [data-sn-silk]::after {
-      background: radial-gradient(40% 30% at 60% 40%, color-mix(in srgb, var(--s3) 16%, transparent), transparent 70%);
-      filter: blur(40px);
-      animation-duration: 30s;
-      animation-direction: alternate-reverse;
-    }
-    @keyframes sn-silk-drift {
-      from { transform: translate3d(-6%, -3%, 0) rotate(-2deg); }
-      to { transform: translate3d(6%, 3%, 0) rotate(2deg); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      body[data-silk="off"] [data-sn-silk]::before, body[data-silk="off"] [data-sn-silk]::after { animation: none; }
-    }
-    {%- endunless -%}
-  </style>
-  {{ 'sn-base.css' | asset_url | stylesheet_tag }}
-  <script>window.SN = window.SN || {}; SN._q = []; SN.ready = function (f) { if (SN._core) f(); else SN._q.push(f); }; SN.moneyFormat = {{ shop.money_format | json }}; SN.t = { add: {{ 'products.product.add_to_cart' | t | json }}, soldOut: {{ 'products.product.sold_out' | t | json }}, unavailable: "Unavailable", added: "Added to your cart", sale: "Sale", from: "From", quick: "Quick add", details: "View full details", wishAdd: "Saved to your wishlist", wishRemove: "Removed from wishlist", noResults: "Nothing found for", products: "Products", suggestions: "Suggestions", viewAll: "View all results" };</script>
-  {%- if settings.silk -%}<script src="{{ 'sn-silk.js' | asset_url }}" defer></script>{%- endif -%}
-  <script src="{{ 'sn-core.js' | asset_url }}" defer></script>
-  {%- if template.name == 'product' -%}<script src="{{ 'sn-product.js' | asset_url }}" defer></script>{%- endif -%}
+  {% render 'structured-data' %}
 </head>
-{%- liquid
-  assign tpl = template.name
-  assign is_pw = false
-  if request.page_type == 'password' or template.name == 'password'
-    assign is_pw = true
-  endif
--%}
-<body
-  class="sn-t-{{ template.name | handleize }}{% if template.suffix %} sn-t-{{ template.suffix | handleize }}{% endif %}"
-  data-template="{{ template.name }}"
-  data-motion="{% if settings.motion %}on{% else %}off{% endif %}"
-  data-silk="{% if settings.silk %}on{% else %}off{% endif %}"
-  data-feathers="{% if settings.feathers %}on{% else %}off{% endif %}"
-  data-ripple="{% if settings.ripple %}on{% else %}off{% endif %}"
-  data-stitch="{% if settings.stitch %}on{% else %}off{% endif %}"
-  data-btn="{{ settings.button_style }}"
-  data-cart="{{ settings.cart_type }}"
-  data-vt="{% if settings.view_transitions %}on{% else %}off{% endif %}"
-  {% if product %}data-product-handle="{{ product.handle }}"{% endif %}
->
-  <a class="sn-skip" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <filter id="sn-ripple" x="-4%" y="-4%" width="108%" height="108%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" seed="7" result="n">
-        <animate attributeName="baseFrequency" dur="7s" values="0.006 0.018;0.009 0.026;0.006 0.018" repeatCount="indefinite"/>
-      </feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </svg>
-  {%- unless is_pw or settings.pl_enabled == false -%}{% render 'sn-preloader' %}{%- endunless -%}
-  {%- unless is_pw -%}{% sections 'header-group' %}{%- endunless -%}
-  <main id="MainContent" class="sn-main" role="main" tabindex="-1">
+<body class="template-{{ request.page_type | handle }}{% if template.suffix %} template-{{ request.page_type | handle }}--{{ template.suffix | handle }}{% endif %} color-scheme-paper{% if settings.focus_ring_visible_always %} focus-always{% endif %}">
+  {% render 'skip-link' %}
+  {% sections 'header-group' %}
+  <main id="MainContent" class="main-content" role="main" tabindex="-1">
     {{ content_for_layout }}
   </main>
-  <script>
-    (function () {
-      // sn-core.js reveals [data-r] elements via a deferred IntersectionObserver,
-      // so anything already in the first viewport would otherwise sit invisible
-      // until that script loads and runs. This runs synchronously, in document
-      // order, right after the content above is parsed — well before any
-      // defer-loaded script — so above-the-fold reveals never wait on JS load.
-      var h = innerHeight || document.documentElement.clientHeight;
-      var els = document.querySelectorAll('[data-r]:not(.is-in)');
-      for (var i = 0; i < els.length; i++) {
-        if (els[i].getBoundingClientRect().top < h) els[i].classList.add('is-in');
-      }
-    })();
-  </script>
-  {%- unless is_pw -%}{% sections 'footer-group' %}{%- endunless -%}
-  {%- unless is_pw -%}{% section 'sn-cart-drawer' %}{%- endunless -%}
-
-  <div class="sn-ov" id="SnQuick" hidden aria-label="Quick view">
-    <div class="sn-ov__bg" data-sn-close></div>
-    <div class="sn-drawer snq" role="dialog" aria-modal="true">
-      <div class="sn-drawer__head"><p class="sn-drawer__title">Quick view</p><button type="button" class="sn-ibtn sn-ibtn--sm" data-sn-close aria-label="Close">{% render 'sn-icon', name: 'close', class: 'icon' %}</button></div>
-      <div class="sn-drawer__body" data-sn-quick-body></div>
-    </div>
-  </div>
-  <style>
-    .snq { width: min(560px, calc(100% - 20px)); }
-    .snq__load { display: grid; place-items: center; min-height: 300px; }
-    .snq__load span { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--c-accent); border-right-color: transparent; animation: sn-spin .8s linear infinite; }
-    .snq__gal { display: grid; gap: 10px; }
-    .snq__main { aspect-ratio: 4 / 5; }
-    .snq__thumbs { display: flex; gap: 8px; overflow-x: auto; }
-    .snq__thumbs button { width: 62px; aspect-ratio: 4 / 5; border-radius: 12px; overflow: hidden; border: 1px solid transparent; flex: none; opacity: .6; transition: opacity .3s, border-color .3s; }
-    .snq__thumbs button.is-on { opacity: 1; border-color: var(--c-accent); }
-    .snq__thumbs img { width: 100%; height: 100%; object-fit: cover; }
-    .snq__info { display: grid; gap: 14px; margin-top: 22px; }
-    .snq__price { font-size: 1.2rem; }
-    .snq__opt p { font-size: 13px; color: var(--soft); margin-bottom: 10px; } .snq__opt p b { color: var(--tx); }
-    .snq__opt > div { display: flex; flex-wrap: wrap; gap: 8px; }
-    .snq__buy { display: flex; gap: 10px; margin-top: 6px; } .snq__buy .sn-btn { flex: 1; }
-  </style>
-
-  {%- if settings.moon_top and is_pw == false -%}
-    <button type="button" class="sn-moon-top" data-sn-moon aria-label="Back to top">
-      <svg class="sn-moon-top__ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" pathLength="100"/></svg>
-      <svg viewBox="0 0 24 24" aria-hidden="true" class="sn-moon-top__disc">
-        <defs><clipPath id="sn-moon-clip"><circle cx="12" cy="12" r="7"/></clipPath></defs>
-        <circle cx="12" cy="12" r="7" fill="currentColor"/>
-        <g clip-path="url(#sn-moon-clip)"><circle data-sn-moon-shadow cx="12" cy="12" r="7.4" fill="var(--c-dark)"/></g>
-        <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width=".8" opacity=".6"/>
-      </svg>
-      <svg viewBox="0 0 24 24" class="sn-moon-top__arrow" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
-    </button>
-  {%- endif -%}
-
-  {%- if settings.grain -%}
-    <div aria-hidden="true" style="position:fixed;inset:0;z-index:2147481000;pointer-events:none;opacity:.05;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
-  {%- endif -%}
+  {% sections 'footer-group' %}
+  <div class="visually-hidden" aria-live="polite" aria-atomic="true" id="LiveRegion" data-live-region></div>
 </body>
 </html>

@@ -1,0 +1,64 @@
+<div class="customer section page-width">
+  <header class="customer__header">
+    <h1 class="h2">{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}" class="link text-small">{{ 'customer.account.return' | t }}</a>
+  </header>
+  <div class="stack stack--lg">
+    <div>
+      <button type="button" class="button button--secondary" data-drawer-open="AddressNewDialog">{{ 'customer.addresses.add_new' | t }}</button>
+      <theme-dialog id="AddressNewDialog">
+        <div class="overlay" data-drawer-close></div>
+        <div class="dialog"><div class="dialog__panel" role="dialog" aria-modal="true" aria-labelledby="AddressNewHeading" style="--dialog-width: 560px">
+          <button type="button" class="button--icon dialog__close" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+          <h2 id="AddressNewHeading" class="h4" style="margin-bottom: var(--space-6)">{{ 'customer.addresses.add_new' | t }}</h2>
+          {%- form 'customer_address', customer.new_address, class: 'stack' -%}
+            {% render 'address-form', form: form, address: form, prefix: 'AddressNew' %}
+            <div class="flex gap-4"><button type="submit" class="button">{{ 'customer.addresses.add' | t }}</button><button type="button" class="button button--secondary" data-drawer-close>{{ 'customer.addresses.cancel' | t }}</button></div>
+          {%- endform -%}
+        </div></div>
+      </theme-dialog>
+    </div>
+    {%- paginate customer.addresses by 6 -%}
+    <ul class="list-unstyled grid grid--tablet-2 grid--desktop-3">
+      {%- for address in customer.addresses -%}
+        <li class="address-card stack">
+          {%- if address == customer.default_address -%}<p class="eyebrow">{{ 'customer.addresses.default' | t }}</p>{%- endif -%}
+          <div class="text-small">{{ address | format_address }}</div>
+          <div class="flex gap-4 text-small">
+            <button type="button" class="link" data-drawer-open="AddressEdit{{ address.id }}">{{ 'customer.addresses.edit' | t }}</button>
+            {%- form 'customer_address', address -%}
+              <button type="submit" class="link" formmethod="post" formaction="{{ address.url }}" name="_method" value="delete" onclick="return confirm('{{ 'customer.addresses.delete_confirm' | t | escape }}')">{{ 'customer.addresses.delete' | t }}</button>
+            {%- endform -%}
+          </div>
+          <theme-dialog id="AddressEdit{{ address.id }}">
+            <div class="overlay" data-drawer-close></div>
+            <div class="dialog"><div class="dialog__panel" role="dialog" aria-modal="true" aria-labelledby="AddressEditHeading{{ address.id }}" style="--dialog-width: 560px">
+              <button type="button" class="button--icon dialog__close" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+              <h2 id="AddressEditHeading{{ address.id }}" class="h4" style="margin-bottom: var(--space-6)">{{ 'customer.addresses.edit_address' | t }}</h2>
+              {%- form 'customer_address', address, class: 'stack' -%}
+                {% render 'address-form', form: form, address: address, prefix: address.id %}
+                <div class="flex gap-4"><button type="submit" class="button">{{ 'customer.addresses.update' | t }}</button><button type="button" class="button button--secondary" data-drawer-close>{{ 'customer.addresses.cancel' | t }}</button></div>
+              {%- endform -%}
+            </div></div>
+          </theme-dialog>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  </div>
+</div>
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-address-country-select]').forEach(function (select) {
+      var prefix = select.id.replace(/Country$/, '');
+      if (window.Shopify && Shopify.CountryProvinceSelector) {
+        new Shopify.CountryProvinceSelector(select.id, prefix + 'Province', { hideElement: prefix + 'ProvinceContainer' });
+      }
+    });
+  });
+</script>
+{% schema %}
+{ "name": "t:sections.main-addresses.name", "settings": [] }
+{% endschema %}

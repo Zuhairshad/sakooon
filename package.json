@@ -1,0 +1,23 @@
+{
+  "name": "sakooon-theme",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sakooon premium bedding - native Shopify Online Store 2.0 theme. Dev tooling only; the theme itself is Liquid/CSS/JS at the repo root.",
+  "scripts": {
+    "preview": "node tools/preview/server.mjs",
+    "check": "shopify theme check --fail-level error",
+    "dev": "shopify theme dev --store juj1hc-qf.myshopify.com",
+    "capture:refs": "node scripts/capture-references.mjs",
+    "capture:theme": "node scripts/capture-theme.mjs",
+    "compare": "node scripts/compare-screenshots.mjs",
+    "test:responsive": "node scripts/test-responsive.mjs",
+    "test:interactions": "node scripts/test-interactions.mjs"
+  },
+  "devDependencies": {
+    "liquidjs": "^10.30.1",
+    "pixelmatch": "^7.1.0",
+    "playwright": "^1.58.0",
+    "pngjs": "^7.0.0"
+  }
+}
