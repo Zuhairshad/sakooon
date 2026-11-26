@@ -90,7 +90,8 @@
           assign chip_style = ''
           assign chip_class = 'swatch__chip'
           if value.swatch.image
-            assign chip_style = 'background-image: url(' | append: value.swatch.image | image_url: width: 72 | append: ')'
+            assign swatch_src = value.swatch.image | image_url: width: 72
+            assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
           elsif value.swatch.color
             assign chip_style = 'background-color: ' | append: value.swatch.color
           else
@@ -148,9 +149,11 @@
           if swatch_color != blank
             assign chip_style = 'background-color: ' | append: swatch_color
           elsif swatch_image != blank
-            assign chip_style = 'background-image: url(' | append: swatch_image | image_url: width: 72 | append: ')'
+            assign swatch_src = swatch_image | image_url: width: 72
+            assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
           elsif sibling.featured_image != blank
-            assign chip_style = 'background-image: url(' | append: sibling.featured_image | image_url: width: 72 | append: ')'
+            assign swatch_src = sibling.featured_image | image_url: width: 72
+            assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
           endif
         -%}
         <li class="swatches__item">
