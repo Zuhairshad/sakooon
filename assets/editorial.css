@@ -409,3 +409,16 @@ blog-load-more { display: block; }
 /* Editorial wide container: Tekla's 1168px content width (docs/reference/editorial.md section 1). Only applies when
    no narrower page-width modifier is present. */
 .page-width.ed-wide:not(.page-width--text, .page-width--narrow, .page-width--full) { max-width: calc(1168px + 2 * var(--page-gutter)); }
+
+/* FAQ sidebar layout (Parachute FAQ: sticky "Jump to a section" column 336px beside an 881px question column). */
+.faq__jump { margin-bottom: var(--space-10); }
+.faq__jump-title { margin-bottom: var(--space-4); }
+.faq__jump .faq__jump-list { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); overflow: visible; }
+.faq__jump-link { display: inline-flex; align-items: center; min-height: var(--touch-target); text-decoration: none; }
+.faq__jump-link:hover, .faq__jump-link[aria-current="true"] { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .25em; }
+@media (min-width: 1024px) {
+  .faq__layout { display: grid; grid-template-columns: minmax(0, 336fr) minmax(0, 881fr); gap: var(--space-12); align-items: start; }
+  .faq__jump { position: sticky; top: calc(var(--ed-sticky-offset, 0px) + var(--space-8)); margin-bottom: 0; }
+  .faq__jump .faq__jump-list { display: block; }
+  .faq__jump-link { min-height: 36px; }
+}

@@ -283,7 +283,153 @@ https://teklafabrics.com/care-guide/textile-care/percale-bedding — "Percale be
 
 ## 3. Parachute
 
-**In progress.** parachutehome.com returns HTTP 429 to this machine's shared IP. Captures run serially, with 20s or more between loads and a 90s back-off on 429. This section is added in a follow-up commit once the run completes. Pages queued: fabrics, care, faq, returns, our-story, blog, contact, our-fabrics-detail (last).
+Captured 2026-11-26. Every page has 7 viewports. One browser ran at a time, with at least 20s between loads and a 90s back-off on HTTP 429. Parachute fabrics@1920 was Cloudflare-blocked ("Just a moment…", 429) on the first run and was captured on a single later retry. Popups: a Rebuy "Your Cart" flyout opens itself and renders open in full-page captures. It was **hidden with CSS** for the screenshots (recorded per capture in `capture-log.json`), because it is site chrome and not content. A Gorgias chat bubble (bottom right) and a fixed promo bar were left in place.
+
+**Labels.** **V** = verified from `getComputedStyle` / `getBoundingClientRect` in `<vw>-metrics.json`. **I** = inferred from screenshots, because the element is a custom widget the generic probe can't read (for example Parachute's accordions, which are not `<details>` and have no `aria-expanded`).
+
+### 3.1 Global (Parachute)
+
+| Token | Value | |
+|---|---|---|
+| Fonts | `Canela` (serif display, 300/400) for headings and statements; `Suisse Intl` (sans, 300–700) for body and UI. Substitutes are needed; names are recorded only | V |
+| Text colour | `rgb(53,51,49)`; body copy often at 0.85 alpha | V |
+| Background | `#fff` page; warm `rgb(241,238,233)` bands (fabric-guide tabs) and the footer | V |
+| Hairline | `1px solid rgba(53,51,49,.25)` (FAQ rows ×119, fabric panels); strong `1px solid rgb(53,51,49)` (panel frames, contact boxes) | V |
+| Header | 56px, `top:0`, sticky (the group wrapper sticks) | V |
+| Side gutter | 56px desktop (x=56), 20px mobile | V |
+| Display scale | h1 64/70.4 (care) or 40/41.6 (others); h2 40/41.6 to 40/52 with ls −0.4px; statement 32/33–36.8 (300); mobile h1/h2 30–32 | V |
+| Body | 16/21.6–24 at 300–400 (care, story), 14/21 400 (FAQ answers), 16/28.8 400 (contact and returns help copy) | V |
+| Labels | 16/16 500 uppercase ls 0.32px ("RETURNS", "THE SHEETING FABRIC GUIDE"), 12/21.6 500 uppercase (care links) | V |
+| Motion | `all .3s linear` on almost everything (×180–580 elements), `filter .3s ease` on images, a hover image swap `opacity .2s` on product cards. No scroll-reveal (0 hidden-before-scroll elements on content pages; the hidden ones are swiper slides and card hover images) | V |
+| Links in copy | underline 1px, offset 3px, `text-decoration-thickness .1s` on hover (care page) | V |
+
+### 3.2 Our Fabrics Detail (`/pages/our-fabrics-detail`), the model for the `fabric-guide` "panels" layout
+
+Inventory: (1) a two-tab band, "The sheeting fabric guide" / "The bath fabric guide", 83px tall, each tab 720 wide, the active tab on a darker warm ground (V). (2) A hero image band 1440×377 with a centred serif h2 40/41.6 and a 16/20.5 500 intro (V). (3) Per fabric (×5) a **panel**, 1250 wide at x=95, framed by a 1px ink border (V):
+- a **texture banner** 1248×145 (≈8.6:1) with the fabric name in serif at 40px over it (V for size, I for overlay position);
+- a body split about 430 / 600 (I from 1440 shot; the left statement column measures 430 wide at x=168, V);
+- left: 3 outlined **chips** ("Crisp", "Smooth", "Breathable"), then a **statement** 24/33.6 Canela 400 (V), then two accordion rows, "Feel & Benefits" and "Craftsmanship & Care", on hairlines with chevrons (I);
+- right: a product carousel of 160×213 (3:4) cards (V), then a full-width dark **"Shop all <fabric>"** button (I).
+
+Mobile (390): the banner is 350×167; the columns stack with the statement first, then the accordions, then the carousel (V for sizes, I for order).
+
+### 3.3 FAQ (`/pages/faq`), the model for the `faq` "sidebar" layout
+
+Inventory: (1) a hero image 1440×432 with a centred title "Frequently asked questions", serif 40 (V). (2) Two columns: a **sticky "Jump to a section" column** 336 wide at x=56, `position: sticky; top: 30px`, 840 tall, holding 17 anchor links (V), beside an 881-wide question column at x=503 (V). Group headings are serif 40/40 (V). Questions are about 72px rows with a 1px hairline (`rgba(53,51,49,.25)`) and a chevron (I). Answers are 14/21 400 with a 12px paragraph gap (V). Transitions `all .2s/.3s ease` on rows (V).
+
+Mobile: the jump list sits inline above the questions (not sticky); the question column is 350 wide (V).
+
+### 3.4 Contact (`/pages/contact?view=contact`), referenced by `page.contact`
+
+(1) A hero image 1440×471 with "Get support", serif 40 (V). (2) A two-column band: on the left a **sticky contact box** 656 wide (`top: 86px`), on the right 4 self-help cards (icon, serif 32/36.8 300 question, 16/28.8 copy, uppercase 16/16 500 link such as "RETURNS") (V). (3) A "Still need help?" strip with a 1px ink-outlined button (V). Mobile stacks it all at 350 wide (V).
+
+### 3.5 Care (`/pages/care-2026`)
+
+h1 64/70.4 Canela (V). Then **alternating 664-wide image/text rows** per product family (Bedding, Utility, Bath, Decor, Eco mattress), the image side alternating (x=56 / x=720) (V). Each row is followed by a 4-up product strip of 346-wide 3:4 cards (V). Copy is 16/21.6 300 (V). A care tip link is underlined 1px, offset 3px (V). Mobile: rows stack at 350 wide and the strips become a 2×2 grid at 175 wide (V).
+
+### 3.6 Our story (`/pages/our-story`)
+
+Hero 1440×609 with h1 40/41.6 (V) → a 2-column grid 654/654 with a 20px gap holding image and statement (V) → a 432 text / 950 image split (V) → testimonial quotes in serif (V) → two half-width image tiles 720/720 (V). Mobile stacks at 350 wide (V).
+
+### 3.7 Blog (`/blogs/posts`) and Fabrics (`/pages/fabrics`)
+
+- **Blog:** a hero 1440×560 with a serif 40 title, a "Latest stories" grid of 320×320 square cards, title 18/21.6 450, excerpt 14/19 400, and numbered pagination at 18px (V).
+- **Fabrics:** a split hero of two 720×880 tiles ("Explore sheeting / bath fabrics", serif 40 over the image) (V), then a carousel of 432×630 category tiles (V).
+
+### 3.8 Per-viewport tables (Parachute)
+
+#### parachute/blog
+https://parachutehome.com/blogs/posts — "Posts – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 2902 | – | 40/52 400 | – | – | 14/19 400 | 440px (68) | 512 | – | 2 | 1920×560 (3.429), 440×440 (1), 440×440 (1) | – | – |
+| 1440 | 2604 | – | 40/52 400 | – | – | 14/19 400 | 320px (49) | 392 | – | 2 | 1440×560 (2.571), 320×320 (1), 320×320 (1) | – | – |
+| 1280 | 2454 | – | 40/52 400 | – | – | 13/17.7 400 | 298px (49) | 334 | – | 2 | 1280×560 (2.286), 298×298 (1), 298×298 (1) | – | – |
+| 1024 | 2331 | – | 40/52 400 | – | – | 13/17.7 400 | 234px (39) | 270 | – | 2 | 1024×560 (1.829), 234×234 (1), 234×234 (1) | – | – |
+| 768 | 3662 | – | 40/52 400 | – | – | 14/19 400 | 356px (55) | 392 | – | 2 | 768×560 (1.371), 356×356 (1), 356×356 (1) | – | – |
+| 390 | 5874 | – | 30/39 400 | – | – | 14/19 400 | 350px (54) | 20 | – | 2 | 390×340 (1.147), 350×335 (1.044), 350×335 (1.044) | – | – |
+| 375 | 5844 | – | 30/39 400 | – | – | 14/19 400 | 335px (52) | 20 | – | 2 | 375×340 (1.103), 335×321 (1.044), 335×321 (1.044) | – | – |
+#### parachute/care
+https://parachutehome.com/pages/care-2026 — "Care 2026 – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 9841 | 64/70.4 400 | 40/52 400 | – | – | 16/21.6 300 | 440px (59) | 1030 | 24/10 | 14 | 1920×570 (3.368), 902×458 (1.969), 466×644 (0.723) | – | – |
+| 1440 | 8575 | 64/70.4 400 | 40/52 400 | – | – | 16/21.6 300 | 440px (59) | 790 | 24/10 | 14 | 1440×570 (2.526), 662×458 (1.445), 346×481 (0.72) | – | – |
+| 1280 | 8128 | 64/70.4 400 | 40/52 400 | – | – | 16/21.6 300 | 440px (59) | 710 | 24/10 | 14 | 1280×570 (2.246), 618×458 (1.349), 306×426 (0.718) | – | – |
+| 1024 | 7497 | 64/70.4 400 | 40/52 400 | – | – | 16/21.6 300 | 352px (47) | 582 | 24/10 | 14 | 1024×570 (1.796), 490×458 (1.07), 242×339 (0.713) | – | – |
+| 768 | 7228 | 32/35.2 400 | 40/52 400 | – | – | 16/21.6 300 | 284px (38) | 424 | 24/10 | 14 | 768×570 (1.347), 362×458 (0.79), 171×267 (0.64) | – | – |
+| 390 | 9436 | 32/35.2 400 | 30/39 400 | – | – | 16/21.6 300 | 326px (44) | 32 | 24/10 | 12 | 390×570 (0.684), 348×294 (1.184), 175×233 (0.75) | – | – |
+| 375 | 9431 | 32/35.2 400 | 30/39 400 | – | – | 16/21.6 300 | 311px (42) | 32 | 24/10 | 12 | 375×570 (0.658), 333×294 (1.133), 167×223 (0.75) | – | – |
+#### parachute/contact
+https://parachutehome.com/pages/contact?view=contact — "Contact Us | Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 3188 | – | 40/41.6 400 ls -0.4px | – | – | 16/28.8 400 | 423px (57) | 56 | – | 3 | 1920×587 (3.273), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 1440 | 3017 | – | 40/41.6 400 ls -0.4px | – | – | 16/28.8 400 | 300px (40) | 56 | – | 3 | 1440×471 (3.057), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 1280 | 2945 | – | 36/37.4 400 ls -0.4px | – | – | 16/28.8 400 | 291px (39) | 20 | – | 3 | 1280×467 (2.741), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 1024 | 2896 | – | 36/37.4 400 ls -0.4px | – | – | 16/28.8 400 | 224px (30) | 20 | – | 3 | 1024×467 (2.193), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 768 | 3892 | – | 34/35.4 400 ls -0.4px | – | – | 16/28.8 400 | 336px (45) | 20 | – | 3 | 768×386 (1.99), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 390 | 4873 | – | 32/33.3 400 | – | – | 15/27 400 | 330px (47) | 20 | – | 3 | 390×364 (1.071), 42×48 (0.875), 46×47 (0.979) | – | – |
+| 375 | 4871 | – | 32/33.3 400 | – | – | 15/27 400 | 315px (45) | 20 | – | 3 | 375×350 (1.071), 42×48 (0.875), 46×47 (0.979) | – | – |
+#### parachute/fabrics
+https://parachutehome.com/pages/fabrics — "Fabrics – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | not captured |||||||||||||
+| 1440 | 2492 | – | 40/41.6 400 ls -0.4px | 40/41.6 400 ls -0.4px | – | – | – | – | – | 2 | 720×880 (0.818), 720×880 (0.818), 432×630 (0.686) | – | – |
+| 1280 | 2137 | – | 40/41.6 400 ls -0.4px | 36/37.4 400 ls -0.4px | – | – | – | – | – | 2 | 640×782 (0.818), 640×782 (0.818), 320×467 (0.686) | – | – |
+| 1024 | 1931 | – | 40/41.6 400 ls -0.4px | 36/37.4 400 ls -0.4px | – | – | – | – | – | 2 | 512×626 (0.818), 512×626 (0.818), 320×467 (0.686) | – | – |
+| 768 | 1876 | – | 40/41.6 400 ls -0.4px | 34/35.4 400 ls -0.4px | – | – | – | – | – | 2 | 384×469 (0.818), 384×469 (0.818), 240×350 (0.686) | – | – |
+| 390 | 2735 | – | 24/33.6 400 ls -0.24px | 27.6/31 400 | – | – | – | – | – | 2 | 390×477 (0.818), 390×477 (0.818), 248×362 (0.686) | – | – |
+| 375 | 2693 | – | 24/33.6 400 ls -0.24px | 27.6/31 400 | – | – | – | – | – | 2 | 375×459 (0.818), 375×459 (0.818), 248×362 (0.686) | – | – |
+#### parachute/faq
+https://parachutehome.com/pages/faq — "Faq – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 11003 | – | 40/42 400 ls -0.6px | 40/41.6 400 ls -0.35px capitalize | – | 14/21 400 | 881px (136) | 983 | 12 | 2 | 1920×432 (4.449) | – | – |
+| 1440 | 10883 | – | 40/42 400 ls -0.6px | 40/41.6 400 ls -0.35px capitalize | – | 14/21 400 | 881px (136) | 503 | 12 | 2 | 1440×432 (3.336) | – | – |
+| 1280 | 10819 | – | 40/42 400 ls -0.6px | 40/41.6 400 ls -0.35px capitalize | – | 14/21 400 | 880px (136) | 380 | 12 | 2 | 1280×432 (2.966) | – | – |
+| 1024 | 10769 | – | 32/33.6 400 ls -0.6px | 40/41.6 400 ls -0.35px capitalize | – | 14/21 400 | 695px (107) | 309 | 12 | 2 | 1024×432 (2.373) | – | – |
+| 768 | 11044 | – | 32/33.6 400 ls -0.6px | 30/31.2 400 ls -0.35px capitalize | – | 14/21 400 | 421px (65) | 327 | 12 | 2 | 768×339 (2.264) | – | – |
+| 390 | 12304 | – | 16/24 700 | 32/33.3 400 ls -0.35px capitalize | – | 14/21 400 | 350px (54) | 20 | 12 | 2 | 390×350 (1.116) | – | – |
+| 375 | 12385 | – | 16/24 700 | 32/33.3 400 ls -0.35px capitalize | – | 14/21 400 | 335px (52) | 20 | 12 | 2 | 375×350 (1.073) | – | – |
+#### parachute/our-fabrics-detail
+https://parachutehome.com/pages/our-fabrics-detail — "Our Fabrics Detail – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 5488 | – | 40/41.6 400 ls -0.4px | 16/17.6 400 | – | 16/20.5 500 | 1250px (166) | 335 | – | 3 | 1920×377 (5.093), 1700×145 (11.756), 160×213 (0.75) | – | – |
+| 1440 | 5368 | – | 40/41.6 400 ls -0.4px | 16/17.6 400 | – | 16/20.5 500 | 1250px (166) | 95 | – | 3 | 1440×377 (3.82), 1248×145 (8.631), 160×213 (0.75) | – | – |
+| 1280 | 4810 | – | 36/37.4 400 ls -0.4px | 16/17.6 400 | – | 16/20.5 500 | 1200px (159) | 40 | – | 3 | 1280×300 (4.267), 1238×117 (10.542), 160×213 (0.75) | – | – |
+| 1024 | 4761 | – | 36/37.4 400 ls -0.4px | 16/17.6 400 | – | 16/20.5 500 | 944px (125) | 40 | – | 3 | 1024×300 (3.413), 982×117 (8.362), 160×213 (0.75) | – | – |
+| 768 | 4545 | – | 34/35.4 400 ls -0.4px | 16/17.6 400 | – | 14/17.9 500 | 688px (104) | 40 | – | 3 | 768×300 (2.56), 726×103 (7.029), 160×213 (0.75) | – | – |
+| 390 | 7446 | – | 24/33.6 400 ls -0.24px | 16/17.6 400 | – | 14/19 400 | 245px (38) | 73 | – | 3 | 390×240 (1.625), 350×167 (2.092), 160×213 (0.75) | – | – |
+| 375 | 7499 | – | 24/33.6 400 ls -0.24px | 16/17.6 400 | – | 14/19 400 | 245px (38) | 65 | – | 3 | 375×240 (1.563), 335×167 (2.003), 160×213 (0.75) | – | – |
+#### parachute/our-story
+https://parachutehome.com/pages/our-story — "Our story – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 5348 | 40/41.6 400 ls -0.4px | 32/33.3 300 | – | – | 16/24 400 | 438px (59) | 1198 | – | 5 | 1920×812 (2.364), 289×289 (1), 289×560 (0.516) | – | – |
+| 1440 | 4350 | 40/41.6 400 ls -0.4px | 32/33.3 300 | – | – | 16/24 400 | 438px (59) | 838 | – | 5 | 1440×609 (2.364), 209×209 (1), 209×405 (0.516) | – | – |
+| 1280 | 3985 | 40/41.6 400 ls -0.4px | 32/33.3 300 | – | – | 16/24 400 | 438px (59) | 736 | – | 5 | 1280×541 (2.364), 195×195 (1), 195×377 (0.516) | – | – |
+| 1024 | 3334 | 40/41.6 400 ls -0.4px | 32/33.3 300 | – | – | 16/24 400 | 438px (59) | 544 | – | 5 | 1024×433 (2.364), 152×152 (1), 152×295 (0.516) | – | – |
+| 768 | 3447 | 40/41.6 400 ls -0.4px | 32/33.3 300 | – | – | 16/24 400 | 354px (48) | 394 | – | 5 | 768×325 (2.364), 354×498 (0.711), 345×517 (0.666) | – | – |
+| 390 | 5112 | 32/33.3 400 ls -0.32px | 32/33.3 300 | – | – | 15/22.5 400 | 350px (50) | 20 | – | 5 | 390×333 (1.172), 350×265 (1.323), 224×337 (0.666) | – | – |
+| 375 | 5000 | 32/33.3 400 ls -0.32px | 32/33.3 300 | – | – | 15/22.5 400 | 335px (48) | 20 | – | 5 | 375×320 (1.172), 335×253 (1.323), 215×322 (0.666) | – | – |
+#### parachute/returns
+https://parachutehome.com/pages/returns — "Returns – Parachute Home"
+| vw | doc h | h1 | h2 | h3 | h4 | body p | p width (chars) | content x | p gap | sections | images (first 3 w×h ratio) | accordion row h / pad | table row h |
+| 1920 | 3584 | – | 40/41.6 400 ls -0.4px | – | – | 16/20.5 500 ls -0.55px | 432px (57) | 744 | – | 3 | 1920×587 (3.273), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 1440 | 3348 | – | 40/41.6 400 ls -0.4px | – | – | 16/20.5 500 ls -0.55px | 432px (57) | 504 | – | 3 | 1440×472 (3.054), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 1280 | 3174 | – | 36/37.4 400 ls -0.4px | – | – | 16/20.5 500 ls -0.55px | 432px (57) | 424 | – | 3 | 1280×467 (2.739), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 1024 | 3211 | – | 36/37.4 400 ls -0.4px | – | – | 16/20.5 500 ls -0.55px | 432px (57) | 296 | – | 3 | 1024×467 (2.191), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 768 | 3770 | – | 34/35.4 400 ls -0.4px | – | – | 16/20.5 500 ls -0.55px | 432px (57) | 168 | – | 3 | 768×386 (1.988), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 390 | 4691 | – | 32/33.3 400 | – | – | 15/19.2 400 | 283px (41) | 54 | – | 3 | 390×311 (1.254), 74×50 (1.48), 60×67 (0.896) | – | – |
+| 375 | 4739 | – | 32/33.3 400 | – | – | 15/19.2 400 | 283px (41) | 46 | – | 3 | 375×299 (1.254), 74×50 (1.48), 60×67 (0.896) | – | – |
+
+### 3.9 What we take from Parachute (and what we don't)
+
+| Parachute pattern | Used in | Status |
+|---|---|---|
+| Sticky "Jump to a section" column beside the FAQ | `faq` layout `sidebar` (336/881 proportion) | implemented in the visual pass |
+| Fabric panel: texture banner, chips, statement, accordions, products, "Shop all" | `fabric-guide` layout `panels` | implemented in the visual pass |
+| Alternating image/text rows with a product strip (care) | `editorial-image-text` + `related-products-editorial` | already possible |
+| Self-help cards on contact | `info-columns` with icons | already possible |
+| Serif display face and uppercase labels | **not adopted**. Decision D4 is one grotesk family, Tekla's typography | by design |
+| Full-bleed hero image bands on every page | optional (`editorial-hero` image width "full") | by design: Tekla-style text headers are the default |
+
 
 ---
 

@@ -796,6 +796,16 @@
         "structured_data": {
           "label": "Add FAQ structured data",
           "info": "Helps search engines show your answers. Use on one FAQ section per page."
+        },
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "stacked": "Single column",
+            "sidebar": "Topic list beside questions"
+          }
+        },
+        "jump_label": {
+          "label": "Topic list title"
         }
       },
       "blocks": {

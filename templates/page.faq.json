@@ -4,21 +4,11 @@
       "type": "editorial-hero",
       "settings": {
         "heading": "",
-        "content_width": "text",
+        "content_width": "page",
         "text": "<p>Answers to the questions we hear most. Can't find what you need? Get in touch and we'll help.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
-      }
-    },
-    "nav": {
-      "type": "guide-anchor-nav",
-      "settings": {
-        "sticky": true,
-        "style": "links",
-        "content_width": "text",
-        "padding_top": 0,
-        "padding_bottom": 32
       }
     },
     "faq": {
@@ -124,9 +114,11 @@
         "q_4_2"
       ],
       "settings": {
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 16,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "layout": "sidebar",
+        "jump_label": "Jump to a section"
       }
     },
     "help": {
@@ -148,7 +140,7 @@
       ],
       "settings": {
         "columns": 1,
-        "content_width": "text",
+        "content_width": "page",
         "dividers": true,
         "padding_top": 0,
         "padding_bottom": 80
@@ -157,7 +149,6 @@
   },
   "order": [
     "hero",
-    "nav",
     "faq",
     "help"
   ]
