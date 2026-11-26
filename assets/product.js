@@ -278,7 +278,9 @@
       // The product's category diagram (rendered server-side above the body) moves next to its table, so the anchor scroll shows both.
       const diagram = dialog.querySelector('.size-guide-dialog__diagram');
       const anchorEl = trigger.dataset.sizeGuideAnchor && body.querySelector(`#${CSS.escape(trigger.dataset.sizeGuideAnchor)}`);
-      if (diagram && anchorEl) { anchorEl.before(diagram); diagram.id = `${trigger.dataset.sizeGuideAnchor}-diagram`; }
+      // The guide page may already carry the diagram inside the category block: then ours would be a duplicate.
+      if (diagram && anchorEl && anchorEl.querySelector('svg[role="img"]')) diagram.remove();
+      else if (diagram && anchorEl) { anchorEl.before(diagram); diagram.id = `${trigger.dataset.sizeGuideAnchor}-diagram`; }
       body.setAttribute('aria-busy', 'false');
       scrollToAnchor(body, trigger.dataset.sizeGuideAnchor);
     } catch (err) {
