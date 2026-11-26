@@ -3,122 +3,428 @@
     "hero": {
       "type": "hero-full",
       "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Headline for the season", "size": "h0", "tag": "h1" } },
-        "text": { "type": "text", "settings": { "text": "<p>A short line that sets up the campaign.</p>" } },
-        "buttons": { "type": "buttons", "settings": { "label_1": "Shop now", "link_1": "/collections/all", "style_1": "primary", "label_2": "", "link_2": "", "style_2": "secondary" } }
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "The comfort in every thread",
+            "size": "h0",
+            "tag": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bedding for calm, unhurried sleep.</p>"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "label_1": "Shop bedding",
+            "link_1": "/collections/all",
+            "style_1": "primary",
+            "label_2": "Bed sheets",
+            "link_2": "/collections/bed-sheets",
+            "style_2": "secondary"
+          }
+        }
       },
-      "block_order": ["heading", "text", "buttons"],
-      "settings": { "height": "screen", "content_position": "bottom-left", "content_width": 640, "text_color": "light", "overlay_opacity": 15, "allow_header_overlay": true, "color_scheme": "sand" }
+      "block_order": [
+        "heading",
+        "text",
+        "buttons"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
+        "height": "screen",
+        "content_position": "top-left",
+        "content_width": 640,
+        "text_color": "light",
+        "overlay_opacity": 30,
+        "allow_header_overlay": true,
+        "color_scheme": "ink"
+      }
     },
     "promo-band": {
       "type": "rich-text",
       "settings": {
-        "layout": "split", "width": "narrow", "eyebrow": "", "heading": "A short promotional message", "heading_size": "h3",
-        "text": "<p>Supporting detail for the offer or announcement, kept to one or two lines.</p>",
-        "button_label": "", "button_link": "", "button_style": "tertiary", "color_scheme": "ink", "padding_top": 48, "padding_bottom": 56
+        "layout": "split",
+        "width": "narrow",
+        "eyebrow": "",
+        "heading": "Sukoon means calm",
+        "heading_size": "h3",
+        "text": "<p>It is the Urdu word for peace of mind. It is also how we want a bed to feel at the end of the day: soft, simple and easy to come home to.</p>",
+        "button_label": "Our story",
+        "button_link": "/pages/about",
+        "button_style": "tertiary",
+        "color_scheme": "sage",
+        "padding_top": 48,
+        "padding_bottom": 56
       }
     },
     "featured": {
       "type": "featured-collection",
       "settings": {
-        "collection": "bed-sheets", "eyebrow": "", "heading": "Featured collection", "heading_size": "h3", "text": "", "link_label": "Shop the collection",
-        "products_to_show": 8, "layout": "carousel", "card_width": 256, "columns_desktop": 4, "image_ratio": "portrait",
-        "view_all_label": "View all", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
-      }
-    },
-    "campaign-tiles": {
-      "type": "editorial-grid",
-      "blocks": {
-        "tile-1": { "type": "tile", "settings": { "heading": "Campaign headline", "text": "", "button_label": "Shop now", "link": "/collections/all" } },
-        "tile-2": { "type": "tile", "settings": { "heading": "Second campaign", "text": "", "button_label": "Discover", "link": "/collections/all" } }
-      },
-      "block_order": ["tile-1", "tile-2"],
-      "settings": {
-        "heading": "", "heading_size": "h3", "columns": 2, "gap": "8", "full_bleed": false, "image_ratio": "portrait", "caption_position": "overlay",
-        "text_color": "light", "tile_heading_size": "h2", "mobile_layout": "stack", "color_scheme": "white", "padding_top": 64, "padding_bottom": 64
-      }
-    },
-    "bestsellers": {
-      "type": "product-highlights",
-      "blocks": {
-        "tab-all": { "type": "tab", "settings": { "label": "All", "collection": "bed-sheets" } },
-        "tab-bedding": { "type": "tab", "settings": { "label": "Bedding", "collection": "duvet-covers" } },
-        "tab-duvets": { "type": "tab", "settings": { "label": "Duvets", "collection": "duvets" } },
-        "tab-pillows": { "type": "tab", "settings": { "label": "Pillows", "collection": "pillows" } }
-      },
-      "block_order": ["tab-all", "tab-bedding", "tab-duvets", "tab-pillows"],
-      "settings": {
-        "eyebrow": "", "heading": "Bestsellers", "heading_size": "h3", "products_to_show": 8, "card_width": 256, "image_ratio": "portrait",
-        "view_all_label": "Shop all bestsellers", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
-      }
-    },
-    "lifestyle": {
-      "type": "image-banner",
-      "blocks": {
-        "hotspot-1": { "type": "hotspot", "settings": { "product": "duvet-comfort-filling-220-gsm", "x": 24, "y": 78, "label": "" } }
-      },
-      "block_order": ["hotspot-1"],
-      "settings": {
-        "desktop_ratio": "0.75", "mobile_ratio": "0.56", "inset": true, "heading": "Display\nheadline", "heading_size": "h0", "text": "",
-        "link_label": "Discover", "link": "/collections/all", "link_style": "primary", "content_position": "top-left", "text_color": "light",
-        "overlay_opacity": 10, "color_scheme": "white", "padding_top": 0, "padding_bottom": 64
-      }
-    },
-    "banner": {
-      "type": "image-banner",
-      "settings": {
-        "desktop_ratio": "1.84", "mobile_ratio": "1.78", "inset": true, "heading": "Campaign headline", "heading_size": "h3", "text": "",
-        "link_label": "Shop now", "link": "/collections/all", "link_style": "tertiary", "content_position": "bottom-left", "text_color": "light",
-        "overlay_opacity": 15, "color_scheme": "white", "padding_top": 0, "padding_bottom": 64
-      }
-    },
-    "new-arrivals": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "duvet-covers", "eyebrow": "", "heading": "New arrivals", "heading_size": "h3", "text": "", "link_label": "",
-        "products_to_show": 8, "layout": "carousel", "card_width": 256, "columns_desktop": 4, "image_ratio": "portrait",
-        "view_all_label": "Shop new arrivals", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
+        "collection": "bed-sheets",
+        "eyebrow": "",
+        "heading": "Bed sheets",
+        "heading_size": "h3",
+        "text": "",
+        "link_label": "",
+        "products_to_show": 8,
+        "layout": "carousel",
+        "card_width": 256,
+        "columns_desktop": 4,
+        "image_ratio": "portrait",
+        "view_all_label": "Shop bed sheets",
+        "view_all_style": "primary",
+        "color_scheme": "white",
+        "padding_top": 64,
+        "padding_bottom": 88
       }
     },
     "categories": {
       "type": "collection-list",
       "blocks": {
-        "category-1": { "type": "category", "settings": { "collection": "bed-sheets", "label": "" } },
-        "category-2": { "type": "category", "settings": { "collection": "duvet-covers", "label": "" } },
-        "category-3": { "type": "category", "settings": { "collection": "duvets", "label": "" } },
-        "category-4": { "type": "category", "settings": { "collection": "pillows", "label": "" } }
+        "category-1": {
+          "type": "category",
+          "settings": {
+            "collection": "bed-sheets",
+            "image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-seashell_11507b5e-7015-4618-a3fe-cd9bad0088dd.webp",
+            "label": ""
+          }
+        },
+        "category-2": {
+          "type": "category",
+          "settings": {
+            "collection": "duvet-covers",
+            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+            "label": ""
+          }
+        },
+        "category-3": {
+          "type": "category",
+          "settings": {
+            "collection": "bed-covers",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "label": ""
+          }
+        },
+        "category-4": {
+          "type": "category",
+          "settings": {
+            "collection": "duvets",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "label": ""
+          }
+        },
+        "category-5": {
+          "type": "category",
+          "settings": {
+            "collection": "pillows",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "label": ""
+          }
+        }
       },
-      "block_order": ["category-1", "category-2", "category-3", "category-4"],
-      "settings": { "heading": "", "heading_size": "h3", "link_label": "", "columns_desktop": 4, "image_ratio": "portrait", "label_style": "chip", "mobile_layout": "scroll", "color_scheme": "white", "padding_top": 64, "padding_bottom": 64 }
+      "block_order": [
+        "category-1",
+        "category-2",
+        "category-3",
+        "category-4",
+        "category-5"
+      ],
+      "settings": {
+        "heading": "Shop by category",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "link_label": "",
+        "columns_desktop": 5,
+        "image_ratio": "portrait",
+        "label_style": "chip",
+        "mobile_layout": "scroll",
+        "color_scheme": "paper",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "highlights": {
+      "type": "product-highlights",
+      "blocks": {
+        "tab-sets": {
+          "type": "tab",
+          "settings": {
+            "label": "Sets",
+            "collection": "bed-sheets"
+          }
+        },
+        "tab-duvets": {
+          "type": "tab",
+          "settings": {
+            "label": "Duvets",
+            "collection": "duvets"
+          }
+        },
+        "tab-pillows": {
+          "type": "tab",
+          "settings": {
+            "label": "Pillows",
+            "collection": "pillows"
+          }
+        }
+      },
+      "block_order": [
+        "tab-sets",
+        "tab-duvets",
+        "tab-pillows"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Made for your bed",
+        "heading_size": "h3",
+        "products_to_show": 8,
+        "card_width": 256,
+        "image_ratio": "portrait",
+        "view_all_label": "Shop all",
+        "view_all_style": "primary",
+        "color_scheme": "white",
+        "padding_top": 64,
+        "padding_bottom": 88
+      }
+    },
+    "campaign-tiles": {
+      "type": "editorial-grid",
+      "blocks": {
+        "tile-1": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+            "heading": "Two colours, one cover",
+            "text": "<p>Reversible duvet cover sets: turn the cover over when you want a change.</p>",
+            "button_label": "Shop duvet covers",
+            "link": "/collections/duvet-covers"
+          }
+        },
+        "tile-2": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+            "heading": "Quilted, soft and simple",
+            "text": "<p>A quilted bed sheet set with two pillow covers.</p>",
+            "button_label": "Shop bed covers",
+            "link": "/collections/bed-covers"
+          }
+        }
+      },
+      "block_order": [
+        "tile-1",
+        "tile-2"
+      ],
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "columns": 2,
+        "gap": "8",
+        "full_bleed": false,
+        "image_ratio": "portrait",
+        "caption_position": "below",
+        "text_color": "dark",
+        "tile_heading_size": "h4",
+        "mobile_layout": "stack",
+        "color_scheme": "white",
+        "padding_top": 32,
+        "padding_bottom": 64
+      }
     },
     "discovery": {
       "type": "fabric-discovery",
       "blocks": {
-        "shade-1": { "type": "shade", "settings": { "name": "White", "color": "#F6F4F0", "link": "/collections/all" } },
-        "shade-2": { "type": "shade", "settings": { "name": "Sand", "color": "#D9CDBB", "link": "/collections/all" } },
-        "shade-3": { "type": "shade", "settings": { "name": "Stone", "color": "#B9B4AC", "link": "/collections/all" } },
-        "shade-4": { "type": "shade", "settings": { "name": "Sage", "color": "#A7B09A", "link": "/collections/all" } },
-        "shade-5": { "type": "shade", "settings": { "name": "Clay", "color": "#B98A6E", "link": "/collections/all" } },
-        "shade-6": { "type": "shade", "settings": { "name": "Slate", "color": "#5E6670", "link": "/collections/all" } },
-        "shade-7": { "type": "shade", "settings": { "name": "Ink", "color": "#2E3440", "link": "/collections/all" } }
+        "fabric-1": {
+          "type": "shade",
+          "settings": {
+            "fabric": "cotton-satin",
+            "name": "Cotton satin",
+            "swatch_image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+            "image_1": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+            "image_2": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-peach-floral_01f8c12b-438f-4474-8b38-361f24ce2887.webp",
+            "image_3": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
+            "image_4": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-seashell_11507b5e-7015-4618-a3fe-cd9bad0088dd.webp",
+            "image_5": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp"
+          }
+        },
+        "fabric-2": {
+          "type": "shade",
+          "settings": {
+            "fabric": "quilted-cotton",
+            "name": "Quilted cotton",
+            "swatch_image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "image_1": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "image_2": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "image_3": "shopify://shop_images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+            "image_4": "shopify://shop_images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+            "image_5": "shopify://shop_images/sakooon-quilted-bed-sheet-set-rust.webp",
+            "image_6": "shopify://shop_images/sakooon-quilted-bed-sheet-set-emerald-green.webp"
+          }
+        },
+        "fabric-3": {
+          "type": "shade",
+          "settings": {
+            "fabric": "microfibre-fill",
+            "name": "Microfibre duvet fill",
+            "swatch_image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "image_1": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp"
+          }
+        },
+        "fabric-4": {
+          "type": "shade",
+          "settings": {
+            "fabric": "cotton-microfibre",
+            "name": "Cotton cover, microfibre fill",
+            "swatch_image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "image_1": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "image_2": "shopify://shop_images/sakooon-duvet-comfort-pillow-piping-detail.webp"
+          }
+        }
       },
-      "block_order": ["shade-1", "shade-2", "shade-3", "shade-4", "shade-5", "shade-6", "shade-7"],
+      "block_order": [
+        "fabric-1",
+        "fabric-2",
+        "fabric-3",
+        "fabric-4"
+      ],
       "settings": {
-        "heading": "A considered palette", "heading_size": "h3", "text": "<p>Introduce your colours or fabrics and how they work together.</p>",
-        "swatch_label": "Discover by shade", "card_width": 344, "color_scheme": "white", "padding_top": 160, "padding_bottom": 104
+        "heading": "Choose by fabric",
+        "heading_size": "h3",
+        "text": "<p>Cotton satin, quilted cotton and soft microfibre fills. Pick one to see it up close.</p>",
+        "swatch_label": "Fabric",
+        "card_width": 344,
+        "color_scheme": "white",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "values": {
+      "type": "brand-values",
+      "blocks": {
+        "value-1": {
+          "type": "value",
+          "settings": {
+            "icon": "map-pin",
+            "heading": "Designed in Pakistan",
+            "text": "<p>Bedding planned for the homes we know.</p>"
+          }
+        },
+        "value-2": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "heading": "Cotton sheet sets",
+            "text": "<p>Quilted cotton and yarn-dyed cotton satin. The fabric guide explains each one.</p>"
+          }
+        },
+        "value-3": {
+          "type": "value",
+          "settings": {
+            "icon": "drop",
+            "heading": "Easy to care for",
+            "text": "<p>Simple washing and drying advice lives in the care guide.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "value-1",
+        "value-2",
+        "value-3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Why Sakooon",
+        "heading_size": "h3",
+        "text": "",
+        "columns": 3,
+        "image_ratio": "4/5",
+        "align": "left",
+        "mobile_layout": "stack",
+        "color_scheme": "paper",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "layout": "split",
+        "heading": "Letters from Sakooon",
+        "heading_size": "h3",
+        "text": "<p>New colours, care tips and the odd quiet note. Not too often.</p>",
+        "button_label": "Subscribe",
+        "disclaimer": "<p>You can unsubscribe at any time.</p>",
+        "color_scheme": "sand",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "service": {
       "type": "service-info",
       "blocks": {
-        "item-1": { "type": "item", "settings": { "icon": "truck", "heading": "Delivery", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
-        "item-2": { "type": "item", "settings": { "icon": "refresh", "heading": "Returns", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
-        "item-3": { "type": "item", "settings": { "icon": "drop", "heading": "Care", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
-        "item-4": { "type": "item", "settings": { "icon": "mail", "heading": "Support", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } }
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "info",
+            "heading": "Size guide",
+            "text": "<p>Check your mattress before you choose.</p>",
+            "link_label": "Find your size",
+            "link": "/pages/size-guide"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "wash",
+            "heading": "Care guide",
+            "text": "<p>Keep your bedding soft for longer.</p>",
+            "link_label": "Read the guide",
+            "link": "/pages/care-guide"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "mail",
+            "heading": "Questions",
+            "text": "<p>We are happy to help.</p>",
+            "link_label": "Contact us",
+            "link": "/pages/contact"
+          }
+        }
       },
-      "block_order": ["item-1", "item-2", "item-3", "item-4"],
-      "settings": { "heading": "", "heading_size": "h3", "columns": 4, "align": "left", "dividers": true, "color_scheme": "paper", "padding_top": 48, "padding_bottom": 48 }
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3"
+      ],
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "columns": 3,
+        "align": "left",
+        "dividers": true,
+        "color_scheme": "paper",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
-  "order": ["hero", "promo-band", "featured", "campaign-tiles", "bestsellers", "lifestyle", "banner", "new-arrivals", "categories", "discovery", "service"]
+  "order": [
+    "hero",
+    "promo-band",
+    "featured",
+    "categories",
+    "highlights",
+    "campaign-tiles",
+    "discovery",
+    "values",
+    "newsletter",
+    "service"
+  ]
 }

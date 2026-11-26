@@ -57,3 +57,7 @@ Format: date | template/state | viewport | observation | action | status.
 
 ## 2026-11-26 Phase 2 integration check (head 31f9cfd)
 Merged: editorial 62e7dd9 (fabric metaobjects, accordion label), commerce 25efe12 (real-catalogue overlays, variant swatch colours). Theme Check: 136 files, no offenses. test-interactions on 9292: all pass. test-a11y default set (15 pages x 2 viewports): 30/30 PASS, 0 violations.
+
+## 2026-11-26 Phase 2 integration check (head 1a7e960)
+Merged: storefront 78459d8 + 5df3ee1 (brand header/footer, real menus, homepage, cart name fix), editorial e111c43/d2a3a96 (care, size, FAQ, shipping, returns, contact), commerce 25efe12. Theme Check clean; interactions 9/9 on 9292.
+Lighthouse mobile on the preview: / 76-78, PDP 75, FAQ 84 (a11y/BP/SEO 100/100/100). LCP = hero img; breakdown TTFB 0.45 s, load 1.0 s, render delay 4.0 s. Render delay is the blocking chain: 4 CSS files (147 KB unminified) + the preview-only Google Fonts CSS request (1.3 s). On Shopify, fonts are @font-face from the Shopify CDN (preconnected, preloaded) and assets are minified + brotli, so this number is a floor, not the expected store result. Done anyway: commerce.css/editorial.css load non-blocking outside their templates; preview font requests collapsed to one per family. Remaining lever if the store measurement is still low: inline the critical base/header CSS (~6 KB) in theme.liquid.

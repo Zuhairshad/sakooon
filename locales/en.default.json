@@ -459,7 +459,9 @@
       "back": "Back",
       "main_menu": "Main menu",
       "secondary_menu": "Quick links",
-      "account": "Account"
+      "account": "Account",
+      "cart": "Cart",
+      "cart_items": ", items:"
     },
     "announcement": {
       "previous": "Previous announcement",
@@ -471,9 +473,10 @@
     "footer": {
       "newsletter_label": "Email address",
       "newsletter_submit": "Subscribe",
-      "newsletter_success": "Thanks for subscribing.",
+      "newsletter_success": "Thank you for signing up.",
       "country_label": "Country/region",
-      "back_to_top": "Back to top"
+      "back_to_top": "Back to top",
+      "whatsapp": "Message us on WhatsApp"
     },
     "sections": {
       "previous": "Previous",
@@ -482,7 +485,8 @@
       "play_video": "Play video",
       "pause_video": "Pause video",
       "hotspot": "View {{ title }}",
-      "slide_label": "{{ index }} of {{ count }}"
+      "slide_label": "{{ index }} of {{ count }}",
+      "about_fabric": "About {{ name }}"
     }
   },
   "onboarding": {

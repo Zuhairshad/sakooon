@@ -32,8 +32,32 @@
   {{ 'base.css' | asset_url | stylesheet_tag }}
   {%- comment -%} Area stylesheets: each owner's single stylesheet. Loaded here once so sections never duplicate. {%- endcomment -%}
   {{ 'storefront.css' | asset_url | stylesheet_tag }}
-  {{ 'commerce.css' | asset_url | stylesheet_tag }}
-  {{ 'editorial.css' | asset_url | stylesheet_tag }}
+  {%- comment -%}
+    commerce.css and editorial.css block rendering only on the templates whose above-the-fold content needs them;
+    elsewhere they load asynchronously (media swap) so first paint is not held up. <noscript> keeps them blocking without JS.
+  {%- endcomment -%}
+  {%- liquid
+    assign commerce_blocking = false
+    if template.name == 'index' or template.name == 'product' or template.name == 'collection' or template.name == 'list-collections' or template.name == 'search' or template.name == 'cart'
+      assign commerce_blocking = true
+    endif
+    assign editorial_blocking = false
+    if template.name == 'page' or template.name == 'article' or template.name == 'blog' or template.name == 'metaobject'
+      assign editorial_blocking = true
+    endif
+  -%}
+  {%- if commerce_blocking -%}
+    {{ 'commerce.css' | asset_url | stylesheet_tag }}
+  {%- else -%}
+    <link rel="stylesheet" href="{{ 'commerce.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript>{{ 'commerce.css' | asset_url | stylesheet_tag }}</noscript>
+  {%- endif -%}
+  {%- if editorial_blocking -%}
+    {{ 'editorial.css' | asset_url | stylesheet_tag }}
+  {%- else -%}
+    <link rel="stylesheet" href="{{ 'editorial.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript>{{ 'editorial.css' | asset_url | stylesheet_tag }}</noscript>
+  {%- endif -%}
   <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
   {%- if template.name == 'product' or template.name == 'collection' or template.name == 'search' or template.name == 'cart' or settings.cart_type == 'drawer' -%}
     <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
