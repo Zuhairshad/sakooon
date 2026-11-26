@@ -54,6 +54,15 @@ export async function dismiss(page) {
           b.click(); found.push('popup "' + l + '" in ' + (b.closest('[id^=alia-root]') ? 'Alia promo popup' : 'dialog'));
         }
       }
+      // Any other overlay: a close control inside a fixed, high z-index layer that covers much of the viewport
+      for (const b of document.querySelectorAll('button, [role=button], a[aria-label]')) {
+        if (!vis(b) || b.closest('cart-drawer,.drawer,.cv-header__drawer,.rebuy-cart__flyout,#tekla-chat-drawer,header,nav')) continue;
+        const label = ((b.getAttribute('aria-label') || '') + ' ' + b.innerText).trim();
+        if (!/close|dismiss|no thanks|^×$|^x$/i.test(label)) continue;
+        let el = b, overlay = null;
+        while (el && el !== document.body) { const cs = getComputedStyle(el); if (cs.position === 'fixed' && (parseInt(cs.zIndex) || 0) >= 1000) { const r = el.getBoundingClientRect(); if (r.width * r.height > innerWidth * innerHeight * 0.25) overlay = el; } el = el.parentElement; }
+        if (overlay) { b.click(); found.push('overlay close "' + label.slice(0, 30) + '"'); }
+      }
       // Klaviyo modal forms
       for (const b of document.querySelectorAll('.needsclick.klaviyo-close-form, [aria-label="Close dialog"]')) {
         if (vis(b)) { b.click(); found.push('Klaviyo modal'); }

@@ -19,11 +19,11 @@ Panel = one horizontal row of **link columns** followed by **promo cards**. The 
 | Small category (decor) | 1 | 2 | `[links][promo][promo]` |
 | Archive / outlet | 1 | 2 | `[links][promo][promo]` |
 
-Column anatomy (from DOM): each link column is a vertical stack `[group heading][link][link]…`. A promo card is one anchor wrapping `[image][caption]` that points to a collection, product or article. Measured pixel values of open panels (column widths, link pitch, heading style, image ratio, open/close timing) are **PENDING**: Parachute rate-limited the capture with HTTP 429.
+Column anatomy (from DOM): each link column is a vertical stack `[group heading][link][link]…`. A promo card is one anchor wrapping `[image][caption]` that points to a collection, product or article. Pixel values of open panels (column widths, link pitch, heading style, image ratio, open/close timing) are unmeasured: the panels do not open under headless hover (see storefront.md, "Could not capture").
 
-Mobile (<1024; exact px pending):
+Mobile (<1024, measured at 390 and 768):
 - The header bar shows logo, search, cart and hamburger, with a horizontally scrolling **sub-nav row** below it (the same top-level links; sale items in an accent colour). This lets people jump without opening the drawer.
-- Drawer: top row `[Close] [Back to menu]` plus utilities (currency selector, store locator, account). Level 1 lists the top-level sections as rows with a right arrow. Choosing one replaces the list with that section's groups (level 2) and shows "Back to menu".
+- Drawer: a full-width **bottom sheet** (582px at an 844px viewport) sliding up over 0.3s below the visible header. Level 1: 8 rows, 16/500, 61px, hairline rules. Choosing one replaces the list with that section's groups (level 2): "Back to menu" (12px uppercase) and utility icons on top, then per group an uppercase 12/700 heading link with an arrow, followed by 15–16px links (~33px pitch), groups separated by rules. No promo images on mobile.
 
 ## Tekla-style mega menu (secondary pattern: two-level hover)
 

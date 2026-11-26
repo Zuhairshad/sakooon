@@ -92,7 +92,7 @@ async function timeline(page, sel, prop, action, ms = 700) {
     const label = (await t.innerText()).trim();
     if (!(await t.isVisible())) continue;
     await page.mouse.move(700, 600); await page.waitForTimeout(500);
-    await dismiss(page);
+    await dismiss(page); await page.keyboard.press('Escape'); await page.waitForTimeout(300); await dismiss(page);
     let tl = [];
     try {
       tl = await timeline(page, CFG.panel, 'opacity', () => t.hover({ timeout: 5000 }));
