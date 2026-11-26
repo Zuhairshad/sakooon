@@ -183,7 +183,7 @@
           "settings": {
             "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
             "heading": "Two colours, one cover",
-            "text": "<p>Reversible duvet cover sets: turn the cover over when you want a change.</p>",
+            "text": "<p>Reversible. Turn it over for a change.</p>",
             "button_label": "Shop duvet covers",
             "link": "/collections/duvet-covers"
           }
@@ -193,7 +193,7 @@
           "settings": {
             "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
             "heading": "Quilted, soft and simple",
-            "text": "<p>A quilted bed sheet set with two pillow covers.</p>",
+            "text": "<p>A quilted set with two pillow covers.</p>",
             "button_label": "Shop bed covers",
             "link": "/collections/bed-covers"
           }
@@ -209,14 +209,17 @@
         "columns": 2,
         "gap": "8",
         "full_bleed": false,
-        "image_ratio": "portrait",
-        "caption_position": "below",
-        "text_color": "dark",
-        "tile_heading_size": "h4",
+        "image_ratio": "wide",
+        "caption_position": "overlay",
+        "text_color": "light",
+        "tile_heading_size": "display",
         "mobile_layout": "stack",
         "color_scheme": "white",
         "padding_top": 32,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "image_crop": "top",
+        "content_position": "bottom-left",
+        "scrim": 45
       }
     },
     "discovery": {

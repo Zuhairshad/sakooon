@@ -311,14 +311,28 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .editorial-grid__link { position: relative; display: block; height: 100%; text-decoration: none; color: inherit; }
 .editorial-grid__media img { transition: transform var(--duration-slow) var(--ease); }
 .editorial-grid__link:hover .editorial-grid__media img { transform: scale(1.02); }
-.editorial-grid--overlay .editorial-grid__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--space-6); display: grid; justify-items: start; gap: var(--space-3); }
-.editorial-grid--overlay .editorial-grid__copy--light { color: var(--on-media-light); background: linear-gradient(to top, rgba(0, 0, 0, .28), rgba(0, 0, 0, 0) 60%); }
+/* Overlay copy: inset 20px (28px from 768), bottom-left by default; light text sits on a bottom scrim over the lower 70%
+   of the image whose strength is the section's scrim setting (--tile-scrim). */
+.editorial-grid--overlay .editorial-grid__copy { position: absolute; inset: auto 0 0 0; z-index: 1; padding: 20px; display: grid; justify-items: start; align-content: end; gap: var(--space-3); }
+.editorial-grid--overlay .editorial-grid__copy--bottom-center { justify-items: center; text-align: center; }
+.editorial-grid--overlay .editorial-grid__copy--center { inset: 0; align-content: center; justify-items: center; text-align: center; }
+.editorial-grid--overlay .editorial-grid__copy--light { color: var(--on-media-light); }
+.editorial-grid--overlay .editorial-grid__link:has(.editorial-grid__copy--light) .editorial-grid__media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, var(--tile-scrim, .45)) 0%, rgba(0, 0, 0, calc(var(--tile-scrim, .45) * .75)) 40%, rgba(0, 0, 0, 0) 70%);
+}
+.editorial-grid--overlay .editorial-grid__link:has(.editorial-grid__copy--center.editorial-grid__copy--light) .editorial-grid__media::after { background: rgba(0, 0, 0, calc(var(--tile-scrim, .45) * .6)); }
+.editorial-grid--overlay .editorial-grid__copy--light .editorial-grid__text { color: rgba(255, 255, 255, .85); }
 .editorial-grid--overlay .editorial-grid__copy--light .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
+.editorial-grid__heading--display { margin: 0; font-size: clamp(32px, 1.2rem + 2.4vw, 56px); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; }
+.editorial-grid__copy .editorial-grid__heading--display + * { margin-top: var(--space-1); }
+.editorial-grid__copy .editorial-grid__button:not(.button--small) { margin-top: var(--space-2); }
 .editorial-grid--below .editorial-grid__copy { display: grid; justify-items: start; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-4); }
 .editorial-grid--below.editorial-grid--bleed .editorial-grid__copy { padding-inline: var(--page-gutter); }
 .editorial-grid--below .editorial-grid__button { padding: 0; min-height: 0; background: none; border: 0; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
 .editorial-grid__heading { line-height: var(--leading-tight); }
-@media (min-width: 1024px) { .editorial-grid--overlay .editorial-grid__copy { padding: var(--space-8); } }
+@media (min-width: 768px) { .editorial-grid--overlay .editorial-grid__copy { padding: 28px; } }
+@media (max-width: 767.98px) { .editorial-grid--wide .editorial-grid__media { aspect-ratio: 1 / 1; } }
 
 /* ---------- Image banner / lifestyle story ---------- */
 .image-banner__frame { position: relative; display: grid; overflow: visible; }

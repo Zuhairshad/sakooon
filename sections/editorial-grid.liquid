@@ -2,6 +2,8 @@
   Editorial grid / campaign tiles. Owner: shad-2d.
   Patterns: Parachute split campaign tiles (2 columns, 8px gap, 24px gutters, ~3:4, copy over the image bottom-left)
   and Tekla 2-up/4-up (full bleed, 2px gap, 4:5, caption below). Mobile: stack or horizontal scroll.
+  Overlay text sits on a bottom scrim (strength = scrim setting); image_crop chooses which part of the image a fixed
+  shape keeps (e.g. "top" keeps only the main shot of a collage packshot).
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -14,14 +16,27 @@
       assign aspect = '1/1'
     when 'landscape'
       assign aspect = '4/3'
+    when 'wide'
+      assign aspect = '8/5'
     else
       assign aspect = 'natural'
   endcase
   assign col_vw = 100 | divided_by: s.columns
   assign sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
+  assign crop = nil
+  if aspect != 'natural'
+    assign crop = s.image_crop
+  endif
+  comment
+    8:5 tiles are too shallow for overlaid copy on phones: they show square there (object-fit trims the sides of the
+    already-cropped 8:5 image), so the mobile candidate must be ~1.6x the viewport width.
+  endcomment
+  if aspect == '8/5'
+    assign sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 160vw'
+  endif
 -%}
-<div class="section editorial-grid editorial-grid--{{ s.caption_position }} editorial-grid--mobile-{{ s.mobile_layout }}{% if s.full_bleed %} editorial-grid--bleed{% endif %} color-scheme-{{ s.color_scheme }}"
-  style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --tile-columns: {{ s.columns }}; --tile-gap: {{ s.gap }}px;">
+<div class="section editorial-grid editorial-grid--{{ s.caption_position }}{% if aspect == '8/5' %} editorial-grid--wide{% endif %} editorial-grid--mobile-{{ s.mobile_layout }}{% if s.full_bleed %} editorial-grid--bleed{% endif %} color-scheme-{{ s.color_scheme }}"
+  style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --tile-columns: {{ s.columns }}; --tile-gap: {{ s.gap }}px; --tile-scrim: {{ s.scrim | divided_by: 100.0 }};">
   <div class="page-width{% if s.full_bleed %} full-bleed{% else %} page-width--full{% endif %}">
     {%- if s.heading != blank -%}
       <div class="editorial-grid__head{% if s.full_bleed %} page-width page-width--full{% endif %}">{%- render 'section-heading', heading: s.heading, heading_size: s.heading_size -%}</div>
@@ -31,13 +46,13 @@
         <li class="editorial-grid__item" {{ block.shopify_attributes }}>
           {%- if block.settings.link != blank -%}<a class="editorial-grid__link" href="{{ block.settings.link }}">{%- else -%}<div class="editorial-grid__link">{%- endif -%}
             <div class="media editorial-grid__media{% if block.settings.image == blank %} editorial-grid__media--placeholder{% endif %}"{% if aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif %}>
-              {%- render 'image', image: block.settings.image, sizes: sizes, aspect: aspect, placeholder: 'lifestyle-1', class: 'editorial-grid__img' -%}
+              {%- render 'image', image: block.settings.image, sizes: sizes, aspect: aspect, crop: crop, placeholder: 'lifestyle-1', class: 'editorial-grid__img' -%}
             </div>
             {%- if block.settings.heading != blank or block.settings.text != blank or block.settings.button_label != blank -%}
-              <div class="editorial-grid__copy{% if s.caption_position == 'overlay' and block.settings.image != blank %} editorial-grid__copy--{{ s.text_color }}{% endif %}">
-                {%- if block.settings.heading != blank -%}<h3 class="editorial-grid__heading {{ s.tile_heading_size }}">{{ block.settings.heading | escape }}</h3>{%- endif -%}
+              <div class="editorial-grid__copy editorial-grid__copy--{{ s.content_position }}{% if s.caption_position == 'overlay' and block.settings.image != blank %} editorial-grid__copy--{{ s.text_color }}{% endif %}">
+                {%- if block.settings.heading != blank -%}<h3 class="editorial-grid__heading{% if s.tile_heading_size == 'display' %} editorial-grid__heading--display{% else %} {{ s.tile_heading_size }}{% endif %}">{{ block.settings.heading | escape }}</h3>{%- endif -%}
                 {%- if block.settings.text != blank -%}<div class="editorial-grid__text rte">{{ block.settings.text }}</div>{%- endif -%}
-                {%- if block.settings.button_label != blank -%}<span class="button button--small editorial-grid__button">{{ block.settings.button_label | escape }}</span>{%- endif -%}
+                {%- if block.settings.button_label != blank -%}<span class="button{% unless s.tile_heading_size == 'display' %} button--small{% endunless %} editorial-grid__button">{{ block.settings.button_label | escape }}</span>{%- endif -%}
               </div>
             {%- endif -%}
           {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
@@ -59,10 +74,13 @@
     { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 2 },
     { "type": "select", "id": "gap", "label": "Gap", "default": "8", "options": [ { "value": "0", "label": "None" }, { "value": "2", "label": "Hairline" }, { "value": "8", "label": "Small" }, { "value": "16", "label": "Medium" } ] },
     { "type": "checkbox", "id": "full_bleed", "label": "Full width", "default": false },
-    { "type": "select", "id": "image_ratio", "label": "Image shape", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait 3:4" }, { "value": "tall", "label": "Portrait 4:5" }, { "value": "square", "label": "Square" }, { "value": "landscape", "label": "Landscape 4:3" }, { "value": "adapt", "label": "Adapt to image" } ] },
-    { "type": "select", "id": "caption_position", "label": "Text position", "default": "overlay", "options": [ { "value": "overlay", "label": "Over the image, bottom left" }, { "value": "below", "label": "Below the image" } ] },
+    { "type": "select", "id": "image_ratio", "label": "Image shape", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait 3:4" }, { "value": "tall", "label": "Portrait 4:5" }, { "value": "square", "label": "Square" }, { "value": "landscape", "label": "Landscape 4:3" }, { "value": "wide", "label": "Landscape 8:5 (square on phones)" }, { "value": "adapt", "label": "Adapt to image" } ] },
+    { "type": "select", "id": "image_crop", "label": "Image focus", "default": "center", "info": "Which part of the image a fixed shape keeps. \"Top\" shows only the main photo of a collage packshot.", "options": [ { "value": "center", "label": "Centre" }, { "value": "top", "label": "Top" }, { "value": "bottom", "label": "Bottom" } ] },
+    { "type": "select", "id": "caption_position", "label": "Text position", "default": "overlay", "options": [ { "value": "overlay", "label": "Over the image" }, { "value": "below", "label": "Below the image" } ] },
+    { "type": "select", "id": "content_position", "label": "Text placement over the image", "default": "bottom-left", "options": [ { "value": "bottom-left", "label": "Bottom left" }, { "value": "bottom-center", "label": "Bottom centre" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "range", "id": "scrim", "label": "Shade behind light text", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 45 },
     { "type": "select", "id": "text_color", "label": "Text over images", "default": "light", "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ] },
-    { "type": "select", "id": "tile_heading_size", "label": "Tile heading size", "default": "h2", "options": [ { "value": "h2", "label": "Large" }, { "value": "h4", "label": "Small" }, { "value": "text-body", "label": "Caption" } ] },
+    { "type": "select", "id": "tile_heading_size", "label": "Tile heading size", "default": "h2", "options": [ { "value": "display", "label": "Display" }, { "value": "h2", "label": "Large" }, { "value": "h4", "label": "Small" }, { "value": "text-body", "label": "Caption" } ] },
     { "type": "select", "id": "mobile_layout", "label": "Mobile layout", "default": "stack", "options": [ { "value": "stack", "label": "Stack" }, { "value": "scroll", "label": "Swipe" } ] },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
     { "type": "header", "content": "t:sections.all.padding.header" },
