@@ -54,3 +54,6 @@ Format: date | template/state | viewport | observation | action | status.
 - cart | 1440 | "Your cart (1)" title, line with image/title/options/stepper/Remove, sticky summary card (subtotal, tax note, Check out, Continue shopping), empty state with login prompt. Parachute has no dedicated cart page geometry beyond the flyout; ours follows the drawer's line layout. | none | OK
 - page.faq (sidebar layout) | 1440 | Sticky "Jump to a section" list left (aria-current follows scroll), grouped question accordions right with hairlines, "Still have a question?" footer block. Matches the Parachute FAQ structure. | none | OK
 - page.fabric-guide (panels layout) | 1440 | Filter chips, framed panels per fabric with 43:5 texture banner and name, feel chip, statement, two accordions, product-card rail, "Shop all <fabric>"; compare table; how-to-choose; FAQ. Matches Parachute's fabric guide pattern (verified by editorial in docs/reference/editorial-visual-pass.md). | none | OK
+
+## 2026-11-26 Phase 2 integration check (head 31f9cfd)
+Merged: editorial 62e7dd9 (fabric metaobjects, accordion label), commerce 25efe12 (real-catalogue overlays, variant swatch colours). Theme Check: 136 files, no offenses. test-interactions on 9292: all pass. test-a11y default set (15 pages x 2 viewports): 30/30 PASS, 0 violations.
