@@ -83,6 +83,7 @@ body:has(#MainContent > .shopify-section:first-child [data-header-overlay]) .hea
   font-size: 10px; line-height: 16px; text-align: center; font-weight: var(--font-body-weight-bold, 500);
 }
 .header__cart-count[data-empty] { display: none; }
+.header__cart:has([data-empty]) .header__cart-items-label { display: none; }
 
 /* Mobile quick-links row */
 .header__subnav { border-top: var(--border-width) solid var(--color-border); }

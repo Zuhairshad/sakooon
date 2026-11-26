@@ -372,7 +372,12 @@ const F = {
   video_tag: () => '', external_video_tag: () => '', external_video_url: () => '', media_tag: (m) => (m?.src ? `<img src="${m.src}" alt="">` : ''),
   model_viewer_tag: () => '', payment_button: () => '', payment_terms: () => '', payment_type_svg_tag: () => '',
   highlight: (s) => s, color_to_rgb: (s) => s, color_modify: (s) => s, color_brightness: () => 128,
-  font_face: (f) => (f && f.family ? `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@${f.style === 'italic' ? 1 : 0},${f.weight || 400}&display=swap');` : ''),
+  /* One Google Fonts request per family per page (Shopify emits @font-face per face from its CDN; the preview can only approximate). */
+  font_face: (f) => {
+    if (!f || !f.family || FONT_EMITTED.has(f.family)) return '';
+    FONT_EMITTED.add(f.family);
+    return `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');`;
+  },
   font_url: (f) => '', font_modify: (f, prop, val) => {
     if (!f || !f.family) return f;
     const out = { ...f, toString() { return f.family; } };
@@ -713,7 +718,9 @@ function globalsFor(route, url) {
   };
 }
 
+const FONT_EMITTED = new Set();
 async function renderPage(url) {
+  FONT_EMITTED.clear();
   const route = resolveRoute(url);
   const globals = globalsFor(route, url);
   const tplPath = path.join(THEME, 'templates', route.file);

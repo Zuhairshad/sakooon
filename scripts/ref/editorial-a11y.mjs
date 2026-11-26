@@ -7,7 +7,7 @@ const args = process.argv.slice(2);
 const base = args.includes('--base') ? args[args.indexOf('--base') + 1] : 'http://localhost:9303';
 const PATHS = ['/pages/about', '/pages/contact', '/pages/faq', '/pages/shipping', '/pages/returns',
   '/pages/fabric-guide', '/pages/fabric/cotton-satin', '/pages/fabric/microfibre-fill', '/pages/care-guide', '/pages/care-bedsheets',
-  '/pages/size-guide', '/pages/measurement-guide', '/blogs/journal', '/blogs/journal/tagged/care', '/blogs/journal/how-to-layer-a-bed-for-winter'];
+  '/pages/size-guide', '/pages/measurement-guide', '/blogs/journal', '/blogs/journal/tagged/guides', '/blogs/journal/choosing-a-duvet-for-winter', '/blogs/journal/making-a-bed-with-a-two-tone-duvet-cover'];
 // Custom controls whose focus ring we verify by keyboard-focusing them.
 const FOCUS = ['.size-guide__unit input', '.size-guide__index-link', '[data-blog-next]', '.main-blog__tag', '.guide-anchor-nav__link', '.accordion__trigger', '.fabric-guide__chip', '.fabric-compare__scroll', '.size-guide__scroll', '.main-article__copy', '.editorial-gallery__link', '.fabric-card__link'];
 const b = await chromium.launch();

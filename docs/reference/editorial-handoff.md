@@ -9,7 +9,7 @@ Status: Phase 1 is approved, and all editorial work is merged into `sakooon/inte
 
 ## Run and test
 - Preview: `PORT=9303 npm run preview` → http://localhost:9303. Stop it only by port: `lsof -ti tcp:9303 | xargs kill` (decision D13).
-- Pages missing from the fixtures render via `?view=<suffix>`, for example `/pages/about?view=faq`. Fabric pages are at `/pages/fabric/{percale,sateen,linen}`, the journal at `/blogs/journal`.
+- Editorial pages come from `tools/preview/fixtures/pages.json`; any other template renders via `?view=<suffix>`. Fabric pages are at `/pages/fabric/{cotton-satin,quilted-cotton,microfibre-fill,cotton-microfibre}`, the journal at `/blogs/journal`.
 - Checks, run before every commit:
   - `npm run check` (theme check, 0 offenses expected)
   - `node scripts/test-responsive.mjs --base http://localhost:9303 --paths …`
@@ -35,7 +35,7 @@ Status: Phase 1 is approved, and all editorial work is merged into `sakooon/inte
 1. Replace all onboarding copy and example size tables with verified Sakooon content. That covers care, size, FAQ, shipping, returns and the brand story.
 2. Fabric metaobject entries with verified data only: composition, thread count and GSM. A certification renders only with issuer, licence number, verification URL and a date that is not past.
 3. Admin setup per docs/reference/editorial-admin.md. This needs the user's authorisation; nothing has been done in the store.
-4. Mobile LCP on /pages/fabric/percale is 3.2s (perf 91). The remaining waste comes from fixture collages cropped to 4:5; recheck with real photography.
+4. Phase 2 content is in place (see editorial-content-sources.md); /pages/fabric-guide mobile perf is 83, limited by render-blocking CSS/fonts and header mega-menu images.
 
 ## Three things a fresh context must know
 1. **Contracts.** These are fixed: docs/metafield-contracts.md v0.2, docs/component-contracts.md and docs/design-system.md, all owned by shad-61. A change to any of them goes to shad-61 as a message. Fabric URLs come only from `fabric.system.url`. Fabric resolution is the inline pattern variant → product (a `render` can't return a value). shad-d8 lifts `<size-guide data-size-guide>` (ids = product type handles, plus `#mattress-measuring`) into the PDP dialog, so keep that markup self-contained.
