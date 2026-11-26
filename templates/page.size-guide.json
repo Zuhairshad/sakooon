@@ -1,0 +1,107 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Find the right fit for your bed. Choose a product below, and switch between centimetres and inches.</p>",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "guide": {
+      "type": "size-guide",
+      "blocks": {
+        "duvet-covers": {
+          "type": "category",
+          "settings": {
+            "title": "Duvet covers",
+            "handle": "duvet-covers",
+            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
+            "table": "Size | Width | Length\nSingle | 135 | 200\nDouble | 200 | 200\nKing | 230 | 220\nSuper king | 260 | 220",
+            "convert": true,
+            "zebra": true,
+            "note": ""
+          }
+        },
+        "fitted-sheets": {
+          "type": "category",
+          "settings": {
+            "title": "Fitted sheets",
+            "handle": "fitted-sheets",
+            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
+            "table": "Size | Width | Length | Mattress depth up to\nSingle | 90 | 190 | 30\nDouble | 135 | 190 | 30\nKing | 150 | 200 | 35\nSuper king | 180 | 200 | 35",
+            "convert": true,
+            "zebra": true,
+            "note": ""
+          }
+        },
+        "flat-sheets": {
+          "type": "category",
+          "settings": {
+            "title": "Flat sheets",
+            "handle": "flat-sheets",
+            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
+            "table": "Size | Width | Length\nSingle | 180 | 260\nDouble | 230 | 260\nKing | 260 | 280",
+            "convert": true,
+            "zebra": true,
+            "note": ""
+          }
+        },
+        "pillowcases": {
+          "type": "category",
+          "settings": {
+            "title": "Pillowcases",
+            "handle": "pillowcases",
+            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
+            "table": "Size | Width | Length\nStandard | 50 | 75\nSquare | 65 | 65\nKing | 50 | 90",
+            "convert": true,
+            "zebra": true,
+            "note": ""
+          }
+        },
+        "duvets": {
+          "type": "category",
+          "settings": {
+            "title": "Duvets",
+            "handle": "duvets",
+            "intro": "<p>Example dimensions. Replace them with your own product measurements.</p>",
+            "table": "Size | Width | Length\nSingle | 135 | 200\nDouble | 200 | 200\nKing | 230 | 220",
+            "convert": true,
+            "zebra": true,
+            "note": ""
+          }
+        },
+        "help": {
+          "type": "note",
+          "settings": {
+            "heading": "Not sure which size?",
+            "text": "<p>Measure your mattress first, then choose the size that matches it.</p>",
+            "link_label": "How to measure your mattress",
+            "link_url": "/pages/measurement-guide",
+            "ratio": "16/9"
+          }
+        }
+      },
+      "block_order": [
+        "duvet-covers",
+        "fitted-sheets",
+        "flat-sheets",
+        "pillowcases",
+        "duvets",
+        "help"
+      ],
+      "settings": {
+        "default_unit": "cm",
+        "show_index": true,
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "guide"
+  ]
+}

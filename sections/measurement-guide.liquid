@@ -1,0 +1,98 @@
+{%- comment -%}
+  Mattress measurement guide: numbered steps with diagrams, then an optional tip and a link to the size guide.
+  The section root carries id="mattress-measuring" by default so the PDP size dialog / size guide can link to it.
+  Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign steps = section.blocks | where: 'type', 'step'
+  assign anchor = s.anchor | default: 'mattress-measuring'
+  assign nav_label = s.heading
+  if nav_label == blank
+    assign nav_label = 'editorial.measurement.label' | t
+  endif
+-%}
+<div id="{{ anchor }}" class="section ed-section measurement-guide color-scheme-{{ s.color_scheme }}" data-anchor-target data-anchor-label="{{ nav_label | escape }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="page-width{% if s.content_width == 'narrow' %} page-width--narrow{% elsif s.content_width == 'text' %} page-width--text{% endif %}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    <ol class="measurement-guide__steps list-unstyled" role="list">
+      {%- for block in steps -%}
+        {%- assign b = block.settings -%}
+        <li class="measurement-guide__step" {{ block.shopify_attributes }}>
+          {%- if b.image != blank or s.show_placeholders -%}
+            <div class="media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: b.image, sizes: '(min-width: 1024px) 33vw, 100vw', aspect: s.image_ratio, placeholder: 'image' %}</div>
+          {%- endif -%}
+          <p class="measurement-guide__number" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
+          <h3 class="measurement-guide__heading h4"><span class="visually-hidden">{{ 'editorial.measurement.step' | t: number: forloop.index }}: </span>{{ b.heading }}</h3>
+          {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tip' -%}
+        <div class="measurement-guide__tip" {{ block.shopify_attributes }}>
+          {% render 'icon', icon: 'info', size: 20 %}
+          <div>
+            {%- if block.settings.heading != blank -%}<p class="measurement-guide__tip-heading">{{ block.settings.heading }}</p>{%- endif -%}
+            {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+            {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}<p><a class="link" href="{{ block.settings.link_url }}">{{ block.settings.link_label }}</a></p>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.measurement-guide.name",
+  "tag": "section",
+  "class": "section-measurement-guide",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "How to measure your mattress" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "text", "id": "anchor", "label": "t:sections.editorial-text.blocks.heading.settings.anchor.label", "default": "mattress-measuring" },
+    { "type": "range", "id": "columns", "min": 1, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "1/1", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" }
+    ] },
+    { "type": "checkbox", "id": "show_placeholders", "label": "t:sections.care-guide.settings.show_placeholders.label", "default": true },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "step", "name": "t:sections.measurement-guide.blocks.step.name", "settings": [
+      { "type": "image_picker", "id": "image", "label": "t:sections.measurement-guide.blocks.step.settings.image.label" },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Measure the width" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Describe where to place the tape measure and what to record.</p>" }
+    ] },
+    { "type": "tip", "name": "t:sections.measurement-guide.blocks.tip.name", "limit": 2, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Tip" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Measure the mattress itself, not the bed frame.</p>" },
+      { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+      { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.measurement-guide.presets.name", "blocks": [
+    { "type": "step", "settings": { "heading": "Measure the width" } },
+    { "type": "step", "settings": { "heading": "Measure the length" } },
+    { "type": "step", "settings": { "heading": "Measure the depth" } },
+    { "type": "tip" }
+  ] } ]
+}
+{% endschema %}

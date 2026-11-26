@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "show_tag": true,
+        "show_date": true,
+        "image_width": "wide",
+        "image_ratio": "16/9",
+        "show_share": true,
+        "show_more": true,
+        "more_heading": "More from the journal",
+        "padding_top": 48,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

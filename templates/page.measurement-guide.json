@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "show_breadcrumbs": true,
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Three measurements are all you need to choose bedding that fits well.</p>",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "measure": {
+      "type": "measurement-guide",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "heading": "Measure the width",
+            "text": "<p>Measure across the top of the mattress from one side to the other.</p>"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "heading": "Measure the length",
+            "text": "<p>Measure from the head of the mattress to the foot.</p>"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "heading": "Measure the depth",
+            "text": "<p>Measure from the bottom seam to the top, including any topper.</p>"
+          }
+        },
+        "t1": {
+          "type": "tip",
+          "settings": {
+            "heading": "Tip",
+            "text": "<p>Measure the mattress itself, not the bed frame, and round up to the nearest centimetre.</p>",
+            "link_label": "Go to the size guide",
+            "link_url": "/pages/size-guide"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "t1"
+      ],
+      "settings": {
+        "heading": "",
+        "columns": 3,
+        "image_ratio": "1/1",
+        "show_placeholders": true,
+        "padding_top": 16,
+        "padding_bottom": 64
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "My mattress is deeper than the table shows. What should I choose?",
+            "answer": "<p>Explain which products suit deeper mattresses.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Do your sizes shrink after washing?",
+            "answer": "<p>Describe any expected change after the first wash.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "heading": "Questions",
+        "heading_size": "h4",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "measure",
+    "faq"
+  ]
+}

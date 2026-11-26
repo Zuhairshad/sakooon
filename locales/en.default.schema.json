@@ -1221,6 +1221,138 @@
           }
         }
       }
+    },
+    "size-guide": {
+      "name": "Size guide",
+      "presets": {
+        "name": "Size guide"
+      },
+      "settings": {
+        "default_unit": {
+          "label": "Default unit",
+          "options": {
+            "cm": "Centimetres",
+            "in": "Inches"
+          }
+        },
+        "show_index": {
+          "label": "Show category list"
+        }
+      },
+      "blocks": {
+        "category": {
+          "name": "Product category",
+          "settings": {
+            "title": {
+              "label": "Title"
+            },
+            "handle": {
+              "label": "Anchor",
+              "info": "Use the product type handle (for example duvet-covers) so product pages can link straight to this table."
+            },
+            "intro": {
+              "label": "Introduction"
+            },
+            "table": {
+              "label": "Table",
+              "info": "One row per line, cells separated by |. The first line is the header and the first column labels each row. Enter measurements in centimetres."
+            },
+            "convert": {
+              "label": "Convert measurements to inches"
+            },
+            "zebra": {
+              "label": "Striped rows"
+            },
+            "note": {
+              "label": "Note below the table"
+            }
+          }
+        },
+        "note": {
+          "name": "Note with image"
+        }
+      }
+    },
+    "measurement-guide": {
+      "name": "Measurement guide",
+      "presets": {
+        "name": "Measurement guide"
+      },
+      "blocks": {
+        "step": {
+          "name": "Step",
+          "settings": {
+            "image": {
+              "label": "Diagram"
+            }
+          }
+        },
+        "tip": {
+          "name": "Tip"
+        }
+      }
+    },
+    "main-blog": {
+      "name": "Journal",
+      "settings": {
+        "show_tags": {
+          "label": "Show tag filter"
+        },
+        "per_page": {
+          "label": "Articles per page"
+        },
+        "image_ratio": {
+          "options": {
+            "landscape": "Landscape (16:10)"
+          }
+        },
+        "show_date": {
+          "label": "Show date"
+        },
+        "show_tag": {
+          "label": "Show first tag"
+        },
+        "show_excerpt": {
+          "label": "Show excerpt"
+        }
+      }
+    },
+    "main-article": {
+      "name": "Article",
+      "settings": {
+        "show_tag": {
+          "label": "Show first tag above the title"
+        },
+        "show_author": {
+          "label": "Show author"
+        },
+        "show_excerpt": {
+          "label": "Show excerpt as introduction"
+        },
+        "show_image": {
+          "label": "Show featured image"
+        },
+        "image_width": {
+          "options": {
+            "wide": "Wide"
+          }
+        },
+        "show_tags": {
+          "label": "Show tags"
+        },
+        "show_share": {
+          "label": "Show share links"
+        },
+        "show_comments": {
+          "label": "Show comments when enabled for the blog"
+        },
+        "show_more": {
+          "label": "Show more articles"
+        },
+        "more_heading": {
+          "label": "More articles heading"
+        }
+      }
     }
   }
 }

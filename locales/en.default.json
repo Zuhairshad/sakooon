@@ -555,6 +555,29 @@
     },
     "care": {
       "about_fabric": "About {{ name }}"
+    },
+    "size_guide": {
+      "units": "Units",
+      "cm": "cm",
+      "in": "in",
+      "index": "Size guide categories",
+      "measured_in": "Measurements in"
+    },
+    "measurement": {
+      "label": "How to measure",
+      "step": "Step {{ number }}"
+    },
+    "blog": {
+      "filter": "Filter articles",
+      "all": "All",
+      "showing": "Showing {{ shown }} of {{ total }}",
+      "show_more": "Show more",
+      "empty": "There are no articles here yet."
+    },
+    "article": {
+      "email": "Email",
+      "copy_link": "Copy link",
+      "copied": "Link copied"
     }
   }
 }
