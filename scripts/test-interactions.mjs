@@ -68,7 +68,7 @@ const tests = [
     const priceBefore = await page.locator('.price, [data-price]').first().innerText().catch(() => '');
     const option = page.locator('.variant-picker input[type="radio"]:not(:checked), .variant-picker select, variant-selects select').first();
     if (await option.count()) {
-      if ((await option.evaluate((el) => el.tagName)) === 'SELECT') await option.selectOption({ index: 1 }); else await option.check({ force: true });
+      if ((await option.evaluate((el) => el.tagName)) === 'SELECT') await option.selectOption({ index: 1 }); else await option.evaluate((el) => el.click()); /* visually hidden radios: click via DOM, like a label would */
       await sleep(800);
       assert(/variant=/.test(page.url()) || true, 'variant param not in URL (informational)');
     }
