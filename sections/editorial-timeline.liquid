@@ -1,5 +1,11 @@
 {%- comment -%} Brand story milestones. Owner: shad-8b. {%- endcomment -%}
 {%- assign s = section.settings -%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
+-%}
 <div class="section ed-section editorial-timeline color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="page-width page-width--narrow">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
@@ -9,7 +15,7 @@
         <li class="editorial-timeline__item{% if b.image != blank %} editorial-timeline__item--media{% endif %}" {{ block.shopify_attributes }}>
           <p class="editorial-timeline__marker">{{ b.marker }}</p>
           <div class="editorial-timeline__body">
-            {%- if b.heading != blank -%}<h3 class="editorial-timeline__heading h4">{{ b.heading }}</h3>{%- endif -%}
+            {%- if b.heading != blank -%}<{{ item_tag }} class="editorial-timeline__heading h4">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
             {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
           </div>
           {%- if b.image != blank -%}

@@ -8,7 +8,8 @@
         "content_width": "page",
         "text": "<p>A little care goes a long way. These guides explain how to wash, dry and store each product so it keeps its feel for years.</p>",
         "padding_top": 80,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "heading_size": "h3"
       }
     },
     "types": {

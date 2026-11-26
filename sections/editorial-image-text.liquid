@@ -10,8 +10,14 @@
     when 'full'
       assign width_class = 'page-width page-width--full'
     else
-      assign width_class = 'page-width'
+      assign width_class = 'page-width ed-wide'
   endcase
+-%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
 -%}
 <div class="section ed-section editorial-image-text editorial-image-text--{{ s.layout }}{% if s.stack_text_first %} editorial-image-text--text-first{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="{{ width_class }}">
@@ -43,9 +49,9 @@
           </div>
           <div class="editorial-image-text__text">
             {%- if b.label != blank -%}<p class="editorial-image-text__label">{{ b.label }}</p>{%- endif -%}
-            {%- if b.heading != blank -%}<h3 class="editorial-image-text__heading h4">{{ b.heading }}</h3>{%- endif -%}
+            {%- if b.heading != blank -%}<{{ item_tag }} class="editorial-image-text__heading h4">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
             {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
-            {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
+            {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}{% if b.heading != blank %}<span class="visually-hidden">: {{ b.heading }}</span>{% endif %}</a></p>{%- endif -%}
           </div>
         </div>
       {%- endfor -%}

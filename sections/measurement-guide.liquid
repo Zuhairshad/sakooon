@@ -12,8 +12,14 @@
     assign nav_label = 'editorial.measurement.label' | t
   endif
 -%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
+-%}
 <div id="{{ anchor }}" class="section ed-section measurement-guide color-scheme-{{ s.color_scheme }}" data-anchor-target data-anchor-label="{{ nav_label | escape }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
-  <div class="page-width{% if s.content_width == 'narrow' %} page-width--narrow{% elsif s.content_width == 'text' %} page-width--text{% endif %}">
+  <div class="page-width ed-wide{% if s.content_width == 'narrow' %} page-width--narrow{% elsif s.content_width == 'text' %} page-width--text{% endif %}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
     <ol class="measurement-guide__steps list-unstyled" role="list">
       {%- for block in steps -%}
@@ -23,7 +29,7 @@
             <div class="media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: b.image, sizes: '(min-width: 1024px) 33vw, 100vw', aspect: s.image_ratio, placeholder: 'image' %}</div>
           {%- endif -%}
           <p class="measurement-guide__number" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
-          <h3 class="measurement-guide__heading h4"><span class="visually-hidden">{{ 'editorial.measurement.step' | t: number: forloop.index }}: </span>{{ b.heading }}</h3>
+          <{{ item_tag }} class="measurement-guide__heading h4"><span class="visually-hidden">{{ 'editorial.measurement.step' | t: number: forloop.index }}: </span>{{ b.heading }}</{{ item_tag }}>
           {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
         </li>
       {%- endfor -%}

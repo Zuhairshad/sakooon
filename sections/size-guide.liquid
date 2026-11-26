@@ -37,7 +37,7 @@
               assign cat_id = b.handle | default: b.title | handleize
               assign lines = b.table | strip | newline_to_br | split: '<br />'
             -%}
-            <section class="size-guide__category" id="{{ cat_id }}" aria-labelledby="{{ cat_id }}-title" {{ block.shopify_attributes }}>
+            <div class="size-guide__category" id="{{ cat_id }}" {{ block.shopify_attributes }}>
               <h2 class="size-guide__title h4" id="{{ cat_id }}-title" data-anchor-target>{{ b.title }}</h2>
               {%- if b.intro != blank -%}<div class="size-guide__intro rte">{{ b.intro }}</div>{%- endif -%}
               {%- if b.table != blank -%}
@@ -67,7 +67,7 @@
                 </div>
               {%- endif -%}
               {%- if b.note != blank -%}<div class="size-guide__note rte">{{ b.note }}</div>{%- endif -%}
-            </section>
+            </div>
           {%- when 'note' -%}
             <div class="size-guide__aside" {{ block.shopify_attributes }}>
               {%- if block.settings.image != blank -%}

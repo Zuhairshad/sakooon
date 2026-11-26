@@ -16,7 +16,7 @@
     when 'narrow'
       assign width_class = 'page-width page-width--narrow'
     else
-      assign width_class = 'page-width'
+      assign width_class = 'page-width ed-wide'
   endcase
   assign image_sizes = '(min-width: 1024px) 720px, 100vw'
   if s.image_width == 'full'
@@ -56,7 +56,7 @@
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
     { "type": "text", "id": "eyebrow", "label": "t:sections.editorial-hero.settings.eyebrow.label" },
     { "type": "text", "id": "heading", "label": "t:sections.editorial-hero.settings.heading.label", "info": "t:sections.editorial-hero.settings.heading.info" },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
       { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
       { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
       { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }

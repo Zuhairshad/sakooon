@@ -1,7 +1,7 @@
 {%- comment -%} Shopify contact form with an optional side column. Owner: shad-8b. {%- endcomment -%}
 {%- assign s = section.settings -%}
 <div class="section ed-section contact-form{% if s.side_text != blank %} contact-form--split{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width{% if s.side_text == blank %} page-width--text{% endif %}">
+  <div class="page-width ed-wide{% if s.side_text == blank %} page-width--text{% endif %}">
     <div class="contact-form__layout">
       <div class="contact-form__main">
         {% render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text %}

@@ -25,7 +25,7 @@
   assign spec_keys = 'composition,weave,finish,thread_count,gsm' | split: ','
 -%}
 <div class="section ed-section main-fabric color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width">
+  <div class="page-width ed-wide">
     {%- if s.show_breadcrumbs -%}
       <nav class="breadcrumbs text-small" aria-label="{{ 'general.breadcrumbs.label' | t }}">
         <ol class="breadcrumbs__list list-unstyled">
@@ -36,7 +36,7 @@
       </nav>
     {%- endif -%}
     <div class="main-fabric__grid">
-      <div class="main-fabric__media">
+      <div class="main-fabric__media" role="region" tabindex="0" aria-label="{{ 'editorial.fabric.images' | t: name: name | escape }}">
         <div class="media" style="--aspect: 4/5">{% render 'image', image: primary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5', priority: true, alt: name, placeholder: 'lifestyle-1' %}</div>
         {%- if s.show_secondary and secondary != blank -%}
           <div class="media" style="--aspect: 4/5">{% render 'image', image: secondary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5' %}</div>
@@ -106,7 +106,7 @@
     { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.main-metaobject-fabric.settings.fabric.label", "info": "t:sections.main-metaobject-fabric.settings.fabric.info" },
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": true },
     { "type": "page", "id": "guide_page", "label": "t:sections.main-metaobject-fabric.settings.guide_page.label" },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
       { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
       { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
       { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }

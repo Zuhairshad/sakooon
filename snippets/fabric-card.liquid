@@ -25,7 +25,7 @@
 <article class="fabric-card" data-weave="{{ weave | handleize }}" data-fibre="{{ fibre | handleize }}">
   {%- if url != blank -%}<a class="fabric-card__link" href="{{ url }}">{%- endif -%}
     <div class="fabric-card__media media" style="--aspect: {{ ratio }}">
-      {% render 'image', image: img, sizes: sizes, aspect: ratio, alt: name, placeholder: 'collection-1' %}
+      {% render 'image', image: img, sizes: sizes, aspect: ratio, alt: '', placeholder: 'collection-1' %}
     </div>
     <{{ heading_tag }} class="fabric-card__title">{{ name }}</{{ heading_tag }}>
   {%- if url != blank -%}</a>{%- endif -%}
@@ -33,7 +33,7 @@
     {%- if fabric.tagline.value != blank -%}<p class="fabric-card__tagline">{{ fabric.tagline.value }}</p>{%- endif -%}
     {%- if show_summary and fabric.summary.value != blank -%}<p class="fabric-card__summary">{{ fabric.summary.value }}</p>{%- endif -%}
     {%- if show_rating -%}{% render 'fabric-rating', fabric: fabric, compact: true %}{%- endif -%}
-    {%- if url != blank and link_label != blank -%}<a class="fabric-card__more ed-link-fade" href="{{ url }}" aria-label="{{ link_label }}: {{ name | escape }}">{{ link_label }}</a>{%- endif -%}
+    {%- if url != blank and link_label != blank -%}<a class="fabric-card__more ed-link-fade" href="{{ url }}">{{ link_label }}<span class="visually-hidden">: {{ name }}</span></a>{%- endif -%}
   {%- elsif show_summary -%}
     <p class="fabric-card__summary">{{ 'onboarding.text' | t | truncatewords: 14 }}</p>
   {%- endif -%}

@@ -9,7 +9,7 @@
     when 'narrow'
       assign width_class = 'page-width page-width--narrow'
     when 'page'
-      assign width_class = 'page-width'
+      assign width_class = 'page-width ed-wide'
     else
       assign width_class = 'page-width page-width--text'
   endcase
@@ -22,10 +22,26 @@
     assign group_name = section.id
   endif
   assign qa_count = 0
+  assign groups = section.blocks | where: 'type', 'group'
+  assign q_tag = 'h2'
+  if s.heading != blank or groups.size > 0
+    assign q_tag = 'h3'
+  endif
 -%}
 <div class="section ed-section faq{% unless s.animate %} faq--instant{% endunless %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="{{ width_class }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    {%- assign use_sidebar = false -%}
+    {%- if s.layout == 'sidebar' and groups.size > 1 -%}{%- assign use_sidebar = true -%}{%- endif -%}
+    {%- if use_sidebar -%}
+      <div class="faq__layout">
+        <guide-anchor-nav class="faq__jump" data-auto="false"><nav aria-label="{{ s.jump_label | default: s.heading | escape }}">
+          {%- if s.jump_label != blank -%}<p class="faq__jump-title h4">{{ s.jump_label }}</p>{%- endif -%}
+          <ul class="list-unstyled guide-anchor-nav__list faq__jump-list" role="list">
+            {%- for g in groups -%}{%- if g.settings.heading != blank -%}<li><a class="faq__jump-link" href="#{{ g.settings.heading | handleize }}">{{ g.settings.heading }}</a></li>{%- endif -%}{%- endfor -%}
+          </ul>
+        </nav></guide-anchor-nav>
+    {%- endif -%}
     <div class="faq__groups">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -44,10 +60,11 @@
               assign item_id = 'faq-' | append: block.id
               assign attrs = block.shopify_attributes
             -%}
-            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: 'h3', attrs: attrs %}
+            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: q_tag, attrs: attrs %}
         {%- endcase -%}
       {%- endfor -%}
     </div>
+    {%- if use_sidebar -%}</div>{%- endif -%}
   </div>
 </div>
 
@@ -84,6 +101,11 @@
       { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
     ] },
     { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "select", "id": "layout", "label": "t:sections.faq.settings.layout.label", "default": "stacked", "options": [
+      { "value": "stacked", "label": "t:sections.faq.settings.layout.options.stacked" },
+      { "value": "sidebar", "label": "t:sections.faq.settings.layout.options.sidebar" }
+    ] },
+    { "type": "text", "id": "jump_label", "label": "t:sections.faq.settings.jump_label.label", "default": "Jump to a section" },
     { "type": "select", "id": "icon", "label": "t:sections.faq.settings.icon.label", "default": "plus", "options": [
       { "value": "plus", "label": "t:sections.faq.settings.icon.options.plus" },
       { "value": "chevron", "label": "t:sections.faq.settings.icon.options.chevron" }

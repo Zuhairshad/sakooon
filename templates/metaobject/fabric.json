@@ -8,7 +8,8 @@
         "show_secondary": true,
         "show_ratings": true,
         "padding_top": 48,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "heading_size": "h3"
       }
     },
     "detail": {

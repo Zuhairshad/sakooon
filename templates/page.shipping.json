@@ -7,7 +7,8 @@
         "content_width": "text",
         "text": "<p>Use this page to explain where you deliver, how long it takes and what it costs.</p>",
         "padding_top": 60,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "heading_size": "h3"
       }
     },
     "summary": {
