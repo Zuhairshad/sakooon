@@ -1,0 +1,27 @@
+{%- comment -%}
+  Accordion item built on <theme-disclosure> (assets/global.js). Owner: shad-8b.
+  {% render 'accordion', id: 'faq-1', title: 'Question', content: answer_html, open: false, group: section.id, heading_tag: 'h3', icon: 'plus' %}
+  - id: unique per page (used for aria-controls and as the URL anchor)
+  - group: optional; items sharing a group close each other (one open at a time)
+  - icon: 'plus' (default) or 'chevron-down'
+  - attrs: optional extra attributes for the root (e.g. block.shopify_attributes)
+{%- endcomment -%}
+{%- liquid
+  assign heading_tag = heading_tag | default: 'h3'
+  assign icon = icon | default: 'plus'
+-%}
+{%- if title != blank -%}
+<theme-disclosure class="accordion" id="{{ id }}"{% if group != blank %} data-group="{{ group }}"{% endif %}{% if open %} open{% endif %} {{ attrs }}>
+  <{{ heading_tag }} class="accordion__heading">
+    <button type="button" class="disclosure__trigger accordion__trigger" aria-expanded="{% if open %}true{% else %}false{% endif %}" aria-controls="{{ id }}-panel">
+      <span class="accordion__title">{{ title }}</span>
+      {% render 'icon', icon: icon, size: 16 %}
+    </button>
+  </{{ heading_tag }}>
+  <div class="disclosure__panel accordion__panel" id="{{ id }}-panel" role="region" aria-label="{{ title | strip_html | escape }}"{% if open %} data-open{% endif %}>
+    <div>
+      <div class="disclosure__content accordion__content rte">{{ content }}</div>
+    </div>
+  </div>
+</theme-disclosure>
+{%- endif -%}

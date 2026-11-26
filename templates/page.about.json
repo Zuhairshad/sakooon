@@ -1,0 +1,119 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "alignment": "left",
+        "content_width": "narrow",
+        "text": "<p>Introduce your brand in two or three sentences: who you are, what you make and why it matters to the people who sleep with it.</p>",
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
+    "story": {
+      "type": "editorial-text",
+      "blocks": {
+        "h1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our story",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "t1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tell the story of how the brand began. Keep it specific: a moment, a frustration, a decision.</p><p>Describe what you set out to do differently and what you still hold yourselves to today.</p>"
+          }
+        },
+        "h2": {
+          "type": "heading",
+          "settings": {
+            "heading": "What we believe",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share the principles that guide how you design, choose materials and work with the people who make your products.</p>"
+          }
+        },
+        "l2": {
+          "type": "link",
+          "settings": {
+            "label": "Read about our materials",
+            "url": "/pages/our-materials"
+          }
+        }
+      },
+      "block_order": [
+        "h1",
+        "t1",
+        "h2",
+        "t2",
+        "l2"
+      ],
+      "settings": {
+        "content_width": "narrow",
+        "padding_top": 0,
+        "padding_bottom": 48
+      }
+    },
+    "gallery": {
+      "type": "editorial-gallery",
+      "blocks": {
+        "g1": {
+          "type": "image",
+          "settings": {
+            "caption": "Bedding",
+            "url": "/collections/all"
+          }
+        },
+        "g2": {
+          "type": "image",
+          "settings": {
+            "caption": "Bath",
+            "url": "/collections/all"
+          }
+        },
+        "g3": {
+          "type": "image",
+          "settings": {
+            "caption": "Sleep",
+            "url": "/collections/all"
+          }
+        },
+        "g4": {
+          "type": "image",
+          "settings": {
+            "caption": "Home",
+            "url": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4"
+      ],
+      "settings": {
+        "heading": "Discover the collection",
+        "heading_size": "h4",
+        "columns": 4,
+        "content_width": "narrow",
+        "padding_top": 16,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "story",
+    "gallery"
+  ]
+}

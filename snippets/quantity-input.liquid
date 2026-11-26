@@ -1,0 +1,46 @@
+{%- comment -%}
+  Quantity stepper. Owner: shad-d8. Behaviour: <quantity-input> in assets/cart.js (fires a bubbling `change` on the input).
+  {% render 'quantity-input', id: 'Quantity-1', name: 'updates[]', value: item.quantity, product_title: item.product.title, line: forloop.index, variant: item.variant %}
+  Params: id, name (default 'quantity'), value (default 1), min (default 1; cart lines pass 0), product_title (for labels),
+          line (cart line index, adds data-line), variant (reads quantity_rule min/max/increment), form (form attribute), size ('sm'|'md').
+{%- endcomment -%}
+{%- liquid
+  assign value = value | default: 1
+  assign min = min | default: 1
+  assign step = 1
+  assign max = nil
+  if variant.quantity_rule
+    if variant.quantity_rule.min > min
+      assign min = variant.quantity_rule.min
+    endif
+    assign step = variant.quantity_rule.increment | default: 1
+    assign max = variant.quantity_rule.max
+  endif
+  if line
+    assign min = 0
+  endif
+  assign name = name | default: 'quantity'
+  assign size = size | default: 'md'
+-%}
+<quantity-input class="quantity quantity--{{ size }}">
+  <button type="button" class="quantity__button" name="minus" aria-label="{{ 'products.product.quantity.decrease' | t: product: product_title | escape }}"{% if form %} form="{{ form }}"{% endif %}>
+    {%- render 'icon', icon: 'minus', size: 16 -%}
+  </button>
+  <input
+    class="quantity__input"
+    type="number"
+    inputmode="numeric"
+    name="{{ name }}"
+    id="{{ id }}"
+    value="{{ value }}"
+    min="{{ min }}"
+    step="{{ step }}"
+    {%- if max %} max="{{ max }}"{% endif %}
+    {%- if line %} data-line="{{ line }}"{% endif %}
+    {%- if form %} form="{{ form }}"{% endif %}
+    aria-label="{{ 'products.product.quantity.input_label' | t: product: product_title | escape }}"
+  >
+  <button type="button" class="quantity__button" name="plus" aria-label="{{ 'products.product.quantity.increase' | t: product: product_title | escape }}"{% if form %} form="{{ form }}"{% endif %}>
+    {%- render 'icon', icon: 'plus', size: 16 -%}
+  </button>
+</quantity-input>

@@ -1,0 +1,112 @@
+{%- comment -%}
+  Alternating image / text rows (process steps, "how it is made").
+  Reference: Tekla article rows, 2 x 333px with a 2px seam, sides alternating (docs/reference/editorial.md 2.8). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    when 'full'
+      assign width_class = 'page-width page-width--full'
+    else
+      assign width_class = 'page-width'
+  endcase
+-%}
+<div class="section ed-section editorial-image-text editorial-image-text--{{ s.layout }}{% if s.stack_text_first %} editorial-image-text--text-first{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, align: s.alignment %}
+    <div class="editorial-image-text__rows">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign flip = false
+          if s.image_side == 'right'
+            assign flip = true
+          endif
+          if s.alternate
+            assign odd = forloop.index0 | modulo: 2
+            if odd == 1
+              if flip
+                assign flip = false
+              else
+                assign flip = true
+              endif
+            endif
+          endif
+          assign b = block.settings
+        -%}
+        <div class="editorial-image-text__row{% if flip %} editorial-image-text__row--flip{% endif %}" {{ block.shopify_attributes }}>
+          <div class="editorial-image-text__media">
+            <div class="media" style="--aspect: {{ s.image_ratio }}">
+              {% render 'image', image: b.image, sizes: '(min-width: 1024px) 40vw, 100vw', aspect: s.image_ratio, placeholder: 'lifestyle-2' %}
+            </div>
+          </div>
+          <div class="editorial-image-text__text">
+            {%- if b.label != blank -%}<p class="editorial-image-text__label">{{ b.label }}</p>{%- endif -%}
+            {%- if b.heading != blank -%}<h3 class="editorial-image-text__heading h4">{{ b.heading }}</h3>{%- endif -%}
+            {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
+            {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-image-text.name",
+  "tag": "section",
+  "class": "section-editorial-image-text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "select", "id": "alignment", "label": "t:sections.editorial-hero.settings.alignment.label", "default": "left", "options": [
+      { "value": "left", "label": "t:sections.editorial-hero.settings.alignment.options.left" },
+      { "value": "center", "label": "t:sections.editorial-hero.settings.alignment.options.center" }
+    ] },
+    { "type": "select", "id": "layout", "label": "t:sections.editorial-image-text.settings.layout.label", "default": "seam", "options": [
+      { "value": "seam", "label": "t:sections.editorial-image-text.settings.layout.options.seam" },
+      { "value": "split", "label": "t:sections.editorial-image-text.settings.layout.options.split" },
+      { "value": "wide", "label": "t:sections.editorial-image-text.settings.layout.options.wide" }
+    ] },
+    { "type": "select", "id": "image_side", "label": "t:sections.editorial-image-text.settings.image_side.label", "default": "left", "options": [
+      { "value": "left", "label": "t:sections.editorial-image-text.settings.image_side.options.left" },
+      { "value": "right", "label": "t:sections.editorial-image-text.settings.image_side.options.right" }
+    ] },
+    { "type": "checkbox", "id": "alternate", "label": "t:sections.editorial-image-text.settings.alternate.label", "default": true },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" }
+    ] },
+    { "type": "checkbox", "id": "stack_text_first", "label": "t:sections.editorial-image-text.settings.stack_text_first.label", "default": false },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "narrow", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "full", "label": "t:sections.all.layout.content_width.options.full" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 48 }
+  ],
+  "blocks": [
+    { "type": "row", "name": "t:sections.editorial-image-text.blocks.row.name", "settings": [
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+      { "type": "text", "id": "label", "label": "t:sections.editorial-image-text.blocks.row.settings.label.label", "default": "Step" },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Describe this step in two or three sentences: what happens, and why it matters to the finished piece.</p>" },
+      { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+      { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.editorial-image-text.presets.name", "blocks": [ { "type": "row" }, { "type": "row" }, { "type": "row" } ] } ]
+}
+{% endschema %}

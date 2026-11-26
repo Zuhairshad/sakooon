@@ -1,0 +1,163 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Answers to the questions we hear most. Can't find what you need? Get in touch and we'll help.</p>",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "nav": {
+      "type": "guide-anchor-nav",
+      "settings": {
+        "sticky": true,
+        "style": "links",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "group_1": {
+          "type": "group",
+          "settings": {
+            "heading": "Orders",
+            "size": "h4"
+          }
+        },
+        "q_1_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I change or cancel my order?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "q_1_2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I add a gift message?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "group_2": {
+          "type": "group",
+          "settings": {
+            "heading": "Delivery",
+            "size": "h4"
+          }
+        },
+        "q_2_1": {
+          "type": "question",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "q_2_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you deliver internationally?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "group_3": {
+          "type": "group",
+          "settings": {
+            "heading": "Products and care",
+            "size": "h4"
+          }
+        },
+        "q_3_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right size?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "q_3_2": {
+          "type": "question",
+          "settings": {
+            "question": "How should I wash my bedding the first time?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "group_4": {
+          "type": "group",
+          "settings": {
+            "heading": "Returns",
+            "size": "h4"
+          }
+        },
+        "q_4_1": {
+          "type": "question",
+          "settings": {
+            "question": "What is your returns policy?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        },
+        "q_4_2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I start a return?",
+            "answer": "<p>Answer in a few clear sentences. Link to the relevant policy or guide page when customers need more detail.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "group_1",
+        "q_1_1",
+        "q_1_2",
+        "group_2",
+        "q_2_1",
+        "q_2_2",
+        "group_3",
+        "q_3_1",
+        "q_3_2",
+        "group_4",
+        "q_4_1",
+        "q_4_2"
+      ],
+      "settings": {
+        "content_width": "text",
+        "padding_top": 16,
+        "padding_bottom": 64
+      }
+    },
+    "help": {
+      "type": "info-columns",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "icon": "mail",
+            "heading": "Still have a question?",
+            "text": "<p>Our team replies within one working day.</p>",
+            "link_label": "Contact us",
+            "link_url": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "c1"
+      ],
+      "settings": {
+        "columns": 1,
+        "content_width": "text",
+        "dividers": true,
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "nav",
+    "faq",
+    "help"
+  ]
+}

@@ -1,0 +1,165 @@
+{%- comment -%}
+  Search drawer with predictive search. Owner: shad-d8. Lives in sections/header-group.json (added by storefront).
+  One file, two renders:
+    - in the header group: the <theme-drawer id="search-drawer"> with the search form and the idle content (popular searches, featured products);
+    - via /search/suggest?...&section_id=search-drawer (assets/search.js): only the [data-predictive-results] markup for `predictive_search`.
+  Shopify renders the suggest call by file name with default settings, so anything the results need from the group
+  instance (limits) is passed by search.js in the request.
+  Opened by [data-drawer-open="search-drawer"] or `search:open-request`. Without JS the form submits to /search.
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- liquid
+    assign res = predictive_search.resources
+    assign other_count = res.collections.size | plus: res.pages.size | plus: res.articles.size | plus: res.queries.size
+    assign total = res.products.size | plus: other_count
+  -%}
+  <div class="predictive-search__results" data-predictive-results data-count="{{ res.products.size }}" data-terms="{{ predictive_search.terms | escape }}">
+    {%- if res.products.size == 0 -%}
+      <p class="predictive-search__empty">{{ 'templates.search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+    {%- if total > 0 -%}
+      {%- if other_count > 0 -%}
+        <div class="predictive-search__aside">
+          {%- if res.queries.size > 0 -%}
+            <div class="predictive-search__group">
+              <h2 class="predictive-search__heading" id="PredictiveQueries">{{ 'general.search.suggestions' | t }}</h2>
+              <ul class="predictive-search__links list-unstyled" role="list" aria-labelledby="PredictiveQueries">
+                {%- for query in res.queries -%}
+                  <li><a href="{{ query.url }}" class="predictive-search__link">{{ query.styled_text }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          {%- if res.collections.size > 0 -%}
+            <div class="predictive-search__group">
+              <h2 class="predictive-search__heading" id="PredictiveCollections">{{ 'general.search.collections' | t }}</h2>
+              <ul class="predictive-search__links list-unstyled" role="list" aria-labelledby="PredictiveCollections">
+                {%- for collection in res.collections -%}
+                  <li><a href="{{ collection.url }}" class="predictive-search__link">{{ collection.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          {%- assign content_count = res.pages.size | plus: res.articles.size -%}
+          {%- if content_count > 0 -%}
+            <div class="predictive-search__group">
+              <h2 class="predictive-search__heading" id="PredictivePages">{{ 'general.search.pages' | t }}</h2>
+              <ul class="predictive-search__links list-unstyled" role="list" aria-labelledby="PredictivePages">
+                {%- for page in res.pages -%}
+                  <li><a href="{{ page.url }}" class="predictive-search__link">{{ page.title | escape }}</a></li>
+                {%- endfor -%}
+                {%- for article in res.articles -%}
+                  <li><a href="{{ article.url }}" class="predictive-search__link">{{ article.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if res.products.size > 0 -%}
+        <div class="predictive-search__main">
+          <h2 class="predictive-search__heading" id="PredictiveProducts">{{ 'general.search.products' | t }}</h2>
+          <ul class="predictive-search__grid list-unstyled" role="list" aria-labelledby="PredictiveProducts">
+            {%- for product in res.products -%}
+              <li>{%- render 'product-card', product: product, image_ratio: 'square', show_swatches: false, show_secondary_image: false, sizes: '(min-width: 1024px) 20vw, 50vw', heading_tag: 'h3' -%}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+    <div class="predictive-search__footer">
+      <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&amp;options%5Bprefix%5D=last" class="button button--secondary predictive-search__all">
+        {{- 'general.search.view_all' | t -}}
+      </a>
+    </div>
+  </div>
+{%- else -%}
+  <theme-drawer id="search-drawer" class="search-drawer" data-side="top" data-lock-scroll>
+    <div class="overlay" data-drawer-close></div>
+    <div class="drawer drawer--top search-drawer__panel color-scheme-{{ section.settings.color_scheme }}" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+      <predictive-search
+        class="search-drawer__inner"
+        data-url="{{ routes.predictive_search_url }}"
+        data-limit="{{ section.settings.products_limit }}"
+        {% unless settings.predictive_search_enabled %}data-disabled{% endunless %}
+      >
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form page-width">
+          <div class="search-drawer__field">
+            {%- render 'icon', icon: 'search', size: 20, class: 'search-drawer__icon' -%}
+            <label for="SearchDrawerInput" class="visually-hidden">{{ 'general.search.search' | t }}</label>
+            <input
+              type="search"
+              id="SearchDrawerInput"
+              name="q"
+              class="search-drawer__input"
+              placeholder="{{ 'general.search.placeholder' | t }}"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="search"
+              aria-controls="SearchDrawerResults"
+              data-autofocus
+              data-search-input
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="reset" class="search-drawer__reset" aria-label="{{ 'general.search.reset' | t }}" data-search-reset hidden>
+              {%- render 'icon', icon: 'close', size: 16 -%}
+            </button>
+          </div>
+          <button type="button" class="button--icon search-drawer__close" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">
+            {%- render 'icon', icon: 'close', size: 22 -%}
+          </button>
+        </form>
+
+        <div class="search-drawer__body page-width" id="SearchDrawerResults" data-search-results aria-live="polite" aria-busy="false">
+          <div class="search-drawer__idle" data-search-idle>
+            {%- assign terms = section.settings.popular_terms | split: ',' -%}
+            {%- if section.settings.popular_terms != blank -%}
+              <div class="predictive-search__group search-drawer__popular">
+                <h2 class="predictive-search__heading" id="SearchPopular">{{ section.settings.popular_heading | escape }}</h2>
+                <ul class="search-drawer__chips list-unstyled" role="list" aria-labelledby="SearchPopular">
+                  {%- for term in terms -%}
+                    {%- assign t = term | strip -%}
+                    {%- if t != blank -%}
+                      <li><a class="search-drawer__chip" href="{{ routes.search_url }}?q={{ t | url_encode }}&amp;options%5Bprefix%5D=last">{{ t | escape }}</a></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+            {%- assign featured = section.settings.featured_collection -%}
+            {%- if featured != blank and featured.products.size > 0 -%}
+              <div class="predictive-search__main">
+                <h2 class="predictive-search__heading" id="SearchFeatured">{{ section.settings.featured_heading | default: featured.title | escape }}</h2>
+                <ul class="predictive-search__grid list-unstyled" role="list" aria-labelledby="SearchFeatured">
+                  {%- for product in featured.products limit: section.settings.products_limit -%}
+                    <li>{%- render 'product-card', product: product, image_ratio: 'square', show_swatches: false, show_secondary_image: false, sizes: '(min-width: 1024px) 20vw, 50vw' -%}</li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="search-drawer__live" data-search-live hidden></div>
+          <p class="search-drawer__error form__message form__message--error" role="alert" data-search-error hidden></p>
+        </div>
+      </predictive-search>
+    </div>
+  </theme-drawer>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.search-drawer.name",
+  "class": "section-search-drawer",
+  "limit": 1,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "range", "id": "products_limit", "min": 2, "max": 10, "step": 1, "label": "t:sections.search-drawer.settings.products_limit.label", "default": 8 },
+    { "type": "header", "content": "t:sections.search-drawer.settings.idle.header" },
+    { "type": "text", "id": "popular_heading", "label": "t:sections.search-drawer.settings.popular_heading.label", "default": "Popular searches" },
+    { "type": "text", "id": "popular_terms", "label": "t:sections.search-drawer.settings.popular_terms.label", "info": "t:sections.search-drawer.settings.popular_terms.info" },
+    { "type": "collection", "id": "featured_collection", "label": "t:sections.search-drawer.settings.featured_collection.label" },
+    { "type": "text", "id": "featured_heading", "label": "t:sections.search-drawer.settings.featured_heading.label", "info": "t:sections.search-drawer.settings.featured_heading.info" }
+  ]
+}
+{% endschema %}
