@@ -144,8 +144,6 @@ a.mega-menu__heading:hover { text-decoration: underline; }
 .mobile-nav__promo-title { font-size: var(--text-sm); color: var(--color-foreground-muted); }
 .mobile-nav__utilities { padding: var(--space-4) var(--page-gutter); }
 .mobile-nav__utility { display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch-target); text-decoration: none; color: inherit; }
-/* Reduced motion: base.css shortens every transition to .01ms, which turns the drawer's instant visibility switch into a
-   transition that has not finished when global.js moves focus in the next frame. Switch it without a transition. */
 @media (prefers-reduced-motion: reduce) {
-  .mobile-nav[open] > .drawer, .mobile-nav__level.is-open, .mega-menu.is-open { transition: none !important; }
+  .mobile-nav__level, .mega-menu { transition: none !important; }
 }
