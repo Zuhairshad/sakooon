@@ -498,6 +498,9 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .brand-values__media { margin-bottom: var(--space-2); }
 .brand-values__icon { margin-bottom: var(--space-1); }
 .brand-values__text { color: var(--color-foreground-muted); }
+.brand-values__footnote { margin-top: var(--space-10); max-width: 60ch; }
+.brand-values--center .brand-values__footnote { margin-inline: auto; text-align: center; }
+.brand-values--editorial .brand-values__footnote { margin-top: var(--space-8); }
 
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav__level, .mega-menu { transition: none !important; }

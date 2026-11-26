@@ -17,7 +17,13 @@
 <div class="section image-with-text image-with-text--{{ s.image_position }} image-with-text--{{ s.image_width }} image-with-text--{{ s.vertical_align }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="page-width page-width--full image-with-text__grid">
     <div class="media image-with-text__media"{% if aspect != 'natural' %} style="--aspect: {{ aspect }}"{% endif %}>
-      {%- render 'image', image: s.image, sizes: '(min-width: 768px) 60vw, 100vw', aspect: aspect, placeholder: 'lifestyle-2' -%}
+      {%- liquid
+        assign crop = nil
+        if aspect != 'natural'
+          assign crop = 'center'
+        endif
+        render 'image', image: s.image, sizes: '(min-width: 768px) 60vw, 100vw', aspect: aspect, crop: crop, placeholder: 'lifestyle-2'
+      -%}
     </div>
     <div class="image-with-text__copy stack">
       {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}

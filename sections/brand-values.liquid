@@ -26,6 +26,7 @@
           </li>
         {%- endfor -%}
       </ul>
+      {%- if s.footnote != blank -%}<div class="brand-values__footnote rte">{{ s.footnote }}</div>{%- endif -%}
     </div>
   </div>
 </div>
@@ -49,6 +50,7 @@
         </li>
       {%- endfor -%}
     </ul>
+    {%- if s.footnote != blank -%}<div class="brand-values__footnote rte">{{ s.footnote }}</div>{%- endif -%}
   </div>
 </div>
 {%- endif -%}
@@ -64,6 +66,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Why Sakooon" },
     { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [ { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
     { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "richtext", "id": "footnote", "label": "Closing line", "info": "Optional. Shown below the values." },
     { "type": "image_picker", "id": "image", "label": "Image", "info": "Optional. Switches to a two-column layout: photograph beside the values, shown as rows with hairlines (icons hidden)." },
     { "type": "select", "id": "media_position", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
     { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
