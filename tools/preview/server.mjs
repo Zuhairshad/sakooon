@@ -718,6 +718,24 @@ async function renderPage(url) {
 /* --------------------------------------------------------------- server */
 
 const MIME = { '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json' };
+/* Resize images on the fly like Shopify's CDN does for ?width= (sharp, cached under tools/preview/.cache). Falls back to the original. */
+let sharpMod = null;
+async function sendImage(res, file, width) {
+  if (!exists(file) || !fs.statSync(file).isFile()) return send(res, 404, 'Not found', 'text/plain');
+  if (!width || width >= 2400) return sendFile(res, file);
+  try {
+    if (sharpMod === null) { try { sharpMod = (await import('sharp')).default; } catch { sharpMod = false; } }
+    if (!sharpMod) return sendFile(res, file);
+    const cacheDir = path.join(__dirname, '.cache'); fs.mkdirSync(cacheDir, { recursive: true });
+    const ext = path.extname(file).toLowerCase() === '.png' ? '.png' : '.webp';
+    const cached = path.join(cacheDir, `${path.basename(file, path.extname(file))}-${width}${ext}`);
+    if (!exists(cached)) {
+      const img = sharpMod(file).resize({ width, withoutEnlargement: true });
+      await (ext === '.png' ? img.png({ compressionLevel: 9 }) : img.webp({ quality: 78 })).toFile(cached);
+    }
+    return sendFile(res, cached);
+  } catch (e) { return sendFile(res, file); }
+}
 function sendFile(res, file) {
   if (!exists(file) || !fs.statSync(file).isFile()) return send(res, 404, 'Not found', 'text/plain');
   res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
@@ -749,7 +767,7 @@ http.createServer(async (req, res) => {
   const started = Date.now();
   try {
     if (p.startsWith('/assets/')) return sendFile(res, path.join(THEME, 'assets', path.basename(p)));
-    if (p.startsWith('/images/')) return sendFile(res, path.join(IMAGES, path.basename(p)));
+    if (p.startsWith('/images/')) return sendImage(res, path.join(IMAGES, path.basename(p)), Number(url.searchParams.get('width')) || 0);
     if (p === '/cart.js' || p === '/cart.json') return sendJson(res, cartJson());
     if (p === '/cart/add.js' || p === '/cart/add') {
       const body = await readBody(req);
