@@ -587,7 +587,47 @@
       "cm": "Centimetres",
       "in": "Inches",
       "index": "Size guide categories",
-      "measured_in": "Units:"
+      "measured_in": "Units:",
+      "how_to_choose": "Measure your mattress first: width, length and depth. Then compare it with the sizes in the tables, which are listed exactly as on each product. For a flat sheet or a duvet cover, choose one larger than the mattress so it can tuck in or hang over the sides."
+    },
+    "size_diagram": {
+      "width": "Width",
+      "length": "Length",
+      "depth": "Depth",
+      "elastic": "Elastic edge",
+      "mattress_label": "Mattress",
+      "sheet_pocket": "Fitted sheet",
+      "mattress_top": "Mattress top",
+      "sheet_width": "Sheet width",
+      "sheet_length": "Sheet length",
+      "head": "Head of the bed",
+      "cover": "Cover",
+      "filling": "Filling",
+      "overhang": "Overhang on each side",
+      "pillow_label": "Pillow",
+      "pillow_long": "30 in (76 cm)",
+      "pillow_short": "20 in (48 cm)",
+      "opening": "Opening",
+      "mattress": {
+        "title": "How to measure a mattress",
+        "desc": "A mattress in three-quarter view. A (1) is the width across the top, B (2) is the length from head to foot and C (3) is the depth from the bottom seam to the top."
+      },
+      "fitted": {
+        "title": "How a fitted sheet fits",
+        "desc": "A cross-section of one corner of a mattress. A fitted sheet covers the top, runs down the side for the mattress depth C (1) and is held under the mattress by an elastic edge (2)."
+      },
+      "flat": {
+        "title": "How a flat sheet fits",
+        "desc": "A bed seen from above. The sheet covers the mattress top (1). The shaded strips along both sides (2) and at the foot (3) are the allowance that tucks under the mattress."
+      },
+      "duvet": {
+        "title": "A duvet inside its cover",
+        "desc": "The end of a bed: a duvet cover (1) with the filling inside it (2, dashed line), draped over the mattress so the cover hangs over each side (3)."
+      },
+      "pillow": {
+        "title": "Pillow and pillow cover",
+        "desc": "A pillow (1) of 20 by 30 inches (48 by 76 cm) inside a pillow cover (2), with the opening at one end (3)."
+      }
     },
     "measurement": {
       "label": "How to measure",

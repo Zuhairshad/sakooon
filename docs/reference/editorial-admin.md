@@ -25,6 +25,8 @@ Every field is optional except `name`. The theme hides any blank field together 
 | `name` | Name | Single line text | **Required** |
 | `tagline` | Tagline | Single line text | max 80 |
 | `summary` | Summary | Multi-line text | max 280 |
+| `overview` | Overview | Multi-line text | 5–6 lines (about 450–650 characters); the PDP fabric row (shad-d8). Facts from the product descriptions only; general fabric knowledge says "in general" |
+| `care_summary` | Care summary | Multi-line text | 5–6 lines; the PDP care row. Product-specific only where the description gives care; otherwise starts "General guidance, not specific to one product" |
 | `description` | Description | Rich text | |
 | `composition` | Composition | Single line text | enter only verified compositions |
 | `fibre` | Fibre | Single line text | choices: cotton, linen, cotton-linen, lyocell, wool, other |
