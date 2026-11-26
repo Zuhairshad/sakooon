@@ -125,6 +125,53 @@ const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handl
 }));
 const pageByHandle = Object.fromEntries(PAGES.map((p) => [p.handle, p]));
 
+/* ---------------------------------------------------- metaobjects / metafields (fixtures)
+   fixtures: { "metaobjects": { "fabric": [ { "handle": "percale", "fields": { "name": "Percale", "softness": { "rating": 4 }, "texture_image": "image:file.webp",
+              "related_products": ["product:handle"], "collection": "collection:bed-sheets", "care_guide": "page:about", "certifications": ["metaobject:certification/oeko"] } } ] },
+              "metafields": { "<product handle>": { "sakooon": { "fabric": "metaobject:fabric/percale", "dimensions": "<p>..</p>" } } } }
+   Values render like Shopify: `{{ obj.field }}` prints the value, `obj.field.value` is the resolved object/list, `metafield_tag` renders HTML. */
+const METAOBJECTS = {};
+function resolveMetaValue(raw) {
+  if (Array.isArray(raw)) return raw.map(resolveMetaValue);
+  if (raw && typeof raw === 'object') {
+    if ('rating' in raw) return { rating: Number(raw.rating), scale_min: raw.scale_min ?? 1, scale_max: raw.scale_max ?? 5, toString() { return String(raw.rating); } };
+    return raw;
+  }
+  if (typeof raw !== 'string') return raw;
+  let m;
+  if ((m = /^image:(.+)$/.exec(raw))) return shopImage(`shopify://shop_images/${m[1]}`) || image({ url: `/images/${m[1]}`, altText: '', width: 1600, height: 2000 });
+  if ((m = /^product:(.+)$/.exec(raw))) return productByHandle[m[1]] || null;
+  if ((m = /^collection:(.+)$/.exec(raw))) return collectionByHandle[m[1]] || null;
+  if ((m = /^page:(.+)$/.exec(raw))) return pageByHandle[m[1]] || null;
+  if ((m = /^metaobject:([a-z0-9_]+)\/(.+)$/.exec(raw))) return METAOBJECTS[m[1]]?.[m[2]] || null;
+  return raw;
+}
+const metaString = (v) => (v == null ? '' : Array.isArray(v) ? v.map(metaString).join(', ') : typeof v === 'object' ? (v.title || v.name || v.src || v.toString()) : String(v));
+function metafield(raw, key = '') {
+  if (raw === undefined || raw === null || raw === '') return null;
+  const value = resolveMetaValue(raw);
+  const list = Array.isArray(value);
+  const type = list ? 'list.' : /^<[a-z]/.test(String(raw)) ? 'rich_text_field' : typeof raw === 'number' ? 'number_integer' : 'single_line_text_field';
+  return { key, value, type, list_type: list, toString() { return metaString(value); }, toJSON() { return value; } };
+}
+function wrapNamespaces(obj = {}) {
+  return Object.fromEntries(Object.entries(obj).map(([ns, fields]) => [ns, Object.fromEntries(Object.entries(fields || {}).map(([k, v]) => [k, metafield(v, k)]))]));
+}
+for (const fx of FIXTURES) for (const [type, entries] of Object.entries(fx.metaobjects || {})) {
+  METAOBJECTS[type] = METAOBJECTS[type] || {};
+  for (const e of entries) {
+    const obj = { system: { type, handle: e.handle, id: `gid://shopify/Metaobject/${type}-${e.handle}`, url: `/pages/${type}/${e.handle}`, published: e.published !== false }, toString() { return metaString(obj.name?.value || e.handle); } };
+    METAOBJECTS[type][e.handle] = obj;
+    obj._fields = e.fields || {};
+  }
+}
+for (const [type, byHandle] of Object.entries(METAOBJECTS)) for (const obj of Object.values(byHandle)) { for (const [k, v] of Object.entries(obj._fields)) obj[k] = metafield(v, k); delete obj._fields; }
+const SHOP_METAOBJECTS = Object.fromEntries(Object.entries(METAOBJECTS).map(([type, byHandle]) => [type, { ...byHandle, values: Object.values(byHandle).filter((o) => o.system.published) }]));
+for (const p of PRODUCTS) p.metafields = wrapNamespaces(FIXTURE_METAFIELDS[p.handle]);
+for (const v of PRODUCTS.flatMap((p) => p.variants)) v.metafields = v.metafields || {};
+for (const c of COLLECTIONS) c.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`collection:${c.handle}`]);
+for (const pg of PAGES) pg.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`page:${pg.handle}`]);
+
 const BLOGS = snapshot.blogs.map((b) => ({
   handle: b.handle, title: b.title, url: `/blogs/${b.handle}`, all_tags: [], tags: [],
   articles: (b.articles || []).map((a) => ({ ...a, url: `/blogs/${b.handle}/${a.handle}`, image: image(a.image), tags: a.tags || [] })),
@@ -146,7 +193,12 @@ for (const ll of Object.values(LINKLISTS)) if (ll.levels === undefined) ll.level
 
 /* ------------------------------------------------------------- settings */
 
-const locale = readJson(path.join(THEME, 'locales', 'en.default.json'));
+const LOCALE_FILE = path.join(THEME, 'locales', 'en.default.json');
+let localeCache = { mtime: 0, data: {} };
+function getLocale() {
+  try { const mt = fs.statSync(LOCALE_FILE).mtimeMs; if (mt !== localeCache.mtime) localeCache = { mtime: mt, data: readJson(LOCALE_FILE) }; } catch (e) { /* keep last good */ }
+  return localeCache.data;
+}
 const settingsSchema = readJson(path.join(THEME, 'config', 'settings_schema.json'));
 const settingsData = readJson(path.join(THEME, 'config', 'settings_data.json'));
 const SETTING_DEFAULTS = {};
@@ -224,7 +276,7 @@ const cartJson = () => JSON.parse(JSON.stringify(cartObject(), (k, v) => (k === 
 /* -------------------------------------------------------------- liquid */
 
 function tr(key, vars = {}) {
-  const val = key.split('.').reduce((o, k) => (o == null ? o : o[k]), locale);
+  const val = key.split('.').reduce((o, k) => (o == null ? o : o[k]), getLocale());
   if (typeof val !== 'string') return key.includes('.') ? titleCase(key.split('.').pop()) : key;
   return val.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, n) => (vars[n] ?? ''));
 }
@@ -309,6 +361,16 @@ const F = {
     return exists(f) ? fs.readFileSync(f, 'utf8') : '';
   },
   structured_data: () => '',
+  metafield_tag: (mf) => {
+    const v = mf && mf.value !== undefined ? mf.value : mf;
+    if (v == null) return '';
+    if (Array.isArray(v)) return `<ul class="list-unstyled">${v.map((x) => `<li>${metaString(x)}</li>`).join('')}</ul>`;
+    if (typeof v === 'object' && v.src) return `<img src="${v.src}" alt="${v.alt || ''}">`;
+    if (typeof v === 'object' && v.url && v.title) return `<a href="${v.url}">${v.title}</a>`;
+    if (typeof v === 'object' && 'rating' in v) return `<span class="metafield-rating">${v.rating}/${v.scale_max}</span>`;
+    return String(v);
+  },
+  metafield_text: (mf) => metaString(mf && mf.value !== undefined ? mf.value : mf),
 };
 for (const [name, fn] of Object.entries(F)) engine.registerFilter(name, fn);
 
@@ -407,6 +469,9 @@ async function renderSection(type, data, globals, id = type) {
     id: bid, type: b.type, settings: withDefaults(blockDefs[b.type]?.settings, b.settings), shopify_attributes: '',
   }));
   const section = { id, type, settings: withDefaults(schema.settings, data.settings), blocks, index: 1, location: 'template' };
+  for (const st of schema.settings || []) if (st.type === 'liquid' && typeof section.settings[st.id] === 'string' && section.settings[st.id].includes('{')) {
+    try { section.settings[st.id] = await engine.parseAndRender(section.settings[st.id], {}, { globals: { ...globals, section } }); } catch (e) { section.settings[st.id] = `<pre>Liquid error: ${escapeHtml(e.message)}</pre>`; }
+  }
   let html;
   try {
     html = await engine.parseAndRender(def.src, { section }, { globals });
@@ -461,7 +526,7 @@ const SHOP = {
   money_format: 'Rs.{{amount}}', money_with_currency_format: 'Rs.{{amount}} PKR', currency: 'PKR', email: THEME_SETTINGS.email || '',
   customer_accounts_enabled: true, customer_accounts_optional: true, password_message: '', description: 'Premium bed sheets, duvets, pillows — woven for deep, peaceful sleep in every Pakistani home.', locale: 'en',
   policies: (extras.policies || []).map((p) => ({ title: p.title, url: `/policies/${p.handle}`, body: p.body })),
-  enabled_payment_types: [], brand: {},
+  enabled_payment_types: [], brand: {}, metaobjects: SHOP_METAOBJECTS,
 };
 const ROUTES = {
   root_url: '/', root: '/', account_url: '/account', account_login_url: '/account/login', account_logout_url: '/account/logout',
@@ -528,6 +593,11 @@ function resolveRoute(url) {
   if ((m = /^\/collections\/([^/]+)$/.exec(p)) && collectionByHandle[m[1]]) {
     const collection = applyFacets(collectionByHandle[m[1]], url);
     return { name: 'collection', ...tplFor('collection'), page_type: 'collection', title: collection.title, vars: { collection, current_tags: null } };
+  }
+  if ((m = /^\/pages\/([a-z0-9_]+)\/([^/]+)$/.exec(p)) && METAOBJECTS[m[1]]?.[m[2]]?.system.published) {
+    const metaobject = METAOBJECTS[m[1]][m[2]];
+    const file = `metaobject/${m[1]}.json`;
+    return { name: 'metaobject', file, suffix: null, page_type: 'metaobject', title: metaString(metaobject.name?.value || metaobject.system.handle), vars: { metaobject } };
   }
   if ((m = /^\/pages\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
     const page = pageByHandle[m[1]];

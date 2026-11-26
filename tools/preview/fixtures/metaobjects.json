@@ -1,0 +1,18 @@
+{
+  "metaobjects": {
+    "certification": [
+      { "handle": "example-standard", "fields": { "name": "Example Textile Standard (placeholder)", "issuer": "Example Institute", "licence_number": "00000-PLACEHOLDER", "certificate_url": "https://example.com/verify/00000", "scope": "Finished bedding", "valid_until": "2027-12-31" } }
+    ],
+    "fabric": [
+      { "handle": "percale", "fields": { "name": "Percale", "tagline": "Crisp and cool", "summary": "A plain one-over-one-under weave with a matte, crisp hand. Placeholder copy.", "description": "<p>Placeholder description for percale. Real, verified copy arrives in Phase 2.</p>", "composition": "Composition to be verified", "fibre": "cotton", "weave": "percale", "texture": "Matte, crisp", "feel": "Crisp", "softness": { "rating": 3 }, "breathability": { "rating": 5 }, "warmth": { "rating": 1 }, "durability": { "rating": 4 }, "best_for": ["Hot sleepers", "Warm climates"], "seasons": ["all-season", "warm-weather"], "care": "<p>Placeholder care text for percale.</p>", "care_symbols": ["wash-40", "no-bleach", "tumble-low", "iron-medium"], "care_guide": "page:about", "texture_image": "image:sakooon-quilted-bed-sheet-set-ivory.webp", "lifestyle_image": "image:sakooon-white-bedding-bedroom.webp", "gallery": ["image:sakooon-quilted-bed-sheet-set-sage-green.webp", "image:sakooon-quilted-bed-sheet-set-dusty-blue.webp"], "collection": "collection:bed-sheets", "related_products": ["product:fixture-quilted-bed-sheet-set"], "swatch_color": "#EDE8E0", "sort_order": 1 } },
+      { "handle": "sateen", "fields": { "name": "Sateen", "tagline": "Smooth with a soft sheen", "summary": "A satin weave that feels silky and drapes close to the body. Placeholder copy.", "description": "<p>Placeholder description for sateen.</p>", "fibre": "cotton", "weave": "sateen", "texture": "Smooth", "feel": "Silky", "softness": { "rating": 5 }, "breathability": { "rating": 3 }, "warmth": { "rating": 3 }, "durability": { "rating": 3 }, "best_for": ["Cooler nights", "Soft hand feel"], "seasons": ["all-season"], "care": "<p>Placeholder care text for sateen.</p>", "care_symbols": ["wash-40", "no-bleach", "tumble-low", "iron-low"], "texture_image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp", "collection": "collection:duvet-covers", "related_products": ["product:fixture-two-tone-duvet-cover-set"], "certifications": ["metaobject:certification/example-standard"], "swatch_color": "#D9D4CC", "sort_order": 2 } },
+      { "handle": "linen", "fields": { "name": "Linen", "tagline": "Textured and airy", "summary": "Flax fibre with a relaxed, lived-in texture. Placeholder copy.", "fibre": "linen", "weave": "plain", "finish": "stonewashed", "softness": { "rating": 3 }, "breathability": { "rating": 5 }, "warmth": { "rating": 2 }, "durability": { "rating": 5 }, "best_for": ["Hot sleepers"], "seasons": ["warm-weather"], "care_symbols": ["wash-30", "no-bleach", "tumble-none", "no-iron"], "texture_image": "image:sakooon-quilted-bed-sheet-set-butter-yellow.webp", "swatch_color": "#CFC7B8", "sort_order": 3 } },
+      { "handle": "draft-waffle", "published": false, "fields": { "name": "Waffle (draft)", "weave": "waffle", "sort_order": 9 } }
+    ]
+  },
+  "metafields": {
+    "fixture-two-tone-duvet-cover-set": { "sakooon": { "fabric": "metaobject:fabric/sateen", "package_contents": ["1 duvet cover", "2 pillowcases"], "care_guide": "page:about", "size_guide": "page:size-guide" } },
+    "page:about": { "sakooon": { "related_fabrics": ["metaobject:fabric/percale", "metaobject:fabric/sateen", "metaobject:fabric/linen"] } },
+    "collection:bed-sheets": { "sakooon": { "fabric": "metaobject:fabric/percale", "banner_heading": "Placeholder banner heading" } }
+  }
+}
