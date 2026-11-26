@@ -44,7 +44,7 @@ The preview is a floor: fonts come from a Google CSS request here but from Shopi
 /Users/shad/sakooon-qa/theme/p2-{home,product,soldout,collection,about,fabric,faq,journal}/{1440,390}-full.png; storefront's own set under /Users/shad/sakooon-qa/theme/phase2/.
 
 ## 6. Open work
-- Homepage lower half redesign requested by the user on return (Why Sakooon as photo + text block, Sukoon statement block in deep green, newsletter band and service strip removed, 1440px text width cap at 1920): shad-2d, in progress.
+- Homepage lower half redesign requested by the user on return: done (storefront e8e0c43 + 6a7a727, integration 6a7a727): Sukoon statement in deep green under the hero, Why Sakooon as photo + text rows, newsletter band and service strip removed, 1440px text cap, product rails with <= 3 products fill the row as equal columns. Home re-checked: interactions 9/9, responsive 7/7, axe 0.
 - Everything else in Phase 2 scope is delivered; workers idle pending the user's answers in §7.
 
 ## 7. Needs the user (nothing proceeds on guesses)

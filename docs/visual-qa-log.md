@@ -67,3 +67,6 @@ Lighthouse mobile on the preview: / 76-78, PDP 75, FAQ 84 (a11y/BP/SEO 100/100/1
 
 ## 2026-11-26 Phase 2 closing run (head 37de3d7)
 Interactions 9/9, responsive 112/112 (16 templates x 7 viewports), axe 30/30 with 0 violations, Theme Check clean. Lighthouse mobile: home 79, bed-sheets 79, PDP 82/87, fabric guide 85, about 90, FAQ 94, journal 92; a11y/BP/SEO 100 everywhere.
+
+## 2026-11-26 Homepage redesign check (head 6a7a727)
+After the user review: storefront e8e0c43 (Sukoon statement, Why Sakooon split, newsletter/service strip removed, 1440 text cap) and 6a7a727 (rails fit). Home: Theme Check clean, interactions 9/9, responsive 7/7, axe 0 at 1920/390; capture /Users/shad/sakooon-qa/theme/p2-home-v3/1920-full.png.
