@@ -3,7 +3,7 @@
 <html lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  {%- assign gift_card_value = gift_card.initial_value | money_with_currency -%}
+  {%- assign gift_card_value = gift_card.initial_value | money_without_trailing_zeros -%}
   <title>{{ 'gift_cards.issued.title' | t: value: gift_card_value, shop: shop.name }}</title>
   <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
   {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{%- endif -%}
@@ -18,7 +18,7 @@
     <header class="text-center stack">
       <a href="{{ shop.url }}" class="h4 link--plain">{{ shop.name }}</a>
       <h1 class="h2">{{ 'gift_cards.issued.subtext' | t }}</h1>
-      <p class="h1">{{ gift_card.initial_value | money }}</p>
+      <p class="h1">{{ gift_card.initial_value | money_without_trailing_zeros }}</p>
       {%- if gift_card.enabled == false or gift_card.expired -%}<p class="badge badge--sold-out">{{ 'gift_cards.issued.expired' | t }}</p>{%- endif -%}
     </header>
     <div class="stack stack--lg text-center" style="margin-top: var(--space-10)">
