@@ -61,6 +61,17 @@ Definition handle `fabric`; storefront access enabled, with web pages enabled (t
 | certifications | list.single_line_text | verified only |
 | feel | single_line_text | |
 | shipping_note | single_line_text | per product shipping/returns override |
+| siblings | list.product_reference | colour siblings when each colour is a separate product (fallback for stores that do not use a Colour option); card and PDP swatches render from `Colour` option values first, then `siblings` |
+| swatch_color | color | this product's swatch colour when it is a colour sibling (fallback: `swatch_image`, then first image) |
+| swatch_image | file_reference | swatch texture for siblings |
+| color_family | list.metaobject_reference (color_family) | colour filtering via Search & Discovery filters on this metafield |
+
+## Metaobject: Colour family (`type: color_family`)
+Fields: name (e.g. Blue), handle, swatch (color), sort_order (number_integer). Used only for filtering; swatch colours on cards come from option-value swatches or `sakooon.swatch_color`.
+
+## Colour representation (decision 2026-11-26, D10)
+Primary pattern: Colour is a real variant option (Colour x Size) so variant media, native option-value swatches and filtering work out of the box.
+Compatibility pattern: colour as separate products linked with `sakooon.siblings` (the live catalogue currently does this). The theme supports both; swatch rendering order: option value `swatch` (color/image) -> named colour from the value handle -> text chip; for siblings: `swatch_color` -> `swatch_image` -> featured image.
 
 Standard product metafields to respect if present: `product.metafields.shopify.*` (category metafields like color-pattern, fabric) may be used by filters.
 

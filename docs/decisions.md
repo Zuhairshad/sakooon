@@ -48,3 +48,8 @@ Local preview (`npm run preview`, LiquidJS) ports: Fable 9292, shad-2d 9301, sha
 QA scripts take `--base http://localhost:<port>`. Output always goes to /Users/shad/sakooon-qa (shared, not in git).
 `shopify theme dev --store juj1hc-qf.myshopify.com` is the authoritative preview once the user has logged the CLI in;
 only Fable runs it (single development theme) and workers test against the preview or ask Fable for a push to it.
+
+## 2026-11-26 D10: Colour = variant option first, sibling products supported
+Proposed by shad-d8 from the Parachute investigation. Variant option gives variant media and native filters; the live store
+currently sells colours as separate products, so `sakooon.siblings` keeps that working. Colour filtering via `sakooon.color_family`
+metaobject references (Search & Discovery). Facets apply via the Section Rendering API with history.pushState, not a full reload.
