@@ -19,7 +19,8 @@ import { Liquid, Tag, Hash } from 'liquidjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const THEME = path.resolve(__dirname, '..', '..');
-const HEADLESS = path.resolve(process.env.HEADLESS || path.join(THEME, '..', 'sakooon'));
+const HEADLESS_CANDIDATES = [process.env.HEADLESS, path.join(THEME, '..', 'sakooon'), path.join(THEME, '..', '..', 'sakooon'), '/Users/shad/sakooon'].filter(Boolean).map((p) => path.resolve(p));
+const HEADLESS = HEADLESS_CANDIDATES.find((p) => fs.existsSync(path.join(p, 'data', 'store.json'))) || HEADLESS_CANDIDATES[0];
 const PORT = Number(process.env.PORT || 9292);
 const IMAGES = path.join(HEADLESS, 'public', 'images');
 
@@ -142,6 +143,23 @@ const THEME_SETTINGS = resolveSettings({ ...SETTING_DEFAULTS, ...current }, SETT
 delete THEME_SETTINGS.sections;
 delete THEME_SETTINGS.content_for_index;
 
+/** Shopify-shaped colour: prints as the hex string, exposes .red/.green/.blue/.alpha. */
+function colorObject(hex) {
+  if (!hex || typeof hex !== 'string') return hex;
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  return { red: (n >> 16) & 255, green: (n >> 8) & 255, blue: n & 255, alpha: 1, hex: `#${m[1]}`, toString() { return `#${m[1]}`; }, toJSON() { return `#${m[1]}`; } };
+}
+/** Shopify-shaped font from a font_picker handle like "inter_n4" (family_weight-style). Approximation: Google Fonts in the preview. */
+function fontObject(handle) {
+  if (!handle || typeof handle !== 'string') return handle;
+  const m = /^(.*)_([ni])(\d)$/.exec(handle);
+  const family = (m ? m[1] : handle).split('_').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
+  const weight = m ? Number(m[3]) * 100 : 400;
+  const style = m && m[2] === 'i' ? 'italic' : 'normal';
+  return { family, fallback_families: 'sans-serif', weight, style, system: false, 'system?': false, baseline_ratio: 0.5, handle, toString() { return family; } };
+}
 /** Turn stored setting values (handles, shopify:// refs) into the objects Liquid sees. */
 function resolveSettings(values, types) {
   const out = {};
@@ -156,6 +174,9 @@ function resolveSettings(values, types) {
     else if (t === 'collection_list') out[k] = (v || []).map((h) => collectionByHandle[h]).filter(Boolean);
     else if (t === 'product_list') out[k] = (v || []).map((h) => productByHandle[h]).filter(Boolean);
     else if (t === 'video') out[k] = null;
+    else if (t === 'font_picker') out[k] = fontObject(v);
+    else if (t === 'color_scheme_group') out[k] = Object.entries(v || {}).map(([id, def]) => ({ id, settings: Object.fromEntries(Object.entries(def.settings || {}).map(([sk, sv]) => [sk, colorObject(sv)])), toString() { return id; } }));
+    else if (t === 'color') out[k] = colorObject(v);
     else out[k] = typeof v === 'string' && v.startsWith('t:') ? tr(v.slice(2)) : v;
   }
   return out;
@@ -262,7 +283,14 @@ const F = {
   video_tag: () => '', external_video_tag: () => '', external_video_url: () => '', media_tag: (m) => (m?.src ? `<img src="${m.src}" alt="">` : ''),
   model_viewer_tag: () => '', payment_button: () => '', payment_terms: () => '', payment_type_svg_tag: () => '',
   highlight: (s) => s, color_to_rgb: (s) => s, color_modify: (s) => s, color_brightness: () => 128,
-  font_face: () => '', font_url: () => '', font_modify: (f) => f, inline_asset_content: (name) => {
+  font_face: (f) => (f && f.family ? `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@${f.style === 'italic' ? 1 : 0},${f.weight || 400}&display=swap');` : ''),
+  font_url: (f) => '', font_modify: (f, prop, val) => {
+    if (!f || !f.family) return f;
+    const out = { ...f, toString() { return f.family; } };
+    if (prop === 'weight') out.weight = val === 'bolder' ? Math.min((f.weight || 400) + 300, 900) : val === 'lighter' ? Math.max((f.weight || 400) - 300, 100) : Number(val) || f.weight;
+    if (prop === 'style') out.style = val;
+    return out;
+  }, preload_tag: () => '', inline_asset_content: (name) => {
     const f = path.join(THEME, 'assets', String(name));
     return exists(f) ? fs.readFileSync(f, 'utf8') : '';
   },

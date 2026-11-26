@@ -1,9 +1,14 @@
 {%- comment -%} STUB handed to shad-2d. Replace entirely. {%- endcomment -%}
 <footer class="footer color-scheme-{{ section.settings.color_scheme }} section" style="--section-pt: var(--section-padding-sm); --section-pb: var(--section-padding-sm)">
   <div class="page-width">
-    {%- assign menu = section.settings.menu | default: settings.menu_footer -%}
-    {%- if linklists[menu].links.size > 0 -%}
-    <nav aria-label="Footer"><ul class="list-unstyled flex flex-wrap gap-6 text-small">{%- for link in linklists[menu].links -%}<li><a class="link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
+    {%- liquid
+      assign menu = section.settings.menu
+      if menu == blank or menu.links.size == 0
+        assign menu = settings.menu_footer
+      endif
+    -%}
+    {%- if menu.links.size > 0 -%}
+    <nav aria-label="Footer"><ul class="list-unstyled flex flex-wrap gap-6 text-small">{%- for link in menu.links -%}<li><a class="link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
     {%- endif -%}
     <p class="text-caption" style="margin-top: var(--space-8)">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'sections.footer.copyright' | t }} {{ powered_by_link }}</p>
   </div>

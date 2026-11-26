@@ -1,11 +1,16 @@
 {%- comment -%} STUB handed to shad-2d. Replace entirely; keep the data-drawer-open hooks (docs/component-contracts.md section 3). {%- endcomment -%}
-{%- assign menu = section.settings.menu | default: settings.menu_main -%}
+{%- liquid
+  assign menu = section.settings.menu
+  if menu == blank or menu.links.size == 0
+    assign menu = settings.menu_main
+  endif
+-%}
 <header class="header color-scheme-{{ section.settings.color_scheme }}" data-header data-sticky="{{ section.settings.sticky }}">
   <div class="page-width header__inner">
     <button type="button" class="header__icon button--icon hide-desktop" data-drawer-open="mobile-nav" aria-label="{{ 'general.accessibility.open_menu' | t }}" aria-expanded="false">{% render 'icon', icon: 'menu', size: 24 %}</button>
     <nav class="header__nav hide-mobile" aria-label="{{ 'sections.header.menu' | t }}">
       <ul class="header__menu list-unstyled">
-        {%- for link in linklists[menu].links -%}
+        {%- for link in menu.links -%}
           <li><a class="header__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
         {%- endfor -%}
       </ul>
@@ -32,7 +37,7 @@
   <div class="overlay" data-drawer-close></div>
   <div class="drawer drawer--left" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}">
     <div class="drawer__header"><span class="drawer__title">{{ 'sections.header.menu' | t }}</span><button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close_menu' | t }}">{% render 'icon', icon: 'close', size: 24 %}</button></div>
-    <nav class="drawer__body"><ul class="list-unstyled stack">{%- for link in linklists[menu].links -%}<li><a class="h4 link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
+    <nav class="drawer__body"><ul class="list-unstyled stack">{%- for link in menu.links -%}<li><a class="h4 link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
   </div>
 </theme-drawer>
 {% style %}
