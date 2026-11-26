@@ -50,9 +50,12 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Phase 2 brief + inputs inventory (Fable): docs/phase2-brief.md, docs/reference/phase2-inputs.md, D17/D18 (2f06acf)
 - [x] Brand palette + colour schemes (paper/white/sand/sage/ink from logo green #204830), logo artwork + favicon + brand-logo snippet, fonts unchanged (Fable, fd7bada)
 - [x] SEO foundations: og:image fallback to the stacked logo, Organization contactPoint (Fable)
-- [ ] Workers briefed 2026-11-26 (shad-2d storefront, shad-d8 commerce, shad-8b editorial); awaiting first milestones
-- [ ] Real catalogue data in the preview snapshot; product content + metafields plan (shad-d8)
-- [ ] Homepage with real photography and campaign copy (shad-2d)
-- [ ] Fabric metaobjects, care/size/FAQ/shipping/returns copy from verified Sakooon information (shad-8b)
-- [ ] Pakistani customer positioning, conversion strategy, SEO content (all; Fable coordinates)
+- [x] Workers briefed 2026-11-26 (shad-2d storefront, shad-d8 commerce, shad-8b editorial)
+- [x] Real catalogue in the preview, metafield overlays, collections for 1-3 products, PDP accordions from descriptions, sold-out state, D19 prices, deferred drawer images, swatches (shad-d8, M1-M5, head 01a65ba)
+- [x] Brand header/footer, real menus, homepage on real photography, claim-free copy, deferred mega promos, tablet grids (shad-2d, head 95f8bb1)
+- [x] Fabric metaobjects, care/size/FAQ/shipping/returns/contact/about/journal from verified data only, content-sources doc, cropped banners (shad-8b, head b5faf86)
+- [x] Image crop srcsets, non-blocking area CSS, D19 in account/order/gift card, Phase 2 report draft (Fable)
+- [ ] Closing QA numbers into docs/phase2-report.md (Fable, running)
+- [ ] USER: answer docs/reference/phase2-inputs.md §Still needed (14 items) and sign off the palette
+- [ ] Positioning/conversion/SEO content pass once policies and contact channels exist (all; Fable coordinates)
 - [ ] CLI login + development theme push for real-store verification (user + Fable)

@@ -15,3 +15,11 @@ Work split: Fable = palette/colour schemes/logo/favicon/fonts/SEO foundations + 
 shad-d8 = real catalogue in preview snapshot, product content plan, swatches (sakooon.swatch_color), complementary sets, PKR formatting; shad-8b = Fabric metaobject
 entries from verified data only, care/size/FAQ/shipping/returns copy, brand story (no unverified claims).
 Rules unchanged: no fabricated specs or certifications; nothing pushed to the live theme; development theme only once the CLI is connected.
+
+## Phase 2 status (2026-11-26, auto mode while the user was out)
+All three worker sections of docs/phase2-brief.md are delivered and merged into sakooon/integration (storefront 95f8bb1, commerce 01a65ba, editorial b5faf86).
+Lead work done: D17 palette + logo artwork + brand-logo snippet, D18, D19, SEO fallbacks, image crop srcsets, non-blocking area CSS, preview pages/variant metafields/crop resizing, docs/phase2-report.md.
+Workers are idle awaiting the user's answers (docs/reference/phase2-inputs.md §Still needed, 14 items). Next lead actions when the user returns:
+1. Walk the user through docs/phase2-report.md §7; collect palette sign-off, policies, contact channels, product-data corrections, photography.
+2. Turn answers into briefs: policies -> shad-8b (FAQ/shipping/returns answers, remove "coming soon"), contact/social -> shad-2d (footer/contact blocks) + settings_data, product corrections -> the user's Shopify Admin (not the theme), swatch hexes -> shad-d8 overlay.
+3. CLI login, then `shopify theme push --development` style dev theme (never publish) and re-run Lighthouse on the real store; decide on critical-CSS inlining from those numbers.
