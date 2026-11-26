@@ -101,3 +101,20 @@ Install **Shopify Search & Discovery**.
 3. The size guide link opens the drawer at the product type's table.
 4. The Composition accordion shows fabric ratings and the fabric page link when `sakooon.fabric` is set.
 5. The cart drawer shows complementary products after adding a bedding item with complementary products configured.
+
+## 8. Collections: Admin copy (Phase 2)
+
+The five live collections hold 1–3 products. The theme narrows the grid to at most max(count, 3) columns. Filter groups with a single
+value are hidden, and so is the "Filter and sort" button when nothing could change the results (one product, no active filter).
+Paste the line below into **Collection > Description**, or into the `sakooon.banner_text` metafield to keep the description for SEO.
+Keep the collection title as it is; it becomes the banner heading. The copy is description-backed (no counts, prices or quality claims).
+
+| Collection | Title | Description (one line) | Source in the product descriptions |
+|---|---|---|---|
+| bed-sheets | Bed Sheets | Sheet sets with matching pillow covers, in solid colours, quilted textures and yarn-dyed prints. | "matching pair of pillow covers", "ultrasonic quilting", "Yarn-dyed fabric" |
+| duvet-covers | Duvet Covers | Reversible two-tone duvet covers, sold as a set with a bed sheet and pillow covers. | "reversible duvet cover, a matching bed sheet and four pillow covers" |
+| duvets | Duvets | Duvet fillings to go inside your duvet cover, in Single, Queen and King. | "duvet filling (insert) that goes inside a duvet cover", sizes list |
+| pillows | Pillows | Filled pillows with a cotton cover, ready for your pillow covers. | "complete filled pillow", "100% pure cotton cover" |
+| bed-covers | Bed Covers | Quilted cotton covers that lie flat over the bed, with matching pillow covers. | quilted set: "cotton", "flat bed sheet"-style quilt, "2 x Quilted Pillow Covers" |
+
+Note: `bed-sheets` also contains the two-tone duvet cover set (store data). Move it out in Admin if you want Bed Sheets to hold sheet sets only. The theme follows whatever the collection holds.
