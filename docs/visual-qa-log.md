@@ -49,3 +49,8 @@ Format: date | template/state | viewport | observation | action | status.
 
 ## 2026-11-26 Mobile menu sheet (integration after storefront 2cd7e67)
 - home / mobile nav | 390 | Bottom sheet rising under the visible header, 61px rows with chevrons, Account row at the end; matches the measured Parachute sheet (582px, 61px rows). Earlier left-drawer note closed. | none | OK
+
+## 2026-11-26 Cart page, FAQ sidebar, fabric guide panels (integration after commerce a279857, editorial cfbd180)
+- cart | 1440 | "Your cart (1)" title, line with image/title/options/stepper/Remove, sticky summary card (subtotal, tax note, Check out, Continue shopping), empty state with login prompt. Parachute has no dedicated cart page geometry beyond the flyout; ours follows the drawer's line layout. | none | OK
+- page.faq (sidebar layout) | 1440 | Sticky "Jump to a section" list left (aria-current follows scroll), grouped question accordions right with hairlines, "Still have a question?" footer block. Matches the Parachute FAQ structure. | none | OK
+- page.fabric-guide (panels layout) | 1440 | Filter chips, framed panels per fabric with 43:5 texture banner and name, feel chip, statement, two accordions, product-card rail, "Shop all <fabric>"; compare table; how-to-choose; FAQ. Matches Parachute's fabric guide pattern (verified by editorial in docs/reference/editorial-visual-pass.md). | none | OK
