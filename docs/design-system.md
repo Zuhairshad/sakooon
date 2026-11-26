@@ -84,7 +84,7 @@ reduced-motion support, no information by colour alone (swatches have names).
   each with a `-light` twin in paper for dark or transparent backgrounds; `sakooon-favicon-{32,180,512}.png` (paper mark on green).
   Render via `{% render 'brand-logo', variant: 'wordmark'|'mark'|'stacked', tone: 'dark'|'light', priority: true %}`; a merchant upload in Theme settings > Logo overrides the bundled artwork.
   Header logo width default 120px (wordmark), which gives a 15px cap height at desktop; mobile 90px.
-- **Typography** stays Inter (D11/D16). The wordmark's serif and the tagline's geometric sans live only inside the logo artwork.
+- **Typography** (D22): headings in Playfair Display 400 (theme heading font), everything else Inter 400. Change both in Theme settings > Typography; no code holds a font name.
 - **Tagline**: "The comfort in every thread". **Hook**: "sukoon" (Urdu: calm, peace of mind).
 - **Photography**: warm, daylight, unstyled beds; packshots on paper. No stock imagery. Current pool: `/Users/shad/sakooon/public/images` (39 files).
 

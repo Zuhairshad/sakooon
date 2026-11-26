@@ -106,3 +106,9 @@ User decision (direct to shad-2d): no arrows, no pause button. Rotation holds on
 
 ## 2026-11-26 D21: No brand statement directly after the homepage hero
 User decision: the Sukoon statement block is removed from the homepage (product first after the hero). The "statement" layout stays in rich-text for the About page. Brand story on the homepage lives only in the Why Sakooon photo + text block.
+
+## 2026-11-26 D22: Serif display headings (supersedes D16 for headings)
+User decision after seeing Parachute's serif promo headings: every heading (hero, section titles, product and page titles) uses
+Playfair Display (Shopify font library, `playfair_display_n4`, heading weight 400) via the theme heading font setting; body, navigation,
+prices, buttons and form text stay Inter. Section-level font pickers (campaign tiles) default to the theme heading font.
+

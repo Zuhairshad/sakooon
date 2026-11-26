@@ -275,7 +275,8 @@ function fontObject(handle) {
   const family = (m ? m[1] : handle).split('_').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
   const weight = m ? Number(m[3]) * 100 : 400;
   const style = m && m[2] === 'i' ? 'italic' : 'normal';
-  return { family, fallback_families: 'sans-serif', weight, style, system: false, 'system?': false, baseline_ratio: 0.5, handle, toString() { return family; } };
+  const SERIFS = /playfair|garamond|cormorant|caslon|lora|baskerville|serif|fraunces|libre bodoni|bodoni|crimson|merriweather|domine/i;
+  return { family, fallback_families: SERIFS.test(family) ? 'serif' : 'sans-serif', weight, style, system: false, 'system?': false, baseline_ratio: 0.5, handle, toString() { return family; } };
 }
 /** Turn stored setting values (handles, shopify:// refs) into the objects Liquid sees. */
 function resolveSettings(values, types) {
@@ -407,7 +408,10 @@ const F = {
   font_face: (f) => {
     if (!f || !f.family || FONT_EMITTED.has(f.family)) return '';
     FONT_EMITTED.add(f.family);
-    return `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');`;
+    /* Request only weights the family is likely to have: its own weight plus 400-600 (a missing weight makes Google reject the whole request). */
+    const weights = [...new Set([f.weight || 400, 400, 500, 600])].sort((a, b) => a - b);
+    const axes = [...weights.map((w) => `0,${w}`), '1,400'].join(';');
+    return `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@${axes}&display=swap');`;
   },
   font_url: (f) => '', font_modify: (f, prop, val) => {
     if (!f || !f.family) return f;
