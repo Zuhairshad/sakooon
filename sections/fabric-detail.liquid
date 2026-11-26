@@ -70,7 +70,7 @@
             {%- endfor -%}
           {%- when 'gallery' -%}
             {%- if fabric.gallery.value != blank -%}
-              <ul class="fabric-detail__gallery list-unstyled" role="list">
+              <ul class="fabric-detail__gallery list-unstyled" role="list" tabindex="0" aria-label="{{ 'editorial.fabric.images' | t: name: fabric.name.value | escape }}">
                 {%- for img in fabric.gallery.value limit: 6 -%}<li class="media" style="--aspect: 4/5">{% render 'image', image: img, sizes: '(min-width: 768px) 33vw, 50vw', aspect: '4/5' %}</li>{%- endfor -%}
               </ul>
             {%- endif -%}

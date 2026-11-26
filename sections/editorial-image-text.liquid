@@ -51,7 +51,7 @@
             {%- if b.label != blank -%}<p class="editorial-image-text__label">{{ b.label }}</p>{%- endif -%}
             {%- if b.heading != blank -%}<{{ item_tag }} class="editorial-image-text__heading h4">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
             {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
-            {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
+            {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}{% if b.heading != blank %}<span class="visually-hidden">: {{ b.heading }}</span>{% endif %}</a></p>{%- endif -%}
           </div>
         </div>
       {%- endfor -%}

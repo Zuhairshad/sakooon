@@ -36,7 +36,7 @@
       </nav>
     {%- endif -%}
     <div class="main-fabric__grid">
-      <div class="main-fabric__media">
+      <div class="main-fabric__media" role="region" tabindex="0" aria-label="{{ 'editorial.fabric.images' | t: name: name | escape }}">
         <div class="media" style="--aspect: 4/5">{% render 'image', image: primary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5', priority: true, alt: name, placeholder: 'lifestyle-1' %}</div>
         {%- if s.show_secondary and secondary != blank -%}
           <div class="media" style="--aspect: 4/5">{% render 'image', image: secondary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5' %}</div>

@@ -551,7 +551,8 @@
       "licence": "Licence",
       "verify": "Verify certificate",
       "new_window": "(opens in a new window)",
-      "select_fabric": "Select a fabric in this section's settings to preview its content."
+      "select_fabric": "Select a fabric in this section's settings to preview its content.",
+      "images": "{{ name }} images"
     },
     "care": {
       "about_fabric": "About {{ name }}"
@@ -578,6 +579,9 @@
       "email": "Email",
       "copy_link": "Copy link",
       "copied": "Link copied"
+    },
+    "gallery": {
+      "label": "Image gallery"
     }
   }
 }

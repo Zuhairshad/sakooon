@@ -14,13 +14,17 @@
     else
       assign width_class = 'page-width ed-wide'
   endcase
+  assign gallery_label = s.heading
+  if gallery_label == blank
+    assign gallery_label = 'editorial.gallery.label' | t
+  endif
   assign col_vw = 100 | divided_by: s.columns
   assign image_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, 75vw'
 -%}
 <div class="section ed-section editorial-gallery color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
   <div class="{{ width_class }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
-    <ul class="editorial-gallery__list list-unstyled{% if s.mobile_rail %} editorial-gallery__list--rail{% endif %}" role="list">
+    <ul class="editorial-gallery__list list-unstyled{% if s.mobile_rail %} editorial-gallery__list--rail{% endif %}" role="list"{% if s.mobile_rail %} tabindex="0" aria-label="{{ gallery_label | escape }}"{% endif %}>
       {%- for block in section.blocks -%}
         {%- assign b = block.settings -%}
         <li class="editorial-gallery__item" {{ block.shopify_attributes }}>

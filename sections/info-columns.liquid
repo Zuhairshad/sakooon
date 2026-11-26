@@ -26,7 +26,7 @@
           {%- if b.icon != 'none' -%}<span class="info-columns__icon">{% render 'icon', icon: b.icon, size: 24 %}</span>{%- endif -%}
           {%- if b.heading != blank -%}<{{ item_tag }} class="info-columns__heading text-body">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
           {%- if b.text != blank -%}<div class="info-columns__text rte">{{ b.text }}</div>{%- endif -%}
-          {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
+          {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}{% if b.heading != blank %}<span class="visually-hidden">: {{ b.heading }}</span>{% endif %}</a></p>{%- endif -%}
         </div>
       {%- endfor -%}
     </div>

@@ -46,7 +46,7 @@
                   </{{ item_tag }}>
                 {%- endif -%}
                 {%- if b.text != blank -%}<div class="rte editorial-list editorial-list--{{ s.list_style }}">{{ b.text }}</div>{%- endif -%}
-                {%- if b.link_url != blank and b.link_label != blank -%}<a class="care-guide__more ed-link-fade" href="{{ b.link_url }}">{{ b.link_label }}</a>{%- endif -%}
+                {%- if b.link_url != blank and b.link_label != blank -%}<a class="care-guide__more ed-link-fade" href="{{ b.link_url }}">{{ b.link_label }}{% if b.heading != blank %}<span class="visually-hidden">: {{ b.heading }}</span>{% endif %}</a>{%- endif -%}
               </div>
             </article>
           {%- when 'symbols' -%}
@@ -64,7 +64,7 @@
               <article class="care-guide__item care-guide__item--fabric" {{ block.shopify_attributes }}>
                 {%- if s.layout == 'cards' -%}
                   {%- assign f_img = f.texture_image.value | default: f.lifestyle_image.value -%}
-                  <div class="media care-guide__media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: f_img, sizes: img_sizes, aspect: s.image_ratio, alt: f.name.value, placeholder: 'collection-1' %}</div>
+                  <div class="media care-guide__media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: f_img, sizes: img_sizes, aspect: s.image_ratio, alt: '', placeholder: 'collection-1' %}</div>
                 {%- endif -%}
                 <div class="care-guide__content">
                   <{{ item_tag }} class="care-guide__heading {{ s.item_heading_size }}">{{ f.name.value }}</{{ item_tag }}>
