@@ -455,7 +455,7 @@ blog-load-more { display: block; }
 /* Same top offset as collection-banner at every width (no mobile padding scale). */
 .section.ed-section.editorial-hero--page { padding-top: var(--section-pt, 20px); }
 .ed-page .breadcrumbs { margin-bottom: var(--space-2); }
-.ed-page__title { margin: 0; font-size: clamp(44px, 5.6vw, 80px); line-height: .85; font-weight: 300; letter-spacing: var(--tracking-tight); text-wrap: balance; }
+.ed-page__title { margin: 0; font-size: clamp(44px, 5.6vw, 80px); line-height: 1.05; font-weight: var(--font-heading-weight); letter-spacing: var(--tracking-tight); text-wrap: balance; }
 .ed-page__sub { max-width: 60ch; font-size: var(--text-md); line-height: 1.4; color: var(--color-foreground-muted); }
 .ed-page__note { max-width: 72ch; font-size: var(--text-sm); color: var(--color-foreground-muted); }
 .ed-page__note strong { color: var(--color-foreground); font-weight: 500; }
@@ -509,3 +509,7 @@ guide-anchor-nav.guide-sidebar[data-empty] .guide-anchor-nav__nav { display: non
 
 /* Section headings at the homepage scale; accordions match the PDP rows (64px, hairlines, plus icon). */
 .accordion__trigger { min-height: 64px; padding-block: var(--space-3); font-size: var(--text-sm); }
+
+/* D22: headings are the serif, but body-size labels that use heading tags stay Inter (care topics, info-column
+   labels, journal card titles). */
+:is(h1, h2, h3, h4, h5, h6).text-body, .article-card__title { font-family: var(--font-body-family); font-style: var(--font-body-style, normal); font-weight: var(--font-body-weight, 400); letter-spacing: 0; }
