@@ -67,3 +67,9 @@ care_guide metaobject is deferred.
 
 ## 2026-11-26 D13: Never `pkill -f` the preview; restart by port
 `pkill -f tools/preview/server.mjs` matches every session's preview. Restart only your own: `lsof -ti tcp:<your port> | xargs kill`, then start again.
+
+## 2026-11-26 D14: Layout tokens set from the storefront measurements
+Defaults: page gutter 24 desktop / 16 mobile, grid gap 16 desktop / 8 mobile, section padding 40->64 (sm 24->40, lg 48->88, xl 64->160).
+Parachute: nav left, logo+utilities right, 56px bar + 37px announcement, transparent over the homepage hero; Tekla: 52px bar,
+hide-on-scroll-down, 40px rotating announcement. Both exposed as header settings (shad-2d). Image ratios: 3:4 cards (Parachute),
+4:5 (Tekla everywhere); card ratio stays a theme setting (default portrait 3:4).

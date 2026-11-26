@@ -34,14 +34,14 @@ Utility classes: .h0 .h1 .h2 .h3 .h4 .h5, .text-body, .text-small, .text-caption
 ### Spacing
 --space-1 4px, --space-2 8px, --space-3 12px, --space-4 16px, --space-5 20px, --space-6 24px, --space-8 32px,
 --space-10 40px, --space-12 48px, --space-16 64px, --space-20 80px, --space-24 96px, --space-32 128px.
-Section vertical padding: --section-padding-sm (clamp 32->48), --section-padding (clamp 48->96), --section-padding-lg (clamp 64->128).
+Section vertical padding (measured, D14): --section-padding-sm (24->40), --section-padding (40->64), --section-padding-lg (48->88), --section-padding-xl (64->160, editorial intros/discovery).
 Sections take `padding_top` / `padding_bottom` range settings (0-160, step 4) with these as defaults.
 
 ### Layout
---page-width 1440px (setting 1200-1920), --page-gutter clamp(16px, 4vw, 48px) (provisional), --page-gutter-wide.
+--page-width 1440px (setting 1200-1920), --page-gutter 16px mobile / 24px desktop (measured: Parachute 24/16, Tekla 16; settings page_gutter_*). Rails and editorial-narrow sections set their own wider insets (48 / 120) via section settings.
 .page-width { max-width: var(--page-width); margin-inline:auto; padding-inline: var(--page-gutter) }
 .page-width--full (no max), .page-width--narrow (max 960), .page-width--text (max 720).
-Grid: .grid with --grid-columns (1 mobile default), --grid-gap (--space-4 mobile, --space-6 desktop); modifiers via custom props set inline by section settings.
+Grid: .grid with --grid-columns (1 mobile default), --grid-gap 8px mobile / 16px desktop (measured: Parachute 8 tiles / 16 cards, Tekla 2; settings grid_gap_*); tile sections may set --grid-gap: 8px or 2px inline.
 Breakpoints (provisional, min-width): --bp-sm 600, --bp-md 768, --bp-lg 1024, --bp-xl 1280, --bp-2xl 1440.
 Media queries in CSS use these literal px values (custom properties cannot be used in @media).
 

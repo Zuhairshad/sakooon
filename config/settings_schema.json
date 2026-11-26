@@ -257,7 +257,7 @@
         "step": 4,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.page_gutter_desktop.label",
-        "default": 48
+        "default": 24
       },
       {
         "type": "range",
@@ -288,7 +288,7 @@
         "step": 4,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.grid_gap_desktop.label",
-        "default": 24
+        "default": 16
       },
       {
         "type": "range",
@@ -298,7 +298,7 @@
         "step": 2,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.grid_gap_mobile.label",
-        "default": 12
+        "default": 8
       }
     ]
   },
