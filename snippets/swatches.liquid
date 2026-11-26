@@ -1,0 +1,173 @@
+{%- comment -%}
+  Colour swatches for a product. Owner: shad-d8. Decision D10 / docs/metafield-contracts.md.
+  Source order: the product's colour option (names in settings.swatch_option_names), else sakooon.siblings.
+  Colour order per swatch:
+    option value: value.swatch.color / value.swatch.image -> CSS named colour from the value handle -> text chip
+    sibling:      sakooon.swatch_color -> sakooon.swatch_image -> featured image
+  Each swatch is a link (variant URL, or the sibling product URL), so it works without JS.
+
+  {% render 'swatches', product: card_product, limit: 3, size: 'sm' %}
+  Params: product (required), limit (default 0 = all; the rest collapse into "+N"), size ('sm' card | 'md' PDP),
+          current_url (url of the product being shown; marks the selected sibling), class.
+{%- endcomment -%}
+{%- liquid
+  assign limit = limit | default: 0
+  assign size = size | default: 'sm'
+
+  assign colour_names = settings.swatch_option_names | default: 'Color, Colour' | downcase | split: ','
+  assign colour_option = nil
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+    for name in colour_names
+      assign wanted = name | strip
+      if option_name == wanted
+        assign colour_option = option
+        break
+      endif
+    endfor
+    if colour_option
+      break
+    endif
+  endfor
+
+  assign siblings = product.metafields.sakooon.siblings.value
+  if colour_option
+    assign total = colour_option.values.size
+  elsif siblings != blank
+    assign total = siblings.count | default: siblings.size
+    assign self_listed = false
+    for sibling in siblings
+      if sibling.id == product.id
+        assign self_listed = true
+      endif
+    endfor
+    unless self_listed
+      assign total = total | plus: 1
+    endunless
+  else
+    assign total = 0
+  endif
+
+  if limit > 0 and total > limit
+    assign shown = limit
+    assign more = total | minus: limit
+  else
+    assign shown = total
+    assign more = 0
+  endif
+
+  comment
+    CSS named colours that are plausible bedding colour names; compared against the value handle with dashes removed.
+  endcomment
+  assign named_colours = ',white,ivory,beige,linen,wheat,tan,khaki,sienna,brown,chocolate,black,gray,grey,silver,gainsboro,whitesmoke,snow,seashell,navy,blue,lightblue,skyblue,steelblue,slateblue,teal,green,olive,olivedrab,darkolivegreen,sage,mintcream,pink,lightpink,mistyrose,lavender,lavenderblush,plum,thistle,purple,red,maroon,coral,salmon,peachpuff,bisque,antiquewhite,oldlace,cornsilk,lemonchiffon,yellow,gold,orange,rosybrown,indigo,charcoal,'
+-%}
+{%- if total > 0 -%}
+  <ul class="swatches swatches--{{ size }}{% if class %} {{ class }}{% endif %}" role="list">
+    {%- if colour_option -%}
+      {%- for value in colour_option.values limit: shown -%}
+        {%- liquid
+          assign value_name = value.name | default: value
+          assign value_url = value.variant.url
+          if value.product_url != blank
+            assign value_url = value.product_url
+          endif
+          if value_url == blank
+            for v in product.variants
+              assign idx = colour_option.position | minus: 1
+              if v.options[idx] == value_name
+                assign value_url = v.url
+                if v.available
+                  break
+                endif
+              endif
+            endfor
+          endif
+          assign value_url = value_url | default: product.url
+          assign is_selected = false
+          if value.selected or colour_option.selected_value == value_name
+            assign is_selected = true
+          endif
+          assign chip_style = ''
+          assign chip_class = 'swatch__chip'
+          if value.swatch.image
+            assign chip_style = 'background-image: url(' | append: value.swatch.image | image_url: width: 72 | append: ')'
+          elsif value.swatch.color
+            assign chip_style = 'background-color: ' | append: value.swatch.color
+          else
+            assign named = value_name | handle | remove: '-'
+            assign needle = ',' | append: named | append: ','
+            if named_colours contains needle
+              if named == 'charcoal'
+                assign named = 'dimgray'
+              elsif named == 'sage'
+                assign named = 'darkseagreen'
+              endif
+              assign chip_style = 'background-color: ' | append: named
+            else
+              assign chip_class = 'swatch__chip swatch__chip--text'
+            endif
+          endif
+        -%}
+        <li class="swatches__item">
+          <a class="swatch{% if is_selected %} is-selected{% endif %}{% if chip_class contains '--text' %} swatch--text{% endif %}" href="{{ value_url }}" title="{{ value_name | escape }}"{% if is_selected %} aria-current="true"{% endif %}>
+            <span class="{{ chip_class }}"{% if chip_style != blank %} style="{{ chip_style }}"{% endif %} aria-hidden="true">
+              {%- if chip_class contains '--text' -%}{{ value_name }}{%- endif -%}
+            </span>
+            <span class="visually-hidden">{{ value_name }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      {%- comment -%} Siblings: the current product first (selected), then the others in metafield order. {%- endcomment -%}
+      {%- assign rendered = 0 -%}
+      {%- for i in (0..shown) -%}
+        {%- liquid
+          if i == 0
+            assign sibling = product
+          else
+            assign sibling = nil
+            assign seen = 0
+            for candidate in siblings
+              if candidate.id == product.id
+                continue
+              endif
+              assign seen = seen | plus: 1
+              if seen == i
+                assign sibling = candidate
+                break
+              endif
+            endfor
+          endif
+          if sibling == nil or rendered >= shown
+            break
+          endif
+          assign rendered = rendered | plus: 1
+          assign chip_style = ''
+          assign swatch_color = sibling.metafields.sakooon.swatch_color.value
+          assign swatch_image = sibling.metafields.sakooon.swatch_image.value
+          if swatch_color != blank
+            assign chip_style = 'background-color: ' | append: swatch_color
+          elsif swatch_image != blank
+            assign chip_style = 'background-image: url(' | append: swatch_image | image_url: width: 72 | append: ')'
+          elsif sibling.featured_image != blank
+            assign chip_style = 'background-image: url(' | append: sibling.featured_image | image_url: width: 72 | append: ')'
+          endif
+        -%}
+        <li class="swatches__item">
+          <a class="swatch{% if i == 0 %} is-selected{% endif %}" href="{{ sibling.url }}" title="{{ sibling.title | escape }}"{% if i == 0 %} aria-current="true"{% endif %}>
+            <span class="swatch__chip"{% if chip_style != blank %} style="{{ chip_style }}"{% endif %} aria-hidden="true"></span>
+            <span class="visually-hidden">{{ sibling.title }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    {%- endif -%}
+    {%- if more > 0 -%}
+      <li class="swatches__item swatches__more">
+        <a href="{{ product.url }}" class="swatches__more-link">
+          <span aria-hidden="true">+{{ more }}</span>
+          <span class="visually-hidden">{{ 'products.product.more_colours' | t: count: more }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+{%- endif -%}
