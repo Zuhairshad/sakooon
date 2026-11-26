@@ -60,7 +60,14 @@
               assign item_id = 'faq-' | append: block.id
               assign attrs = block.shopify_attributes
             -%}
-            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: q_tag, attrs: attrs %}
+            {%- liquid
+              assign answer = block.settings.answer
+              if answer == blank
+                assign pending = 'editorial.faq.details_coming_soon' | t
+                assign answer = '<p class="faq__pending">' | append: pending | append: '</p>'
+              endif
+            -%}
+            {% render 'accordion', id: item_id, title: block.settings.question, content: answer, open: open, group: group_name, icon: icon, heading_tag: q_tag, attrs: attrs %}
         {%- endcase -%}
       {%- endfor -%}
     </div>

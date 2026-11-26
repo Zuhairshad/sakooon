@@ -5,7 +5,7 @@
       "settings": {
         "heading": "",
         "content_width": "page",
-        "text": "<p>We're here to help with orders, sizing, care and anything else. Choose the route that suits you.</p>",
+        "text": "<p>Questions about an order, a size or caring for your bedding? Write to us and we will help.</p>",
         "padding_top": 80,
         "padding_bottom": 40,
         "heading_size": "h3"
@@ -19,35 +19,26 @@
           "settings": {
             "icon": "mail",
             "heading": "Email",
-            "text": "<p>hello@example.com<br>We reply within one working day.</p>"
+            "text": "<p><a href=\"mailto:hello@sakooon.com\">hello@sakooon.com</a></p>"
           }
         },
         "c2": {
           "type": "column",
           "settings": {
-            "icon": "phone",
-            "heading": "Phone",
-            "text": "<p>+00 000 000 000<br>Monday to Friday, 9:00–17:00</p>"
-          }
-        },
-        "c3": {
-          "type": "column",
-          "settings": {
             "icon": "info",
             "heading": "Help with an order",
-            "text": "<p>Track a delivery, change an order or start a return.</p>",
-            "link_label": "Shipping and returns",
-            "link_url": "/pages/shipping"
+            "text": "<p>Answers about orders, delivery, sizes and care.</p>",
+            "link_label": "Read the FAQ",
+            "link_url": "/pages/faq"
           }
         }
       },
       "block_order": [
         "c1",
-        "c2",
-        "c3"
+        "c2"
       ],
       "settings": {
-        "columns": 3,
+        "columns": 2,
         "dividers": true,
         "padding_top": 0,
         "padding_bottom": 64
@@ -60,9 +51,11 @@
         "show_phone": true,
         "show_order": true,
         "show_topic": true,
-        "side_text": "<p><strong>Before you write</strong></p><p>Many answers are already in our FAQ, size guide and care guides.</p><p><a href=\"/pages/faq\">Read the FAQ</a></p>",
+        "side_text": "<p><strong>Before you write</strong></p><p>Many answers are already in our <a href=\"/pages/faq\">FAQ</a>, <a href=\"/pages/size-guide\">size guide</a> and <a href=\"/pages/care-guide\">care guides</a>.</p>",
         "padding_top": 0,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "topics": "Order help\nProduct question\nSizes and care\nOther",
+        "show_whatsapp": true
       }
     }
   },

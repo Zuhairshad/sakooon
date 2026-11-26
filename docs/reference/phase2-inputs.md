@@ -38,3 +38,4 @@ The logo is green, not navy/gold, so Phase 2 derives the palette from the logo (
 9. (shad-8b) Duvet filling Single size: the product description says "60 x 90 inches (152 x 240 cm)", but 90 in is about 229 cm. Which is right? The size guide prints both exactly as written until confirmed. Pillow: "20 x 30 inches (48 x 76 cm)" (20 in is about 51 cm), same question.
 10. (shad-8b) Care instructions for every product except the Quilted Bed Sheet Set (only that description has care text). Until then care pages are labelled general guidance.
 11. (shad-8b) Are the common Pakistani mattress sizes in the size guide (36, 42, 60, 72 and 78 in wide; 78 or 84 in long) the sizes your customers ask about? Any to add or remove?
+12. (shad-8b) Confirm `hello@sakooon.com` for the contact page (shown now, flagged). Answers to the 17 FAQ/shipping/returns questions listed in docs/reference/editorial-admin.md §8 (all show "Details coming soon." until answered).

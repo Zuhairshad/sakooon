@@ -102,7 +102,6 @@ The handle is what menus, PDP links and internal links expect. The template suff
 | Bedsheet care | `care-bedsheets` | `page.care-bedsheets` | |
 | Pillow care | `care-pillows` | `page.care-pillows` | |
 | Duvet and comforter care | `care-comforters` | `page.care-comforters` | |
-| Towel care | `care-towels` | `page.care-towels` | |
 | Size guide | `size-guide` | `page.size-guide` | each category's "Anchor" setting = the product type handle (duvet-covers, fitted-sheets, flat-sheets, pillowcases, duvets …), so the PDP dialog scrolls to it |
 | Mattress measuring guide | `measurement-guide` | `page.measurement-guide` | section anchor `#mattress-measuring` |
 | (any other page) | | `page` (default) | renders the title plus page content |
@@ -139,4 +138,28 @@ Menu names are configured in theme settings, and their handles are in the contra
 
 ## 7. Preview vs store
 
-The local preview (`tools/preview`) mimics all of the above with fixtures: fabric metaobjects percale, sateen, linen and a draft, one example certification, a `journal` blog with 11 articles, and page `about` with `related_fabrics`. Templates whose page doesn't exist in the fixtures can be previewed with `?view=<suffix>`, for example `/pages/about?view=faq`.
+The local preview (`tools/preview`) mimics all of the above with fixtures: the four Phase 2 fabric metaobjects (`cotton-satin`, `quilted-cotton`, `microfibre-fill`, `cotton-microfibre`, verified fields only), no certifications, the `journal` blog, and the editorial pages in `tools/preview/fixtures/pages.json`. Pages `about` and `fabric-guide` carry `related_fabrics`.
+
+## 8. Questions for the store owner (Phase 2)
+
+Every question below is already on the storefront. Its answer is blank, so the theme shows "Details coming soon." (locale key `editorial.faq.details_coming_soon`). To publish an answer, type it into the question's **Answer** field in the theme editor. Answered questions are automatically added to the FAQ structured data.
+
+**FAQ page (`page.faq`)**
+- Orders: How do I change or cancel my order? · Which payment methods do you accept? · Can I order by WhatsApp or phone?
+- Delivery: Where do you deliver? · How long does delivery take? · How much does delivery cost? · Do you offer cash on delivery?
+- Returns and exchanges: Can I exchange an item? · Can I return an item for a refund? · How do I start a return or exchange?
+
+**Shipping page (`page.shipping`)**
+- Where do you deliver? · How long does delivery take? · How much does delivery cost? · Do you offer cash on delivery?
+- How do I track my order? · What if my order is late? · What if my order arrives damaged?
+
+**Returns page (`page.returns`)**
+- Can I exchange an item? · How long do I have to ask for an exchange? · How do I start an exchange?
+- Can I return an item for a refund? · Which items can't be returned? · Who pays for return delivery? · When will I receive my refund?
+
+**Contact page (`page.contact`)**
+- Confirm `hello@sakooon.com` is the mailbox to print. It currently appears in the "Email" column.
+- WhatsApp: set Theme settings › Social media › WhatsApp to a `https://wa.me/<number>` link. The contact page's "Message us on WhatsApp" button appears only once it is set.
+- Phone, hours and address are not shown anywhere until they are supplied.
+
+Also write the Shopify refund and shipping policies (Settings › Policies). Both currently return 404.

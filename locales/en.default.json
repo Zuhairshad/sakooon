@@ -536,7 +536,11 @@
       "send": "Send message",
       "required": "* Required fields",
       "success": "Thank you for your message. We will get back to you as soon as possible.",
-      "error_heading": "Please check the following:"
+      "error_heading": "Please check the following:",
+      "whatsapp": "Message us on WhatsApp"
+    },
+    "faq": {
+      "details_coming_soon": "Details coming soon."
     },
     "fabric_guide": {
       "filter_label": "Filter fabrics",
