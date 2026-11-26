@@ -459,7 +459,9 @@
       "back": "Back",
       "main_menu": "Main menu",
       "secondary_menu": "Quick links",
-      "account": "Account"
+      "account": "Account",
+      "cart": "Cart",
+      "cart_items": ", items:"
     },
     "announcement": {
       "previous": "Previous announcement",
