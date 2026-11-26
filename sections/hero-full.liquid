@@ -44,8 +44,38 @@
           {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img', alt: s.image.alt -%}
         </picture>
       {%- else -%}
-        {%- comment -%} Without a mobile image, phones crop the (landscape) image to a tall frame: request ~2.5x the viewport width. {%- endcomment -%}
-        {%- render 'image', image: s.image, sizes: '(max-width: 767px) 250vw, 100vw', priority: priority, class: 'hero__img' -%}
+        {%- comment -%}
+          No mobile image: phones get a centre crop of the same image at the phone frame ratio (~1:2), so they download
+          only that slice (Shopify image_url width + height + crop) instead of the whole landscape. Desktop is unchanged.
+        {%- endcomment -%}
+        {%- liquid
+          assign m_max = s.image.height | divided_by: 2
+          if m_max > s.image.width
+            assign m_max = s.image.width
+          endif
+          assign m_srcset = ''
+          assign m_widths = '260,390,520,780' | split: ','
+          for w in m_widths
+            assign mw = w | plus: 0
+            if mw > m_max
+              break
+            endif
+            assign mh = mw | times: 2
+            assign m_url = s.image | image_url: width: mw, height: mh, crop: 'center'
+            assign m_srcset = m_srcset | append: m_url | append: ' ' | append: mw | append: 'w, '
+          endfor
+          if m_srcset == ''
+            assign mh = m_max | times: 2
+            assign m_url = s.image | image_url: width: m_max, height: mh, crop: 'center'
+            assign m_srcset = m_url | append: ' ' | append: m_max | append: 'w, '
+          endif
+          assign m_srcset = m_srcset | remove_last: ', '
+          assign m_h = m_max | times: 2
+        -%}
+        <picture>
+          <source media="(max-width: 767px)" srcset="{{ m_srcset }}" sizes="100vw" width="{{ m_max }}" height="{{ m_h }}">
+          {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img' -%}
+        </picture>
       {%- endif -%}
     {%- else -%}
       {%- render 'placeholder', name: 'hero-apparel-1', class: 'hero__placeholder' -%}
