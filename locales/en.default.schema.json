@@ -515,6 +515,17 @@
         "name": "Editorial header"
       },
       "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "classic": "Classic",
+            "page": "Page header"
+          }
+        },
+        "note": {
+          "label": "Note",
+          "info": "Page header layout only. A quiet line under the intro, for example a disclaimer."
+        },
         "show_breadcrumbs": {
           "label": "Show breadcrumbs"
         },
@@ -752,11 +763,27 @@
           "label": "Style",
           "options": {
             "links": "Underlined links",
-            "pills": "Pills"
+            "pills": "Pills",
+            "sidebar": "Sidebar"
           }
         },
         "auto": {
           "content": "With no links added, the navigation lists every heading on the page that has an anchor."
+        },
+        "help_header": {
+          "content": "Help card (sidebar style)"
+        },
+        "help_heading": {
+          "label": "Heading"
+        },
+        "help_text": {
+          "label": "Text"
+        },
+        "help_link_label": {
+          "label": "Link label"
+        },
+        "help_link": {
+          "label": "Link"
         }
       },
       "blocks": {

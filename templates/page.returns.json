@@ -3,12 +3,31 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "text",
+        "heading_size": "h1",
         "text": "<p>How returns and exchanges work. We are finalising our policy, and each answer below will be filled in as soon as it is confirmed.</p>",
-        "padding_top": 60,
-        "padding_bottom": 32,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
+      }
+    },
+    "nav": {
+      "type": "guide-anchor-nav",
+      "settings": {
+        "label": "On this page",
+        "sticky": true,
+        "style": "sidebar",
+        "content_width": "page",
+        "color_scheme": "paper",
+        "help_heading": "Need help?",
+        "help_text": "<p>Send us a message and we will help.</p>",
+        "help_link_label": "Contact us",
+        "help_link": "/pages/contact",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "details": {
@@ -18,7 +37,7 @@
           "type": "group",
           "settings": {
             "heading": "Exchanges",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_1_1": {
@@ -46,7 +65,7 @@
           "type": "group",
           "settings": {
             "heading": "Returns and refunds",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_2_1": {
@@ -90,41 +109,17 @@
         "q_2_4"
       ],
       "settings": {
-        "content_width": "text",
+        "content_width": "page",
         "structured_data": false,
-        "padding_top": 16,
-        "padding_bottom": 80
-      }
-    },
-    "help": {
-      "type": "info-columns",
-      "blocks": {
-        "c1": {
-          "type": "column",
-          "settings": {
-            "icon": "mail",
-            "heading": "Need help now?",
-            "text": "<p>Send us a message and we will help.</p>",
-            "link_label": "Contact us",
-            "link_url": "/pages/contact"
-          }
-        }
-      },
-      "block_order": [
-        "c1"
-      ],
-      "settings": {
-        "columns": 1,
-        "content_width": "text",
-        "dividers": true,
         "padding_top": 0,
-        "padding_bottom": 80
+        "padding_bottom": 96,
+        "layout": "stacked"
       }
     }
   },
   "order": [
     "hero",
-    "details",
-    "help"
+    "nav",
+    "details"
   ]
 }

@@ -3,12 +3,31 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "page",
+        "heading_size": "h1",
         "text": "<p>Answers to the questions we hear most. Some answers about delivery and returns are still being finalised and will appear here soon.</p>",
-        "padding_top": 80,
-        "padding_bottom": 32,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
+      }
+    },
+    "nav": {
+      "type": "guide-anchor-nav",
+      "settings": {
+        "label": "Topics",
+        "sticky": true,
+        "style": "sidebar",
+        "content_width": "page",
+        "color_scheme": "paper",
+        "help_heading": "Need help?",
+        "help_text": "<p>Send us a message and we will help.</p>",
+        "help_link_label": "Contact us",
+        "help_link": "/pages/contact",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "faq": {
@@ -18,7 +37,7 @@
           "type": "group",
           "settings": {
             "heading": "Orders",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_1_1": {
@@ -46,7 +65,7 @@
           "type": "group",
           "settings": {
             "heading": "Delivery",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_2_1": {
@@ -81,7 +100,7 @@
           "type": "group",
           "settings": {
             "heading": "Products and sizes",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_3_1": {
@@ -130,7 +149,7 @@
           "type": "group",
           "settings": {
             "heading": "Care",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_4_1": {
@@ -144,7 +163,7 @@
           "type": "group",
           "settings": {
             "heading": "Returns and exchanges",
-            "size": "h4"
+            "size": "h3"
           }
         },
         "q_5_1": {
@@ -195,41 +214,16 @@
       ],
       "settings": {
         "content_width": "page",
-        "padding_top": 16,
-        "padding_bottom": 64,
-        "layout": "sidebar",
-        "jump_label": "Jump to a section"
-      }
-    },
-    "help": {
-      "type": "info-columns",
-      "blocks": {
-        "c1": {
-          "type": "column",
-          "settings": {
-            "icon": "mail",
-            "heading": "Still have a question?",
-            "text": "<p>Send us a message and we will help.</p>",
-            "link_label": "Contact us",
-            "link_url": "/pages/contact"
-          }
-        }
-      },
-      "block_order": [
-        "c1"
-      ],
-      "settings": {
-        "columns": 1,
-        "content_width": "page",
-        "dividers": true,
         "padding_top": 0,
-        "padding_bottom": 80
+        "padding_bottom": 96,
+        "layout": "stacked",
+        "jump_label": "Jump to a section"
       }
     }
   },
   "order": [
     "hero",
-    "faq",
-    "help"
+    "nav",
+    "faq"
   ]
 }

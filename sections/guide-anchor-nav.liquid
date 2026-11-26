@@ -3,6 +3,9 @@
   With link blocks it renders those; without blocks, assets/editorial.js builds the list from every
   [data-anchor-target] heading on the page (editorial-text heading blocks, faq group headings).
   Sticks below the header (--header-height) and marks the section in view with aria-current.
+  style "sidebar": on desktop a sticky column in grid columns 1-4 beside every following editorial section
+  (which then fill columns 5-12, see editorial.css "page grid"), with an optional "Need help?" card; on mobile a
+  sticky horizontal chip row. editorial.js measures it (--ed-sidebar-h) so it takes no vertical space.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -11,6 +14,30 @@
     assign nav_label = 'editorial.anchor_nav.label' | t
   endif
 -%}
+{%- if s.style == 'sidebar' -%}
+<div class="section ed-section guide-anchor-nav guide-anchor-nav--sidebar color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <guide-anchor-nav class="page-width guide-sidebar" data-auto="{% if section.blocks.size == 0 %}true{% else %}false{% endif %}">
+    <nav class="guide-anchor-nav__nav" aria-label="{{ nav_label | escape }}">
+      {%- if s.label != blank -%}<p class="guide-anchor-nav__title">{{ s.label }}</p>{%- endif -%}
+      <ul class="guide-anchor-nav__list list-unstyled no-scrollbar" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.label != blank -%}
+            {%- assign target = block.settings.anchor | default: block.settings.label | handleize | remove: '#' -%}
+            <li {{ block.shopify_attributes }}><a class="guide-anchor-nav__link" href="#{{ target }}">{{ block.settings.label }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+    {%- if s.help_heading != blank or s.help_link_label != blank -%}
+      <div class="guide-sidebar__help">
+        {%- if s.help_heading != blank -%}<p class="guide-sidebar__help-title">{{ s.help_heading | escape }}</p>{%- endif -%}
+        {%- if s.help_text != blank -%}<div class="guide-sidebar__help-text rte">{{ s.help_text }}</div>{%- endif -%}
+        {%- if s.help_link_label != blank and s.help_link != blank -%}<a class="link guide-sidebar__help-link" href="{{ s.help_link }}">{{ s.help_link_label | escape }}</a>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </guide-anchor-nav>
+</div>
+{%- else -%}
 <div class="section ed-section guide-anchor-nav{% if s.sticky %} guide-anchor-nav--sticky{% endif %} guide-anchor-nav--{{ s.style }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <guide-anchor-nav class="page-width ed-wide{% if s.content_width == 'text' %} page-width--text{% elsif s.content_width == 'narrow' %} page-width--narrow{% endif %}" data-auto="{% if section.blocks.size == 0 %}true{% else %}false{% endif %}">
     <nav class="guide-anchor-nav__nav" aria-label="{{ nav_label | escape }}">
@@ -26,6 +53,7 @@
     </nav>
   </guide-anchor-nav>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -37,7 +65,8 @@
     { "type": "checkbox", "id": "sticky", "label": "t:sections.guide-anchor-nav.settings.sticky.label", "default": true },
     { "type": "select", "id": "style", "label": "t:sections.guide-anchor-nav.settings.style.label", "default": "links", "options": [
       { "value": "links", "label": "t:sections.guide-anchor-nav.settings.style.options.links" },
-      { "value": "pills", "label": "t:sections.guide-anchor-nav.settings.style.options.pills" }
+      { "value": "pills", "label": "t:sections.guide-anchor-nav.settings.style.options.pills" },
+      { "value": "sidebar", "label": "t:sections.guide-anchor-nav.settings.style.options.sidebar" }
     ] },
     { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
       { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
@@ -45,6 +74,11 @@
       { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
     ] },
     { "type": "paragraph", "content": "t:sections.guide-anchor-nav.settings.auto.content" },
+    { "type": "header", "content": "t:sections.guide-anchor-nav.settings.help_header.content" },
+    { "type": "text", "id": "help_heading", "label": "t:sections.guide-anchor-nav.settings.help_heading.label" },
+    { "type": "richtext", "id": "help_text", "label": "t:sections.guide-anchor-nav.settings.help_text.label" },
+    { "type": "text", "id": "help_link_label", "label": "t:sections.guide-anchor-nav.settings.help_link_label.label" },
+    { "type": "url", "id": "help_link", "label": "t:sections.guide-anchor-nav.settings.help_link.label" },
     { "type": "header", "content": "t:sections.all.padding.header" },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },

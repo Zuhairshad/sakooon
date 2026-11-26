@@ -1,6 +1,8 @@
 {%- comment -%}
   Page title block for guides and brand pages: breadcrumbs, eyebrow, h1, intro, optional image and buttons.
   Reference: Tekla care/ESG headers (docs/reference/editorial.md 2.1-2.4). Owner: shad-8b.
+  layout "page": the Phase 2 page header, matching collection-banner (gutter-aligned display h1, one subline,
+  an optional quiet note, hairline). Image, alignment and width settings apply to the "classic" layout only.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -23,6 +25,25 @@
     assign image_sizes = '100vw'
   endif
 -%}
+{%- if s.layout == 'page' -%}
+<div class="section ed-section editorial-hero editorial-hero--page color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width ed-page">
+    {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
+    {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+    <h1 class="ed-page__title">{{ heading | escape }}</h1>
+    {%- if s.text != blank -%}<div class="ed-page__sub rte">{{ s.text }}</div>{%- endif -%}
+    {%- if s.note != blank -%}<div class="ed-page__note rte">{{ s.note }}</div>{%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="editorial-hero__buttons">
+        {%- for block in section.blocks -%}
+          {% render 'button', label: block.settings.label, url: block.settings.url, style: block.settings.style, attrs: block.shopify_attributes %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <hr class="ed-page__rule">
+  </div>
+</div>
+{%- else -%}
 <div class="section ed-section editorial-hero editorial-hero--{{ s.alignment }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="{{ width_class }}">
     {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
@@ -46,6 +67,7 @@
     </div>
   {%- endif -%}
 </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -53,6 +75,10 @@
   "tag": "section",
   "class": "section-editorial-hero",
   "settings": [
+    { "type": "select", "id": "layout", "label": "t:sections.editorial-hero.settings.layout.label", "default": "classic", "options": [
+      { "value": "classic", "label": "t:sections.editorial-hero.settings.layout.options.classic" },
+      { "value": "page", "label": "t:sections.editorial-hero.settings.layout.options.page" }
+    ] },
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
     { "type": "text", "id": "eyebrow", "label": "t:sections.editorial-hero.settings.eyebrow.label" },
     { "type": "text", "id": "heading", "label": "t:sections.editorial-hero.settings.heading.label", "info": "t:sections.editorial-hero.settings.heading.info" },
@@ -62,6 +88,7 @@
       { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
     ] },
     { "type": "richtext", "id": "text", "label": "t:sections.editorial-hero.settings.text.label" },
+    { "type": "richtext", "id": "note", "label": "t:sections.editorial-hero.settings.note.label", "info": "t:sections.editorial-hero.settings.note.info" },
     { "type": "select", "id": "alignment", "label": "t:sections.editorial-hero.settings.alignment.label", "default": "left", "options": [
       { "value": "left", "label": "t:sections.editorial-hero.settings.alignment.options.left" },
       { "value": "center", "label": "t:sections.editorial-hero.settings.alignment.options.center" }

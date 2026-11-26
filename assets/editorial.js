@@ -76,9 +76,19 @@
       if (pos === 'fixed' || (pos === 'sticky' && header.parentElement && header.parentElement.offsetHeight > header.offsetHeight + 1)) headerOffset = header.offsetHeight;
     }
     const nav = document.querySelector('.section-guide-anchor-nav');
-    document.documentElement.style.setProperty('--ed-anchor-offset', `${headerOffset + (nav ? nav.offsetHeight : 0) + 24}px`);
+    // A sidebar nav sits beside the content on desktop, so it only adds to the offset when it is the mobile chip row.
+    const besideContent = nav && nav.querySelector('.guide-anchor-nav--sidebar') && window.matchMedia('(min-width: 1024px)').matches;
+    document.documentElement.style.setProperty('--ed-anchor-offset', `${headerOffset + (nav && !besideContent ? nav.offsetHeight : 0) + 24}px`);
   };
   const requestOffset = () => { if (!ticking) { ticking = true; requestAnimationFrame(setStickyOffset); } };
+  /* Sidebar nav: its section takes no vertical space on desktop (margin-bottom: -height in editorial.css). */
+  const sidebar = document.querySelector('.guide-anchor-nav--sidebar');
+  if (sidebar && sidebar.parentElement) {
+    const host = sidebar.parentElement;
+    const setSidebarHeight = () => host.style.setProperty('--ed-sidebar-h', `${host.offsetHeight}px`);
+    setSidebarHeight();
+    if ('ResizeObserver' in window) new ResizeObserver(setSidebarHeight).observe(host);
+  }
   if (document.querySelector('.section-guide-anchor-nav, [data-anchor-target]')) {
     setStickyOffset();
     window.addEventListener('scroll', requestOffset, { passive: true });
