@@ -11,7 +11,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Foundation: docs, settings, layout, tokens, global.js, snippets, customer templates (Fable) 60f1346
 - [x] QA scripts: capture-references, capture-theme, compare-screenshots, test-responsive, test-interactions (Fable)
 - [x] Preview server adapted to new theme (Fable) 7822650
-- [!] `shopify theme dev` login for juj1hc-qf.myshopify.com (user action required)
+- [ ] `shopify theme dev` login for juj1hc-qf.myshopify.com: deferred by the user on 2026-11-26; LiquidJS preview (tools/preview) is the Phase 1 dev target. Real-store checks (variants with colour, facets, cart totals, checkout handoff) move to the integration pass once the CLI is connected.
 
 ## Phase 1: implementation
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
