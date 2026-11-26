@@ -10,7 +10,7 @@ const PAIRS = [
   ['/pages/about', 'tekla/about'], ['/pages/faq', 'tekla/shipping-and-returns'], ['/pages/shipping', 'tekla/shipping-and-returns'],
   ['/pages/contact', 'tekla/contact'], ['/pages/fabric-guide', 'tekla/textile-care'], ['/pages/fabric/cotton-satin', 'tekla/textile-care-percale'],
   ['/pages/care-guide', 'tekla/care-guide'], ['/pages/care-bedsheets', 'tekla/product-care'], ['/pages/size-guide', 'tekla/size-guide'],
-  ['/blogs/journal', 'tekla/stories'], ['/blogs/journal/how-to-layer-a-bed-for-winter', 'tekla/story-guide-to-down'],
+  ['/blogs/journal', 'tekla/stories'], ['/blogs/journal/choosing-a-duvet-for-winter', 'tekla/story-guide-to-down'],
 ];
 function probe() {
   const vis = (el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== 'hidden'; };

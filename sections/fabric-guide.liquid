@@ -64,6 +64,10 @@
               assign products = f.collection.value.products
             endif
             assign panel_id = 'fabric-panel-' | append: section.id | append: '-' | append: h
+            assign banner_priority = false
+            if forloop.first and section.index <= 2
+              assign banner_priority = true
+            endif
             assign sub_tag = 'h4'
             if item_tag == 'h2'
               assign sub_tag = 'h3'
@@ -71,7 +75,7 @@
           -%}
           <article class="fabric-panel fabric-guide__item" data-weave="{{ f.weave.value | handleize }}" data-fibre="{{ f.fibre.value | handleize }}" aria-labelledby="{{ panel_id }}-title">
             <div class="fabric-panel__banner media">
-              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, 100vw', aspect: 'natural', alt: '', placeholder: 'collection-1' %}
+              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, calc(100vw - 32px)', aspect: 'natural', alt: '', placeholder: 'collection-1', priority: banner_priority %}
               <{{ item_tag }} class="fabric-panel__name h2" id="{{ panel_id }}-title">
                 {%- if f.system.url != blank -%}<a href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
               </{{ item_tag }}>

@@ -5,158 +5,32 @@
    "title": "Journal",
    "articles": [
     {
-     "handle": "how-to-layer-a-bed-for-winter",
-     "title": "How to layer a bed for cooler nights",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-11-20T09:00:00Z",
-     "created_at": "2026-11-20T09:00:00Z",
-     "updated_at": "2026-11-20T09:00:00Z",
-     "excerpt": "Placeholder excerpt for how to layer a bed for cooler nights: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"How to layer a bed for cooler nights\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-sage-green.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "handle": "choosing-a-duvet-for-winter",
+     "title": "Choosing a duvet for winter",
+     "author": "Sakooon",
+     "published_at": "2026-11-26T09:00:00Z",
+     "created_at": "2026-11-26T09:00:00Z",
+     "updated_at": "2026-11-26T09:00:00Z",
+     "excerpt": "Winter in Pakistan can mean a mild chill or a hard frost, depending on where you live. Here is how to think about warmth, weight and size when you choose a duvet.",
      "image": "image:sakooon-white-bedding-bedroom.webp",
      "tags": [
       "Guides"
-     ]
+     ],
+     "content": "<p>Winter feels very different from one home to the next. Near the coast it can be little more than a cool evening breeze. In the plains, nights turn properly cold for a few weeks. In the hills and the north, the cold settles in for months. The right duvet depends far more on your room than on the calendar.</p><h2>Start with how warm you sleep</h2><p>Some people throw the covers off by midnight; others are cold all night. If you share a bed, think about the colder sleeper first. It is easier to fold back a warm duvet than to make a light one warmer.</p><p>Think about the room too. A heated room, a ground-floor room with a stone floor and an upper room under the roof can feel like three different climates.</p><h2>Understand fill weight</h2><p>Duvet fillings are often described by GSM, which is the weight of the filling per square metre. As a general rule, a higher GSM means a thicker, warmer duvet, and a lower GSM means a lighter one. Compare GSM between fillings of the same type, because different materials trap warmth differently.</p><img src=\"/images/sakooon-duvet-comfort-filling-220-gsm.webp\" alt=\"A white duvet filling rolled up on a bed\" width=\"900\" height=\"1317\"><h2>Layer instead of overdoing it</h2><p>A duvet that is too warm leads to restless nights. On the coldest nights, a light blanket or quilt on top of your duvet gives you extra warmth that you can take off when the weather turns. Warm sheets underneath, and a pillow that suits you, make more difference than people expect.</p><blockquote>It is easier to fold back a warm duvet than to make a light one warmer.</blockquote><h2>Get the size right</h2><p>A duvet should be wide enough to cover both sleepers and hang a little over each side of the bed. Measure your mattress first. Then choose a filling close to the size of your duvet cover, so the cover looks full and the filling does not bunch in the corners.</p><p>Our <a href=\"/pages/size-guide\">size guide</a> lists the exact sizes of our duvet fillings and covers, and our <a href=\"/pages/measurement-guide\">measuring guide</a> shows how to measure your mattress.</p><h2>Look after it</h2><p>Always use a duvet cover, shake the duvet each morning, and air it when you can. When the weather warms up, store it clean and fully dry in a breathable bag. There is more in our <a href=\"/pages/care-comforters\">duvet care guide</a>.</p>"
     },
     {
-     "handle": "percale-or-sateen",
-     "title": "Percale or sateen: choosing a weave",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-11-14T09:00:00Z",
-     "created_at": "2026-11-14T09:00:00Z",
-     "updated_at": "2026-11-14T09:00:00Z",
-     "excerpt": "Placeholder excerpt for percale or sateen: choosing a weave: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Percale or sateen: choosing a weave\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-grey-white.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-quilted-bed-sheet-set-sage-green.webp",
-     "tags": [
-      "Guides"
-     ]
-    },
-    {
-     "handle": "a-morning-ritual",
-     "title": "A slower morning ritual",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-11-08T09:00:00Z",
-     "created_at": "2026-11-08T09:00:00Z",
-     "updated_at": "2026-11-08T09:00:00Z",
-     "excerpt": "Placeholder excerpt for a slower morning ritual: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"A slower morning ritual\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp",
-     "tags": [
-      "Stories"
-     ]
-    },
-    {
-     "handle": "washing-bed-linen",
-     "title": "Washing bed linen without wear",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-11-02T09:00:00Z",
-     "created_at": "2026-11-02T09:00:00Z",
-     "updated_at": "2026-11-02T09:00:00Z",
-     "excerpt": "Placeholder excerpt for washing bed linen without wear: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Washing bed linen without wear\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-duvet-comfort-pillow-piping-detail.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-quilted-bed-sheet-set-dusty-blue.webp",
-     "tags": [
-      "Care"
-     ]
-    },
-    {
-     "handle": "choosing-a-duvet-weight",
-     "title": "Choosing a duvet weight",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-10-27T09:00:00Z",
-     "created_at": "2026-10-27T09:00:00Z",
-     "updated_at": "2026-10-27T09:00:00Z",
-     "excerpt": "Placeholder excerpt for choosing a duvet weight: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Choosing a duvet weight\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-ivory.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-duvet-comfort-pillow-piping-detail.webp",
-     "tags": [
-      "Guides"
-     ]
-    },
-    {
-     "handle": "the-weavers-notebook",
-     "title": "Notes from the loom",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-10-21T09:00:00Z",
-     "created_at": "2026-10-21T09:00:00Z",
-     "updated_at": "2026-10-21T09:00:00Z",
-     "excerpt": "Placeholder excerpt for notes from the loom: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Notes from the loom\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-quilted-bed-sheet-set-ivory.webp",
-     "tags": [
-      "Stories"
-     ]
-    },
-    {
-     "handle": "storing-seasonal-bedding",
-     "title": "Storing seasonal bedding",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-10-15T09:00:00Z",
-     "created_at": "2026-10-15T09:00:00Z",
-     "updated_at": "2026-10-15T09:00:00Z",
-     "excerpt": "Placeholder excerpt for storing seasonal bedding: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Storing seasonal bedding\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "handle": "making-a-bed-with-a-two-tone-duvet-cover",
+     "title": "How to make a bed with a two-tone duvet cover",
+     "author": "Sakooon",
+     "published_at": "2026-11-24T09:00:00Z",
+     "created_at": "2026-11-24T09:00:00Z",
+     "updated_at": "2026-11-24T09:00:00Z",
+     "excerpt": "A reversible cover gives you two beds in one. A few simple steps for putting it on, choosing a side and showing off both tones.",
      "image": "image:sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
      "tags": [
-      "Care"
-     ]
-    },
-    {
-     "handle": "pillow-care-basics",
-     "title": "Pillow care basics",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-10-09T09:00:00Z",
-     "created_at": "2026-10-09T09:00:00Z",
-     "updated_at": "2026-10-09T09:00:00Z",
-     "excerpt": "Placeholder excerpt for pillow care basics: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Pillow care basics\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-duvet-comfort-filling-220-gsm.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-quilted-bed-sheet-set-butter-yellow.webp",
-     "tags": [
-      "Care"
-     ]
-    },
-    {
-     "handle": "colour-in-the-bedroom",
-     "title": "Colour in the bedroom",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-10-03T09:00:00Z",
-     "created_at": "2026-10-03T09:00:00Z",
-     "updated_at": "2026-10-03T09:00:00Z",
-     "excerpt": "Placeholder excerpt for colour in the bedroom: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Colour in the bedroom\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-rust.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-duvet-comfort-filling-220-gsm.webp",
-     "tags": [
-      "Stories"
-     ]
-    },
-    {
-     "handle": "fitted-sheet-measuring",
-     "title": "Measuring for a fitted sheet",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-09-27T09:00:00Z",
-     "created_at": "2026-09-27T09:00:00Z",
-     "updated_at": "2026-09-27T09:00:00Z",
-     "excerpt": "Placeholder excerpt for measuring for a fitted sheet: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Measuring for a fitted sheet\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-quilted-bed-sheet-set-rust.webp",
-     "tags": [
       "Guides"
-     ]
-    },
-    {
-     "handle": "linen-through-the-seasons",
-     "title": "Linen through the seasons",
-     "author": "Sakooon Editorial",
-     "published_at": "2026-09-21T09:00:00Z",
-     "created_at": "2026-09-21T09:00:00Z",
-     "updated_at": "2026-09-21T09:00:00Z",
-     "excerpt": "Placeholder excerpt for linen through the seasons: one sentence that summarises the article for cards and listings.",
-     "content": "<p>Placeholder opening paragraph for \"Linen through the seasons\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-white-bedding-bedroom.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
-     "image": "image:sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
-     "tags": [
-      "Stories"
-     ]
+     ],
+     "content": "<p>A two-tone reversible duvet cover has a deeper shade on one side and a lighter one on the other. Turn it over and the room changes. Here is how to make the bed so both tones work for you.</p><h2>1. Start with the sheet</h2><p>Lay the bed sheet flat with an even overhang on every side. Tuck it in at the foot first, then along the sides. For neat corners, lift the side of the sheet into a triangle, tuck the hanging part under the mattress, then drop the triangle and tuck it in.</p><h2>2. Put the cover on the easy way</h2><p>Turn the duvet cover inside out. Reach inside, take hold of the two far corners, and use them to grab the two top corners of your duvet filling. Then shake the cover down over the filling, like turning a sock the right way out. Close the opening and give it a final shake so the filling sits evenly.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp\" alt=\"A rust and peach two-tone duvet cover set on a bed\" width=\"1024\" height=\"1536\"><h2>3. Choose your side</h2><p>The deeper tone feels cosy and grounded, which suits winter evenings and darker rooms. The lighter tone feels fresh and open, good for bright mornings and warmer months. There is no wrong answer, and you can change your mind on wash day.</p><h2>4. Fold back to show both</h2><p>For a layered look, fold the top of the duvet back by a hand's width or two. The contrast of the reverse side frames the pillows and shows off both colours at once.</p><blockquote>Turn it over and the room changes.</blockquote><h2>5. Arrange the pillows</h2><p>If your set has pillow covers in both tones, put the deeper tone at the back, standing against the headboard, and the lighter tone in front. Swap them when you flip the duvet so the bed stays balanced.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-grey-white_2.webp\" alt=\"A grey and white two-tone duvet cover set with pillows in both tones\" width=\"1024\" height=\"1536\"><h2>Keeping the colours fresh</h2><p>Wash strongly coloured covers with similar colours, especially for the first few washes, and dry them out of strong direct sun. Our <a href=\"/pages/care-bedsheets\">bed sheet care guide</a> has more general advice.</p><p>Browse our <a href=\"/collections/duvet-covers\">duvet covers</a>.</p>"
     }
    ]
   },
