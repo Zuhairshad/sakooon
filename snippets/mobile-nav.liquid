@@ -3,11 +3,13 @@
   Level 1 lists the top-level links. A link with children or promos opens a level-2 panel that slides in over
   the list: back button, "All <title>", childless level-2 links, then a labelled group per level-2 link with
   children, then promo cards in a horizontal row.
-  Params: menu (linklist), section, promo_blocks (all mega_promo blocks of the header section).
+  Params: menu (linklist), section, promo_blocks (all mega_promo blocks of the header section),
+  style ('sheet' = bottom sheet like both references, default; 'drawer' = left drawer).
 {%- endcomment -%}
-<theme-drawer id="mobile-nav" class="mobile-nav hide-desktop" data-lock-scroll>
+{%- assign style = style | default: 'sheet' -%}
+<theme-drawer id="mobile-nav" class="mobile-nav mobile-nav--{{ style }} hide-desktop" data-lock-scroll>
   <div class="overlay" data-drawer-close></div>
-  <div class="drawer drawer--left mobile-nav__drawer" role="dialog" aria-modal="true" aria-label="{{ 'general.accessibility.menu' | t }}">
+  <div class="drawer {% if style == 'sheet' %}drawer--bottom{% else %}drawer--left{% endif %} mobile-nav__drawer" role="dialog" aria-modal="true" aria-label="{{ 'general.accessibility.menu' | t }}">
     <div class="mobile-nav__top">
       <button type="button" class="header__icon mobile-nav__close" data-drawer-close aria-label="{{ 'general.accessibility.close_menu' | t }}">
         {%- render 'icon', icon: 'close', size: 24 -%}
@@ -55,7 +57,11 @@
                   {%- for child in link.links -%}
                     {%- if child.links.size > 0 -%}
                       <div class="mobile-nav__group">
-                        <p class="mobile-nav__group-label">{{ child.title | escape }}</p>
+                        {%- if child.url != blank and child.url != '#' -%}
+                          <a class="mobile-nav__group-label" href="{{ child.url }}">{{ child.title | escape }}{% render 'icon', icon: 'arrow-right', size: 14 %}</a>
+                        {%- else -%}
+                          <p class="mobile-nav__group-label">{{ child.title | escape }}</p>
+                        {%- endif -%}
                         <ul class="list-unstyled" role="list">
                           {%- for grandchild in child.links -%}
                             <li><a class="mobile-nav__sublink" href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>

@@ -117,7 +117,7 @@
   </header>
 </sticky-header>
 
-{%- render 'mobile-nav', menu: menu, section: section, promo_blocks: promo_blocks -%}
+{%- render 'mobile-nav', menu: menu, section: section, promo_blocks: promo_blocks, style: section.settings.mobile_menu_style -%}
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
@@ -160,6 +160,10 @@
     },
     { "type": "image_picker", "id": "transparent_logo", "label": "Transparent header logo", "info": "Optional. Shown instead of the theme logo while the header is transparent." },
     { "type": "header", "content": "Mobile" },
+    {
+      "type": "select", "id": "mobile_menu_style", "label": "Menu style", "default": "sheet",
+      "options": [ { "value": "sheet", "label": "Sheet from the bottom" }, { "value": "drawer", "label": "Drawer from the left" } ]
+    },
     { "type": "link_list", "id": "mobile_subnav_menu", "label": "Quick links row", "info": "Optional. A horizontally scrolling row of links under the mobile header." }
   ],
   "blocks": [
