@@ -64,7 +64,7 @@ Free-text certifications are not allowed anywhere in the theme: a claim without 
 ## Variant metafields (namespace `sakooon`)
 | key | type | used by |
 | --- | --- | --- |
-| fabric | metaobject_reference (fabric) | when fabric is a variant option; resolution order variant.sakooon.fabric -> product.sakooon.fabric via snippets/fabric-resolve.liquid (owner shad-8b, used by shad-d8) |
+| fabric | metaobject_reference (fabric) | when fabric is a variant option; resolution order variant -> product, inline (render scopes are isolated, so no snippet): `assign fabric = variant.metafields.sakooon.fabric.value` then `if fabric == blank` -> `assign fabric = product.metafields.sakooon.fabric.value` |
 
 ## Product metafields (namespace `sakooon`)
 | key | type | used by |
