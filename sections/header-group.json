@@ -5,26 +5,87 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement-1": { "type": "announcement", "settings": { "text": "Complimentary delivery over a set order value", "link": "" } },
-        "announcement-2": { "type": "announcement", "settings": { "text": "Easy returns within a set number of days", "link": "" } },
-        "announcement-3": { "type": "announcement", "settings": { "text": "Sign up for news and offers", "link": "" } }
+        "announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Complimentary delivery over a set order value",
+            "link": ""
+          }
+        },
+        "announcement-2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Easy returns within a set number of days",
+            "link": ""
+          }
+        },
+        "announcement-3": {
+          "type": "announcement",
+          "settings": {
+            "text": "Sign up for news and offers",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["announcement-1", "announcement-2", "announcement-3"],
-      "settings": { "color_scheme": "sand", "align": "center", "autoplay": true, "speed": 5, "dismissible": false }
+      "block_order": [
+        "announcement-1",
+        "announcement-2",
+        "announcement-3"
+      ],
+      "settings": {
+        "color_scheme": "sand",
+        "align": "center",
+        "autoplay": true,
+        "speed": 5,
+        "dismissible": false
+      }
     },
     "header": {
       "type": "header",
       "blocks": {
-        "promo-new-1": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-new-2": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-new-3": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-bedding-1": { "type": "mega_promo", "settings": { "menu_item": "Bedding", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-bath-1": { "type": "mega_promo", "settings": { "menu_item": "Bath", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-bath-2": { "type": "mega_promo", "settings": { "menu_item": "Bath", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-pillows-1": { "type": "mega_promo", "settings": { "menu_item": "Pillows & Duvets", "heading": "Promo caption", "link": "/collections/all" } },
-        "promo-pillows-2": { "type": "mega_promo", "settings": { "menu_item": "Pillows & Duvets", "heading": "Promo caption", "link": "/collections/all" } }
+        "promo-bedding-1": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Bedding",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "heading": "Quilted Bed Sheet Set",
+            "link": "/products/quilted-bed-sheet-set-king"
+          }
+        },
+        "promo-bedding-2": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Bedding",
+            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
+            "heading": "Two-Tone Duvet Cover Set",
+            "link": "/products/two-tone-duvet-cover-set-king"
+          }
+        },
+        "promo-bedding-3": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Bedding",
+            "image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
+            "heading": "Yarn-Dyed Cotton Satin Sheet Set",
+            "link": "/products/yarn-dyed-cotton-satin-bed-sheet-set-king"
+          }
+        },
+        "promo-guides-1": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Guides",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "heading": "Find your duvet size",
+            "link": "/pages/size-guide"
+          }
+        }
       },
-      "block_order": ["promo-new-1", "promo-new-2", "promo-new-3", "promo-bedding-1", "promo-bath-1", "promo-bath-2", "promo-pillows-1", "promo-pillows-2"],
+      "block_order": [
+        "promo-bedding-1",
+        "promo-bedding-2",
+        "promo-bedding-3",
+        "promo-guides-1"
+      ],
       "settings": {
         "color_scheme": "white",
         "menu": "main-menu",
@@ -37,8 +98,19 @@
         "mobile_menu_style": "sheet"
       }
     },
-    "cart-drawer": { "type": "cart-drawer", "settings": {} },
-    "search-drawer": { "type": "search-drawer", "settings": {} }
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "settings": {}
+    },
+    "search-drawer": {
+      "type": "search-drawer",
+      "settings": {}
+    }
   },
-  "order": ["announcement-bar", "header", "cart-drawer", "search-drawer"]
+  "order": [
+    "announcement-bar",
+    "header",
+    "cart-drawer",
+    "search-drawer"
+  ]
 }

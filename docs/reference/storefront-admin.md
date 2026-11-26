@@ -6,25 +6,37 @@ nothing until it exists; nothing breaks.
 
 ## 1. Menus (Online Store > Navigation)
 
-| Handle | Used by | Structure | Required |
-|---|---|---|---|
-| `main-menu` | Header (desktop mega menu + mobile menu) | **3 levels.** Level 1 = top-level items. Level 2 = group headings (a level-2 link *with* children becomes a column heading; a level-2 link *without* children goes into one plain link column). Level 3 = links in the group. Items without children and without promo cards are plain links. | Yes |
-| `footer-shop` | Footer "Shop" column | flat list, about 5 links | Yes (column hidden if empty) |
-| `footer-help` | Footer "Help" column | flat list | Yes |
-| `footer-company` | Footer "Company" column | flat list | Yes |
-| `footer-guides` | Optional extra footer column (add a Menu block) | flat list | No |
-| `legal` | Footer bottom bar | Privacy policy, Terms of service, Refund policy | Yes |
-| any | Header > "Quick links row" (mobile scrolling row) | flat list | No (off by default) |
+Phase 2: menus list only what exists in the store (5 collections, the guide pages, the journal and About). The preview mirrors this in `tools/preview/fixtures/menus.json`.
+Create each menu with exactly these items; the theme reads the handles below.
 
-Recommended `main-menu` shape (from the reference): 5–8 top-level items; per item 1–5 groups of 3–7 links. With up to 3 promo cards, a panel fits 6 columns at desktop.
-The URL of each top-level item appears as "All <item>" inside its panel and the mobile level 2, because the top-level entries open panels instead of navigating.
+**`main-menu`** (header mega menu + mobile menu; 2 levels are enough today, a 3rd level would become column headings)
+
+| Level 1 | Link | Level 2 (link) |
+|---|---|---|
+| Bedding | Collections > All products (`/collections/all`) | Bed Sheets (`bed-sheets`), Duvet Covers (`duvet-covers`), Duvets (`duvets`), Pillows (`pillows`), Bed Covers (`bed-covers`) |
+| Guides | `#` (opens the panel only; no "All Guides" link) | Fabric guide (`/pages/fabric-guide`), Care guide (`/pages/care-guide`), Size guide (`/pages/size-guide`), Journal (Blogs > Journal) |
+| About | Pages > About (`/pages/about`) | none (plain link) |
+
+The level-1 link of "Bedding" appears as "All Bedding" in its panel. If Admin refuses `#` for Guides, link it to the Fabric guide page; the panel then shows "All Guides" pointing there.
+
+| Handle | Used by | Items |
+|---|---|---|
+| `footer-shop` | Footer "Shop" column | Bed Sheets, Duvet Covers, Duvets, Pillows, Bed Covers, Shop all (`/collections/all`) |
+| `footer-help` | Footer "Help" column | Contact, FAQ, Delivery (`/pages/shipping`), Exchanges and returns (`/pages/returns`) |
+| `footer-company` | Footer "Sakooon" column | About, Journal |
+| `footer-guides` | Optional extra footer column (add a Menu block) | Fabric guide, Care guide, Size guide |
+| `legal` | Footer bottom bar | Privacy policy only. Add Terms of service, Refund policy and Shipping policy once they are written (Settings > Policies); today they return 404. |
+| any | Header > "Quick links row" (mobile scrolling row) | Off by default |
+
+Pages the menus point to must exist in Admin (Online Store > Pages, with the theme template of the same name): `about`, `contact`, `faq`, `shipping`, `returns`, `fabric-guide`, `care-guide`, `size-guide`; blog `journal`.
 
 ## 2. Theme settings (Customize > Theme settings)
 
 | Setting | Why |
 |---|---|
-| Logo (+ logo width) | Header and footer show the shop name in spaced capitals until a logo is set. The mobile logo renders at 75% of the width. |
-| Social media links | The footer "Follow" column lists only networks with a URL; with none it shows a "Follow us" placeholder. |
+| Logo (+ logo width) | Optional. The theme ships the Sakooon wordmark (header, footer bar) and stacked logo (footer Logo block) via `snippets/brand-logo.liquid`; an upload here replaces them. Width default 120px; mobile renders at 75%. |
+| Social media links | The footer "Follow" column lists only networks with a URL and is hidden entirely while none are set. The WhatsApp link also appears in the footer Contact block. |
+| Footer > Contact block | Email, phone and hours are block settings, empty today; each line shows only once filled (confirm `hello@sakooon.com` before entering it). |
 | Cart type = Drawer | The header cart icon opens the cart drawer; with "Page" it links to /cart. |
 | Customer accounts enabled (Settings > Customer accounts) | Shows the account icon (desktop header) and the Account link in the mobile menu. |
 | Markets with more than one country | Shows the footer country/region selector (hidden with one country). |
@@ -35,7 +47,7 @@ The URL of each top-level item appears as "All <item>" inside its panel and the 
 | Where | What to set |
 |---|---|
 | Announcement bar | Replace the three placeholder messages (text + optional link). Rotation 5s, pause button included; set "Rotate messages" off for a single message. |
-| Header > Mega menu promo blocks | 8 placeholder blocks are attached to the menu items "New" (3), "Bedding" (1), "Bath" (2), "Pillows & Duvets" (2). **The "Menu item" field must match the top-level menu title** (case and punctuation-insensitive: it is compared as a handle). Rename it if you rename the menu item. Set image, caption and link. |
+| Header > Mega menu promo blocks | 4 blocks: "Bedding" ×3 (Quilted Bed Sheet Set, Two-Tone Duvet Cover Set, Yarn-Dyed Cotton Satin Sheet Set, each linking to its product) and "Guides" ×1 (duvet insert, "Find your duvet size" → size guide). Images are the product packshots; upload the same files to Content > Files (names in `sections/header-group.json`) or re-pick them in the editor. **The "Menu item" field must match the top-level menu title** (compared as a handle). Rename it if you rename the menu item. |
 | Header | Transparent over the hero is on; it only applies when the first homepage section is the hero **with an image or video**. Set "Transparent header text" (light/dark) to suit the image, and optionally a light "Transparent header logo". |
 | Footer > Newsletter | Heading, text, small print. Sign-ups create customers tagged `newsletter` with email marketing consent (Shopify customer form). |
 | Footer | Legal menu handle, copyright text, show/hide logo and payment icons. |
