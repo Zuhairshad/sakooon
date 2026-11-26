@@ -103,3 +103,6 @@ store-format change needs no theme change. No currency symbol is ever hardcoded.
 
 ## 2026-11-26 D20: Announcement bar rotates automatically with no controls
 User decision (direct to shad-2d): no arrows, no pause button. Rotation holds on hover/focus and is off under prefers-reduced-motion; the "Rotate messages" setting can disable it. Known trade-off: WCAG 2.2.2 pause mechanism is partial without a button.
+
+## 2026-11-26 D21: No brand statement directly after the homepage hero
+User decision: the Sukoon statement block is removed from the homepage (product first after the hero). The "statement" layout stays in rich-text for the About page. Brand story on the homepage lives only in the Why Sakooon photo + text block.
