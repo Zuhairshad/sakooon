@@ -1,0 +1,50 @@
+{
+  "_note": "Preview-only pages (Fable). Shape: pages: [{handle, title, body, template_suffix?}]. /pages/<handle> renders templates/page.<template_suffix || handle>.json when present. Editorial content lives in the templates; shad-8b may extend this list.",
+  "pages": [
+    {
+      "handle": "fabric-guide",
+      "title": "Fabric guide",
+      "body": ""
+    },
+    {
+      "handle": "care-guide",
+      "title": "Care guide",
+      "body": ""
+    },
+    {
+      "handle": "care-bedsheets",
+      "title": "Caring for bed sheets",
+      "body": ""
+    },
+    {
+      "handle": "care-pillows",
+      "title": "Caring for pillows",
+      "body": ""
+    },
+    {
+      "handle": "care-comforters",
+      "title": "Caring for duvets and comforters",
+      "body": ""
+    },
+    {
+      "handle": "faq",
+      "title": "FAQ",
+      "body": ""
+    },
+    {
+      "handle": "shipping",
+      "title": "Shipping",
+      "body": ""
+    },
+    {
+      "handle": "returns",
+      "title": "Returns and exchanges",
+      "body": ""
+    },
+    {
+      "handle": "measurement-guide",
+      "title": "Measurement guide",
+      "body": ""
+    }
+  ]
+}

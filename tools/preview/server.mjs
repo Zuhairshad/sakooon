@@ -61,7 +61,10 @@ function shopImage(ref) {
 const FIXTURE_DIR = path.join(__dirname, 'fixtures');
 const FIXTURES = exists(FIXTURE_DIR) ? fs.readdirSync(FIXTURE_DIR).filter((f) => f.endsWith('.json')).map((f) => readJson(path.join(FIXTURE_DIR, f))) : [];
 const FIXTURE_METAFIELDS = {};
+/* Per-variant metafields from fixtures: "variantMetafields": { "<variant id or gid>": { "<namespace>": { key: value } } } */
+const FIXTURE_VARIANT_METAFIELDS = {};
 for (const fx of FIXTURES) {
+  for (const [vid, ns] of Object.entries(fx.variantMetafields || {})) FIXTURE_VARIANT_METAFIELDS[String(gidNum(vid) || vid)] = ns;
   for (const fp of fx.products || []) if (!snapshot.products.some((p) => p.handle === fp.handle)) snapshot.products.push(fp);
   for (const [handle, handles] of Object.entries(fx.collectionProducts || {})) { const c = snapshot.collections.find((x) => x.handle === handle); if (c) c.productHandles = [...new Set([...(c.productHandles || []), ...handles])]; }
   Object.assign(FIXTURE_METAFIELDS, fx.metafields || {});
@@ -122,8 +125,12 @@ const collectionByHandle = Object.fromEntries([...COLLECTIONS, ALL].map((c) => [
 /* `collections` iterates like an array on Shopify but also answers collections['handle']; an array with named props does both. */
 const COLLECTIONS_DROP = Object.assign([...COLLECTIONS], collectionByHandle);
 
-const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handle: p.handle, title: p.title, body: p.body }))].map((p) => ({
-  id: gidNum(p.id), handle: p.handle, title: p.title, content: p.body || p.bodyHtml || '', url: `/pages/${p.handle}`, template_suffix: null,
+/* Pages: snapshot pages + policies, then fixture `pages` arrays ([{handle, title, body, template_suffix?}]) which override by handle.
+   /pages/<handle> renders templates/page.<template_suffix || handle>.json when that file exists, else page.json. */
+const fixturePages = FIXTURES.flatMap((fx) => fx.pages || []);
+const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handle: p.handle, title: p.title, body: p.body })), ...fixturePages].map((p) => ({
+  id: gidNum(p.id) || Math.abs([...p.handle].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7)), handle: p.handle, title: p.title, content: p.body || p.bodyHtml || '', url: `/pages/${p.handle}`,
+  template_suffix: p.template_suffix || null, author: p.author || '', published_at: p.published_at || p.publishedAt || null,
 }));
 const pageByHandle = Object.fromEntries(PAGES.map((p) => [p.handle, p]));
 
@@ -169,7 +176,11 @@ for (const fx of FIXTURES) for (const [type, entries] of Object.entries(fx.metao
 }
 for (const [type, byHandle] of Object.entries(METAOBJECTS)) for (const obj of Object.values(byHandle)) { for (const [k, v] of Object.entries(obj._fields)) obj[k] = metafield(v, k); delete obj._fields; }
 const SHOP_METAOBJECTS = Object.fromEntries(Object.entries(METAOBJECTS).map(([type, byHandle]) => [type, { ...byHandle, values: Object.values(byHandle).filter((o) => o.system.published) }]));
-for (const p of PRODUCTS) p.metafields = wrapNamespaces(FIXTURE_METAFIELDS[p.handle]);
+for (const p of PRODUCTS) {
+  p.metafields = wrapNamespaces(FIXTURE_METAFIELDS[p.handle]);
+  for (const v of p.variants) v.metafields = wrapNamespaces(FIXTURE_VARIANT_METAFIELDS[String(v.id)]);
+  if (p.selected_or_first_available_variant) p.selected_or_first_available_variant.metafields = p.variants.find((v) => v.id === p.selected_or_first_available_variant.id)?.metafields || wrapNamespaces();
+}
 for (const v of PRODUCTS.flatMap((p) => p.variants)) v.metafields = v.metafields || {};
 for (const c of COLLECTIONS) c.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`collection:${c.handle}`]);
 for (const pg of PAGES) pg.metafields = wrapNamespaces(FIXTURE_METAFIELDS[`page:${pg.handle}`]);
@@ -647,7 +658,7 @@ function resolveRoute(url) {
   }
   if ((m = /^\/pages\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
     const page = pageByHandle[m[1]];
-    const suffix = { quiz: 'sleep-quiz', favorites: 'wishlist' }[page.handle] || page.handle;
+    const suffix = page.template_suffix || { quiz: 'sleep-quiz', favorites: 'wishlist' }[page.handle] || page.handle;
     return { name: 'page', ...tplFor('page', suffix), page_type: 'page', title: page.title, vars: { page } };
   }
   if ((m = /^\/policies\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {

@@ -13,6 +13,12 @@
       {%- if settings[key] != blank -%}{%- assign socials = socials | append: '|' | append: settings[key] -%}{%- endif -%}
     {%- endfor -%}
     {%- if socials != '' -%},"sameAs": {{ socials | remove_first: '|' | split: '|' | json }}{%- endif -%}
+    {%- if shop.email != blank or shop.phone != blank -%}
+    ,"contactPoint": { "@type": "ContactPoint", "contactType": "customer service"
+      {%- if shop.email != blank -%}, "email": {{ shop.email | json }}{%- endif -%}
+      {%- if shop.phone != blank -%}, "telephone": {{ shop.phone | json }}{%- endif -%}
+      , "areaServed": "PK", "availableLanguage": ["en", "ur"] }
+    {%- endif -%}
   }
   </script>
   <script type="application/ld+json">

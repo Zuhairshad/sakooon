@@ -95,3 +95,8 @@ The live Nocturne theme still carries its demo copy (placeholder phone numbers, 
 T200/T250/T300 families and bath ranges that do not exist in the catalogue). Phase 2 content may only state what `docs/reference/phase2-inputs.md`
 §Verified contains (store product data, collections, the logo, the brand email). Everything else renders conditionally and stays empty until the user supplies it.
 
+## 2026-11-26 D19: Prices render with `money_without_trailing_zeros`
+PKR prices are whole rupees and the store's money format (`Rs.{{amount}}`) carries ".00". All price output in every area uses
+`money_without_trailing_zeros` and never `money_with_currency` (it rendered "Rs.6,999.00 PKR" in the subtotal). Still format-driven, so a
+store-format change needs no theme change. No currency symbol is ever hardcoded.
+

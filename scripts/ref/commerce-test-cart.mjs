@@ -1,11 +1,11 @@
 // Cart drawer interaction test against the local preview (or a theme dev URL).
-// Usage: node scripts/ref/commerce-test-cart.mjs --base http://localhost:9302 [--variant 900101] [--shots dir]
+// Usage: node scripts/ref/commerce-test-cart.mjs --base http://localhost:9302 [--variant 50715209629799] [--shots dir]
 import { chromium } from 'playwright';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 const BASE = arg('base', 'http://localhost:9302');
-const VARIANT = Number(arg('variant', 900101));
-const VARIANT2 = Number(arg('variant2', 900102));
+const VARIANT = Number(arg('variant', 50715209629799));
+const VARIANT2 = Number(arg('variant2', 50942970364007));
 const SHOTS = arg('shots', null);
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? ` (${detail})` : ''}`); };

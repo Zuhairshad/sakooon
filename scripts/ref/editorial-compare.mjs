@@ -7,9 +7,9 @@ const args = process.argv.slice(2);
 const base = args.includes('--base') ? args[args.indexOf('--base') + 1] : 'http://localhost:9303';
 const REF = '/Users/shad/sakooon-qa/references';
 const PAIRS = [
-  ['/pages/about', 'tekla/about'], ['/pages/about?view=faq', 'tekla/shipping-and-returns'], ['/pages/about?view=shipping', 'tekla/shipping-and-returns'],
-  ['/pages/contact', 'tekla/contact'], ['/pages/about?view=fabric-guide', 'tekla/textile-care'], ['/pages/fabric/percale', 'tekla/textile-care-percale'],
-  ['/pages/about?view=care-guide', 'tekla/care-guide'], ['/pages/about?view=care-bedsheets', 'tekla/product-care'], ['/pages/size-guide', 'tekla/size-guide'],
+  ['/pages/about', 'tekla/about'], ['/pages/faq', 'tekla/shipping-and-returns'], ['/pages/shipping', 'tekla/shipping-and-returns'],
+  ['/pages/contact', 'tekla/contact'], ['/pages/fabric-guide', 'tekla/textile-care'], ['/pages/fabric/cotton-satin', 'tekla/textile-care-percale'],
+  ['/pages/care-guide', 'tekla/care-guide'], ['/pages/care-bedsheets', 'tekla/product-care'], ['/pages/size-guide', 'tekla/size-guide'],
   ['/blogs/journal', 'tekla/stories'], ['/blogs/journal/how-to-layer-a-bed-for-winter', 'tekla/story-guide-to-down'],
 ];
 function probe() {

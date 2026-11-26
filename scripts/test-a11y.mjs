@@ -11,7 +11,7 @@ import { QA_DIR, pickViewports, launch, newPage, gotoPolite, writeJson, parseArg
 
 const args = parseArgs(process.argv.slice(2));
 const base = (args.base || process.env.SAKOOON_THEME_URL || 'http://localhost:9292').replace(/\/$/, '');
-const paths = args.paths ? String(args.paths).split(',') : ['/', '/collections/all', '/products/fixture-quilted-bed-sheet-set', '/cart', '/search?q=sheet', '/pages/about', '/pages/about?view=faq', '/pages/fabric/percale', '/pages/size-guide', '/blogs/journal', '/account/login', '/nope'];
+const paths = args.paths ? String(args.paths).split(',') : ['/', '/collections/all', '/collections/bed-sheets', '/products/quilted-bed-sheet-set-king', '/products/duvet-comfort-pillow-pack-of-2', '/cart', '/search?q=duvet', '/pages/about', '/pages/faq', '/pages/fabric/cotton-satin', '/pages/fabric-guide', '/pages/size-guide', '/blogs/journal', '/account/login', '/nope'];
 const viewports = pickViewports(args.viewports ? String(args.viewports).split(',') : ['1440', '390']);
 const openers = args.open ? String(args.open).split(',') : [];
 const browser = await launch();
