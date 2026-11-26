@@ -15,21 +15,21 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 
 ## Phase 1: implementation
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
-- [~] Header, announcement, mega menu, mobile nav, sticky (shad-2d)
-- [ ] Footer (shad-2d)
-- [ ] Homepage sections + index.json (shad-2d)
+- [x] Header, announcement, mega menu, mobile nav, sticky (shad-2d) 073f94c, merged to integration
+- [x] Footer (shad-2d) 0c1ca23, merged to integration
+- [x] Homepage sections + index.json (shad-2d) 087ac7e + presets f1566cd (hero-split, image-with-text, comparison-highlights, room-collection, brand-values, list-collections), merged to integration
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
-- [ ] Collection template + facets + sort + mobile filter drawer (shad-d8)
-- [ ] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8)
-- [~] Cart drawer + search drawer (shad-d8, milestone b); cart page later
+- [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
+- [~] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8, milestone d)
+- [x] Cart drawer + search drawer (shad-d8) 06b8930 c3e93ee, merged to integration
 - [ ] Search drawer + results (shad-d8)
-- [~] Editorial section library (shad-8b, milestone a)
-- [ ] Fabric metaobject template + fabric guide + compare (shad-8b)
-- [ ] Care guides (shad-8b)
-- [ ] Brand pages, journal (shad-8b)
-- [ ] Size guide, measurement guide, FAQ, shipping, returns, contact (shad-8b)
-- [ ] Integration merges + theme check (Fable, continuous)
-- [ ] Visual comparison passes per template (Fable + owner)
+- [x] Editorial section library + page templates (shad-8b) 2519044, merged to integration
+- [x] Fabric metaobject template + fabric guide + compare (shad-8b) 993bc36, merged to integration
+- [x] Care guides (shad-8b) fa01a08, merged to integration
+- [x] Brand pages (editorial library) and journal (main-blog, main-article, article-card) ccedb41, merged to integration
+- [x] Size guide, measurement guide (shad-8b) ccedb41; FAQ, shipping, returns, contact 2519044; merged to integration
+- [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
+- [~] Visual comparison passes per template (Fable + owner): header, footer, collection, fabric, home logged; editorial self-pass assigned; product pending
 - [ ] Functional tests, a11y, Lighthouse (Fable)
 - [ ] Final deliverables report (Fable)
 

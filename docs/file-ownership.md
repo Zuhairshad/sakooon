@@ -49,7 +49,7 @@ with the exact change. Integration (Fable) resolves conflicts.
   fabric-compare.liquid, fabric-care.liquid, care-guide.liquid, guide-anchor-nav.liquid, faq.liquid,
   size-guide.liquid, measurement-guide.liquid, contact-form.liquid, info-columns.liquid (shipping/returns),
   main-page.liquid, main-blog.liquid, main-article.liquid, main-metaobject-fabric.liquid, related-products-editorial.liquid
-- snippets/: accordion.liquid, fabric-rating.liquid, care-icons.liquid, article-card.liquid, fabric-card.liquid
+- snippets/: accordion.liquid, fabric-rating.liquid, care-icons.liquid, article-card.liquid, fabric-card.liquid, fabric-handles.liquid (outputs an ordered comma-separated handle list for callers to look up in shop.metaobjects.fabric; approved 2026-11-26)
 - assets/editorial.js, editorial.css
 - templates/page.json, page.*.json, blog.json, article.json, metaobject/fabric.json
 - docs/reference/editorial*.md, docs/reference/fabric-model.md, scripts/ref/editorial-*.mjs

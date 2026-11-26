@@ -127,7 +127,7 @@ h5, .h5, h6 { font-size: var(--text-md); }
 .stack--sm { --stack-gap: var(--space-2); } .stack--lg { --stack-gap: var(--space-8); }
 
 /* Media wrapper with aspect ratio: <div class="media" style="--aspect: 4/5"><img ...></div> */
-.media { position: relative; overflow: hidden; background: var(--color-border); }
+.media { display: block; position: relative; overflow: hidden; background: var(--color-border); } /* display:block so aspect-ratio also works on <a class="media"> */
 .media > img, .media > video, .media > iframe, .media > .placeholder, .media > svg { width: 100%; height: 100%; object-fit: cover; }
 .media[style*="--aspect"], .media--ratio { aspect-ratio: var(--aspect, auto); }
 .media--contain > img { object-fit: contain; }
@@ -270,7 +270,7 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
 .disclosure__trigger[aria-expanded="true"] .icon-plus { transform: rotate(45deg); }
 .disclosure__trigger[aria-expanded="true"] .icon-chevron-down { transform: rotate(180deg); }
 .disclosure__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--duration) var(--ease); }
-.disclosure__panel > * { overflow: hidden; }
+.disclosure__panel > * { overflow: hidden; min-height: 0; } /* min-height:0 so padding inside the 0fr row collapses fully */
 .disclosure__trigger[aria-expanded="true"] + .disclosure__panel { grid-template-rows: 1fr; }
 .disclosure__content { padding-bottom: var(--space-5); color: var(--color-foreground-muted); }
 
@@ -327,7 +327,8 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
 .reveal.is-visible, html:not(.js) .reveal, html.reveal-off .reveal { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  /* 0s (not .01ms): a .01ms transition still defers inherited visibility by a frame and swallows focus() on drawer contents. Nothing in the theme relies on transitionend. */
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: 0s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   /* Drawers/dialogs must flip visibility synchronously so focus() lands on open (a .01ms transition still defers it a frame). */
   .drawer, .dialog, .overlay, [open] > .drawer, [open] > .dialog, [open] > .overlay, .drawer.is-open, .overlay.is-open,
   theme-drawer[open] *, theme-dialog[open] *, .drawer.is-open * { transition: none !important; }

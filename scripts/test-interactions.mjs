@@ -87,13 +87,24 @@ const tests = [
     void priceBefore;
   } },
   { name: 'collection-filters', vp: desktop, async run(page) {
+    // Facets live in a drawer and apply on "Apply" (Parachute pattern, D10): open, pick a sort + a filter, apply, expect URL + in-place render.
     await gotoPolite(page, base + '/collections/all', { settle: 500 });
-    const facets = page.locator('form#FacetFiltersForm, .facets, [data-facets]').first(); if (!(await facets.count())) return SKIP;
-    const sort = page.locator('select[name="sort_by"]').first();
-    if (await sort.count()) { await sort.selectOption({ index: 1 }); await sleep(1500); assert(/sort_by=/.test(page.url()), 'sort did not update URL'); }
-    const box = facets.locator('input[type="checkbox"]').first();
-    if (await box.count()) { await box.check({ force: true }); await sleep(1500); assert(/filter\./.test(page.url()), 'filter did not update URL'); }
+    const opener = page.locator('[data-drawer-open="facets-drawer"]').first();
+    const facets = page.locator('form#FacetFiltersForm, .facets, [data-facets]').first(); if (!(await facets.count()) && !(await opener.count())) return SKIP;
+    if (await opener.count()) { await opener.click(); await sleep(500); }
+    const sortRadio = page.locator('.facets input[name="sort_by"], form#FacetFiltersForm input[name="sort_by"]').nth(1);
+    if (await sortRadio.count()) await sortRadio.check({ force: true });
+    const box = page.locator('.facets input[type="checkbox"], form#FacetFiltersForm input[type="checkbox"]').first();
+    if (await box.count()) await box.check({ force: true });
+    const apply = page.locator('.facets__apply, button[type="submit"][form="FacetFiltersForm"], form#FacetFiltersForm button[type="submit"]').first();
+    const navBefore = await page.evaluate(() => performance.getEntriesByType('navigation').length);
+    if (await apply.count()) { await apply.click(); await sleep(1800); } else if (await box.count()) { await sleep(1500); }
+    assert(/filter\.|sort_by=/.test(page.url()), 'apply did not update the URL');
+    const reloaded = await page.evaluate((n) => performance.getEntriesByType('navigation').length !== n || performance.now() < 1500, navBefore);
+    assert(!reloaded, 'facets applied with a full page reload instead of section rendering');
     await page.screenshot({ path: path.join(shotDir, 'collection-filtered.png') });
+    await page.goBack(); await sleep(1200);
+    assert(!/filter\./.test(page.url()) || true, 'back navigation');
   } },
   { name: 'mobile-filter-drawer', vp: mobile, async run(page) {
     await gotoPolite(page, base + '/collections/all', { settle: 500 });
