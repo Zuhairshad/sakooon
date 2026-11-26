@@ -465,8 +465,6 @@
       "cart_items": ", items:"
     },
     "announcement": {
-      "previous": "Previous announcement",
-      "next": "Next announcement",
       "pause": "Pause announcements",
       "play": "Play announcements",
       "dismiss": "Dismiss announcement"

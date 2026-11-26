@@ -1,12 +1,20 @@
 {%- comment -%}
   Announcement bar. Owner: shad-2d. One message, or several rotating in place (crossfade, all stacked in one grid
-  cell so the bar never changes height). Rotation pauses on hover/focus, has a pause button (WCAG 2.2.2), and is
-  off under reduced motion. Optional dismiss for the session.
+  cell so the bar never changes height). No previous/next arrows: rotation is automatic, pauses on hover/focus, has a
+  small pause button at the right edge (WCAG 2.2.2), and is off under reduced motion. Optional dismiss for the session.
+  An empty spacer the width of the controls sits on the left so the message stays centred.
 {%- endcomment -%}
 {%- liquid
   assign count = section.blocks.size
+  assign buttons = 0
+  if count > 1 and section.settings.autoplay
+    assign buttons = 1
+  endif
+  if section.settings.dismissible
+    assign buttons = buttons | plus: 1
+  endif
   assign controls = false
-  if count > 1 or section.settings.dismissible
+  if buttons > 0
     assign controls = true
   endif
 -%}
@@ -19,17 +27,10 @@
   {% if section.settings.autoplay and count > 1 %}data-autoplay{% endif %}
   role="region"
   aria-label="{{ 'sections.header.announcement' | t }}"
-  style="--announcement-align: {{ section.settings.align }}"
+  style="--announcement-align: {{ section.settings.align }}; --announcement-buttons: {{ buttons }}"
 >
   <div class="announcement-bar__inner">
-    {%- if count > 1 -%}
-      <div class="announcement-bar__controls">
-        <button type="button" class="announcement-bar__button" data-announcement-prev aria-label="{{ 'storefront.announcement.previous' | t }}">{% render 'icon', icon: 'chevron-left', size: 16 %}</button>
-        <button type="button" class="announcement-bar__button" data-announcement-next aria-label="{{ 'storefront.announcement.next' | t }}">{% render 'icon', icon: 'chevron-right', size: 16 %}</button>
-      </div>
-    {%- elsif controls -%}
-      <span aria-hidden="true"></span>
-    {%- endif -%}
+    {%- if controls -%}<span class="announcement-bar__spacer" aria-hidden="true"></span>{%- endif -%}
     <div class="announcement-bar__slides" aria-live="off">
       {%- for block in section.blocks -%}
         <p class="announcement-bar__slide{% if forloop.first %} is-active{% endif %}" data-slide{% unless forloop.first %} aria-hidden="true"{% endunless %} {{ block.shopify_attributes }}>
@@ -46,11 +47,11 @@
         {%- if count > 1 and section.settings.autoplay -%}
           <button type="button" class="announcement-bar__button" data-announcement-toggle aria-pressed="false"
             aria-label="{{ 'storefront.announcement.pause' | t }}" data-label-pause="{{ 'storefront.announcement.pause' | t }}" data-label-play="{{ 'storefront.announcement.play' | t }}">
-            <span data-icon="pause">{% render 'icon', icon: 'pause', size: 14 %}</span><span data-icon="play" hidden>{% render 'icon', icon: 'play', size: 14 %}</span>
+            <span data-icon="pause">{% render 'icon', icon: 'pause', size: 10 %}</span><span data-icon="play" hidden>{% render 'icon', icon: 'play', size: 10 %}</span>
           </button>
         {%- endif -%}
         {%- if section.settings.dismissible -%}
-          <button type="button" class="announcement-bar__button" data-announcement-dismiss aria-label="{{ 'storefront.announcement.dismiss' | t }}">{% render 'icon', icon: 'close', size: 16 %}</button>
+          <button type="button" class="announcement-bar__button" data-announcement-dismiss aria-label="{{ 'storefront.announcement.dismiss' | t }}">{% render 'icon', icon: 'close', size: 12 %}</button>
         {%- endif -%}
       </div>
     {%- endif -%}

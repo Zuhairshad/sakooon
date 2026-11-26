@@ -265,9 +265,7 @@
       this.speed = Math.max(3, Number(this.dataset.speed) || 5) * 1000;
       this.paused = reducedMotion.matches || !this.hasAttribute('data-autoplay');
       this._onClick = (e) => {
-        if (e.target.closest('[data-announcement-prev]')) this.go(this.index - 1, true);
-        else if (e.target.closest('[data-announcement-next]')) this.go(this.index + 1, true);
-        else if (e.target.closest('[data-announcement-toggle]')) this.setPaused(!this.paused, true);
+        if (e.target.closest('[data-announcement-toggle]')) this.setPaused(!this.paused, true);
         else if (e.target.closest('[data-announcement-dismiss]')) this.dismiss();
       };
       this._hold = () => { this._held = true; this.stop(); };
@@ -277,7 +275,7 @@
       this.addEventListener('pointerleave', this._release);
       this.addEventListener('focusin', this._hold);
       this.addEventListener('focusout', this._release);
-      this.start();
+      this.setPaused(this.paused); // also syncs the toggle when rotation starts paused (reduced motion)
     }
 
     disconnectedCallback() {
@@ -309,7 +307,7 @@
       this.start();
     }
 
-    go(i, byUser) {
+    go(i) {
       if (!this.slides.length) return;
       const n = this.slides.length;
       this.index = ((i % n) + n) % n;
@@ -319,7 +317,6 @@
         s.setAttribute('aria-hidden', String(!on));
         s.querySelectorAll('a').forEach((a) => (on ? a.removeAttribute('tabindex') : a.setAttribute('tabindex', '-1')));
       });
-      if (byUser) this.start();
     }
 
     dismiss() {
