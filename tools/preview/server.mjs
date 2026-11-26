@@ -337,8 +337,9 @@ const F = {
   image_url: (x, ...args) => {
     const src = srcOf(x);
     if (!src) return '';
-    const { width, height, crop } = kw(args);
-    const q = [width && `width=${width}`, height && `height=${height}`, crop && `crop=${crop}`].filter(Boolean).join('&');
+    const { width, height, crop, crop_left, crop_top, crop_width, crop_height } = kw(args);
+    const region = crop === 'region' ? [`crop_left=${crop_left || 0}`, `crop_top=${crop_top || 0}`, `crop_width=${crop_width || 0}`, `crop_height=${crop_height || 0}`] : [];
+    const q = [width && `width=${width}`, height && `height=${height}`, crop && `crop=${crop}`, ...region].filter(Boolean).join('&');
     return q ? `${src}${src.includes('?') ? '&' : '?'}${q}` : src;
   },
   img_url: (x) => srcOf(x),
@@ -740,7 +741,7 @@ const MIME = { '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+
 /* Resize images on the fly like Shopify's CDN does for ?width= (sharp, cached under tools/preview/.cache). Falls back to the original. */
 let sharpMod = null;
 /* Shopify-like resizing: ?width=, optional ?height= + ?crop=center|top|bottom|left|right (cover crop). */
-async function sendImage(res, file, width, height = 0, crop = '') {
+async function sendImage(res, file, width, height = 0, crop = '', region = null) {
   if (!exists(file) || !fs.statSync(file).isFile()) return send(res, 404, 'Not found', 'text/plain');
   if ((!width || width >= 2400) && !height) return sendFile(res, file);
   try {
@@ -748,10 +749,13 @@ async function sendImage(res, file, width, height = 0, crop = '') {
     if (!sharpMod) return sendFile(res, file);
     const cacheDir = path.join(__dirname, '.cache'); fs.mkdirSync(cacheDir, { recursive: true });
     const ext = path.extname(file).toLowerCase() === '.png' ? '.png' : '.webp';
-    const cached = path.join(cacheDir, `${path.basename(file, path.extname(file))}-${width || 'auto'}${height ? `x${height}-${crop || 'center'}` : ''}${ext}`);
+    const regionKey = region ? `-r${region.left}_${region.top}_${region.width}_${region.height}` : '';
+    const cached = path.join(cacheDir, `${path.basename(file, path.extname(file))}-${width || 'auto'}${height ? `x${height}-${crop || 'center'}` : ''}${regionKey}${ext}`);
     if (!exists(cached)) {
       const positions = { top: 'top', bottom: 'bottom', left: 'left', right: 'right', center: 'centre' };
-      const img = height && crop
+      const img = region
+        ? sharpMod(file).extract(region).resize({ width: width || undefined, height: height || undefined, fit: 'cover' })
+        : height && crop
         ? sharpMod(file).resize({ width: width || undefined, height, fit: 'cover', position: positions[crop] || 'centre', withoutEnlargement: true })
         : sharpMod(file).resize({ width: width || undefined, height: height || undefined, fit: 'inside', withoutEnlargement: true });
       await (ext === '.png' ? img.png({ compressionLevel: 9 }) : img.webp({ quality: 78 })).toFile(cached);
@@ -790,7 +794,11 @@ http.createServer(async (req, res) => {
   const started = Date.now();
   try {
     if (p.startsWith('/assets/')) return sendFile(res, path.join(THEME, 'assets', path.basename(p)));
-    if (p.startsWith('/images/')) return sendImage(res, path.join(IMAGES, path.basename(p)), Number(url.searchParams.get('width')) || 0, Number(url.searchParams.get('height')) || 0, url.searchParams.get('crop') || '');
+    if (p.startsWith('/images/')) {
+      const sp = url.searchParams;
+      const region = sp.get('crop') === 'region' && Number(sp.get('crop_width')) > 0 ? { left: Number(sp.get('crop_left')) || 0, top: Number(sp.get('crop_top')) || 0, width: Number(sp.get('crop_width')), height: Number(sp.get('crop_height')) } : null;
+      return sendImage(res, path.join(IMAGES, path.basename(p)), Number(sp.get('width')) || 0, Number(sp.get('height')) || 0, sp.get('crop') || '', region);
+    }
     if (p === '/cart.js' || p === '/cart.json') return sendJson(res, cartJson());
     if (p === '/cart/add.js' || p === '/cart/add') {
       const body = await readBody(req);

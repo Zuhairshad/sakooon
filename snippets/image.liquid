@@ -5,6 +5,8 @@
   decorative: true (or alt: '') renders alt="" for images next to visible text (cards), avoiding redundant alt.
   crop: 'center' | 'top' | 'bottom' | 'left' | 'right' (with aspect): every srcset candidate is cropped server-side to the aspect ratio,
   so a portrait packshot shown in a 21:10 banner downloads only the banner pixels (Shopify image_url width + height + crop).
+  region_height: 1-99 (with aspect + crop): first limit the source to its top N% (e.g. the main photograph of a collage packshot),
+  then cut the aspect from that area, centred horizontally (Shopify image_url crop: 'region' + crop_left/top/width/height).
 {%- endcomment -%}
 {%- liquid
   assign widths_str = widths | default: '320,480,640,768,960,1280,1600,1920,2400'
@@ -36,7 +38,28 @@
         assign crop_ratio = crop_parts[1] | plus: 0.0 | divided_by: crop_parts[0]
       endif
     endif
-    if crop_ratio > 0
+    assign use_region = false
+    if crop_ratio > 0 and region_height
+      assign region_pct = region_height | plus: 0
+      if region_pct > 0 and region_pct < 100
+        assign use_region = true
+        assign area_h = img.height | times: region_pct | divided_by: 100 | floor
+        assign area_w = img.width
+        assign rect_h = area_w | times: crop_ratio | floor
+        if rect_h <= area_h
+          assign rect_w = area_w
+          assign rect_left = 0
+          assign rect_top = area_h | minus: rect_h | divided_by: 2 | floor
+        else
+          assign rect_h = area_h
+          assign rect_w = area_h | divided_by: crop_ratio | floor
+          assign rect_left = area_w | minus: rect_w | divided_by: 2 | floor
+          assign rect_top = 0
+        endif
+        assign max_w = rect_w
+      endif
+    endif
+    if crop_ratio > 0 and use_region == false
       comment
         Cropped candidates: the source can only be cropped as far as its own height allows (no enlargement).
       endcomment
@@ -49,7 +72,10 @@
     for w in widths_arr
       assign wn = w | strip | plus: 0
       if wn < max_w
-        if crop_ratio > 0
+        if use_region
+          assign hn = wn | times: crop_ratio | round
+          assign src_w = img | image_url: width: wn, height: hn, crop: 'region', crop_left: rect_left, crop_top: rect_top, crop_width: rect_w, crop_height: rect_h
+        elsif crop_ratio > 0
           assign hn = wn | times: crop_ratio | round
           assign src_w = img | image_url: width: wn, height: hn, crop: crop
         else
@@ -58,7 +84,10 @@
         assign srcset = srcset | append: src_w | append: ' ' | append: wn | append: 'w, '
       endif
     endfor
-    if crop_ratio > 0
+    if use_region
+      assign hmax = max_w | times: crop_ratio | round
+      assign src_max = img | image_url: width: max_w, height: hmax, crop: 'region', crop_left: rect_left, crop_top: rect_top, crop_width: rect_w, crop_height: rect_h
+    elsif crop_ratio > 0
       assign hmax = max_w | times: crop_ratio | round
       assign src_max = img | image_url: width: max_w, height: hmax, crop: crop
     else
@@ -69,7 +98,10 @@
     if max_w < base_w
       assign base_w = max_w
     endif
-    if crop_ratio > 0
+    if use_region
+      assign base_h = base_w | times: crop_ratio | round
+      assign src_base = img | image_url: width: base_w, height: base_h, crop: 'region', crop_left: rect_left, crop_top: rect_top, crop_width: rect_w, crop_height: rect_h
+    elsif crop_ratio > 0
       assign base_h = base_w | times: crop_ratio | round
       assign src_base = img | image_url: width: base_w, height: base_h, crop: crop
     else
