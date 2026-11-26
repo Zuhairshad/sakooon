@@ -3,7 +3,7 @@
   3–4 columns of icon + heading + text + optional link, with hairline dividers; stacks to 2 columns, then 1.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
-<div class="section service-info{% if s.dividers %} service-info--dividers{% endif %} service-info--{{ s.align }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --service-columns: {{ s.columns }};">
+<div class="section service-info{% if s.dividers %} service-info--dividers{% endif %} service-info--{{ s.align }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --service-columns: {{ s.columns }}; --tablet-columns: {% if section.blocks.size == 3 %}3{% else %}2{% endif %};">
   <div class="page-width page-width--full">
     {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, align: s.align -%}
     <ul class="service-info__list list-unstyled" role="list">

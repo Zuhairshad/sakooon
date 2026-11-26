@@ -3,7 +3,7 @@
   Desktop 2–4 columns; mobile horizontal swipe or stack.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
-<div class="section brand-values brand-values--{{ s.align }} brand-values--mobile-{{ s.mobile_layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --values-columns: {{ s.columns }};">
+<div class="section brand-values brand-values--{{ s.align }} brand-values--mobile-{{ s.mobile_layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --values-columns: {{ s.columns }}; --tablet-columns: {% if section.blocks.size == 3 %}3{% else %}2{% endif %};">
   <div class="page-width page-width--full">
     {%- render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, align: s.align -%}
     <ul class="brand-values__list list-unstyled{% if s.mobile_layout == 'scroll' %} no-scrollbar{% endif %}" role="list">
