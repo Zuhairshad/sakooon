@@ -7,7 +7,7 @@
           "type": "heading",
           "settings": {
             "heading": "The comfort in every thread",
-            "size": "h0",
+            "size": "compact",
             "tag": "h1"
           }
         },
@@ -23,8 +23,8 @@
             "label_1": "Shop bedding",
             "link_1": "/collections/all",
             "style_1": "primary",
-            "label_2": "Bed sheets",
-            "link_2": "/collections/bed-sheets",
+            "label_2": "",
+            "link_2": "",
             "style_2": "secondary"
           }
         }
@@ -37,12 +37,13 @@
       "settings": {
         "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
         "height": "screen",
-        "content_position": "top-left",
+        "content_position": "bottom-left",
         "content_width": 640,
         "text_color": "light",
-        "overlay_opacity": 30,
+        "overlay_opacity": 0,
         "allow_header_overlay": true,
-        "color_scheme": "ink"
+        "color_scheme": "ink",
+        "scrim": 50
       }
     },
     "featured": {

@@ -239,7 +239,10 @@ scroll-rail { display: block; }
 .hero__media > img, .hero__media > picture, .hero__media > picture > img, .hero__media .hero__img, .hero__media > .placeholder, .hero__video, .hero__video video {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
 }
-.hero--has-media .hero__media::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, var(--hero-overlay, 0)); pointer-events: none; }
+.hero--has-media .hero__media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, var(--hero-scrim, 0)) 0%, rgba(0, 0, 0, calc(var(--hero-scrim, 0) * .8)) 30%, rgba(0, 0, 0, 0) 62%), rgba(0, 0, 0, var(--hero-overlay, 0));
+}
 .hero--has-media.hero--text-dark .hero__media::after { background: rgba(255, 255, 255, var(--hero-overlay, 0)); }
 .hero--screen { --hero-min: calc(100svh - var(--hero-announcement) - var(--hero-header)); }
 body:has(.header--transparent-capable) .hero--screen.hero--under-header { --hero-min: calc(100svh - var(--hero-announcement)); }
@@ -258,10 +261,23 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .hero--top-center .hero__content, .hero--middle-center .hero__content, .hero--bottom-center .hero__content { justify-content: center; text-align: center; }
 .hero--top-right .hero__content, .hero--middle-right .hero__content, .hero--bottom-right .hero__content { justify-content: flex-end; text-align: right; }
 .hero__heading { line-height: var(--leading-tight); text-wrap: balance; }
+/* Compact display heading (Parachute-style hero): smaller, bottom-left with the tile inset (gutter + 20/28px). */
+.hero__heading--compact { max-width: 12em; font-size: clamp(36px, 4.2vw, 64px); font-weight: var(--font-heading-weight); line-height: 1.05; letter-spacing: -0.01em; }
+.hero:has(.hero__heading--compact) .hero__content { padding: 0 calc(var(--page-gutter) + 20px) calc(var(--page-gutter) + 20px); }
+.hero:has(.hero__heading--compact) .hero__copy { --stack-gap: var(--space-4); }
+.hero:has(.hero__heading--compact) .hero__text { font-size: var(--text-base); }
+.hero--has-media.hero--text-light:has(.hero__heading--compact) .hero__text { color: rgba(255, 255, 255, .9); }
+.hero:has(.hero__heading--compact) .hero__buttons { margin-top: var(--space-2); }
+@media (min-width: 768px) { .hero:has(.hero__heading--compact) .hero__content { padding: 0 calc(var(--page-gutter) + 28px) calc(var(--page-gutter) + 28px); } }
 .hero__buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .hero--top-center .hero__buttons, .hero--middle-center .hero__buttons, .hero--bottom-center .hero__buttons { justify-content: center; }
 .hero--top-right .hero__buttons, .hero--middle-right .hero__buttons, .hero--bottom-right .hero__buttons { justify-content: flex-end; }
 .hero--has-media.hero--text-light .hero__buttons .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
+/* Solid button over light-text media: the soft off-white promo button (same as the campaign tiles). */
+.hero--has-media.hero--text-light .hero__buttons .button:not(.button--secondary):not(.button--tertiary) {
+  --btn-bg: var(--on-media-button); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-button);
+  min-height: 44px; padding: 0 34px; border-radius: 3px; font-size: 15px; font-weight: 400; letter-spacing: 0; text-transform: none;
+}
 .hero--has-media.hero--text-light .hero__buttons .button--secondary, .hero--has-media.hero--text-light .hero__buttons .button--tertiary { --btn-bg: transparent; --btn-text: var(--on-media-light); }
 .hero--has-media.hero--text-light .hero__buttons .button--secondary:hover { background: var(--on-media-light); color: var(--on-media-dark); }
 .hero--has-media .hero__eyebrow { color: inherit; opacity: .85; }

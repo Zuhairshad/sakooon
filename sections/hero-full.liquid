@@ -25,7 +25,7 @@
 -%}
 <div
   class="section section--flush hero hero--{{ s.height }} hero--{{ s.content_position }}{% if has_media %} hero--has-media hero--text-{{ s.text_color }}{% endif %} color-scheme-{{ s.color_scheme }}{% if overlay_header %} hero--under-header{% endif %}"
-  style="--hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px;"
+  style="--hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-scrim: {{ s.scrim | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px;"
   {% if overlay_header %}data-header-overlay{% endif %}
 >
   <div class="hero__media">
@@ -44,7 +44,8 @@
           {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img', alt: s.image.alt -%}
         </picture>
       {%- else -%}
-        {%- render 'image', image: s.image, sizes: '100vw', priority: priority, class: 'hero__img' -%}
+        {%- comment -%} Without a mobile image, phones crop the (landscape) image to a tall frame: request ~2.5x the viewport width. {%- endcomment -%}
+        {%- render 'image', image: s.image, sizes: '(max-width: 767px) 250vw, 100vw', priority: priority, class: 'hero__img' -%}
       {%- endif -%}
     {%- else -%}
       {%- render 'placeholder', name: 'hero-apparel-1', class: 'hero__placeholder' -%}
@@ -58,7 +59,7 @@
             {%- when 'eyebrow' -%}
               <p class="eyebrow hero__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
             {%- when 'heading' -%}
-              <{{ block.settings.tag }} class="hero__heading {{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.heading | escape | newline_to_br }}</{{ block.settings.tag }}>
+              <{{ block.settings.tag }} class="hero__heading{% if block.settings.size == 'compact' %} hero__heading--compact{% else %} {{ block.settings.size }}{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.heading | escape | newline_to_br }}</{{ block.settings.tag }}>
             {%- when 'text' -%}
               <div class="hero__text rte text-large" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
             {%- when 'buttons' -%}
@@ -102,7 +103,8 @@
     },
     { "type": "range", "id": "content_width", "label": "Content width", "min": 320, "max": 960, "step": 20, "unit": "px", "default": 640 },
     { "type": "select", "id": "text_color", "label": "Text on media", "default": "light", "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ] },
-    { "type": "range", "id": "overlay_opacity", "label": "Image overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 15 },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 15, "info": "Darkens the whole image." },
+    { "type": "range", "id": "scrim", "label": "Shade behind text", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0, "info": "Darkens only the lower part of the image (light text). Keeps the top of the photo bright." },
     { "type": "checkbox", "id": "allow_header_overlay", "label": "Let a transparent header sit over this section", "default": true, "info": "Only when this is the first section and it has an image or video." },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "sand", "info": "Used behind the placeholder and while media loads." }
   ],
@@ -112,7 +114,7 @@
       "type": "heading", "name": "Heading", "limit": 1,
       "settings": [
         { "type": "textarea", "id": "heading", "label": "Heading", "default": "The comfort in every thread" },
-        { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h0", "options": [ { "value": "h0", "label": "Display" }, { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" } ] },
+        { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h0", "options": [ { "value": "compact", "label": "Display, compact" }, { "value": "h0", "label": "Display" }, { "value": "h1", "label": "t:sections.all.heading_size.options.h1" }, { "value": "h2", "label": "t:sections.all.heading_size.options.h2" } ] },
         { "type": "select", "id": "tag", "label": "Heading level", "default": "h1", "options": [ { "value": "h1", "label": "H1 (main page heading)" }, { "value": "h2", "label": "H2" } ], "info": "Use H1 only once per page." }
       ]
     },
