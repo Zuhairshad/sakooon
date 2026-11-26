@@ -5,7 +5,7 @@
    ========================================================================= */
 
 /* Text and buttons over photography (not tied to a colour scheme): paper white and the brand green-black (design-system.md §Brand). */
-:root { --on-media-light: #FFFFFF; --on-media-dark: #1A2420; }
+:root { --on-media-light: #FFFFFF; --on-media-dark: #1A2420; --on-media-button: #F2F0EB; }
 
 /* ---------- Announcement bar ---------- */
 .announcement-bar { font-size: var(--text-sm); line-height: 1.4; }
@@ -324,9 +324,17 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .editorial-grid--overlay .editorial-grid__link:has(.editorial-grid__copy--center.editorial-grid__copy--light) .editorial-grid__media::after { background: rgba(0, 0, 0, calc(var(--tile-scrim, .45) * .6)); }
 .editorial-grid--overlay .editorial-grid__copy--light .editorial-grid__text { color: rgba(255, 255, 255, .85); }
 .editorial-grid--overlay .editorial-grid__copy--light .button { --btn-bg: var(--on-media-light); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-light); }
-.editorial-grid__heading--display { margin: 0; font-size: clamp(32px, 1.2rem + 2.4vw, 56px); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; }
+.editorial-grid__heading--display {
+  margin: 0; max-width: 11em; font-family: var(--tile-heading-font, var(--font-heading-family)); font-weight: var(--tile-heading-weight, 400);
+  font-size: clamp(34px, 1.1rem + 2.3vw, 56px); line-height: 1.04; letter-spacing: -0.015em; text-wrap: balance;
+}
+/* Promo-pair button (Parachute pattern): off-white, softly rounded, regular weight, sentence case. */
+.editorial-grid--overlay .editorial-grid__copy--light .editorial-grid__button:not(.button--small) {
+  --btn-bg: var(--on-media-button); --btn-text: var(--on-media-dark); --btn-border: var(--on-media-button);
+  min-height: 44px; padding: 0 34px; border-radius: 3px; font-size: 15px; font-weight: 400; letter-spacing: 0; text-transform: none;
+}
 .editorial-grid__copy .editorial-grid__heading--display + * { margin-top: var(--space-1); }
-.editorial-grid__copy .editorial-grid__button:not(.button--small) { margin-top: var(--space-2); }
+.editorial-grid__copy .editorial-grid__button:not(.button--small) { margin-top: var(--space-4); }
 .editorial-grid--below .editorial-grid__copy { display: grid; justify-items: start; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-4); }
 .editorial-grid--below.editorial-grid--bleed .editorial-grid__copy { padding-inline: var(--page-gutter); }
 .editorial-grid--below .editorial-grid__button { padding: 0; min-height: 0; background: none; border: 0; color: inherit; text-decoration: underline; text-underline-offset: 4px; }

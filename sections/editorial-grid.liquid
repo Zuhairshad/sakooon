@@ -68,6 +68,13 @@
   </div>
 </div>
 
+{%- if s.tile_heading_size == 'display' and s.heading_font != blank -%}
+  {%- style -%}
+    {{ s.heading_font | font_face: font_display: 'swap' }}
+    #shopify-section-{{ section.id }} { --tile-heading-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }}; --tile-heading-weight: {{ s.heading_font.weight }}; }
+  {%- endstyle -%}
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Campaign tiles",
@@ -87,6 +94,7 @@
     { "type": "range", "id": "scrim", "label": "Shade behind light text", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 45 },
     { "type": "select", "id": "text_color", "label": "Text over images", "default": "light", "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ] },
     { "type": "select", "id": "tile_heading_size", "label": "Tile heading size", "default": "h2", "options": [ { "value": "display", "label": "Display" }, { "value": "h2", "label": "Large" }, { "value": "h4", "label": "Small" }, { "value": "text-body", "label": "Caption" } ] },
+    { "type": "font_picker", "id": "heading_font", "label": "Display heading font", "default": "playfair_display_n4", "info": "Used when the tile heading size is Display." },
     { "type": "select", "id": "mobile_layout", "label": "Mobile layout", "default": "stack", "options": [ { "value": "stack", "label": "Stack" }, { "value": "scroll", "label": "Swipe" } ] },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
     { "type": "header", "content": "t:sections.all.padding.header" },
