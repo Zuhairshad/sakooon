@@ -78,3 +78,7 @@ hide-on-scroll-down, 40px rotating announcement. Both exposed as header settings
 Tekla sets body at 300, Parachute at 400. At 14px a 300 weight loses contrast on lower-density screens, so the default body font stays
 regular (`inter_n4`); merchants who want the Tekla feel pick the Light variant in the body font picker (no code change). The editorial
 text column is 732px plus gutters (`.page-width--text`), matching Tekla's measured 732/700 columns.
+
+## 2026-11-26 D16: Phase 1 approved by the user; typography stays grotesk; Phase 2 begins
+The user approved the reference-based implementation on sakooon/integration (0d8b6c1) and kept the single grotesk typography (D4/D11).
+Phase 2 (Sakooon identity) starts after every session compacts its context. Live theme remains untouched; no publishing without explicit authorization.
