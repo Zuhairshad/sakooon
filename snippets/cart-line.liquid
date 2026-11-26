@@ -27,11 +27,11 @@
       <div class="cart-line__price">
         {%- if item.original_line_price != item.final_line_price -%}
           <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
-          <span class="cart-line__final price--on-sale">{{ item.final_line_price | money }}</span>
+          <span class="cart-line__final price--on-sale">{{ item.final_line_price | money_without_trailing_zeros }}</span>
           <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
-          <s class="cart-line__original">{{ item.original_line_price | money }}</s>
+          <s class="cart-line__original">{{ item.original_line_price | money_without_trailing_zeros }}</s>
         {%- else -%}
-          <span class="cart-line__final">{{ item.final_line_price | money }}</span>
+          <span class="cart-line__final">{{ item.final_line_price | money_without_trailing_zeros }}</span>
         {%- endif -%}
       </div>
     </div>
@@ -58,14 +58,14 @@
     {%- if item.line_level_discount_allocations.size > 0 -%}
       <ul class="cart-line__discounts list-unstyled">
         {%- for allocation in item.line_level_discount_allocations -%}
-          <li>{{ allocation.discount_application.title }} (&minus;{{ allocation.amount | money }})</li>
+          <li>{{ allocation.discount_application.title }} (&minus;{{ allocation.amount | money_without_trailing_zeros }})</li>
         {%- endfor -%}
       </ul>
     {%- endif -%}
 
     {%- if item.unit_price_measurement -%}
       <p class="cart-line__unit">
-        {{- item.unit_price | money -}}/{%- if item.unit_price_measurement.reference_value != 1 -%}{{ item.unit_price_measurement.reference_value }}{%- endif -%}{{ item.unit_price_measurement.reference_unit }}
+        {{- item.unit_price | money_without_trailing_zeros -}}/{%- if item.unit_price_measurement.reference_value != 1 -%}{{ item.unit_price_measurement.reference_value }}{%- endif -%}{{ item.unit_price_measurement.reference_unit }}
       </p>
     {%- endif -%}
 
@@ -75,6 +75,7 @@
         {{- 'sections.cart.remove' | t -}}
       </a>
     </div>
+    {%- if item.variant.available == false -%}<p class="cart-line__sold-out">{{ 'sections.cart.line_sold_out' | t }}</p>{%- endif -%}
     <p class="cart-line__error" role="alert" data-line-error hidden></p>
   </div>
 </li>

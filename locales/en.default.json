@@ -251,6 +251,7 @@
       }
     },
     "cart": {
+      "line_sold_out": "This item is now sold out.",
       "title": "Your cart",
       "caption": "Cart items",
       "remove_title": "Remove {{ title }}",

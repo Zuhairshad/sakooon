@@ -122,7 +122,7 @@
               </span>
             </label>
           </div>
-          {%- assign range_max_money = filter.range_max | money -%}
+          {%- assign range_max_money = filter.range_max | money_without_trailing_zeros -%}
           <p class="facets__hint">{{ 'products.facets.max_price' | t: price: range_max_money }}</p>
         </fieldset>
     {%- endcase -%}

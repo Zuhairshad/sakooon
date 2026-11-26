@@ -49,7 +49,7 @@
               <div class="cart-drawer__shipping">
                 <p class="cart-drawer__shipping-text">
                   {%- if remaining > 0 -%}
-                    {%- assign remaining_money = remaining | money -%}{{ 'sections.cart.free_shipping_remaining_html' | t: remaining: remaining_money }}
+                    {%- assign remaining_money = remaining | money_without_trailing_zeros -%}{{ 'sections.cart.free_shipping_remaining_html' | t: remaining: remaining_money }}
                   {%- else -%}
                     {{ 'sections.cart.free_shipping_reached' | t }}
                   {%- endif -%}
@@ -89,14 +89,14 @@
                 {%- if cart.cart_level_discount_applications.size > 0 -%}
                   <ul class="cart-drawer__discounts list-unstyled">
                     {%- for discount in cart.cart_level_discount_applications -%}
-                      <li class="cart-drawer__row"><span>{{ discount.title }}</span><span>&minus;{{ discount.total_allocated_amount | money }}</span></li>
+                      <li class="cart-drawer__row"><span>{{ discount.title }}</span><span>&minus;{{ discount.total_allocated_amount | money_without_trailing_zeros }}</span></li>
                     {%- endfor -%}
                   </ul>
                 {%- endif -%}
 
                 <div class="cart-drawer__row cart-drawer__subtotal">
                   <span>{{ 'sections.cart.subtotal' | t }}</span>
-                  <span data-cart-subtotal>{{ cart.total_price | money_with_currency }}</span>
+                  <span data-cart-subtotal>{{ cart.total_price | money_without_trailing_zeros }}</span>
                 </div>
                 <p class="cart-drawer__taxes">
                   {%- if cart.duties_included and cart.taxes_included or cart.taxes_included -%}

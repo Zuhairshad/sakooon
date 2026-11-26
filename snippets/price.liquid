@@ -51,30 +51,30 @@
     </span>
     <span class="price__current">
       {%- if varies and range -%}
-        {{ price_min | money }} &ndash; {{ price_max | money }}
+        {{ price_min | money_without_trailing_zeros }} &ndash; {{ price_max | money_without_trailing_zeros }}
       {%- elsif varies -%}
-        {%- assign price_min_money = price_min | money -%}
+        {%- assign price_min_money = price_min | money_without_trailing_zeros -%}
         {{ 'products.product.price.from_price_html' | t: price: price_min_money }}
       {%- else -%}
-        {{ price_min | money }}
+        {{ price_min | money_without_trailing_zeros }}
       {%- endif -%}
     </span>
     {%- if on_sale and show_compare -%}
       <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
       <s class="price__compare">
         {%- if varies and range and compare_max > compare_min and compare_min > 0 -%}
-          {{ compare_min | money }} &ndash; {{ compare_max | money }}
+          {{ compare_min | money_without_trailing_zeros }} &ndash; {{ compare_max | money_without_trailing_zeros }}
         {%- elsif varies and compare_max > 0 -%}
-          {{ compare_max | money }}
+          {{ compare_max | money_without_trailing_zeros }}
         {%- else -%}
-          {{ compare_min | money }}
+          {{ compare_min | money_without_trailing_zeros }}
         {%- endif -%}
       </s>
     {%- endif -%}
     {%- if unit_source.unit_price_measurement and variant != blank -%}
       <span class="price__unit">
         <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-        {{- unit_source.unit_price | money -}}
+        {{- unit_source.unit_price | money_without_trailing_zeros -}}
         <span aria-hidden="true">/</span><span class="visually-hidden">&nbsp;{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
         {%- if unit_source.unit_price_measurement.reference_value != 1 -%}{{ unit_source.unit_price_measurement.reference_value }}{%- endif -%}
         {{- unit_source.unit_price_measurement.reference_unit -}}

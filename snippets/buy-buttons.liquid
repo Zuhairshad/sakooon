@@ -23,7 +23,7 @@
       <label class="visually-hidden" for="{{ form_id }}-noscript">{{ 'products.product.choose_options' | t }}</label>
       <select name="id" id="{{ form_id }}-noscript" class="buy-buttons__noscript">
         {%- for v in product.variants -%}
-          <option value="{{ v.id }}"{% if v.id == current.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} &ndash; {{ 'products.product.sold_out' | t }}{% endunless %} &ndash; {{ v.price | money }}</option>
+          <option value="{{ v.id }}"{% if v.id == current.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} &ndash; {{ 'products.product.sold_out' | t }}{% endunless %} &ndash; {{ v.price | money_without_trailing_zeros }}</option>
         {%- endfor -%}
       </select>
     </noscript>
@@ -55,8 +55,8 @@
         {%- if block.settings.price_in_button -%}
           <span class="buy-buttons__price">
             {%- if current.compare_at_price > current.price -%}<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>{%- endif -%}
-            {{- current.price | money -}}
-            {%- if current.compare_at_price > current.price -%} <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span><s>{{ current.compare_at_price | money }}</s>{%- endif -%}
+            {{- current.price | money_without_trailing_zeros -}}
+            {%- if current.compare_at_price > current.price -%} <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span><s>{{ current.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
           </span>
         {%- endif -%}
       </button>
