@@ -1,0 +1,212 @@
+{
+ "blogs": [
+  {
+   "handle": "journal",
+   "title": "Journal",
+   "articles": [
+    {
+     "handle": "how-to-layer-a-bed-for-winter",
+     "title": "How to layer a bed for cooler nights",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-20T09:00:00Z",
+     "created_at": "2026-11-20T09:00:00Z",
+     "updated_at": "2026-11-20T09:00:00Z",
+     "excerpt": "Placeholder excerpt for how to layer a bed for cooler nights: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"How to layer a bed for cooler nights\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-sage-green.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-white-bedding-bedroom.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "percale-or-sateen",
+     "title": "Percale or sateen: choosing a weave",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-14T09:00:00Z",
+     "created_at": "2026-11-14T09:00:00Z",
+     "updated_at": "2026-11-14T09:00:00Z",
+     "excerpt": "Placeholder excerpt for percale or sateen: choosing a weave: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Percale or sateen: choosing a weave\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-grey-white.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-sage-green.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "a-morning-ritual",
+     "title": "A slower morning ritual",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-08T09:00:00Z",
+     "created_at": "2026-11-08T09:00:00Z",
+     "updated_at": "2026-11-08T09:00:00Z",
+     "excerpt": "Placeholder excerpt for a slower morning ritual: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"A slower morning ritual\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp",
+     "tags": [
+      "Stories"
+     ]
+    },
+    {
+     "handle": "washing-bed-linen",
+     "title": "Washing bed linen without wear",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-02T09:00:00Z",
+     "created_at": "2026-11-02T09:00:00Z",
+     "updated_at": "2026-11-02T09:00:00Z",
+     "excerpt": "Placeholder excerpt for washing bed linen without wear: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Washing bed linen without wear\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-duvet-comfort-pillow-piping-detail.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+     "tags": [
+      "Care"
+     ]
+    },
+    {
+     "handle": "choosing-a-duvet-weight",
+     "title": "Choosing a duvet weight",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-10-27T09:00:00Z",
+     "created_at": "2026-10-27T09:00:00Z",
+     "updated_at": "2026-10-27T09:00:00Z",
+     "excerpt": "Placeholder excerpt for choosing a duvet weight: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Choosing a duvet weight\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-ivory.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-duvet-comfort-pillow-piping-detail.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "the-weavers-notebook",
+     "title": "Notes from the loom",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-10-21T09:00:00Z",
+     "created_at": "2026-10-21T09:00:00Z",
+     "updated_at": "2026-10-21T09:00:00Z",
+     "excerpt": "Placeholder excerpt for notes from the loom: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Notes from the loom\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-ivory.webp",
+     "tags": [
+      "Stories"
+     ]
+    },
+    {
+     "handle": "storing-seasonal-bedding",
+     "title": "Storing seasonal bedding",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-10-15T09:00:00Z",
+     "created_at": "2026-10-15T09:00:00Z",
+     "updated_at": "2026-10-15T09:00:00Z",
+     "excerpt": "Placeholder excerpt for storing seasonal bedding: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Storing seasonal bedding\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+     "tags": [
+      "Care"
+     ]
+    },
+    {
+     "handle": "pillow-care-basics",
+     "title": "Pillow care basics",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-10-09T09:00:00Z",
+     "created_at": "2026-10-09T09:00:00Z",
+     "updated_at": "2026-10-09T09:00:00Z",
+     "excerpt": "Placeholder excerpt for pillow care basics: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Pillow care basics\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-duvet-comfort-filling-220-gsm.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+     "tags": [
+      "Care"
+     ]
+    },
+    {
+     "handle": "colour-in-the-bedroom",
+     "title": "Colour in the bedroom",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-10-03T09:00:00Z",
+     "created_at": "2026-10-03T09:00:00Z",
+     "updated_at": "2026-10-03T09:00:00Z",
+     "excerpt": "Placeholder excerpt for colour in the bedroom: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Colour in the bedroom\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-rust.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-duvet-comfort-filling-220-gsm.webp",
+     "tags": [
+      "Stories"
+     ]
+    },
+    {
+     "handle": "fitted-sheet-measuring",
+     "title": "Measuring for a fitted sheet",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-09-27T09:00:00Z",
+     "created_at": "2026-09-27T09:00:00Z",
+     "updated_at": "2026-09-27T09:00:00Z",
+     "excerpt": "Placeholder excerpt for measuring for a fitted sheet: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Measuring for a fitted sheet\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-rust.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "linen-through-the-seasons",
+     "title": "Linen through the seasons",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-09-21T09:00:00Z",
+     "created_at": "2026-09-21T09:00:00Z",
+     "updated_at": "2026-09-21T09:00:00Z",
+     "excerpt": "Placeholder excerpt for linen through the seasons: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Linen through the seasons\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-white-bedding-bedroom.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
+     "tags": [
+      "Stories"
+     ]
+    }
+   ]
+  },
+  {
+   "handle": "news",
+   "title": "News",
+   "articles": [
+    {
+     "handle": "how-to-layer-a-bed-for-winter",
+     "title": "How to layer a bed for cooler nights",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-20T09:00:00Z",
+     "created_at": "2026-11-20T09:00:00Z",
+     "updated_at": "2026-11-20T09:00:00Z",
+     "excerpt": "Placeholder excerpt for how to layer a bed for cooler nights: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"How to layer a bed for cooler nights\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-sage-green.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-white-bedding-bedroom.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "percale-or-sateen",
+     "title": "Percale or sateen: choosing a weave",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-14T09:00:00Z",
+     "created_at": "2026-11-14T09:00:00Z",
+     "updated_at": "2026-11-14T09:00:00Z",
+     "excerpt": "Placeholder excerpt for percale or sateen: choosing a weave: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"Percale or sateen: choosing a weave\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-two-tone-duvet-cover-set-grey-white.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-quilted-bed-sheet-set-sage-green.webp",
+     "tags": [
+      "Guides"
+     ]
+    },
+    {
+     "handle": "a-morning-ritual",
+     "title": "A slower morning ritual",
+     "author": "Sakooon Editorial",
+     "published_at": "2026-11-08T09:00:00Z",
+     "created_at": "2026-11-08T09:00:00Z",
+     "updated_at": "2026-11-08T09:00:00Z",
+     "excerpt": "Placeholder excerpt for a slower morning ritual: one sentence that summarises the article for cards and listings.",
+     "content": "<p>Placeholder opening paragraph for \"A slower morning ritual\". Real editorial copy arrives in Phase 2; this text only exercises layout, measure and rhythm.</p><h2>Why it matters</h2><p>Two or three sentences of placeholder body text. Short enough to read, long enough to wrap across a 732px column at the body size and show paragraph spacing.</p><img src=\"/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp\" alt=\"\" width=\"1600\" height=\"2000\"><blockquote>A placeholder pull quote that stands on its own line.</blockquote><h2>In practice</h2><p>Closing placeholder paragraph with a <a href=\"/collections/all\">link to the shop</a>.</p>",
+     "image": "image:sakooon-two-tone-duvet-cover-set-grey-white.webp",
+     "tags": [
+      "Stories"
+     ]
+    }
+   ]
+  }
+ ]
+}
