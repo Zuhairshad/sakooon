@@ -6,7 +6,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Identify repo, store, tooling; create branches and worktrees (Fable)
 - [x] Dispatch worker roles and reference investigation (Fable)
 - [~] Reference investigation: storefront (shad-2d) ETA 60-90 min
-- [~] Reference investigation: commerce (shad-d8) ETA 75-90 min
+- [x] Reference investigation: commerce (shad-d8) 9919ffc; lower viewports/state captures still running (429 throttling)
 - [~] Reference investigation: editorial (shad-8b) ETA 60-90 min
 - [x] Foundation: docs, settings, layout, tokens, global.js, snippets, customer templates (Fable) 60f1346
 - [x] QA scripts: capture-references, capture-theme, compare-screenshots, test-responsive, test-interactions (Fable)
@@ -18,7 +18,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [ ] Header, announcement, mega menu, mobile nav, sticky (shad-2d)
 - [ ] Footer (shad-2d)
 - [ ] Homepage sections + index.json (shad-2d)
-- [ ] Product card, price, swatches (shad-d8) -> unblocks featured-collection (shad-2d)
+- [~] Product card, price, swatches (shad-d8) -> unblocks featured-collection (shad-2d)
 - [ ] Collection template + facets + sort + mobile filter drawer (shad-d8)
 - [ ] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8)
 - [ ] Cart drawer + cart page (shad-d8)
@@ -32,3 +32,6 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [ ] Visual comparison passes per template (Fable + owner)
 - [ ] Functional tests, a11y, Lighthouse (Fable)
 - [ ] Final deliverables report (Fable)
+
+## Open decisions
+- Typography: single grotesk (D4) vs serif display + sans (Parachute). Decide once storefront/editorial measurements of Tekla land; settings already support either.
