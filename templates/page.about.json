@@ -6,10 +6,14 @@
         "heading": "",
         "alignment": "left",
         "content_width": "narrow",
-        "text": "<p>Introduce your brand in two or three sentences: who you are, what you make and why it matters to the people who sleep with it.</p>",
+        "text": "<p>Sakooon takes its name from sukoon, the Urdu word for calm and peace of mind. It is what we want a bed to feel like at the end of the day.</p>",
         "padding_top": 80,
         "padding_bottom": 40,
-        "heading_size": "h3"
+        "heading_size": "h3",
+        "image": "shopify://shop_images/sakooon-white-bedding-bedroom.webp",
+        "image_ratio": "16/9",
+        "image_width": "column",
+        "show_image_placeholder": false
       }
     },
     "story": {
@@ -18,7 +22,7 @@
         "h1": {
           "type": "heading",
           "settings": {
-            "heading": "Our story",
+            "heading": "Why sukoon",
             "tag": "h2",
             "size": "h4"
           }
@@ -26,13 +30,13 @@
         "t1": {
           "type": "text",
           "settings": {
-            "text": "<p>Tell the story of how the brand began. Keep it specific: a moment, a frustration, a decision.</p><p>Describe what you set out to do differently and what you still hold yourselves to today.</p>"
+            "text": "<p>Most of us know the feeling. The house goes quiet, the lights go down and a clean, soft bed is waiting. For a moment nothing else needs doing. That small, ordinary calm is what we design for.</p><p>Sakooon is a bedding brand designed in Pakistan, for the way people here live and sleep: long warm evenings, cool winter nights and homes that are rarely empty.</p>"
           }
         },
         "h2": {
           "type": "heading",
           "settings": {
-            "heading": "What we believe",
+            "heading": "Cotton, kept plain",
             "tag": "h2",
             "size": "h4"
           }
@@ -40,14 +44,49 @@
         "t2": {
           "type": "text",
           "settings": {
-            "text": "<p>Share the principles that guide how you design, choose materials and work with the people who make your products.</p>"
+            "text": "<p>We work mostly in cotton, because it is soft against the skin and easy to live with. Our bed sheet sets come in cotton satin, smooth with a gentle sheen, and in quilted cotton with a raised pattern. For colder months there is a duvet filling, and pillows to go with it.</p><p>We keep our designs simple on purpose: clear colours, classic checks and stripes, and a few quiet prints. Things that are easy to match and easy to come back to.</p>"
           }
         },
-        "l2": {
+        "h3": {
+          "type": "heading",
+          "settings": {
+            "heading": "Made to be cared for",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Good bedding should not feel precious. It is there to be slept in, washed and used every day. We write our care guides in plain language so your sheets keep their softness and colour, and we list exactly what comes in each set and what size it is, so you know what to expect before you order.</p>"
+          }
+        },
+        "h4": {
+          "type": "heading",
+          "settings": {
+            "heading": "What we hold ourselves to",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "t4": {
+          "type": "list",
+          "settings": {
+            "style": "dash",
+            "text": "<ul><li>Say what a product is, plainly.</li><li>Only claim what we can stand behind.</li><li>Make a bed feel like rest, not like a showroom.</li></ul>"
+          }
+        },
+        "t5": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The comfort in every thread. That is the promise in our name, and the one we try to keep.</p>"
+          }
+        },
+        "l1": {
           "type": "link",
           "settings": {
-            "label": "Read about our materials",
-            "url": "/pages/our-materials"
+            "label": "Read about our fabrics",
+            "url": "/pages/fabric-guide"
           }
         }
       },
@@ -56,7 +95,12 @@
         "t1",
         "h2",
         "t2",
-        "l2"
+        "h3",
+        "t3",
+        "h4",
+        "t4",
+        "t5",
+        "l1"
       ],
       "settings": {
         "content_width": "narrow",
@@ -70,29 +114,33 @@
         "g1": {
           "type": "image",
           "settings": {
-            "caption": "Bedding",
-            "url": "/collections/all"
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "caption": "Bed sheets",
+            "url": "/collections/bed-sheets"
           }
         },
         "g2": {
           "type": "image",
           "settings": {
-            "caption": "Bath",
-            "url": "/collections/all"
+            "image": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+            "caption": "Duvet covers",
+            "url": "/collections/duvet-covers"
           }
         },
         "g3": {
           "type": "image",
           "settings": {
-            "caption": "Sleep",
-            "url": "/collections/all"
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "caption": "Duvets",
+            "url": "/collections/duvets"
           }
         },
         "g4": {
           "type": "image",
           "settings": {
-            "caption": "Home",
-            "url": "/collections/all"
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "caption": "Pillows",
+            "url": "/collections/pillows"
           }
         }
       },
@@ -103,7 +151,7 @@
         "g4"
       ],
       "settings": {
-        "heading": "Discover the collection",
+        "heading": "Explore the collection",
         "heading_size": "h4",
         "columns": 4,
         "content_width": "narrow",
