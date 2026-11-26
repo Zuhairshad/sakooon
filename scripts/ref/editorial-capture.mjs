@@ -61,15 +61,11 @@ async function dismiss(page) {
   await tryClick(page.locator('[aria-label*="close" i][role="button"], button[aria-label*="close" i], button[aria-label*="dismiss" i]').filter({ visible: true }), 'modal: close button');
   await tryClick(page.getByRole('button', { name: /no,? thanks|maybe later|not now/i }), 'modal: no thanks');
   await page.keyboard.press('Escape').catch(() => {});
-  // Parachute's Rebuy cart flyout opens itself on load; close it, and hide it only if it ignores the close button.
-  const flyout = page.locator('.rebuy-cart__flyout');
-  if (await flyout.isVisible().catch(() => false) && await flyout.evaluate(el => el.getBoundingClientRect().left < innerWidth - 10).catch(() => false)) {
-    await page.getByRole('button', { name: /close cart/i }).first().click({ timeout: 2000 }).catch(() => {});
-    await page.waitForTimeout(800);
-    if (await flyout.evaluate(el => el.getBoundingClientRect().left < innerWidth - 10).catch(() => false)) {
-      await page.addStyleTag({ content: '.rebuy-cart__flyout, .rebuy-cart__background { display: none !important; }' });
-      notes.push('cart flyout: auto-opened, close ignored, hidden with CSS');
-    } else notes.push('cart flyout: auto-opened, closed');
+  // Parachute's Rebuy cart flyout renders open in full-page captures even when closed in the viewport,
+  // so hide that cart chrome outright (recorded in the capture notes).
+  if (await page.locator('.rebuy-cart__flyout').count()) {
+    await page.addStyleTag({ content: '.rebuy-cart__flyout, .rebuy-cart__background, .rebuy-cart__overlay { display: none !important; }' });
+    notes.push('cart flyout: hidden with CSS');
   }
   // Report remaining large fixed overlays (do not remove site UI silently; only hide obvious modals)
   const left = await page.evaluate(() => [...document.querySelectorAll('body *')].filter(el => {
