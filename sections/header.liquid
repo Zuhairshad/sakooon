@@ -3,7 +3,7 @@
   - Menu: 3-level link list. Level 2 = group heading, level 3 = links. mega_promo blocks attach promo cards to a
     top-level item by its title/handle.
   - sticky_mode: always (data-sticky="true"), hide_on_scroll (data-sticky="hide"), none.
-  - transparent_on_home: on the home page the header overlays the first section when that section marks itself with
+  - transparent_on_home (id kept for saved settings): on any template the header overlays the first section when it marks itself with
     [data-header-overlay] (heroes do this only when they have media). Otherwise it stays solid. Pure CSS, no layout shift.
   - Handoff hooks for commerce: data-drawer-open="search-drawer" / "cart-drawer", [data-cart-count] (contracts section 3).
 {%- endcomment -%}
@@ -23,8 +23,16 @@
       assign sticky_attr = 'false'
   endcase
   assign transparent = false
-  if section.settings.transparent_on_home and request.page_type == 'index'
+  if section.settings.transparent_on_home
     assign transparent = true
+  endif
+  comment
+    The light logo twin is only shown over a leading hero; it is eager on the home page (always a hero) and lazy elsewhere,
+    where display: none keeps it from loading unless the page actually opens with a hero.
+  endcomment
+  assign twin_priority = false
+  if request.page_type == 'index'
+    assign twin_priority = true
   endif
   assign promo_blocks = section.blocks | where: 'type', 'mega_promo'
 -%}
@@ -35,10 +43,10 @@
     {%- render 'brand-logo', variant: 'wordmark', tone: 'dark', width: settings.logo_width, priority: true, class: 'header__logo-img header__logo-img--default' -%}
     {%- if transparent -%}
       {%- if section.settings.transparent_logo != blank -%}
-        {%- render 'image', image: section.settings.transparent_logo, sizes: '240px', widths: '120,240,360,480', priority: true, class: 'header__logo-img header__logo-img--transparent', alt: '' -%}
+        {%- render 'image', image: section.settings.transparent_logo, sizes: '240px', widths: '120,240,360,480', priority: twin_priority, class: 'header__logo-img header__logo-img--transparent', alt: '' -%}
       {%- elsif settings.logo == blank and section.settings.transparent_text == 'light' -%}
         {%- comment -%} Bundled paper wordmark while the header sits over hero media. {%- endcomment -%}
-        {%- render 'brand-logo', variant: 'wordmark', tone: 'light', width: settings.logo_width, priority: true, class: 'header__logo-img header__logo-img--transparent' -%}
+        {%- render 'brand-logo', variant: 'wordmark', tone: 'light', width: settings.logo_width, priority: twin_priority, class: 'header__logo-img header__logo-img--transparent' -%}
       {%- endif -%}
     {%- endif -%}
   </a>
@@ -156,7 +164,7 @@
       ]
     },
     { "type": "header", "content": "Home page" },
-    { "type": "checkbox", "id": "transparent_on_home", "label": "Transparent over the first section", "default": true, "info": "Applies when the first section is a hero with an image or video. The header turns solid on scroll and while a menu is open." },
+    { "type": "checkbox", "id": "transparent_on_home", "label": "Transparent over a leading hero image", "default": true, "info": "Applies on any page whose first section is a hero with an image or video. The header turns solid on scroll and while a menu is open." },
     {
       "type": "select", "id": "transparent_text", "label": "Transparent header text", "default": "light",
       "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ]
