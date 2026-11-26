@@ -22,6 +22,11 @@
     assign group_name = section.id
   endif
   assign qa_count = 0
+  assign groups = section.blocks | where: 'type', 'group'
+  assign q_tag = 'h2'
+  if s.heading != blank or groups.size > 0
+    assign q_tag = 'h3'
+  endif
 -%}
 <div class="section ed-section faq{% unless s.animate %} faq--instant{% endunless %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="{{ width_class }}">
@@ -44,7 +49,7 @@
               assign item_id = 'faq-' | append: block.id
               assign attrs = block.shopify_attributes
             -%}
-            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: 'h3', attrs: attrs %}
+            {% render 'accordion', id: item_id, title: block.settings.question, content: block.settings.answer, open: open, group: group_name, icon: icon, heading_tag: q_tag, attrs: attrs %}
         {%- endcase -%}
       {%- endfor -%}
     </div>

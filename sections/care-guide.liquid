@@ -18,6 +18,12 @@
   assign img_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
 -%}
 {%- assign anchor = s.anchor | default: s.heading | handleize -%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
+-%}
 <div{% if s.heading != blank and s.show_in_nav %} id="{{ anchor }}" data-anchor-target data-anchor-label="{{ s.heading | escape }}"{% endif %} class="section ed-section care-guide care-guide--{{ s.layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
   <div class="{{ width_class }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
@@ -35,9 +41,9 @@
               {%- if b.icon != 'none' and s.layout != 'cards' -%}<span class="care-guide__icon">{% render 'icon', icon: b.icon, size: 24 %}</span>{%- endif -%}
               <div class="care-guide__content">
                 {%- if b.heading != blank -%}
-                  <h3 class="care-guide__heading {{ s.item_heading_size }}">
+                  <{{ item_tag }} class="care-guide__heading {{ s.item_heading_size }}">
                     {%- if b.link_url != blank -%}<a class="care-guide__link" href="{{ b.link_url }}">{{ b.heading }}</a>{%- else -%}{{ b.heading }}{%- endif -%}
-                  </h3>
+                  </{{ item_tag }}>
                 {%- endif -%}
                 {%- if b.text != blank -%}<div class="rte editorial-list editorial-list--{{ s.list_style }}">{{ b.text }}</div>{%- endif -%}
                 {%- if b.link_url != blank and b.link_label != blank -%}<a class="care-guide__more ed-link-fade" href="{{ b.link_url }}">{{ b.link_label }}</a>{%- endif -%}
@@ -47,7 +53,7 @@
             {%- if b.symbols != blank -%}
               <div class="care-guide__item care-guide__item--symbols" {{ block.shopify_attributes }}>
                 <div class="care-guide__content">
-                  {%- if b.heading != blank -%}<h3 class="care-guide__heading {{ s.item_heading_size }}">{{ b.heading }}</h3>{%- endif -%}
+                  {%- if b.heading != blank -%}<{{ item_tag }} class="care-guide__heading {{ s.item_heading_size }}">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
                   {% render 'care-icons', symbols: b.symbols, show_labels: b.show_labels %}
                 </div>
               </div>
@@ -61,7 +67,7 @@
                   <div class="media care-guide__media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: f_img, sizes: img_sizes, aspect: s.image_ratio, alt: f.name.value, placeholder: 'collection-1' %}</div>
                 {%- endif -%}
                 <div class="care-guide__content">
-                  <h3 class="care-guide__heading {{ s.item_heading_size }}">{{ f.name.value }}</h3>
+                  <{{ item_tag }} class="care-guide__heading {{ s.item_heading_size }}">{{ f.name.value }}</{{ item_tag }}>
                   {%- if f.care_symbols.value != blank -%}{% render 'care-icons', symbols: f.care_symbols.value, show_labels: b.show_labels %}{%- endif -%}
                   {%- if f.care.value != blank -%}<div class="rte">{{ f.care | metafield_tag }}</div>{%- endif -%}
                   {%- if f.system.url != blank -%}<a class="care-guide__more ed-link-fade" href="{{ f.system.url }}">{{ 'editorial.care.about_fabric' | t: name: f.name.value }}</a>{%- endif -%}

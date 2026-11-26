@@ -10,6 +10,12 @@
       assign width_class = 'page-width'
   endcase
 -%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
+-%}
 <div class="section ed-section info-columns{% if s.dividers %} info-columns--dividers{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
   <div class="{{ width_class }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
@@ -18,7 +24,7 @@
         {%- assign b = block.settings -%}
         <div class="info-columns__item" {{ block.shopify_attributes }}>
           {%- if b.icon != 'none' -%}<span class="info-columns__icon">{% render 'icon', icon: b.icon, size: 24 %}</span>{%- endif -%}
-          {%- if b.heading != blank -%}<h3 class="info-columns__heading text-body">{{ b.heading }}</h3>{%- endif -%}
+          {%- if b.heading != blank -%}<{{ item_tag }} class="info-columns__heading text-body">{{ b.heading }}</{{ item_tag }}>{%- endif -%}
           {%- if b.text != blank -%}<div class="info-columns__text rte">{{ b.text }}</div>{%- endif -%}
           {%- if b.link_label != blank and b.link_url != blank -%}<p><a class="link" href="{{ b.link_url }}">{{ b.link_label }}</a></p>{%- endif -%}
         </div>

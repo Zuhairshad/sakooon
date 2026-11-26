@@ -28,6 +28,12 @@
   assign col_vw = 100 | divided_by: s.columns
   assign card_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
 -%}
+{%- liquid
+  assign item_tag = 'h2'
+  if section.settings.heading != blank
+    assign item_tag = 'h3'
+  endif
+-%}
 <div class="section ed-section fabric-guide color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
   <fabric-guide class="page-width" data-filter-by="{{ s.filter_by }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
@@ -45,12 +51,12 @@
         {%- for h in handle_list -%}
           {%- assign f = shop.metaobjects.fabric[h] -%}
           {%- if f != blank -%}
-            <li class="fabric-guide__item">{% render 'fabric-card', fabric: f, ratio: s.image_ratio, show_summary: s.show_summary, show_rating: s.show_ratings, heading_tag: 'h3', sizes: card_sizes, link_label: s.card_link_label %}</li>
+            <li class="fabric-guide__item">{% render 'fabric-card', fabric: f, ratio: s.image_ratio, show_summary: s.show_summary, show_rating: s.show_ratings, heading_tag: item_tag, sizes: card_sizes, link_label: s.card_link_label %}</li>
           {%- endif -%}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..s.columns) -%}
-          <li class="fabric-guide__item">{% render 'fabric-card', fabric: blank, ratio: s.image_ratio, show_summary: s.show_summary, heading_tag: 'h3' %}</li>
+          <li class="fabric-guide__item">{% render 'fabric-card', fabric: blank, ratio: s.image_ratio, show_summary: s.show_summary, heading_tag: item_tag %}</li>
         {%- endfor -%}
       {%- endif -%}
     </ul>
