@@ -45,28 +45,6 @@
         "color_scheme": "ink"
       }
     },
-    "promo-band": {
-      "type": "rich-text",
-      "settings": {
-        "layout": "statement",
-        "width": "page",
-        "eyebrow": "",
-        "heading": "Sukoon means calm",
-        "heading_size": "h1",
-        "text": "<p>It is also how we want a bed to feel at the end of the day: soft, simple and easy to come home to.</p>",
-        "button_label": "Our story",
-        "button_link": "/pages/about",
-        "button_style": "tertiary",
-        "color_scheme": "ink",
-        "padding_top": 160,
-        "padding_bottom": 176,
-        "show_mark": true,
-        "mark_size": 440,
-        "show_watermark": true,
-        "dictionary_terms": "su·koon · noun · Urdu",
-        "dictionary_meaning": "peace of mind; calm"
-      }
-    },
     "featured": {
       "type": "featured-collection",
       "settings": {
@@ -366,7 +344,6 @@
   },
   "order": [
     "hero",
-    "promo-band",
     "featured",
     "categories",
     "highlights",
