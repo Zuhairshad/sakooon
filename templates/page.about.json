@@ -84,67 +84,13 @@
         "eyebrow": "Care",
         "heading": "Made to be cared for",
         "heading_size": "h1",
-        "text": "<p>Good bedding should not feel precious. It is there to be slept in, washed and used every day. We write our care guides in plain language so your sheets keep their softness and colour, and we list exactly what comes in each set and what size it is, so you know what to expect before you order.</p>",
+        "text": "<p>Good bedding should not feel precious. It is there to be slept in, washed and used every day. We write our care guides in plain language so your sheets keep their softness and colour, and we list exactly what comes in each set and what size it is, so you know what to expect before you order.</p><p>The comfort in every thread. That is the promise in our name, and the one we try to keep.</p>",
         "button_label": "Read the care guide",
         "button_link": "/pages/care-guide",
         "button_style": "tertiary",
         "color_scheme": "paper",
         "padding_top": 96,
         "padding_bottom": 96
-      }
-    },
-    "values": {
-      "type": "brand-values",
-      "blocks": {
-        "v1": {
-          "type": "value",
-          "settings": {
-            "icon": "none",
-            "heading": "Say what a product is, plainly.",
-            "text": "",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "v2": {
-          "type": "value",
-          "settings": {
-            "icon": "none",
-            "heading": "Only claim what we can stand behind.",
-            "text": "",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "v3": {
-          "type": "value",
-          "settings": {
-            "icon": "none",
-            "heading": "Make a bed feel like rest, not like a showroom.",
-            "text": "",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "v1",
-        "v2",
-        "v3"
-      ],
-      "settings": {
-        "eyebrow": "",
-        "heading": "What we hold ourselves to",
-        "heading_size": "h2",
-        "text": "",
-        "columns": 3,
-        "image_ratio": "4/5",
-        "align": "left",
-        "mobile_layout": "stack",
-        "color_scheme": "sand",
-        "padding_top": 96,
-        "padding_bottom": 96,
-        "footnote": "<p>The comfort in every thread. That is the promise in our name, and the one we try to keep.</p>"
       }
     },
     "collections": {
@@ -218,7 +164,6 @@
     "why",
     "cotton",
     "care",
-    "values",
     "collections"
   ]
 }
