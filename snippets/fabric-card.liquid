@@ -7,7 +7,7 @@
 {%- liquid
   assign ratio = ratio | default: '4/5'
   assign heading_tag = heading_tag | default: 'h3'
-  assign sizes = sizes | default: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'
+  assign sizes = sizes | default: '(min-width: 1216px) 379px, (min-width: 1024px) calc((100vw - 80px) / 3), (min-width: 768px) calc(50vw - 24px), calc(100vw - 32px)'
   if fabric != blank
     assign img = fabric.texture_image.value | default: fabric.lifestyle_image.value
     assign url = fabric.system.url

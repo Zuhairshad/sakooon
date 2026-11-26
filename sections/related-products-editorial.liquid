@@ -26,6 +26,10 @@
   elsif heading contains '[fabric]'
     assign heading = heading | replace: '[fabric]', ''
   endif
+  assign gaps = s.columns | minus: 1 | times: 16
+  assign wide_px = 1168 | minus: gaps | divided_by: s.columns | ceil
+  assign side = gaps | plus: 48
+  assign card_sizes = '(min-width: 1216px) ' | append: wide_px | append: 'px, (min-width: 1024px) calc((100vw - ' | append: side | append: 'px) / ' | append: s.columns | append: '), (min-width: 768px) calc(50vw - 24px), calc(70vw - 22px)'
   assign link_url = s.link_url
   if link_url == blank and fabric.collection.value != blank
     assign link_url = fabric.collection.value.url
@@ -38,7 +42,7 @@
     <ul class="related-editorial__list list-unstyled{% if s.mobile_rail %} related-editorial__list--rail{% endif %}" role="list"{% if s.mobile_rail %} tabindex="0" aria-label="{{ heading | escape }}"{% endif %}>
       {%- if products != blank -%}
         {%- for product in products limit: s.limit -%}
-          <li class="related-editorial__item">{% render 'product-card', product: product, columns_desktop: s.columns, image_ratio: s.image_ratio, heading_tag: 'h3' %}</li>
+          <li class="related-editorial__item">{% render 'product-card', product: product, columns_desktop: s.columns, image_ratio: s.image_ratio, heading_tag: 'h3', sizes: card_sizes %}</li>
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..s.columns) -%}

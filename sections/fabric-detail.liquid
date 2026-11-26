@@ -70,8 +70,14 @@
             {%- endfor -%}
           {%- when 'gallery' -%}
             {%- if fabric.gallery.value != blank -%}
+              {%- liquid
+                assign gallery_sizes = '(min-width: 1024px) 448px, (min-width: 768px) calc(50vw - 24px), calc(80vw - 26px)'
+                if fabric.gallery.value.size >= 3
+                  assign gallery_sizes = '(min-width: 1280px) 293px, (min-width: 1024px) 448px, (min-width: 768px) calc(50vw - 24px), calc(80vw - 26px)'
+                endif
+              -%}
               <ul class="fabric-detail__gallery list-unstyled" role="list" tabindex="0" aria-label="{{ 'editorial.fabric.images' | t: name: fabric.name.value | escape }}">
-                {%- for img in fabric.gallery.value limit: 6 -%}<li class="media" style="--aspect: 4/5">{% render 'image', image: img, sizes: '(min-width: 768px) 33vw, 50vw', aspect: '4/5' %}</li>{%- endfor -%}
+                {%- for img in fabric.gallery.value limit: 6 -%}<li class="media" style="--aspect: 4/5">{% render 'image', image: img, sizes: gallery_sizes, aspect: '4/5' %}</li>{%- endfor -%}
               </ul>
             {%- endif -%}
           {%- when 'text' -%}

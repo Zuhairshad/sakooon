@@ -31,7 +31,7 @@
                 <th scope="col" class="fabric-compare__fabric">
                   {%- assign thumb = f.texture_image.value | default: f.lifestyle_image.value -%}
                   {%- if s.show_images -%}
-                    <div class="media fabric-compare__thumb" style="--aspect: 1/1">{% render 'image', image: thumb, sizes: '160px', aspect: '1/1', alt: '', placeholder: 'collection-2' %}</div>
+                    <div class="media fabric-compare__thumb" style="--aspect: 1/1">{% render 'image', image: thumb, sizes: '120px', aspect: '1/1', alt: '', placeholder: 'collection-2' %}</div>
                   {%- endif -%}
                   {%- if f.system.url != blank -%}<a class="ed-link-fade" href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
                 </th>

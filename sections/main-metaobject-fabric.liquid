@@ -23,6 +23,10 @@
     assign secondary = blank
   endif
   assign spec_keys = 'composition,weave,finish,thread_count,gsm' | split: ','
+  assign media_sizes = '(min-width: 1216px) 644px, (min-width: 1024px) calc((100vw - 112px) * 7 / 12), calc(100vw - 32px)'
+  if s.show_secondary and secondary != blank
+    assign media_sizes = '(min-width: 1216px) 644px, (min-width: 1024px) calc((100vw - 112px) * 7 / 12), calc(85vw - 28px)'
+  endif
 -%}
 <div class="section ed-section main-fabric color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
   <div class="page-width ed-wide">
@@ -37,9 +41,9 @@
     {%- endif -%}
     <div class="main-fabric__grid">
       <div class="main-fabric__media" role="region" tabindex="0" aria-label="{{ 'editorial.fabric.images' | t: name: name | escape }}">
-        <div class="media" style="--aspect: 4/5">{% render 'image', image: primary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5', priority: true, alt: name, placeholder: 'lifestyle-1' %}</div>
+        <div class="media" style="--aspect: 4/5">{% render 'image', image: primary, sizes: media_sizes, aspect: '4/5', priority: true, alt: name, placeholder: 'lifestyle-1' %}</div>
         {%- if s.show_secondary and secondary != blank -%}
-          <div class="media" style="--aspect: 4/5">{% render 'image', image: secondary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5' %}</div>
+          <div class="media" style="--aspect: 4/5">{% render 'image', image: secondary, sizes: media_sizes, aspect: '4/5' %}</div>
         {%- endif -%}
       </div>
       <div class="main-fabric__info">

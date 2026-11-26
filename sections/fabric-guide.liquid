@@ -25,8 +25,10 @@
     endif
   endfor
   assign filters = filter_values | split: '||'
-  assign col_vw = 100 | divided_by: s.columns
-  assign card_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
+  assign gaps = s.columns | minus: 1 | times: 16
+  assign wide_px = 1168 | minus: gaps | divided_by: s.columns | ceil
+  assign side = gaps | plus: 48
+  assign card_sizes = '(min-width: 1216px) ' | append: wide_px | append: 'px, (min-width: 1024px) calc((100vw - ' | append: side | append: 'px) / ' | append: s.columns | append: '), (min-width: 768px) calc(50vw - 24px), calc(100vw - 32px)'
 -%}
 {%- liquid
   assign item_tag = 'h2'
@@ -104,7 +106,7 @@
                 <div class="fabric-panel__shop">
                   {%- if products != blank -%}
                     <ul class="fabric-panel__products list-unstyled" role="list" tabindex="0" aria-label="{{ 'editorial.fabric.shop' | t: name: f.name.value | escape }}">
-                      {%- for product in products limit: 6 -%}<li>{% render 'product-card', product: product, columns_desktop: 3, image_ratio: 'portrait', heading_tag: sub_tag, show_swatches: true %}</li>{%- endfor -%}
+                      {%- for product in products limit: 6 -%}<li>{% render 'product-card', product: product, columns_desktop: 3, image_ratio: 'portrait', heading_tag: sub_tag, show_swatches: true, sizes: '(min-width: 1024px) 170px, 160px' %}</li>{%- endfor -%}
                     </ul>
                   {%- endif -%}
                   {%- if f.collection.value != blank -%}
