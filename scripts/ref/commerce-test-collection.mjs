@@ -16,10 +16,8 @@ for (const width of [1440, 768, 390]) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  let navigations = 0;
-  page.on('framenavigated', (f) => { if (f === page.mainFrame()) navigations++; });
   await page.goto(`${BASE}${PATH}`, { waitUntil: 'networkidle' });
-  navigations = 0;
+  await page.evaluate(() => { window.__noReload = true; }); // survives pushState, lost on a real navigation
   const tag = `@${width}`;
   const cards0 = await page.locator('[data-facets-section] .product-card').count();
   check(`grid renders cards ${tag}`, cards0 > 0, `${cards0}`);
@@ -44,7 +42,7 @@ for (const width of [1440, 768, 390]) {
   const res = await req;
   await page.waitForTimeout(400);
   check(`apply uses Section Rendering API ${tag}`, !!res);
-  check(`no full page navigation ${tag}`, navigations === 0, `${navigations}`);
+  check(`no full page navigation ${tag}`, await page.evaluate(() => window.__noReload === true));
   const url = new URL(page.url());
   check(`URL carries filter + sort ${tag}`, url.searchParams.getAll(boxName).includes(boxValue) && url.searchParams.get('sort_by') === 'price-ascending', url.search);
   check(`drawer closed after apply ${tag}`, await page.locator('#facets-drawer[open]').count() === 0);
