@@ -523,6 +523,8 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 /* ---------- Width discipline (wide screens) ----------
    Text-only sections keep their content within 1440px, centred in the page, so copy never spreads across a 1920px
    viewport. Media sections (hero, rails, grids, banners) stay full width. */
+/* Campaign tiles (not full bleed) share the cap: collage-region crops are only ~540-830px wide at source. */
+.section-editorial-grid .page-width:not(.full-bleed),
 .section-rich-text .page-width, .section-brand-values .page-width, .section-service-info .page-width, .section-newsletter .page-width {
   max-width: calc(1440px + 2 * var(--page-gutter));
 }
