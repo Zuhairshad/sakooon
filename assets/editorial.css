@@ -553,3 +553,4 @@ main:has(.editorial-hero--page) .size-guide__intro, main:has(.editorial-hero--pa
 .main-fabric__overview { max-width: 56ch; font-size: 16px; line-height: 1.6; }
 .main-fabric__care-link, .fabric-detail .link--arrow, .fabric-panel .link--arrow { font-size: var(--text-sm); text-decoration: underline; text-underline-offset: .3em; text-decoration-thickness: 1px; }
 .fabric-detail__care-text { max-width: 64ch; }
+main:has(.editorial-hero--page) .ed-section .rte > :is(p, ul, ol), main:has(.editorial-hero--page) .ed-section .section-heading__body { max-width: 72ch; }

@@ -3,13 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "show_breadcrumbs": true,
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "text",
-        "text": "<p>Cotton sheets get softer with use when they are washed gently and dried with a little patience. Here is what helps.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
-        "padding_top": 80,
-        "padding_bottom": 32,
-        "heading_size": "h3"
+        "heading_size": "h1",
+        "text": "<p>Cotton sheets get softer with use when they are washed gently and dried with a little patience. Here is what helps.</p>",
+        "note": "<p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "nav": {
@@ -17,7 +19,7 @@
       "settings": {
         "sticky": true,
         "style": "links",
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 32
       }
@@ -68,7 +70,7 @@
         "heading": "Step by step",
         "heading_size": "h4",
         "layout": "split",
-        "content_width": "text",
+        "content_width": "page",
         "list_style": "dash",
         "item_heading_size": "text-body",
         "padding_top": 16,
@@ -95,7 +97,7 @@
         "heading_size": "h4",
         "text": "<p>These are the care instructions given for our Quilted Bed Sheet Set. Other products may differ, so check each label.</p>",
         "layout": "stacked",
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 64
       }
@@ -133,7 +135,7 @@
       "settings": {
         "heading": "Questions",
         "heading_size": "h4",
-        "content_width": "text",
+        "content_width": "page",
         "structured_data": true,
         "padding_top": 0,
         "padding_bottom": 64

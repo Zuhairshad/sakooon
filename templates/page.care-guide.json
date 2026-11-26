@@ -3,13 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "show_breadcrumbs": true,
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "page",
-        "text": "<p>A little care keeps bedding soft and its colour fresh. These guides cover washing, drying and storing sheets, duvets and pillows.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
-        "padding_top": 80,
-        "padding_bottom": 64,
-        "heading_size": "h3"
+        "heading_size": "h1",
+        "text": "<p>A little care keeps bedding soft and its colour fresh. These guides cover washing, drying and storing sheets, duvets and pillows.</p>",
+        "note": "<p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "types": {
@@ -100,7 +102,7 @@
         "heading_size": "h4",
         "text": "<p>The common laundry symbols you may find on a care label, and what each one means.</p>",
         "layout": "stacked",
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 80
       }
@@ -129,7 +131,7 @@
         "l"
       ],
       "settings": {
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 80
       }
