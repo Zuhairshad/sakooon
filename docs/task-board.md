@@ -26,10 +26,10 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Editorial section library + page templates (shad-8b) 2519044, merged to integration
 - [x] Fabric metaobject template + fabric guide + compare (shad-8b) 993bc36, merged to integration
 - [x] Care guides (shad-8b) fa01a08, merged to integration
-- [~] Brand pages done (about via editorial library); journal (shad-8b, milestone e)
-- [~] Size guide, measurement guide (shad-8b, milestone e); FAQ, shipping, returns, contact done in 2519044
+- [x] Brand pages (editorial library) and journal (main-blog, main-article, article-card) ccedb41, merged to integration
+- [x] Size guide, measurement guide (shad-8b) ccedb41; FAQ, shipping, returns, contact 2519044; merged to integration
 - [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
-- [ ] Visual comparison passes per template (Fable + owner)
+- [~] Visual comparison passes per template (Fable + owner): header, footer, collection, fabric, home logged; editorial self-pass assigned; product pending
 - [ ] Functional tests, a11y, Lighthouse (Fable)
 - [ ] Final deliverables report (Fable)
 
