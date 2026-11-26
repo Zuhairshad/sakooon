@@ -122,8 +122,12 @@ const collectionByHandle = Object.fromEntries([...COLLECTIONS, ALL].map((c) => [
 /* `collections` iterates like an array on Shopify but also answers collections['handle']; an array with named props does both. */
 const COLLECTIONS_DROP = Object.assign([...COLLECTIONS], collectionByHandle);
 
-const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handle: p.handle, title: p.title, body: p.body }))].map((p) => ({
-  id: gidNum(p.id), handle: p.handle, title: p.title, content: p.body || p.bodyHtml || '', url: `/pages/${p.handle}`, template_suffix: null,
+/* Pages: snapshot pages + policies, then fixture `pages` arrays ([{handle, title, body, template_suffix?}]) which override by handle.
+   /pages/<handle> renders templates/page.<template_suffix || handle>.json when that file exists, else page.json. */
+const fixturePages = FIXTURES.flatMap((fx) => fx.pages || []);
+const PAGES = [...snapshot.pages, ...(extras.policies || []).map((p) => ({ handle: p.handle, title: p.title, body: p.body })), ...fixturePages].map((p) => ({
+  id: gidNum(p.id) || Math.abs([...p.handle].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7)), handle: p.handle, title: p.title, content: p.body || p.bodyHtml || '', url: `/pages/${p.handle}`,
+  template_suffix: p.template_suffix || null, author: p.author || '', published_at: p.published_at || p.publishedAt || null,
 }));
 const pageByHandle = Object.fromEntries(PAGES.map((p) => [p.handle, p]));
 
@@ -647,7 +651,7 @@ function resolveRoute(url) {
   }
   if ((m = /^\/pages\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
     const page = pageByHandle[m[1]];
-    const suffix = { quiz: 'sleep-quiz', favorites: 'wishlist' }[page.handle] || page.handle;
+    const suffix = page.template_suffix || { quiz: 'sleep-quiz', favorites: 'wishlist' }[page.handle] || page.handle;
     return { name: 'page', ...tplFor('page', suffix), page_type: 'page', title: page.title, vars: { page } };
   }
   if ((m = /^\/policies\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
