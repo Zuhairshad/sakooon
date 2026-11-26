@@ -579,10 +579,10 @@
     },
     "size_guide": {
       "units": "Units",
-      "cm": "cm",
-      "in": "in",
+      "cm": "Centimetres",
+      "in": "Inches",
       "index": "Size guide categories",
-      "measured_in": "Measurements in"
+      "measured_in": "Units:"
     },
     "measurement": {
       "label": "How to measure",

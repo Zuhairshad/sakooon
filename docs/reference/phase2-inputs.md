@@ -33,3 +33,6 @@ The logo is green, not navy/gold, so Phase 2 derives the palette from the logo (
 4. Policies: delivery fees and zones, COD, delivery times, exchange/return window and conditions, payment methods (COD, card, bank transfer, Easypaisa/JazzCash?).
 5. Real contact channels: WhatsApp number, phone, hours, city/address, social handles.
 6. Shopify CLI login for the development theme (`shopify theme dev --store juj1hc-qf.myshopify.com`), never a publish.
+7. (shad-8b) Duvet filling Single size: the product description says "60 x 90 inches (152 x 240 cm)", but 90 in is about 229 cm. Which is right? The size guide prints both exactly as written until confirmed. Pillow: "20 x 30 inches (48 x 76 cm)" (20 in is about 51 cm), same question.
+8. (shad-8b) Care instructions for every product except the Quilted Bed Sheet Set (only that description has care text). Until then care pages are labelled general guidance.
+9. (shad-8b) Are the common Pakistani mattress sizes in the size guide (36, 42, 60, 72 and 78 in wide; 78 or 84 in long) the sizes your customers ask about? Any to add or remove?

@@ -33,14 +33,14 @@
           "type": "step",
           "settings": {
             "heading": "Measure the depth",
-            "text": "<p>Measure from the bottom seam to the top, including any topper.</p>"
+            "text": "<p>Measure from the bottom seam to the top, including any topper you use.</p>"
           }
         },
         "t1": {
           "type": "tip",
           "settings": {
             "heading": "Tip",
-            "text": "<p>Measure the mattress itself, not the bed frame, and round up to the nearest centimetre.</p>",
+            "text": "<p>Measure the mattress itself, not the bed frame, and round up to the nearest inch.</p>",
             "link_label": "Go to the size guide",
             "link_url": "/pages/size-guide"
           }
@@ -56,7 +56,7 @@
         "heading": "",
         "columns": 3,
         "image_ratio": "1/1",
-        "show_placeholders": true,
+        "show_placeholders": false,
         "padding_top": 16,
         "padding_bottom": 64
       }
@@ -67,15 +67,15 @@
         "q1": {
           "type": "question",
           "settings": {
-            "question": "My mattress is deeper than the table shows. What should I choose?",
-            "answer": "<p>Explain which products suit deeper mattresses.</p>"
+            "question": "How much bigger than my mattress should a flat sheet be?",
+            "answer": "<p>A flat sheet needs to cover the top of the mattress, run down each side and tuck underneath. As a rough guide, add twice the mattress depth plus about 15 cm (6 in) on each side for tucking in, to both the width and the length.</p>"
           }
         },
         "q2": {
           "type": "question",
           "settings": {
-            "question": "Do your sizes shrink after washing?",
-            "answer": "<p>Describe any expected change after the first wash.</p>"
+            "question": "Which duvet filling size should I choose?",
+            "answer": "<p>Compare the filling sizes with your bed and your duvet cover. For a full, fluffy look, choose a filling close to the size of your duvet cover.</p>"
           }
         }
       },

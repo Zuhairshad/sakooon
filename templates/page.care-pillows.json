@@ -6,7 +6,7 @@
         "show_breadcrumbs": true,
         "heading": "",
         "content_width": "text",
-        "text": "<p>Introduce how to care for your pillows: what matters most and how often.</p>",
+        "text": "<p>A pillow cover is the easiest way to keep a pillow fresh. Wash the cover often and give the pillow itself a little air.</p><p><strong>General guidance.</strong> This is general advice for caring for cotton, cotton satin and polyester fills. It is not specific to one product. Always follow the care label on your item first.</p>",
         "padding_top": 80,
         "padding_bottom": 32,
         "heading_size": "h3"
@@ -28,33 +28,33 @@
         "t0": {
           "type": "topic",
           "settings": {
-            "icon": "wash",
-            "heading": "Washing",
-            "text": "<ul><li>Check the label: some fillings are machine washable, others need specialist cleaning.</li><li>Use a protector and wash it regularly.</li></ul>"
+            "icon": "moon",
+            "heading": "Everyday care",
+            "text": "<ul><li>Use a pillow cover, and wash it with your sheets.</li><li>Plump your pillows each morning to keep the filling even.</li><li>Air them now and then in fresh air, out of strong direct sun.</li></ul>"
           }
         },
         "t1": {
           "type": "topic",
           "settings": {
-            "icon": "tumble",
-            "heading": "Drying",
-            "text": "<ul><li>Dry thoroughly, plumping by hand between cycles.</li></ul>"
+            "icon": "wash",
+            "heading": "Cleaning",
+            "text": "<ul><li>Spot-clean small marks with a damp cloth and a little mild detergent.</li><li>Only machine wash a filled pillow if its care label allows it. Wash two at a time to keep the drum balanced.</li><li>Use a gentle cycle and rinse well.</li></ul>"
           }
         },
         "t2": {
           "type": "topic",
           "settings": {
-            "icon": "wind",
-            "heading": "Airing",
-            "text": "<ul><li>Air pillows regularly to refresh the filling.</li></ul>"
+            "icon": "tumble",
+            "heading": "Drying",
+            "text": "<ul><li>Dry pillows completely before you use them. Damp filling can clump and smell musty.</li><li>If the label allows a dryer, use a low heat and plump the pillows between cycles.</li></ul>"
           }
         },
         "t3": {
           "type": "topic",
           "settings": {
             "icon": "moon",
-            "heading": "Storage",
-            "text": "<ul><li>Store in a breathable bag, never in plastic.</li></ul>"
+            "heading": "When to replace",
+            "text": "<ul><li>Fold the pillow in half. If it stays folded instead of springing back, the filling has lost its support.</li><li>Lumps that will not plump out are another sign.</li></ul>"
           }
         }
       },
@@ -75,52 +75,27 @@
         "padding_bottom": 64
       }
     },
-    "symbols": {
-      "type": "care-guide",
-      "blocks": {
-        "s": {
-          "type": "symbols",
-          "settings": {
-            "heading": "",
-            "symbols": "wash-40, no-bleach, tumble-low, iron-medium",
-            "show_labels": true
-          }
-        }
-      },
-      "block_order": [
-        "s"
-      ],
-      "settings": {
-        "heading": "Care symbols",
-        "heading_size": "h4",
-        "text": "<p>Always follow the care label on your product.</p>",
-        "layout": "stacked",
-        "content_width": "text",
-        "padding_top": 0,
-        "padding_bottom": 64
-      }
-    },
     "faq": {
       "type": "faq",
       "blocks": {
+        "q0": {
+          "type": "question",
+          "settings": {
+            "question": "How often should I wash pillow covers?",
+            "answer": "<p>Many people wash them once a week, with the sheets, or more often in hot weather.</p>"
+          }
+        },
         "q1": {
           "type": "question",
           "settings": {
-            "question": "How often should I wash them?",
-            "answer": "<p>Give a recommended frequency and explain why.</p>"
-          }
-        },
-        "q2": {
-          "type": "question",
-          "settings": {
-            "question": "How do I remove stains?",
-            "answer": "<p>Explain safe stain treatment for this product.</p>"
+            "question": "Can I wash the pillows themselves?",
+            "answer": "<p>Only if the care label allows it. Otherwise spot-clean and air them, and keep them in a cover.</p>"
           }
         }
       },
       "block_order": [
-        "q1",
-        "q2"
+        "q0",
+        "q1"
       ],
       "settings": {
         "heading": "Questions",
@@ -138,7 +113,8 @@
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Bedsheets",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
+            "heading": "Bed sheets",
             "text": "",
             "link_label": "Read the guide",
             "link_url": "/pages/care-bedsheets"
@@ -148,27 +124,17 @@
           "type": "topic",
           "settings": {
             "icon": "none",
-            "heading": "Duvets and comforters",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "heading": "Duvets and duvet covers",
             "text": "",
             "link_label": "Read the guide",
             "link_url": "/pages/care-comforters"
-          }
-        },
-        "towels": {
-          "type": "topic",
-          "settings": {
-            "icon": "none",
-            "heading": "Towels",
-            "text": "",
-            "link_label": "Read the guide",
-            "link_url": "/pages/care-towels"
           }
         }
       },
       "block_order": [
         "bedsheets",
-        "comforters",
-        "towels"
+        "comforters"
       ],
       "settings": {
         "heading": "More care guides",
@@ -187,7 +153,6 @@
     "hero",
     "nav",
     "care",
-    "symbols",
     "faq",
     "more"
   ]
