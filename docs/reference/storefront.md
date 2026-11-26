@@ -29,7 +29,7 @@ Tekla geolocates to DKK/Denmark (`Ship to Denmark (DKK)`, `1.000 DKK` copy). Tha
 |---|---|---|
 | Parachute | 768/390/375 on the first run | Cloudflare "Just a moment…" interstitial. Captures discarded, not bypassed. 768 and 390 were recaptured later. |
 | Parachute | 375 full page | Chromium screenshot protocol error on the recapture; 375 measurements are pending a retry (390 is representative). |
-| Parachute | All interaction states (mega menu per item, sticky sequence, mobile drawer + nested level, card hovers) and the breakpoint sweep | HTTP 429 to the shared IP (three attempts with 90s back-off). The mega menu **structure** below comes from the DOM captured on the first successful load (panels are present but hidden). Pixel measurements of open panels are **PENDING**; the scripts are ready (`node scripts/ref/storefront-states.mjs parachute`, `… storefront-breakpoints.mjs parachute`). |
+| Parachute | All interaction states (mega menu per item, sticky sequence, mobile drawer + nested level, card hovers) | HTTP 429 to the shared IP (three attempts with 90s back-off). The mega menu **structure** below comes from the DOM captured on the first successful load (panels are present but hidden). Pixel measurements of open panels are **PENDING**; the script is ready (`node scripts/ref/storefront-states.mjs parachute`). The breakpoint sweep succeeded on a later run. |
 | Parachute | 390 full-page PNG | The Alia mobile popup and the Rebuy cart flyout are painted over the top of the full-page image. The measurements in `measure.json` are unaffected; use `390-fold.png` or the JSON. |
 | Parachute | Category-grid images 2–4 and the hero video frame in full-page PNGs | Lazy and video content is not painted in the stitched full-page image. Use `*-fold.png` for the hero. |
 
@@ -181,9 +181,10 @@ See `storefront-nav.md` for the full structure. Summary:
 |---|---|---|---|
 | Tekla | 1024 | inline nav ↔ hamburger | sweep + binary search |
 | Tekla | 768 | 2-up and 4-up grids collapse (2-up stacks, 4-up becomes a horizontal scroller); logo 92 → 84px below 768 | sweep |
-| Parachute | between 1024 and 768 | desktop nav ↔ mobile bar + sub-nav row; category grid hidden; promo band stays 2 columns at 768 | viewport captures (exact px PENDING: 429) |
-| Parachute | between 768 and 390 | campaign tiles stack; rail cards 256 → 195px; gutters 24 → 16 (rails 48 → 8) | viewport captures |
-| Parachute | between 1440 and 1280 | footer newsletter title 24 → 20; discovery rail images 343 → 240px | viewport captures |
+| Parachute | 1024 | ≥1024 desktop nav; below: mobile bar + sub-nav row (header 56 → 110), logo moves right → left, footer link columns 3 → 2 | sweep + binary search (2nd run) |
+| Parachute | 960 | category grid 4 → 3 (wrapping) | sweep |
+| Parachute | 768 | ≤768: display h1 80 → 48px, promo band h2 32 → 24, discovery block switches to stacked; ≤767: campaign tiles stack, rails 2.7 → 1.9 visible cards (256 → 195px), promo band 2 → 1 column, banner/section h2 28 → 24 | sweep |
+| Parachute | 1440 | discovery rail items 343 → 240px wide (5.2 visible below) | sweep |
 
 ## Proposed Shopify settings per homepage section
 
