@@ -3,7 +3,7 @@
    <sticky-header>        scrolled/hidden state, publishes header:height
    <header-menu>          desktop mega menu (hover intent, click, keyboard)
    <mobile-nav-levels>    level-2 panels inside <theme-drawer id="mobile-nav">
-   <announcement-bar>     rotating messages, pause, dismiss
+   <announcement-bar>     rotating messages (hold on hover/focus), dismiss
    Storefront section helpers (this is the storefront area's one deferred script):
    <scroll-rail>          horizontal rails with prev/next buttons (featured collection, tiles, discovery)
    <hero-video>           autoplay muted video with a pause control; paused under reduced motion and off screen
@@ -265,8 +265,7 @@
       this.speed = Math.max(3, Number(this.dataset.speed) || 5) * 1000;
       this.paused = reducedMotion.matches || !this.hasAttribute('data-autoplay');
       this._onClick = (e) => {
-        if (e.target.closest('[data-announcement-toggle]')) this.setPaused(!this.paused, true);
-        else if (e.target.closest('[data-announcement-dismiss]')) this.dismiss();
+        if (e.target.closest('[data-announcement-dismiss]')) this.dismiss();
       };
       this._hold = () => { this._held = true; this.stop(); };
       this._release = () => { this._held = false; this.start(); };
@@ -275,7 +274,7 @@
       this.addEventListener('pointerleave', this._release);
       this.addEventListener('focusin', this._hold);
       this.addEventListener('focusout', this._release);
-      this.setPaused(this.paused); // also syncs the toggle when rotation starts paused (reduced motion)
+      this.start();
     }
 
     disconnectedCallback() {
@@ -295,17 +294,6 @@
 
     stop() { clearInterval(this._timer); }
 
-    setPaused(paused, byUser) {
-      this.paused = paused;
-      const toggle = this.querySelector('[data-announcement-toggle]');
-      if (toggle) {
-        toggle.setAttribute('aria-pressed', String(paused));
-        toggle.setAttribute('aria-label', paused ? toggle.dataset.labelPlay : toggle.dataset.labelPause);
-        toggle.querySelectorAll('[data-icon]').forEach((i) => { i.hidden = i.dataset.icon !== (paused ? 'play' : 'pause'); });
-      }
-      if (byUser) this._held = false;
-      this.start();
-    }
 
     go(i) {
       if (!this.slides.length) return;

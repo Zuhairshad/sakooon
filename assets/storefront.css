@@ -18,7 +18,7 @@
 .announcement-bar__slide a:hover { text-decoration: underline; }
 .announcement-bar__controls, .announcement-bar__spacer { width: calc(var(--announcement-buttons, 1) * 24px + (var(--announcement-buttons, 1) - 1) * var(--space-1)); }
 .announcement-bar__controls { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-1); }
-/* Quiet controls: 24px targets (WCAG 2.5.8), small icons in the muted foreground (>= 3:1 on every scheme), full strength on hover/focus. */
+/* Quiet dismiss control: 24px target (WCAG 2.5.8), muted foreground icon (>= 3:1 on every scheme), full strength on hover/focus. */
 .announcement-bar__button { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: var(--color-foreground-muted); transition: color var(--duration-fast) var(--ease); }
 .announcement-bar__button:hover, .announcement-bar__button:focus-visible { color: var(--color-foreground); }
 

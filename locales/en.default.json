@@ -465,8 +465,6 @@
       "cart_items": ", items:"
     },
     "announcement": {
-      "pause": "Pause announcements",
-      "play": "Play announcements",
       "dismiss": "Dismiss announcement"
     },
     "footer": {
