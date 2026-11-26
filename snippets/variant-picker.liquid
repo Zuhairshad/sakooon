@@ -1,0 +1,176 @@
+{%- comment -%}
+  Variant picker. Owner: shad-d8. Behaviour: <variant-picker> in assets/product.js.
+  {% render 'variant-picker', product: product, section_id: section.id, form_id: form_id, other_style: block.settings.other_style %}
+  - Colour option (names in settings.swatch_option_names): radio swatches (option-value swatch -> named colour -> text chip).
+  - Other options: native <select> styled as a filled row (reference) or radio pills (other_style: 'pills').
+  - Availability per value is relative to the other selected options: unavailable combinations are disabled, sold-out ones marked.
+  - Without a colour option but with sakooon.siblings: sibling swatches as links (D10).
+  The selected variant id lives in the product form's hidden `id` input; product.js keeps it in sync.
+{%- endcomment -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign other_style = other_style | default: 'select'
+  assign colour_names = settings.swatch_option_names | default: 'Color, Colour' | downcase | split: ','
+  assign named_colours = ',white,ivory,beige,linen,wheat,tan,khaki,sienna,brown,chocolate,black,gray,grey,silver,gainsboro,whitesmoke,snow,seashell,navy,blue,lightblue,skyblue,steelblue,slateblue,teal,green,olive,olivedrab,darkolivegreen,sage,mintcream,pink,lightpink,mistyrose,lavender,lavenderblush,plum,thistle,purple,red,maroon,coral,salmon,peachpuff,bisque,antiquewhite,oldlace,cornsilk,lemonchiffon,yellow,gold,orange,rosybrown,indigo,charcoal,'
+  assign has_colour_option = false
+-%}
+{%- unless product.has_only_default_variant -%}
+  <variant-picker class="variant-picker" data-section-id="{{ section_id }}" data-url="{{ product.url }}" data-form-id="{{ form_id }}">
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign idx = forloop.index0
+        assign option_name = option.name | downcase | strip
+        assign is_colour = false
+        for name in colour_names
+          assign wanted = name | strip
+          if option_name == wanted
+            assign is_colour = true
+            assign has_colour_option = true
+          endif
+        endfor
+        assign selected_value = current.options[idx]
+        assign input_name = section_id | append: '-' | append: option.position
+      -%}
+      {%- if is_colour or other_style == 'pills' -%}
+        <fieldset class="variant-picker__option{% if is_colour %} variant-picker__option--colour{% else %} variant-picker__option--pills{% endif %}" data-option-index="{{ idx }}">
+          <legend class="variant-picker__legend">
+            <span class="variant-picker__name">{{ option.name }}</span>
+            <span class="variant-picker__value" data-selected-value>{{ selected_value }}</span>
+          </legend>
+          <div class="variant-picker__values{% if is_colour %} swatches swatches--md{% endif %}">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign value_name = value.name | default: value
+                comment
+                  Availability of this value combined with the other currently selected options.
+                endcomment
+                assign exists = false
+                assign available = false
+                for v in product.variants
+                  if v.options[idx] != value_name
+                    continue
+                  endif
+                  assign matches = true
+                  for o in v.options
+                    if forloop.index0 != idx and o != current.options[forloop.index0]
+                      assign matches = false
+                    endif
+                  endfor
+                  if matches
+                    assign exists = true
+                    if v.available
+                      assign available = true
+                    endif
+                  endif
+                endfor
+                assign input_id = input_name | append: '-' | append: forloop.index
+                assign chip_style = ''
+                assign chip_class = 'swatch__chip'
+                if is_colour
+                  if value.swatch.image
+                    assign swatch_src = value.swatch.image | image_url: width: 72
+                    assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
+                  elsif value.swatch.color
+                    assign chip_style = 'background-color: ' | append: value.swatch.color
+                  else
+                    assign named = value_name | handle | remove: '-'
+                    assign needle = ',' | append: named | append: ','
+                    if named_colours contains needle
+                      if named == 'charcoal'
+                        assign named = 'dimgray'
+                      elsif named == 'sage'
+                        assign named = 'darkseagreen'
+                      endif
+                      assign chip_style = 'background-color: ' | append: named
+                    else
+                      assign chip_class = 'swatch__chip swatch__chip--text'
+                    endif
+                  endif
+                endif
+              -%}
+              <input
+                type="radio"
+                class="variant-picker__input visually-hidden"
+                id="{{ input_id }}"
+                name="{{ input_name }}"
+                value="{{ value_name | escape }}"
+                form="{{ form_id }}-options"
+                {% if value_name == selected_value %}checked{% endif %}
+                {% unless exists %}disabled{% endunless %}
+              >
+              {%- if is_colour -%}
+                <label for="{{ input_id }}" class="swatch variant-picker__swatch{% unless available %} is-unavailable{% endunless %}{% if chip_class contains '--text' %} swatch--text{% endif %}" title="{{ value_name | escape }}">
+                  <span class="{{ chip_class }}"{% if chip_style != blank %} style="{{ chip_style }}"{% endif %} aria-hidden="true">{% if chip_class contains '--text' %}{{ value_name }}{% endif %}</span>
+                  <span class="visually-hidden">{{ value_name }}{% unless available %}, {{ 'products.product.sold_out' | t }}{% endunless %}</span>
+                </label>
+              {%- else -%}
+                <label for="{{ input_id }}" class="variant-picker__pill{% unless available %} is-unavailable{% endunless %}">
+                  {{- value_name -}}
+                  {%- unless available -%}<span class="visually-hidden">, {{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
+                </label>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- else -%}
+        {%- assign select_id = input_name | append: '-select' -%}
+        <div class="variant-picker__option variant-picker__option--select" data-option-index="{{ idx }}">
+          <label class="variant-picker__select-label" for="{{ select_id }}">{{ option.name }}</label>
+          <select id="{{ select_id }}" class="variant-picker__select" name="{{ input_name }}" form="{{ form_id }}-options">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign value_name = value.name | default: value
+                assign exists = false
+                assign available = false
+                for v in product.variants
+                  if v.options[idx] != value_name
+                    continue
+                  endif
+                  assign matches = true
+                  for o in v.options
+                    if forloop.index0 != idx and o != current.options[forloop.index0]
+                      assign matches = false
+                    endif
+                  endfor
+                  if matches
+                    assign exists = true
+                    if v.available
+                      assign available = true
+                    endif
+                  endif
+                endfor
+              -%}
+              <option value="{{ value_name | escape }}"{% if value_name == selected_value %} selected{% endif %}{% unless exists %} disabled{% endunless %}>
+                {%- if exists == false -%}
+                  {{ 'products.product.value_unavailable' | t: option_value: value_name }}
+                {%- elsif available == false -%}
+                  {{ 'products.product.value_sold_out' | t: option_value: value_name }}
+                {%- else -%}
+                  {{ value_name }}
+                {%- endif -%}
+              </option>
+            {%- endfor -%}
+          </select>
+          {%- render 'icon', icon: 'chevron-down', size: 12, class: 'variant-picker__chevron' -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+    <form id="{{ form_id }}-options" hidden></form>
+    <script type="application/json" data-variants>
+      {{ product.variants | json }}
+    </script>
+  </variant-picker>
+{%- endunless -%}
+
+{%- liquid
+  assign siblings = product.metafields.sakooon.siblings.value
+-%}
+{%- if has_colour_option == false and siblings != blank -%}
+  <div class="variant-picker__option variant-picker__option--colour variant-picker__siblings">
+    <p class="variant-picker__legend">
+      <span class="variant-picker__name">{{ 'products.product.colour' | t }}</span>
+      <span class="variant-picker__value">{{ product.title }}</span>
+    </p>
+    {%- render 'swatches', product: product, size: 'md' -%}
+  </div>
+{%- endif -%}

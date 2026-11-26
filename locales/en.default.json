@@ -143,6 +143,25 @@
         "pick_up_unavailable_at_html": "Pickup currently unavailable at <span class=\"color-foreground\">{{ location_name }}</span>",
         "unavailable": "Couldn't load pickup availability",
         "refresh": "Refresh"
+      },
+      "colour": "Colour",
+      "low_stock": {
+        "one": "Only {{ count }} left",
+        "other": "Only {{ count }} left"
+      },
+      "taxes_included": "Tax included.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "about_fabric": "About {{ fabric }}",
+      "care_guide": "Read the care guide",
+      "specs": {
+        "composition": "Composition",
+        "weave": "Weave",
+        "thread_count": "Thread count",
+        "gsm": "Weight (gsm)",
+        "finish": "Finish",
+        "origin": "Origin",
+        "weight": "Weight",
+        "sku": "SKU"
       }
     },
     "facets": {

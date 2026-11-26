@@ -1,0 +1,133 @@
+{%- comment -%}
+  Product gallery. Owner: shad-d8. Behaviour: <product-gallery> in assets/product.js.
+  {% render 'product-gallery', product: product, section_id: section.id, layout: section.settings.gallery_layout, filter_by_colour: section.settings.media_by_colour %}
+  layout: 'carousel' (one 3:4 slide at a time with arrows and a counter, like the reference) or 'stack' (2-column grid on desktop).
+  Phones always get the swipe carousel (CSS scroll-snap), which works without JS.
+  filter_by_colour: media are grouped by the variant featured media that start each group, so only the selected colour's
+  media (plus media before the first variant image) are rendered. product.js re-renders the gallery when the colour changes.
+  Clicking a slide opens the zoom dialog (<theme-dialog id="ProductZoom-...">).
+{%- endcomment -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign layout = layout | default: 'carousel'
+
+  assign colour_index = -1
+  assign colour_names = settings.swatch_option_names | default: 'Color, Colour' | downcase | split: ','
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+    assign option_index = forloop.index0
+    for name in colour_names
+      assign wanted = name | strip
+      if option_name == wanted
+        assign colour_index = option_index
+      endif
+    endfor
+  endfor
+  assign selected_colour = ''
+  if colour_index >= 0
+    assign selected_colour = current.options[colour_index]
+  endif
+
+  assign do_filter = false
+  if filter_by_colour and colour_index >= 0
+    for v in product.variants
+      if v.featured_media != blank or v.featured_image != blank
+        assign do_filter = true
+        break
+      endif
+    endfor
+  endif
+
+  comment
+    Build the list of media ids to show, in order.
+  endcomment
+  assign shown_ids = ''
+  assign group = ''
+  for media in product.media
+    if do_filter
+      for v in product.variants
+        assign v_src = v.featured_media.preview_image.src | default: v.featured_image.src
+        if v.featured_media.id == media.id or v_src == media.preview_image.src
+          assign group = v.options[colour_index]
+          break
+        endif
+      endfor
+      if group != '' and group != selected_colour
+        continue
+      endif
+    endif
+    assign shown_ids = shown_ids | append: media.id | append: ','
+  endfor
+  assign shown_count = shown_ids | split: ',' | size
+  assign zoom_id = 'ProductZoom-' | append: section_id
+-%}
+<product-gallery
+  class="product-gallery product-gallery--{{ layout }}"
+  data-section-id="{{ section_id }}"
+  data-colour="{{ selected_colour | escape }}"
+  data-count="{{ shown_count }}"
+  aria-roledescription="carousel"
+  aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
+>
+  {%- if product.media.size == 0 -%}
+    <div class="product-gallery__slide product-gallery__slide--placeholder media" style="--aspect: 3/4">
+      {%- render 'placeholder', name: 'product-1', aspect: '3/4' -%}
+    </div>
+  {%- else -%}
+    <ul class="product-gallery__track list-unstyled" role="list" data-gallery-track tabindex="0" aria-label="{{ 'products.product.media.gallery_viewer' | t }}">
+      {%- assign n = 0 -%}
+      {%- for media in product.media -%}
+        {%- assign check = ',' | append: shown_ids -%}
+        {%- assign needle2 = ',' | append: media.id | append: ',' -%}
+        {%- unless check contains needle2 -%}{%- continue -%}{%- endunless -%}
+        {%- assign n = n | plus: 1 -%}
+        <li class="product-gallery__slide" id="Slide-{{ section_id }}-{{ media.id }}" data-media-id="{{ media.id }}" data-index="{{ n }}" aria-roledescription="slide" aria-label="{{ 'general.accessibility.slide_of' | t: current: n, total: shown_count }}">
+          {%- case media.media_type -%}
+            {%- when 'video' -%}
+              <div class="media" style="--aspect: 3/4">{{ media | video_tag: controls: true, playsinline: true, loop: true, muted: true, image_size: '1200x' }}</div>
+            {%- when 'external_video' -%}
+              <div class="media" style="--aspect: 16/9">{{ media | external_video_tag: loading: 'lazy' }}</div>
+            {%- when 'model' -%}
+              <div class="media" style="--aspect: 1/1">{{ media | model_viewer_tag: reveal: 'interaction', toggleable: true }}</div>
+            {%- else -%}
+              <button type="button" class="product-gallery__zoom media" style="--aspect: 3/4" data-drawer-open="{{ zoom_id }}" data-zoom-media="{{ media.id }}" aria-label="{{ 'products.product.media.open_media' | t: index: n }}">
+                {%- assign priority = false -%}
+                {%- if n == 1 -%}{%- assign priority = true -%}{%- endif -%}
+                {%- render 'image', image: media, sizes: '(min-width: 1024px) 50vw, 100vw', aspect: '3/4', priority: priority -%}
+              </button>
+          {%- endcase -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if shown_count > 1 -%}
+      <div class="product-gallery__controls">
+        <button type="button" class="product-gallery__arrow" data-gallery-prev aria-label="{{ 'general.accessibility.previous_slide' | t }}" disabled>{%- render 'icon', icon: 'chevron-left', size: 16 -%}</button>
+        <span class="product-gallery__counter" data-gallery-counter aria-hidden="true">1/{{ shown_count }}</span>
+        <button type="button" class="product-gallery__arrow" data-gallery-next aria-label="{{ 'general.accessibility.next_slide' | t }}">{%- render 'icon', icon: 'chevron-right', size: 16 -%}</button>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</product-gallery>
+
+{%- if product.media.size > 0 -%}
+  <theme-dialog id="{{ zoom_id }}" class="product-zoom" data-lock-scroll>
+    <div class="dialog product-zoom__dialog" role="dialog" aria-modal="true" aria-label="{{ 'products.product.media.zoom' | t }}">
+      <div class="dialog__panel product-zoom__panel" data-zoom-panel>
+        <button type="button" class="button--icon product-zoom__close" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', icon: 'close', size: 22 -%}</button>
+        <ul class="product-zoom__list list-unstyled" role="list">
+          {%- assign n = 0 -%}
+          {%- for media in product.media -%}
+            {%- assign check = ',' | append: shown_ids -%}
+            {%- assign needle2 = ',' | append: media.id | append: ',' -%}
+            {%- unless check contains needle2 -%}{%- continue -%}{%- endunless -%}
+            {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+            {%- assign n = n | plus: 1 -%}
+            <li class="product-zoom__item" data-zoom-item="{{ media.id }}">
+              {%- render 'image', image: media, sizes: '100vw', widths: '960,1440,1920,2400,3000' -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </theme-dialog>
+{%- endif -%}

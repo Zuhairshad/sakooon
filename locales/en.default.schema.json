@@ -1353,6 +1353,188 @@
           "label": "More articles heading"
         }
       }
+    },
+    "main-product": {
+      "name": "Product information",
+      "settings": {
+        "gallery_layout": {
+          "label": "Gallery layout",
+          "options": {
+            "carousel": "Carousel",
+            "stack": "Stacked grid"
+          }
+        },
+        "media_by_colour": {
+          "label": "Show only the selected colour's media",
+          "info": "Groups media by the variant images that start each group"
+        },
+        "enable_sticky_bar": {
+          "label": "Show sticky add-to-cart bar"
+        }
+      },
+      "blocks": {
+        "badge": {
+          "name": "Badge",
+          "settings": {
+            "text": {
+              "label": "Fallback text",
+              "info": "Sale and sold-out badges show automatically"
+            }
+          }
+        },
+        "title": {
+          "name": "Title",
+          "settings": {
+            "show_vendor": {
+              "label": "Show vendor"
+            }
+          }
+        },
+        "price": {
+          "name": "Price"
+        },
+        "variant_picker": {
+          "name": "Variant picker",
+          "settings": {
+            "other_style": {
+              "label": "Non-colour options",
+              "options": {
+                "select": "Dropdown",
+                "pills": "Buttons"
+              }
+            }
+          }
+        },
+        "buy_buttons": {
+          "name": "Buy buttons",
+          "settings": {
+            "price_in_button": {
+              "label": "Show price in the button"
+            },
+            "show_quantity": {
+              "label": "Show quantity selector"
+            },
+            "show_dynamic_checkout": {
+              "label": "Show dynamic checkout buttons"
+            },
+            "low_stock_threshold": {
+              "label": "Low stock note at or below",
+              "info": "0 hides the note. Needs inventory tracking."
+            }
+          }
+        },
+        "size_guide": {
+          "name": "Size guide link",
+          "settings": {
+            "label": {
+              "label": "Link label",
+              "info": "Uses the size_guide page metafield"
+            }
+          }
+        },
+        "whats_included": {
+          "name": "What's included"
+        },
+        "benefits": {
+          "name": "Benefits"
+        },
+        "accordion": {
+          "name": "Accordion",
+          "settings": {
+            "source": {
+              "label": "Content",
+              "options": {
+                "description": "Description",
+                "dimensions": "Dimensions",
+                "composition": "Composition",
+                "feel": "Feel",
+                "specifications": "Specifications",
+                "whats_included": "What's included",
+                "care": "Care",
+                "shipping_returns": "Shipping and returns",
+                "custom": "Custom"
+              }
+            },
+            "heading": {
+              "label": "Heading",
+              "info": "Leave blank for the default"
+            },
+            "subtitle": {
+              "label": "Subtitle"
+            },
+            "open": {
+              "label": "Open by default"
+            },
+            "content": {
+              "label": "Text",
+              "info": "Shipping and custom rows"
+            },
+            "page": {
+              "label": "Page"
+            }
+          }
+        },
+        "pairing": {
+          "name": "Pairs well with",
+          "settings": {
+            "heading": {
+              "label": "Heading"
+            },
+            "product": {
+              "label": "Product",
+              "info": "Defaults to the first complementary_products metafield entry"
+            }
+          }
+        },
+        "text": {
+          "name": "Text",
+          "settings": {
+            "text": {
+              "label": "Text"
+            }
+          }
+        },
+        "custom_liquid": {
+          "name": "Custom Liquid",
+          "settings": {
+            "custom_liquid": {
+              "label": "Liquid"
+            }
+          }
+        }
+      }
+    },
+    "product-recommendations": {
+      "name": "Product recommendations",
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "intent": {
+          "label": "Type",
+          "options": {
+            "related": "Related",
+            "complementary": "Complementary"
+          }
+        },
+        "limit": {
+          "label": "Products"
+        }
+      }
+    },
+    "complementary-products": {
+      "name": "Complete the bed",
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "limit": {
+          "label": "Products"
+        },
+        "info": {
+          "content": "Uses the complementary_products metafield, then complementary products from Search & Discovery."
+        }
+      }
     }
   }
 }

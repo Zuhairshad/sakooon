@@ -1,0 +1,45 @@
+{%- comment -%}
+  "You may also like": Shopify Product Recommendations API (intent related). Owner: shad-d8.
+  Rendered empty on the page; <product-recommendations> (assets/product.js) fetches this same section with
+  /recommendations/products?product_id=&limit=&intent=related&section_id=<section.id> and swaps in the result.
+  Renders nothing when there are no recommendations.
+{%- endcomment -%}
+{%- liquid
+  assign limit = section.settings.limit
+  assign intent = section.settings.intent | default: 'related'
+-%}
+<div class="section product-recs color-scheme-{{ section.settings.color_scheme }}" style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;">
+  <product-recommendations
+    class="product-recs__inner page-width page-width--full"
+    data-url="{{ routes.product_recommendations_url }}?product_id={{ product.id }}&limit={{ limit }}&intent={{ intent }}&section_id={{ section.id }}"
+  >
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div data-recommendations>
+        {%- if section.settings.heading != blank -%}<h2 class="product-recs__heading">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+        <ul class="product-recs__list scroll-x no-scrollbar list-unstyled" role="list">
+          {%- for rec in recommendations.products -%}
+            <li class="product-recs__item">{%- render 'product-card', product: rec, sizes: '(min-width: 1024px) 25vw, 45vw', swatch_limit: 3 -%}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </product-recommendations>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.product-recommendations.name",
+  "class": "section-product-recommendations",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:sections.product-recommendations.settings.heading.label", "default": "You may also like" },
+    { "type": "select", "id": "intent", "label": "t:sections.product-recommendations.settings.intent.label", "options": [ { "value": "related", "label": "t:sections.product-recommendations.settings.intent.options.related" }, { "value": "complementary", "label": "t:sections.product-recommendations.settings.intent.options.complementary" } ], "default": "related" },
+    { "type": "range", "id": "limit", "min": 2, "max": 10, "step": 1, "label": "t:sections.product-recommendations.settings.limit.label", "default": 8 },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 48 }
+  ],
+  "presets": [ { "name": "t:sections.product-recommendations.name" } ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

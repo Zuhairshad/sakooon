@@ -1,0 +1,133 @@
+{%- comment -%}
+  One metafield-driven accordion row for the PDP. Owner: shad-d8. Uses <theme-disclosure> (global.js).
+  {% render 'product-accordions', product: product, block: block, section_id: section.id %}
+  block.settings: source (description | dimensions | composition | feel | specifications | whats_included | care | shipping_returns | custom),
+                  heading (optional override), subtitle, open, content (richtext, for custom/shipping), page (page, for custom/shipping), icon.
+  Sources (docs/metafield-contracts.md). Fabric resolution is inline: variant -> product. Blank sources render nothing (no "N/A").
+{%- endcomment -%}
+{%- liquid
+  assign source = block.settings.source
+  assign variant = product.selected_or_first_available_variant
+  assign fabric = variant.metafields.sakooon.fabric.value
+  if fabric == blank
+    assign fabric = product.metafields.sakooon.fabric.value
+  endif
+  assign mf = product.metafields.sakooon
+  assign default_heading = ''
+-%}
+{%- capture body -%}
+  {%- case source -%}
+    {%- when 'description' -%}
+      {%- assign default_heading = 'products.product.description' | t -%}
+      {%- if product.description != blank -%}<div class="rte">{{ product.description }}</div>{%- endif -%}
+
+    {%- when 'dimensions' -%}
+      {%- assign default_heading = 'products.product.dimensions' | t -%}
+      {%- if mf.dimensions != blank -%}
+        {%- if mf.dimensions.type == 'list.single_line_text_field' -%}
+          <ul class="product-accordion__list">{%- for line in mf.dimensions.value -%}<li>{{ line }}</li>{%- endfor -%}</ul>
+        {%- else -%}
+          <div class="rte">{{ mf.dimensions | metafield_tag }}</div>
+        {%- endif -%}
+      {%- endif -%}
+      {%- assign table = mf.dimensions_table.value -%}
+      {%- if table.columns.size > 0 and table.rows.size > 0 -%}
+        <div class="product-accordion__table-wrap">
+          <table class="product-accordion__table">
+            <thead><tr>{%- for c in table.columns -%}<th scope="col">{{ c | escape }}</th>{%- endfor -%}</tr></thead>
+            <tbody>
+              {%- for row in table.rows -%}
+                <tr>{%- for cell in row -%}{%- if forloop.first -%}<th scope="row">{{ cell | escape }}</th>{%- else -%}<td>{{ cell | escape }}</td>{%- endif -%}{%- endfor -%}</tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+
+    {%- when 'composition' -%}
+      {%- assign default_heading = 'products.product.composition' | t -%}
+      {%- assign composition = mf.composition_override.value | default: fabric.composition.value -%}
+      {%- capture rows -%}
+        {%- if composition != blank -%}<div><dt>{{ 'products.product.specs.composition' | t }}</dt><dd>{{ composition }}</dd></div>{%- endif -%}
+        {%- if fabric.weave.value != blank -%}<div><dt>{{ 'products.product.specs.weave' | t }}</dt><dd>{{ fabric.weave.value | capitalize }}</dd></div>{%- endif -%}
+        {%- if fabric.thread_count.value != blank -%}<div><dt>{{ 'products.product.specs.thread_count' | t }}</dt><dd>{{ fabric.thread_count.value }}</dd></div>{%- endif -%}
+        {%- if fabric.gsm.value != blank -%}<div><dt>{{ 'products.product.specs.gsm' | t }}</dt><dd>{{ fabric.gsm.value }} gsm</dd></div>{%- endif -%}
+        {%- if fabric.finish.value != blank and fabric.finish.value != 'none' -%}<div><dt>{{ 'products.product.specs.finish' | t }}</dt><dd>{{ fabric.finish.value | replace: '-', ' ' | capitalize }}</dd></div>{%- endif -%}
+        {%- assign origin = mf.origin.value | default: fabric.origin.value -%}
+        {%- if origin != blank -%}<div><dt>{{ 'products.product.specs.origin' | t }}</dt><dd>{{ origin }}</dd></div>{%- endif -%}
+      {%- endcapture -%}
+      {%- if rows != blank -%}<dl class="product-accordion__specs">{{ rows }}</dl>{%- endif -%}
+      {%- if fabric != blank -%}
+        {%- render 'fabric-rating', fabric: fabric, compact: true -%}
+        {%- if fabric.system.url != blank -%}
+          <a class="link product-accordion__link" href="{{ fabric.system.url }}">{{ 'products.product.about_fabric' | t: fabric: fabric.name.value }}</a>
+        {%- endif -%}
+      {%- endif -%}
+
+    {%- when 'feel' -%}
+      {%- assign default_heading = 'products.product.feel' | t -%}
+      {%- assign feel = mf.feel.value | default: fabric.feel.value -%}
+      {%- if feel != blank -%}<p class="product-accordion__lead">{{ feel | capitalize }}</p>{%- endif -%}
+      {%- if fabric.texture.value != blank -%}<p>{{ fabric.texture.value }}</p>{%- endif -%}
+      {%- if fabric != blank -%}{%- render 'fabric-rating', fabric: fabric, fields: 'softness,breathability,warmth', compact: true -%}{%- endif -%}
+
+    {%- when 'specifications' -%}
+      {%- assign default_heading = 'products.product.specifications' | t -%}
+      {%- capture rows -%}
+        {%- if mf.weight.value != blank -%}<div><dt>{{ 'products.product.specs.weight' | t }}</dt><dd>{{ mf.weight.value }}</dd></div>{%- endif -%}
+        {%- if mf.product_weight_gsm.value != blank -%}<div><dt>{{ 'products.product.specs.gsm' | t }}</dt><dd>{{ mf.product_weight_gsm.value }} gsm</dd></div>{%- endif -%}
+        {%- if variant.sku != blank -%}<div><dt>{{ 'products.product.specs.sku' | t }}</dt><dd>{{ variant.sku }}</dd></div>{%- endif -%}
+      {%- endcapture -%}
+      {%- if mf.benefits.value.size > 0 -%}
+        <ul class="product-accordion__list">{%- for b in mf.benefits.value -%}<li>{{ b }}</li>{%- endfor -%}</ul>
+      {%- endif -%}
+      {%- if rows != blank -%}<dl class="product-accordion__specs">{{ rows }}</dl>{%- endif -%}
+
+    {%- when 'whats_included' -%}
+      {%- assign default_heading = 'products.product.whats_included' | t -%}
+      {%- if mf.package_contents.value.size > 0 -%}
+        <ul class="product-accordion__list">{%- for item in mf.package_contents.value -%}<li>{{ item }}</li>{%- endfor -%}</ul>
+      {%- endif -%}
+
+    {%- when 'care' -%}
+      {%- assign default_heading = 'products.product.care' | t -%}
+      {%- if mf.care_instructions != blank -%}
+        <div class="rte">{{ mf.care_instructions | metafield_tag }}</div>
+      {%- elsif fabric.care != blank -%}
+        <div class="rte">{{ fabric.care | metafield_tag }}</div>
+      {%- endif -%}
+      {%- if mf.drying_instructions != blank -%}<div class="rte">{{ mf.drying_instructions | metafield_tag }}</div>{%- endif -%}
+      {%- if fabric.care_symbols.value != blank -%}{%- render 'care-icons', symbols: fabric.care_symbols.value, show_labels: true -%}{%- endif -%}
+      {%- assign care_page = mf.care_guide.value | default: fabric.care_guide.value -%}
+      {%- if care_page != blank -%}<a class="link product-accordion__link" href="{{ care_page.url }}">{{ 'products.product.care_guide' | t }}</a>{%- endif -%}
+
+    {%- when 'shipping_returns' -%}
+      {%- assign default_heading = 'products.product.shipping_returns' | t -%}
+      {%- if mf.shipping_note.value != blank -%}<p class="product-accordion__lead">{{ mf.shipping_note.value }}</p>{%- endif -%}
+      {%- if block.settings.content != blank -%}<div class="rte">{{ block.settings.content }}</div>{%- endif -%}
+      {%- if block.settings.page != blank -%}<a class="link product-accordion__link" href="{{ block.settings.page.url }}">{{ block.settings.page.title }}</a>{%- endif -%}
+
+    {%- else -%}
+      {%- if block.settings.content != blank -%}<div class="rte">{{ block.settings.content }}</div>{%- endif -%}
+      {%- if block.settings.page != blank -%}<div class="rte">{{ block.settings.page.content }}</div>{%- endif -%}
+  {%- endcase -%}
+{%- endcapture -%}
+{%- assign body = body | strip -%}
+{%- if body != blank -%}
+  {%- liquid
+    assign heading = block.settings.heading | default: default_heading
+    assign panel_id = 'Accordion-' | append: section_id | append: '-' | append: block.id
+  -%}
+  <theme-disclosure class="product-accordion" data-group="product-{{ section_id }}"{% if block.settings.open %} open{% endif %} {{ block.shopify_attributes }}>
+    <button type="button" class="disclosure__trigger product-accordion__trigger" aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}" aria-controls="{{ panel_id }}">
+      <span class="product-accordion__titles">
+        <span class="product-accordion__title">{{ heading | escape }}</span>
+        {%- if block.settings.subtitle != blank -%}<span class="product-accordion__subtitle">{{ block.settings.subtitle | escape }}</span>{%- endif -%}
+      </span>
+      {%- render 'icon', icon: 'plus', size: 16, class: 'icon-plus' -%}
+    </button>
+    <div class="disclosure__panel" id="{{ panel_id }}"{% if block.settings.open %} data-open{% endif %}>
+      <div class="disclosure__content product-accordion__content">{{ body }}</div>
+    </div>
+  </theme-disclosure>
+{%- endif -%}

@@ -1,0 +1,65 @@
+{%- comment -%}
+  "Complete the bed". Owner: shad-d8.
+  Source order: product.metafields.sakooon.complementary_products (curated, rendered immediately) ->
+  Shopify Search & Discovery complementary recommendations (fetched by <product-recommendations> in product.js).
+  Also requested by the cart drawer (<cart-recommendations>, cart.js) as /recommendations/products?...&intent=complementary&section_id=complementary-products,
+  which renders only [data-recommendations]; the drawer styles it compactly. Renders nothing when there is nothing to show.
+{%- endcomment -%}
+{%- liquid
+  assign heading = section.settings.heading | default: 'products.product.complete_the_bed'
+  if section.settings.heading == blank
+    assign heading = 'products.product.complete_the_bed' | t
+  endif
+  assign curated = product.metafields.sakooon.complementary_products.value
+  assign items = nil
+  if recommendations.performed and recommendations.products_count > 0
+    assign items = recommendations.products
+  elsif curated != blank
+    assign items = curated
+  endif
+-%}
+{%- capture list -%}
+  {%- if items != nil -%}
+    <div data-recommendations>
+      <h2 class="product-recs__heading">{{ heading | escape }}</h2>
+      <ul class="product-recs__list scroll-x no-scrollbar list-unstyled" role="list">
+        {%- for rec in items limit: section.settings.limit -%}
+          {%- if rec.id == product.id -%}{%- continue -%}{%- endif -%}
+          <li class="product-recs__item" data-recommendation-item>{%- render 'product-card', product: rec, sizes: '(min-width: 1024px) 25vw, 45vw', show_swatches: false -%}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- if recommendations.performed -%}
+  {{ list }}
+{%- else -%}
+  <div class="section product-recs product-recs--complementary color-scheme-{{ section.settings.color_scheme }}" style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;">
+    {%- if items != nil -%}
+      <div class="product-recs__inner page-width page-width--full">{{ list }}</div>
+    {%- elsif product != blank -%}
+      <product-recommendations
+        class="product-recs__inner page-width page-width--full"
+        data-url="{{ routes.product_recommendations_url }}?product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=complementary&section_id={{ section.id }}"
+      ></product-recommendations>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.complementary-products.name",
+  "class": "section-complementary-products",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:sections.complementary-products.settings.heading.label", "default": "Complete the bed" },
+    { "type": "range", "id": "limit", "min": 2, "max": 10, "step": 1, "label": "t:sections.complementary-products.settings.limit.label", "default": 4 },
+    { "type": "paragraph", "content": "t:sections.complementary-products.settings.info.content" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 24 }
+  ],
+  "presets": [ { "name": "t:sections.complementary-products.name" } ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
