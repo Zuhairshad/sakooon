@@ -22,7 +22,7 @@
       this.list.addEventListener('click', this._onClick);
     }
     disconnectedCallback() {
-      if (this.io) this.io.disconnect();
+      if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
       if (this.list && this._onClick) this.list.removeEventListener('click', this._onClick);
     }
     build() {
@@ -39,14 +39,26 @@
       });
     }
     observe() {
-      if (!('IntersectionObserver' in window)) return;
-      const visible = new Map();
-      this.io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => visible.set(en.target, en.isIntersecting));
-        const current = this.targets.find((t) => visible.get(t));
-        if (current) this.setCurrent(this.links.find((a) => decodeURIComponent(a.hash.slice(1)) === current.id));
-      }, { rootMargin: '-20% 0px -65% 0px' });
-      this.targets.forEach((t) => this.io.observe(t));
+      // Scroll-spy: the current target is the last one whose top has passed the reading line (20% down the
+      // viewport); above the first target nothing is current.
+      this._spy = () => {
+        this._spyTick = false;
+        const line = window.innerHeight * 0.2;
+        let current = null;
+        this.targets.forEach((t) => { if (t.getBoundingClientRect().top <= line) current = t; });
+        // At the very bottom the last targets may never reach the line; the last one in view wins.
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) this.targets.forEach((t) => { if (t.getBoundingClientRect().top < window.innerHeight) current = t; });
+        if (!current) { this.clearCurrent(); return; }
+        this.setCurrent(this.links.find((a) => decodeURIComponent(a.hash.slice(1)) === current.id));
+      };
+      this._onScroll = () => { if (!this._spyTick) { this._spyTick = true; requestAnimationFrame(this._spy); } };
+      window.addEventListener('scroll', this._onScroll, { passive: true });
+      this._spy();
+    }
+    clearCurrent() {
+      if (!this.current) return;
+      this.links.forEach((a) => a.removeAttribute('aria-current'));
+      this.current = null;
     }
     setCurrent(link) {
       if (!link || link === this.current) return;
