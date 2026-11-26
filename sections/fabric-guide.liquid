@@ -1,0 +1,106 @@
+{%- comment -%}
+  Fabric index: a grid of fabric cards with optional ratings and weave/fibre filter chips.
+  Source order: picked fabric blocks -> page.metafields.sakooon.related_fabrics -> all fabrics by sort_order
+  (snippets/fabric-handles.liquid). Reference: Tekla textile-care index (docs/reference/editorial.md 2.3). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign exclude = ''
+  if s.exclude_current and metaobject != blank
+    assign exclude = metaobject.system.handle
+  endif
+-%}
+{%- capture handles -%}{% render 'fabric-handles', blocks: section.blocks, page: page, exclude: exclude, limit: s.limit %}{%- endcapture -%}
+{%- liquid
+  assign handle_list = handles | strip | split: ','
+  assign filter_values = ''
+  for h in handle_list
+    assign f = shop.metaobjects.fabric[h]
+    assign v = f[s.filter_by].value
+    if v != blank
+      assign key = v | handleize
+      unless filter_values contains key
+        assign filter_values = filter_values | append: key | append: '::' | append: v | append: '||'
+      endunless
+    endif
+  endfor
+  assign filters = filter_values | split: '||'
+  assign col_vw = 100 | divided_by: s.columns
+  assign card_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
+-%}
+<div class="section ed-section fabric-guide color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <fabric-guide class="page-width" data-filter-by="{{ s.filter_by }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
+    {%- if s.show_filters and filters.size > 1 -%}
+      <div class="fabric-guide__filters" role="group" aria-label="{{ 'editorial.fabric_guide.filter_label' | t }}">
+        <button type="button" class="fabric-guide__chip" aria-pressed="true" data-filter="">{{ 'editorial.fabric_guide.all' | t }}</button>
+        {%- for item in filters -%}
+          {%- assign parts = item | split: '::' -%}
+          <button type="button" class="fabric-guide__chip" aria-pressed="false" data-filter="{{ parts[0] }}">{{ parts[1] | capitalize }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <ul class="fabric-guide__grid list-unstyled" role="list">
+      {%- if handles != blank -%}
+        {%- for h in handle_list -%}
+          {%- assign f = shop.metaobjects.fabric[h] -%}
+          {%- if f != blank -%}
+            <li class="fabric-guide__item">{% render 'fabric-card', fabric: f, ratio: s.image_ratio, show_summary: s.show_summary, show_rating: s.show_ratings, heading_tag: 'h3', sizes: card_sizes, link_label: s.card_link_label %}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..s.columns) -%}
+          <li class="fabric-guide__item">{% render 'fabric-card', fabric: blank, ratio: s.image_ratio, show_summary: s.show_summary, heading_tag: 'h3' %}</li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+    <p class="fabric-guide__empty" hidden>{{ 'editorial.fabric_guide.no_results' | t }}</p>
+  </fabric-guide>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.fabric-guide.name",
+  "tag": "section",
+  "class": "section-fabric-guide",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Our fabrics" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+    { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" },
+    { "type": "paragraph", "content": "t:sections.fabric-guide.settings.source.content" },
+    { "type": "range", "id": "limit", "min": 2, "max": 24, "step": 1, "label": "t:sections.fabric-guide.settings.limit.label", "default": 12 },
+    { "type": "checkbox", "id": "exclude_current", "label": "t:sections.fabric-guide.settings.exclude_current.label", "default": true },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" }
+    ] },
+    { "type": "checkbox", "id": "show_summary", "label": "t:sections.fabric-guide.settings.show_summary.label", "default": true },
+    { "type": "checkbox", "id": "show_ratings", "label": "t:sections.fabric-guide.settings.show_ratings.label", "default": false },
+    { "type": "text", "id": "card_link_label", "label": "t:sections.fabric-guide.settings.card_link_label.label", "default": "Read more" },
+    { "type": "checkbox", "id": "show_filters", "label": "t:sections.fabric-guide.settings.show_filters.label", "default": false },
+    { "type": "select", "id": "filter_by", "label": "t:sections.fabric-guide.settings.filter_by.label", "default": "weave", "options": [
+      { "value": "weave", "label": "t:sections.fabric-guide.settings.filter_by.options.weave" },
+      { "value": "fibre", "label": "t:sections.fabric-guide.settings.filter_by.options.fibre" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "fabric", "name": "t:sections.fabric-guide.blocks.fabric.name", "settings": [
+      { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.fabric-guide.blocks.fabric.settings.fabric.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.fabric-guide.presets.name" } ]
+}
+{% endschema %}

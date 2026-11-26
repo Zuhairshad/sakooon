@@ -1,0 +1,52 @@
+{%- comment -%}
+  Outputs a comma-separated list of fabric metaobject handles for a fabric section, so sections share one
+  source order (render cannot return objects; callers capture this and look each handle up in
+  shop.metaobjects.fabric). Owner: shad-8b.
+  {%- capture handles -%}{% render 'fabric-handles', blocks: section.blocks, page: page, exclude: current_handle, limit: 12 %}{%- endcapture -%}
+  Order of precedence:
+  1. fabric blocks picked in the section (block.settings.fabric)
+  2. page.metafields.sakooon.related_fabrics
+  3. every published fabric, ascending by sort_order (fabrics without sort_order last, by name)
+{%- endcomment -%}
+{%- liquid
+  assign limit = limit | default: 50
+  assign out = ''
+  for block in blocks
+    if block.settings.fabric != blank
+      assign out = out | append: block.settings.fabric.system.handle | append: ','
+    endif
+  endfor
+  if out == '' and page != blank and page.metafields.sakooon.related_fabrics.value != blank
+    for f in page.metafields.sakooon.related_fabrics.value
+      assign out = out | append: f.system.handle | append: ','
+    endfor
+  endif
+  if out == ''
+    assign keyed = ''
+    for f in shop.metaobjects.fabric.values
+      assign order = f.sort_order.value | default: 9999 | plus: 10000
+      assign name_key = f.name.value | default: f.system.handle | downcase | replace: '|', ''
+      assign keyed = keyed | append: order | append: '~' | append: name_key | append: '|' | append: f.system.handle | append: ','
+    endfor
+    assign sorted = keyed | split: ',' | sort
+    for k in sorted
+      assign h = k | split: '|' | last
+      assign out = out | append: h | append: ','
+    endfor
+  endif
+  assign list = out | split: ','
+  assign n = 0
+  for h in list
+    if h == blank or h == exclude
+      continue
+    endif
+    if n >= limit
+      break
+    endif
+    if n > 0
+      echo ','
+    endif
+    echo h
+    assign n = n | plus: 1
+  endfor
+-%}

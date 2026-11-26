@@ -518,6 +518,40 @@
       "required": "* Required fields",
       "success": "Thank you for your message. We will get back to you as soon as possible.",
       "error_heading": "Please check the following:"
+    },
+    "fabric_guide": {
+      "filter_label": "Filter fabrics",
+      "all": "All",
+      "no_results": "No fabrics match this filter."
+    },
+    "fabric_compare": {
+      "label": "Fabric comparison",
+      "caption": "Comparison of fabric characteristics",
+      "empty": "Add fabrics in Settings › Custom data › Metaobjects, or pick them in this section, to build the comparison.",
+      "rows": {
+        "summary": "In short",
+        "composition": "Composition",
+        "weave": "Weave",
+        "finish": "Finish",
+        "thread_count": "Thread count",
+        "gsm": "Weight",
+        "yarn": "Yarn",
+        "feel": "Feel",
+        "texture": "Texture",
+        "origin": "Made in",
+        "best_for": "Best for",
+        "care": "Care"
+      }
+    },
+    "fabric": {
+      "best_for": "Best for",
+      "shop": "Shop {{ name }}",
+      "care_guide": "Care guide",
+      "seasons": "Seasons",
+      "licence": "Licence",
+      "verify": "Verify certificate",
+      "new_window": "(opens in a new window)",
+      "select_fabric": "Select a fabric in this section's settings to preview its content."
     }
   }
 }

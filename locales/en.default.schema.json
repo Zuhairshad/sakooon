@@ -877,6 +877,163 @@
           "label": "Show page title"
         }
       }
+    },
+    "fabric-guide": {
+      "name": "Fabric guide",
+      "presets": {
+        "name": "Fabric guide"
+      },
+      "settings": {
+        "source": {
+          "content": "Shows the fabrics picked below. With none picked, it uses the page's related fabrics, and otherwise every published fabric in sort order."
+        },
+        "limit": {
+          "label": "Maximum fabrics"
+        },
+        "exclude_current": {
+          "label": "Hide the fabric being viewed"
+        },
+        "show_summary": {
+          "label": "Show summary"
+        },
+        "show_ratings": {
+          "label": "Show ratings"
+        },
+        "card_link_label": {
+          "label": "Card link label"
+        },
+        "show_filters": {
+          "label": "Show filters"
+        },
+        "filter_by": {
+          "label": "Filter by",
+          "options": {
+            "weave": "Weave",
+            "fibre": "Fibre"
+          }
+        }
+      },
+      "blocks": {
+        "fabric": {
+          "name": "Fabric",
+          "settings": {
+            "fabric": {
+              "label": "Fabric"
+            }
+          }
+        }
+      }
+    },
+    "fabric-compare": {
+      "name": "Fabric comparison",
+      "presets": {
+        "name": "Fabric comparison"
+      },
+      "settings": {
+        "show_images": {
+          "label": "Show fabric images"
+        },
+        "rows_header": {
+          "content": "Rows"
+        },
+        "row_summary": {
+          "label": "Summary"
+        },
+        "row_composition": {
+          "label": "Composition"
+        },
+        "row_weave": {
+          "label": "Weave"
+        },
+        "row_finish": {
+          "label": "Finish"
+        },
+        "row_thread_count": {
+          "label": "Thread count"
+        },
+        "row_gsm": {
+          "label": "Weight (g/m²)"
+        },
+        "row_feel": {
+          "label": "Feel"
+        },
+        "row_texture": {
+          "label": "Texture"
+        },
+        "row_origin": {
+          "label": "Made in"
+        },
+        "row_best_for": {
+          "label": "Best for"
+        },
+        "row_ratings": {
+          "label": "Ratings"
+        },
+        "row_care": {
+          "label": "Care symbols"
+        }
+      }
+    },
+    "main-metaobject-fabric": {
+      "name": "Fabric header",
+      "settings": {
+        "fabric": {
+          "label": "Fabric",
+          "info": "Only used when this section is not on a fabric page."
+        },
+        "guide_page": {
+          "label": "Fabric guide page",
+          "info": "Shown in the breadcrumbs."
+        },
+        "show_secondary": {
+          "label": "Show second image"
+        }
+      }
+    },
+    "fabric-detail": {
+      "name": "Fabric details",
+      "presets": {
+        "name": "Fabric details"
+      },
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "stacked": "Stacked",
+            "columns": "Heading beside content"
+          }
+        }
+      },
+      "blocks": {
+        "description": {
+          "name": "Description"
+        },
+        "specs": {
+          "name": "Specifications"
+        },
+        "ratings": {
+          "name": "Ratings"
+        },
+        "care": {
+          "name": "Care",
+          "settings": {
+            "link_label": {
+              "label": "Care guide link label"
+            }
+          }
+        },
+        "certifications": {
+          "name": "Certifications",
+          "settings": {
+            "rules": {
+              "content": "Only certifications with an issuer, licence number and verification link, and not past their expiry date, are shown."
+            }
+          }
+        },
+        "gallery": {
+          "name": "Gallery"
+        }
+      }
     }
   }
 }

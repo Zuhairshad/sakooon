@@ -1,0 +1,122 @@
+{%- comment -%}
+  Fabric page header for templates/metaobject/fabric.json: imagery, name, summary, key specifications,
+  ratings and a link to shop the fabric. Reads the `metaobject` of the web page; the fabric picker is a
+  fallback so the section can also sit on a page template. Every field is optional and blank-guarded.
+  Reference: Tekla care detail (docs/reference/editorial.md 2.4). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign fabric = metaobject
+  if fabric == blank
+    assign fabric = s.fabric
+  endif
+  if fabric != blank
+    assign name = fabric.name.value
+    assign primary = fabric.texture_image.value | default: fabric.lifestyle_image.value
+    assign secondary = blank
+    if fabric.texture_image.value != blank
+      assign secondary = fabric.lifestyle_image.value
+    endif
+  else
+    assign name = 'onboarding.fabric_name' | t
+    assign primary = blank
+    assign secondary = blank
+  endif
+  assign spec_keys = 'composition,weave,finish,thread_count,gsm' | split: ','
+-%}
+<div class="section ed-section main-fabric color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width">
+    {%- if s.show_breadcrumbs -%}
+      <nav class="breadcrumbs text-small" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+        <ol class="breadcrumbs__list list-unstyled">
+          <li><a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a></li>
+          {%- if s.guide_page != blank -%}<li><a href="{{ s.guide_page.url }}">{{ s.guide_page.title }}</a></li>{%- endif -%}
+          <li aria-current="page">{{ name }}</li>
+        </ol>
+      </nav>
+    {%- endif -%}
+    <div class="main-fabric__grid">
+      <div class="main-fabric__media">
+        <div class="media" style="--aspect: 4/5">{% render 'image', image: primary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5', priority: true, alt: name, placeholder: 'lifestyle-1' %}</div>
+        {%- if s.show_secondary and secondary != blank -%}
+          <div class="media" style="--aspect: 4/5">{% render 'image', image: secondary, sizes: '(min-width: 1024px) 55vw, 100vw', aspect: '4/5' %}</div>
+        {%- endif -%}
+      </div>
+      <div class="main-fabric__info">
+        {%- if fabric != blank -%}
+          {%- liquid
+            assign eyebrow_parts = ''
+            if fabric.weave.value != blank
+              assign eyebrow_parts = fabric.weave.value
+            endif
+            if fabric.fibre.value != blank
+              if eyebrow_parts != ''
+                assign eyebrow_parts = eyebrow_parts | append: ' · '
+              endif
+              assign eyebrow_parts = eyebrow_parts | append: fabric.fibre.value
+            endif
+          -%}
+          {%- if eyebrow_parts != '' -%}<p class="main-fabric__eyebrow">{{ eyebrow_parts | capitalize }}</p>{%- endif -%}
+        {%- endif -%}
+        <h1 class="main-fabric__title {{ s.heading_size }}">{{ name }}</h1>
+        {%- if fabric != blank -%}
+          {%- if fabric.tagline.value != blank -%}<p class="main-fabric__tagline">{{ fabric.tagline.value }}</p>{%- endif -%}
+          {%- if fabric.summary.value != blank -%}<p class="main-fabric__summary">{{ fabric.summary.value }}</p>{%- endif -%}
+          {%- capture specs -%}
+            {%- for key in spec_keys -%}
+              {%- assign v = fabric[key].value -%}
+              {%- if v != blank -%}
+                {%- assign label_key = 'editorial.fabric_compare.rows.' | append: key -%}
+                <div class="main-fabric__spec"><dt>{{ label_key | t }}</dt><dd>{% if key == 'weave' %}{{ v | capitalize }}{% else %}{{ v }}{% endif %}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if specs != blank -%}<dl class="main-fabric__specs">{{ specs }}</dl>{%- endif -%}
+          {%- if s.show_ratings -%}{% render 'fabric-rating', fabric: fabric %}{%- endif -%}
+          {%- if fabric.best_for.value != blank -%}
+            <div class="main-fabric__best-for">
+              <p class="main-fabric__label">{{ 'editorial.fabric.best_for' | t }}</p>
+              <ul class="main-fabric__chips list-unstyled" role="list">{%- for item in fabric.best_for.value -%}<li>{{ item }}</li>{%- endfor -%}</ul>
+            </div>
+          {%- endif -%}
+          {%- assign shop_collection = fabric.collection.value -%}
+          {%- if shop_collection != blank or fabric.care_guide.value != blank -%}
+            <div class="main-fabric__actions">
+              {%- if shop_collection != blank -%}
+                {%- assign shop_label = 'editorial.fabric.shop' | t: name: name -%}
+                {% render 'button', label: shop_label, url: shop_collection.url, style: 'primary' %}
+              {%- endif -%}
+              {%- if fabric.care_guide.value != blank -%}<a class="link" href="{{ fabric.care_guide.value.url }}">{{ 'editorial.fabric.care_guide' | t }}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <p class="main-fabric__summary">{{ 'onboarding.text' | t }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-metaobject-fabric.name",
+  "tag": "section",
+  "class": "section-main-fabric",
+  "settings": [
+    { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.main-metaobject-fabric.settings.fabric.label", "info": "t:sections.main-metaobject-fabric.settings.fabric.info" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": true },
+    { "type": "page", "id": "guide_page", "label": "t:sections.main-metaobject-fabric.settings.guide_page.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+      { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
+    ] },
+    { "type": "checkbox", "id": "show_secondary", "label": "t:sections.main-metaobject-fabric.settings.show_secondary.label", "default": true },
+    { "type": "checkbox", "id": "show_ratings", "label": "t:sections.fabric-guide.settings.show_ratings.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ]
+}
+{% endschema %}

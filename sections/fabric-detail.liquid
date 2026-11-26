@@ -1,0 +1,144 @@
+{%- comment -%}
+  Fabric story, specifications, care and certifications as reorderable blocks. Reads the page's
+  `metaobject` (fabric web page) or the fabric picker. Blocks whose fields are blank render nothing.
+  Certifications render only when issuer, licence number and verification URL are present and valid_until
+  is not past (docs/metafield-contracts.md). Reference: Tekla care detail Care / Quality / Details. Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign fabric = metaobject
+  if fabric == blank
+    assign fabric = s.fabric
+  endif
+  assign today = 'now' | date: '%Y-%m-%d'
+  case s.content_width
+    when 'page'
+      assign width_class = 'page-width'
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    else
+      assign width_class = 'page-width page-width--text'
+  endcase
+-%}
+<div class="section ed-section fabric-detail fabric-detail--{{ s.layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="{{ width_class }}">
+    {%- for block in section.blocks -%}
+      {%- capture body -%}
+        {%- case block.type -%}
+          {%- when 'description' -%}
+            {%- if fabric.description.value != blank -%}<div class="rte">{{ fabric.description | metafield_tag }}</div>{%- endif -%}
+          {%- when 'specs' -%}
+            {%- assign keys = 'composition,weave,finish,thread_count,gsm,yarn,feel,texture,origin' | split: ',' -%}
+            {%- capture rows -%}
+              {%- for key in keys -%}
+                {%- assign v = fabric[key].value -%}
+                {%- if v != blank -%}
+                  {%- assign label_key = 'editorial.fabric_compare.rows.' | append: key -%}
+                  <div class="fabric-detail__spec"><dt>{{ label_key | t }}</dt><dd>{% if key == 'weave' %}{{ v | capitalize }}{% else %}{{ v }}{% endif %}{% if key == 'gsm' %} g/m²{% endif %}</dd></div>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if fabric.seasons.value != blank -%}<div class="fabric-detail__spec"><dt>{{ 'editorial.fabric.seasons' | t }}</dt><dd>{{ fabric.seasons.value | join: ', ' | replace: '-', ' ' | capitalize }}</dd></div>{%- endif -%}
+            {%- endcapture -%}
+            {%- if rows != blank -%}<dl class="fabric-detail__specs">{{ rows }}</dl>{%- endif -%}
+          {%- when 'ratings' -%}
+            {% render 'fabric-rating', fabric: fabric %}
+          {%- when 'care' -%}
+            {%- if fabric.care_symbols.value != blank -%}{% render 'care-icons', symbols: fabric.care_symbols.value %}{%- endif -%}
+            {%- if fabric.care.value != blank -%}<div class="rte fabric-detail__care-text">{{ fabric.care | metafield_tag }}</div>{%- endif -%}
+            {%- if fabric.care_guide.value != blank -%}<p><a class="link" href="{{ fabric.care_guide.value.url }}">{{ block.settings.link_label | default: fabric.care_guide.value.title }}</a></p>{%- endif -%}
+          {%- when 'certifications' -%}
+            {%- for cert in fabric.certifications.value -%}
+              {%- liquid
+                assign valid = true
+                if cert.issuer.value == blank or cert.licence_number.value == blank or cert.certificate_url.value == blank
+                  assign valid = false
+                endif
+                if cert.valid_until.value != blank
+                  assign until = cert.valid_until.value | date: '%Y-%m-%d'
+                  if until < today
+                    assign valid = false
+                  endif
+                endif
+              -%}
+              {%- if valid -%}
+                <p class="fabric-detail__cert">
+                  <span>{{ cert.name.value }}</span>
+                  <span class="text-muted">{{ cert.issuer.value }} · {{ 'editorial.fabric.licence' | t }} {{ cert.licence_number.value }}{% if cert.scope.value != blank %} · {{ cert.scope.value }}{% endif %}</span>
+                  <a class="link" href="{{ cert.certificate_url.value }}" target="_blank" rel="noopener">{{ 'editorial.fabric.verify' | t }}<span class="visually-hidden"> {{ 'editorial.fabric.new_window' | t }}</span></a>
+                </p>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- when 'gallery' -%}
+            {%- if fabric.gallery.value != blank -%}
+              <ul class="fabric-detail__gallery list-unstyled" role="list">
+                {%- for img in fabric.gallery.value limit: 6 -%}<li class="media" style="--aspect: 4/5">{% render 'image', image: img, sizes: '(min-width: 768px) 33vw, 50vw', aspect: '4/5' %}</li>{%- endfor -%}
+              </ul>
+            {%- endif -%}
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+        {%- endcase -%}
+      {%- endcapture -%}
+      {%- if body != blank -%}
+        <div class="fabric-detail__block fabric-detail__block--{{ block.type }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}
+            {%- assign anchor = block.settings.heading | handleize -%}
+            <h2 class="fabric-detail__heading h4" id="{{ anchor }}" data-anchor-target>{{ block.settings.heading }}</h2>
+          {%- endif -%}
+          <div class="fabric-detail__body">{{ body }}</div>
+        </div>
+      {%- elsif fabric == blank and request.design_mode -%}
+        <div class="fabric-detail__block" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}<h2 class="fabric-detail__heading h4">{{ block.settings.heading }}</h2>{%- endif -%}
+          <p class="text-muted">{{ 'editorial.fabric.select_fabric' | t }}</p>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.fabric-detail.name",
+  "tag": "section",
+  "class": "section-fabric-detail",
+  "settings": [
+    { "type": "metaobject", "id": "fabric", "metaobject_type": "fabric", "label": "t:sections.main-metaobject-fabric.settings.fabric.label", "info": "t:sections.main-metaobject-fabric.settings.fabric.info" },
+    { "type": "select", "id": "layout", "label": "t:sections.fabric-detail.settings.layout.label", "default": "stacked", "options": [
+      { "value": "stacked", "label": "t:sections.fabric-detail.settings.layout.options.stacked" },
+      { "value": "columns", "label": "t:sections.fabric-detail.settings.layout.options.columns" }
+    ] },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "text", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "description", "name": "t:sections.fabric-detail.blocks.description.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "About this fabric" } ] },
+    { "type": "specs", "name": "t:sections.fabric-detail.blocks.specs.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Details" } ] },
+    { "type": "ratings", "name": "t:sections.fabric-detail.blocks.ratings.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "How it feels" } ] },
+    { "type": "care", "name": "t:sections.fabric-detail.blocks.care.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Care" },
+      { "type": "text", "id": "link_label", "label": "t:sections.fabric-detail.blocks.care.settings.link_label.label", "default": "Read the full care guide" } ] },
+    { "type": "certifications", "name": "t:sections.fabric-detail.blocks.certifications.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Certifications" },
+      { "type": "paragraph", "content": "t:sections.fabric-detail.blocks.certifications.settings.rules.content" } ] },
+    { "type": "gallery", "name": "t:sections.fabric-detail.blocks.gallery.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" } ] },
+    { "type": "text", "name": "t:sections.editorial-text.blocks.text.name", "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" } ] }
+  ],
+  "presets": [ {
+    "name": "t:sections.fabric-detail.presets.name",
+    "blocks": [ { "type": "description" }, { "type": "specs" }, { "type": "ratings" }, { "type": "care" }, { "type": "certifications" } ]
+  } ]
+}
+{% endschema %}

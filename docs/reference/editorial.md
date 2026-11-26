@@ -25,7 +25,7 @@ Ground rules carried into implementation: we recreate **proportions, rhythm and 
 | Page background | `rgb(246,246,246)` | warm-neutral off-white. The footer switches to `#fff` |
 | Hairline | `1px solid rgb(227,227,227)` | every divider: accordion rows, size-guide rows, footer columns |
 | Strong rule | `1px solid rgb(24,24,24)` | active filter underline, "Explore all products" text-button underline |
-| Header | sticky, 52px tall, `top:0` | never hides on scroll. The `scrolled-up` and `scrolled-sticky` states are identical |
+| Header | sticky, 52px tall, `top:0` | **hides on scroll down and reappears on any scroll up** (inner bar `translateY(-100%)` once scrollY is past about 52, 0.25s, per shad-2d's measurement). Compare `states/1440-scrolled-sticky.png` (hidden) with `1440-scrolled-up.png` (shown). Corrected 2026-11-26; an earlier draft said it never hides |
 | Page gutter | 16px at every width below the container | |
 | Containers | **1168** (wide: grids, care), **992** (about), **732** (text column: care intros, shipping), **700** (ESG long-form), **668** (size guide), **612** (article body) | all centred. A 732 text column inside the 1168 container is left-aligned with the grid, not centred |
 | Grid gutter | 16px column gap. Row gap is **40px** (care cards) or **44px** (story cards) | |
@@ -341,7 +341,7 @@ Snippets: `accordion` (button + panel, `aria-expanded`/`aria-controls`, + icon, 
 | State | Status |
 |---|---|
 | Cookie banner | dismissed with "Only necessary" on every Tekla load. The banner itself was not screenshotted (it is proprietary chrome and not needed) |
-| Sticky header (scrolled / scrolled-up) | captured at 1440 and 390 on all Tekla pages. It is always visible and never hides |
+| Sticky header (scrolled / scrolled-up) | captured at 1440 and 390 on all Tekla pages. It is hidden after scrolling down and shown again after scrolling up 200px |
 | Accordion closed / opening / open | captured: `tekla/shipping-and-returns/states/{1440,390}-accordion-*` |
 | Size-guide row hover / panel open | captured: `tekla/size-guide/states/*` |
 | Link default / hover | captured: breadcrumbs on care pages |
