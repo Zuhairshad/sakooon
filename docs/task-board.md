@@ -16,16 +16,16 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 ## Phase 1: implementation
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
 - [x] Header, announcement, mega menu, mobile nav, sticky (shad-2d) 073f94c, merged to integration
-- [~] Footer (shad-2d)
-- [ ] Homepage sections + index.json (shad-2d)
+- [x] Footer (shad-2d) 0c1ca23, merged to integration
+- [~] Homepage sections + index.json (shad-2d)
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
 - [~] Collection template + facets + sort + mobile filter drawer (shad-d8, milestone c; verifying on preview)
 - [~] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8, milestone d)
 - [x] Cart drawer + search drawer (shad-d8) 06b8930 c3e93ee, merged to integration
 - [ ] Search drawer + results (shad-d8)
 - [x] Editorial section library + page templates (shad-8b) 2519044, merged to integration
-- [~] Fabric metaobject template + fabric guide + compare (shad-8b, milestone c)
-- [ ] Care guides (shad-8b)
+- [x] Fabric metaobject template + fabric guide + compare (shad-8b) 993bc36, merged to integration
+- [~] Care guides (shad-8b, milestone d)
 - [ ] Brand pages, journal (shad-8b)
 - [ ] Size guide, measurement guide, FAQ, shipping, returns, contact (shad-8b)
 - [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
