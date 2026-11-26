@@ -30,7 +30,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Size guide, measurement guide (shad-8b) ccedb41; FAQ, shipping, returns, contact 2519044; merged to integration
 - [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
 - [~] Visual comparison passes per template (Fable + owner): header, footer, collection, fabric, home logged; editorial self-pass assigned; product pending
-- [ ] Functional tests, a11y, Lighthouse (Fable)
+- [~] Functional tests, a11y, Lighthouse (Fable): axe sweep run (icons fixed; 3 editorial + 1 commerce findings assigned); Lighthouse trial on PDP mobile: perf 71 (preview-indicative), a11y 100, best 96, seo 100
 - [ ] Final deliverables report (Fable)
 
 ## Open decisions
