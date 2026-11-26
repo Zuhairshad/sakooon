@@ -100,3 +100,6 @@ PKR prices are whole rupees and the store's money format (`Rs.{{amount}}`) carri
 `money_without_trailing_zeros` and never `money_with_currency` (it rendered "Rs.6,999.00 PKR" in the subtotal). Still format-driven, so a
 store-format change needs no theme change. No currency symbol is ever hardcoded.
 
+
+## 2026-11-26 D20: Announcement bar rotates automatically with no controls
+User decision (direct to shad-2d): no arrows, no pause button. Rotation holds on hover/focus and is off under prefers-reduced-motion; the "Rotate messages" setting can disable it. Known trade-off: WCAG 2.2.2 pause mechanism is partial without a button.
