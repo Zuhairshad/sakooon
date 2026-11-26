@@ -22,22 +22,26 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
 - [x] Product template: gallery, variant picker, buy buttons, sticky bar, accordions, recommendations (shad-d8) b2f85dd, merged to integration
 - [x] Cart drawer + search drawer (shad-d8) 06b8930 c3e93ee, merged to integration
-- [~] Cart page + search results template (shad-d8, milestone e); search drawer done
+- [x] Cart page + search results template (shad-d8) 8e1fffe, merged
 - [x] Editorial section library + page templates (shad-8b) 2519044, merged to integration
 - [x] Fabric metaobject template + fabric guide + compare (shad-8b) 993bc36, merged to integration
 - [x] Care guides (shad-8b) fa01a08, merged to integration
 - [x] Brand pages (editorial library) and journal (main-blog, main-article, article-card) ccedb41, merged to integration
 - [x] Size guide, measurement guide (shad-8b) ccedb41; FAQ, shipping, returns, contact 2519044; merged to integration
-- [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
-- [~] Visual comparison passes per template (Fable + owner): header, footer, collection, fabric, home logged; editorial self-pass assigned; product pending
-- [~] Functional tests, a11y, Lighthouse (Fable): axe sweep 0 serious/critical; Lighthouse mobile (preview with CDN-like resizing): home 89/100/100/100, collection 88/98/100/100, product 83/100/100/100; desktop 94-99 perf; full 7-viewport capture of 11 templates done (63 clean)
-- [ ] Final deliverables report (Fable)
+- [x] Integration merges + theme check (Fable): all branches merged into sakooon/integration; theme check no offenses (135 files)
+- [x] Visual comparison passes per template (Fable + owner): all templates logged in docs/visual-qa-log.md; editorial-visual-pass.md; storefront-review.md
+- [x] Functional tests, a11y, Lighthouse (Fable): interactions 9/9, responsive 91/91, axe 0 violations, Lighthouse a11y/BP/SEO 100 on 10 templates, mobile perf 77-95; final 7-viewport captures done
+- [x] Final deliverables report (Fable): docs/phase1-report.md
 
 ## Open decisions
 - Typography: resolved by D11 (one grotesk, 14px/300 defaults); serif display revisited in Phase 2 branding.
 
 ## Closing docs
 - [x] docs/reference/storefront-admin.md + storefront-review.md (shad-2d) 6800d75, 1b741bf, merged
-- [ ] docs/reference/commerce-admin.md (shad-d8)
-- [ ] docs/reference/editorial-admin.md + editorial-visual-pass.md (shad-8b)
-- [ ] docs/phase1-report.md final (Fable)
+- [x] docs/reference/commerce-admin.md (shad-d8) a279857
+- [x] docs/reference/editorial-admin.md + editorial-visual-pass.md (shad-8b) cfbd180
+- [x] docs/phase1-report.md final (Fable)
+
+## Phase 1 gate
+- [ ] USER APPROVAL of the reference-based implementation (required before any Phase 2 branding work)
+- [ ] Shopify CLI login and development-theme verification pass (checklists in docs/reference/*-admin.md)
