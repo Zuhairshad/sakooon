@@ -3,12 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "page",
+        "heading_size": "h1",
         "text": "<p>Questions about an order, a size or caring for your bedding? Write to us and we will help.</p>",
-        "padding_top": 80,
-        "padding_bottom": 40,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "routes": {

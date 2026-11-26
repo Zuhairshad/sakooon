@@ -10,12 +10,20 @@
   assign col_vw = 100 | divided_by: s.columns
   assign card_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
 -%}
-<div class="section ed-section main-blog color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+<div class="section ed-section main-blog{% if s.layout == 'page' %} ed-section--page{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
   <div class="page-width ed-wide">
     {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
-    <div class="main-blog__header">
-      {% render 'section-heading', heading: heading, heading_tag: 'h1', heading_size: s.heading_size, text: s.text %}
-    </div>
+    {%- if s.layout == 'page' -%}
+      <div class="ed-page main-blog__page-header">
+        <h1 class="ed-page__title">{{ heading | escape }}</h1>
+        {%- if s.text != blank -%}<div class="ed-page__sub rte">{{ s.text }}</div>{%- endif -%}
+        <hr class="ed-page__rule">
+      </div>
+    {%- else -%}
+      <div class="main-blog__header">
+        {% render 'section-heading', heading: heading, heading_tag: 'h1', heading_size: s.heading_size, text: s.text %}
+      </div>
+    {%- endif -%}
     {%- if s.show_tags and blog.all_tags.size > 0 -%}
       <nav class="main-blog__tags" aria-label="{{ 'editorial.blog.filter' | t }}">
         <ul class="list-unstyled" role="list">
@@ -70,6 +78,10 @@
   "tag": "section",
   "class": "section-main-blog",
   "settings": [
+    { "type": "select", "id": "layout", "label": "t:sections.editorial-hero.settings.layout.label", "default": "classic", "options": [
+      { "value": "classic", "label": "t:sections.editorial-hero.settings.layout.options.classic" },
+      { "value": "page", "label": "t:sections.editorial-hero.settings.layout.options.page" }
+    ] },
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
     { "type": "text", "id": "heading", "label": "t:sections.editorial-hero.settings.heading.label", "info": "t:sections.editorial-hero.settings.heading.info" },
     { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [

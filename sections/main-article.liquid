@@ -16,7 +16,30 @@
       assign media_sizes = '(min-width: 768px) 720px, 100vw'
   endcase
 -%}
-<article class="section ed-section main-article color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+{%- liquid
+  assign body_class = 'page-width page-width--text'
+  if s.layout == 'page'
+    assign media_class = 'page-width'
+    assign media_sizes = '(min-width: 1488px) 1392px, calc(100vw - 48px)'
+    assign body_class = 'page-width'
+  endif
+-%}
+<article class="section ed-section main-article{% if s.layout == 'page' %} main-article--page ed-section--page{% endif %} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  {%- if s.layout == 'page' -%}
+  <header class="page-width ed-page main-article__page-header">
+    {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
+    <h1 class="ed-page__title">{{ article.title }}</h1>
+    {%- if s.show_excerpt and article.excerpt != blank -%}<div class="ed-page__sub rte">{{ article.excerpt }}</div>{%- endif -%}
+    {%- if s.show_date or s.show_tag or s.show_author -%}
+      <p class="ed-page__note main-article__meta">
+        {%- if s.show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%-d %B %Y' }}</time>{%- endif -%}
+        {%- if s.show_tag and article.tags.size > 0 -%}{%- if s.show_date -%}<span aria-hidden="true">|</span>{%- endif -%}<span>{{ article.tags.first }}</span>{%- endif -%}
+        {%- if s.show_author and article.author != blank -%}<span aria-hidden="true">|</span><span>{{ article.author }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+    <hr class="ed-page__rule">
+  </header>
+  {%- else -%}
   <header class="page-width page-width--text main-article__header">
     {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
     {%- if s.show_tag and article.tags.size > 0 -%}<p class="main-article__eyebrow">{{ article.tags.first }}</p>{%- endif -%}
@@ -30,12 +53,13 @@
     {%- endif -%}
     {%- if s.show_excerpt and article.excerpt != blank -%}<div class="main-article__intro rte">{{ article.excerpt }}</div>{%- endif -%}
   </header>
+  {%- endif -%}
   {%- if s.show_image and article.image != blank -%}
     <div class="{{ media_class }} main-article__media">
       <div class="media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: article.image, sizes: media_sizes, aspect: s.image_ratio, priority: true %}</div>
     </div>
   {%- endif -%}
-  <div class="page-width page-width--text">
+  <div class="{{ body_class }}">
     <div class="main-article__content rte">{{ article.content }}</div>
     {%- if s.show_tags and article.tags.size > 0 -%}
       <ul class="main-article__tags list-unstyled" role="list">
@@ -116,6 +140,10 @@
   "tag": "div",
   "class": "section-main-article",
   "settings": [
+    { "type": "select", "id": "layout", "label": "t:sections.editorial-hero.settings.layout.label", "default": "classic", "options": [
+      { "value": "classic", "label": "t:sections.editorial-hero.settings.layout.options.classic" },
+      { "value": "page", "label": "t:sections.editorial-hero.settings.layout.options.page" }
+    ] },
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
     { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
       { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },

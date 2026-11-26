@@ -3,13 +3,15 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "show_breadcrumbs": true,
+        "layout": "page",
+        "show_breadcrumbs": false,
         "heading": "",
-        "content_width": "page",
+        "heading_size": "h1",
         "text": "<p>Every fabric feels, breathes and wears differently. Use this guide to compare them and find the one that suits the way you sleep.</p>",
-        "padding_top": 80,
-        "padding_bottom": 64,
-        "heading_size": "h3"
+        "note": "",
+        "color_scheme": "paper",
+        "padding_top": 20,
+        "padding_bottom": 48
       }
     },
     "guide": {
@@ -63,7 +65,7 @@
         "l"
       ],
       "settings": {
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 80
       }
@@ -101,7 +103,7 @@
       "settings": {
         "heading": "Fabric questions",
         "heading_size": "h4",
-        "content_width": "text",
+        "content_width": "page",
         "padding_top": 0,
         "padding_bottom": 80
       }
