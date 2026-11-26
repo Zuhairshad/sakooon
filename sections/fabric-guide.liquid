@@ -75,7 +75,7 @@
           -%}
           <article class="fabric-panel fabric-guide__item" data-weave="{{ f.weave.value | handleize }}" data-fibre="{{ f.fibre.value | handleize }}" aria-labelledby="{{ panel_id }}-title">
             <div class="fabric-panel__banner media">
-              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, calc(100vw - 32px)', aspect: 'natural', alt: '', placeholder: 'collection-1', priority: banner_priority %}
+              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, calc(100vw - 32px)', widths: '480,768,1024,1280,1600', aspect: '21/10', crop: 'center', alt: '', placeholder: 'collection-1', priority: banner_priority %}
               <{{ item_tag }} class="fabric-panel__name h2" id="{{ panel_id }}-title">
                 {%- if f.system.url != blank -%}<a href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
               </{{ item_tag }}>
