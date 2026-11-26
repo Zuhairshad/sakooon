@@ -76,5 +76,8 @@ Parameters: `eyebrow`, `heading`, `heading_tag` (default h2), `heading_size` ('h
 - Placeholders: `placeholder_svg_tag` via snippets/placeholder.liquid; headings default to generic copy ("Heading", "Share information about your brand").
 - No `{{ 'x' | asset_url | stylesheet_tag }}` inside sections except for the owner's single asset (and only once per page: guard not needed since Shopify dedupes the same URL? It does not; load from theme.liquid instead).
 
-## 9. Metafields
+## 9. Sticky header
+Shopify wraps every section in `<div id="shopify-section-<id>" class="shopify-section <schema class>">`. `position: sticky` on an element inside a wrapper of the same height does nothing, so the header section sets its stickiness on the wrapper: schema `"class": "section-header"` and CSS `.section-header { position: sticky; top: 0; z-index: var(--z-sticky); }` (toggled by a data attribute/class the section renders when sticky is enabled). Other sections that need the header edge read `--header-height` (set by global.js and the header).
+
+## 10. Metafields
 See docs/metafield-contracts.md for namespaces/keys. Access pattern: `product.metafields.sakooon.<key>` with `blank` guards.

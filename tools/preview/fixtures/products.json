@@ -1436,7 +1436,8 @@
     "benefits": [
      "Breathable",
      "Softens with every wash"
-    ]
+    ],
+    "fabric": "metaobject:fabric/percale"
    }
   }
  }

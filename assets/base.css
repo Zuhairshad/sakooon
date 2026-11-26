@@ -134,8 +134,9 @@ h5, .h5, h6 { font-size: var(--text-md); }
 .media--natural { aspect-ratio: auto; }
 .image { width: 100%; height: auto; }
 .image[style*="--aspect"] { aspect-ratio: var(--aspect); object-fit: cover; height: 100%; }
-.placeholder { background: color-mix(in srgb, var(--color-foreground) 6%, var(--color-background)); width: 100%; height: 100%; aspect-ratio: var(--aspect, 4/5); }
-.placeholder__svg { width: 100%; height: 100%; fill: color-mix(in srgb, var(--color-foreground) 14%, transparent); }
+.placeholder { background: color-mix(in srgb, var(--color-foreground) 6%, var(--color-background)); width: 100%; height: 100%; aspect-ratio: var(--aspect, 4/5); display: grid; place-items: center; overflow: hidden; }
+/* placeholder_svg_tag output keeps its own aspect ratio; cover the box instead of letterboxing it */
+.placeholder__svg { width: auto; height: auto; min-width: 100%; min-height: 100%; max-width: none; fill: color-mix(in srgb, var(--color-foreground) 14%, transparent); }
 
 /* Section heading (snippets/section-heading.liquid) */
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-6); margin-bottom: var(--space-8); }
@@ -327,5 +328,7 @@ theme-disclosure, .disclosure { display: block; border-bottom: var(--border-widt
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  /* Drawers/dialogs must flip visibility synchronously so focus() lands on open (a .01ms transition still defers it a frame). */
+  .drawer, .dialog, .overlay, [open] > .drawer, [open] > .dialog, [open] > .overlay, .drawer.is-open, .overlay.is-open { transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
