@@ -1,0 +1,153 @@
+{%- comment -%}
+  Journal article. Reference: Tekla story (docs/reference/editorial.md 2.8): centred title, intro and body in a
+  ~612px column, images at column or wide width. Optional: tags, share, comments, more articles. Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.image_width
+    when 'full'
+      assign media_class = 'page-width page-width--full'
+      assign media_sizes = '100vw'
+    when 'wide'
+      assign media_class = 'page-width page-width--narrow'
+      assign media_sizes = '(min-width: 1024px) 960px, 100vw'
+    else
+      assign media_class = 'page-width page-width--text'
+      assign media_sizes = '(min-width: 768px) 720px, 100vw'
+  endcase
+-%}
+<article class="section ed-section main-article color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <header class="page-width page-width--text main-article__header">
+    {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
+    {%- if s.show_tag and article.tags.size > 0 -%}<p class="main-article__eyebrow">{{ article.tags.first }}</p>{%- endif -%}
+    <h1 class="main-article__title {{ s.heading_size }}">{{ article.title }}</h1>
+    {%- if s.show_date or s.show_author -%}
+      <p class="main-article__meta">
+        {%- if s.show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>{%- endif -%}
+        {%- if s.show_date and s.show_author and article.author != blank -%}<span aria-hidden="true">|</span>{%- endif -%}
+        {%- if s.show_author and article.author != blank -%}<span>{{ article.author }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+    {%- if s.show_excerpt and article.excerpt != blank -%}<div class="main-article__intro rte">{{ article.excerpt }}</div>{%- endif -%}
+  </header>
+  {%- if s.show_image and article.image != blank -%}
+    <div class="{{ media_class }} main-article__media">
+      <div class="media" style="--aspect: {{ s.image_ratio }}">{% render 'image', image: article.image, sizes: media_sizes, aspect: s.image_ratio, priority: true %}</div>
+    </div>
+  {%- endif -%}
+  <div class="page-width page-width--text">
+    <div class="main-article__content rte">{{ article.content }}</div>
+    {%- if s.show_tags and article.tags.size > 0 -%}
+      <ul class="main-article__tags list-unstyled" role="list">
+        {%- for tag in article.tags -%}<li><a class="main-blog__tag" href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag }}</a></li>{%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <div class="main-article__footer">
+      <a class="link link--arrow main-article__back" href="{{ blog.url }}">{% render 'icon', icon: 'arrow-left', size: 16 %}{{ 'blogs.article.back_to_blog' | t }}</a>
+      {%- if s.show_share -%}
+        {%- assign share_url = request.origin | append: article.url -%}
+        <div class="main-article__share">
+          <span class="text-muted">{{ 'blogs.article.share' | t }}</span>
+          <a class="link" href="mailto:?subject={{ article.title | url_encode }}&body={{ share_url | url_encode }}">{{ 'editorial.article.email' | t }}</a>
+          <a class="link" href="https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}&description={{ article.title | url_encode }}" target="_blank" rel="noopener">Pinterest<span class="visually-hidden"> {{ 'editorial.fabric.new_window' | t }}</span></a>
+          <button type="button" class="link main-article__copy" data-copy-url="{{ share_url }}" data-copied="{{ 'editorial.article.copied' | t }}">{{ 'editorial.article.copy_link' | t }}</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if blog.comments_enabled? and s.show_comments -%}
+      <section class="main-article__comments" aria-labelledby="Comments-{{ article.id }}">
+        <h2 id="Comments-{{ article.id }}" class="h4">{{ 'blogs.article.comments' | t: count: article.comments_count }}</h2>
+        {%- paginate article.comments by 20 -%}
+          {%- for comment in article.comments -%}
+            <div class="main-article__comment">
+              <div class="rte">{{ comment.content }}</div>
+              <p class="text-caption">{{ comment.author }} · <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: format: 'date' }}</time></p>
+            </div>
+          {%- endfor -%}
+          {% render 'pagination', paginate: paginate %}
+        {%- endpaginate -%}
+        {%- form 'new_comment', article, class: 'main-article__comment-form' -%}
+          <h3 class="h4">{{ 'blogs.article.comment_form_title' | t }}</h3>
+          {%- if form.posted_successfully? -%}
+            <p class="form__message form__message--success" role="status">{% if blog.moderated? %}{{ 'blogs.article.success_moderated' | t }}{% else %}{{ 'blogs.article.success' | t }}{% endif %}</p>
+          {%- endif -%}
+          {{ form.errors | default_errors }}
+          <div class="contact-form__fields">
+            <div class="field"><label class="field__label" for="CommentAuthor">{{ 'blogs.article.name' | t }}</label><input class="field__input" type="text" id="CommentAuthor" name="comment[author]" value="{{ form.author }}" autocomplete="name" required></div>
+            <div class="field"><label class="field__label" for="CommentEmail">{{ 'blogs.article.email' | t }}</label><input class="field__input" type="email" id="CommentEmail" name="comment[email]" value="{{ form.email }}" autocomplete="email" required></div>
+            <div class="field contact-form__message"><label class="field__label" for="CommentBody">{{ 'blogs.article.message' | t }}</label><textarea class="field__input" id="CommentBody" name="comment[body]" rows="5" required>{{ form.body }}</textarea></div>
+          </div>
+          {%- if blog.moderated? -%}<p class="field__hint">{{ 'blogs.article.moderated' | t }}</p>{%- endif -%}
+          <button type="submit" class="button">{{ 'blogs.article.post' | t }}</button>
+        {%- endform -%}
+      </section>
+    {%- endif -%}
+  </div>
+
+  {%- if s.show_more -%}
+    {%- liquid
+      assign more_count = 0
+      for a in blog.articles limit: 4
+        if a.id != article.id
+          assign more_count = more_count | plus: 1
+        endif
+      endfor
+    -%}
+    {%- if more_count > 0 -%}
+      <div class="page-width main-article__more">
+        {% render 'section-heading', heading: s.more_heading, heading_size: 'h4', link_label: s.more_link_label, link_url: blog.url %}
+        <ul class="main-blog__grid list-unstyled" role="list" style="--ed-cols: 3">
+          {%- assign n = 0 -%}
+          {%- for a in blog.articles limit: 4 -%}
+            {%- if a.id == article.id or n >= 3 -%}{%- continue -%}{%- endif -%}
+            {%- assign n = n | plus: 1 -%}
+            <li>{% render 'article-card', article: a, show_excerpt: false, show_date: true, show_tag: true, heading_tag: 'h3' %}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "t:sections.main-article.name",
+  "tag": "div",
+  "class": "section-main-article",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+      { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
+    ] },
+    { "type": "checkbox", "id": "show_tag", "label": "t:sections.main-article.settings.show_tag.label", "default": true },
+    { "type": "checkbox", "id": "show_date", "label": "t:sections.main-blog.settings.show_date.label", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "t:sections.main-article.settings.show_author.label", "default": false },
+    { "type": "checkbox", "id": "show_excerpt", "label": "t:sections.main-article.settings.show_excerpt.label", "default": true },
+    { "type": "checkbox", "id": "show_image", "label": "t:sections.main-article.settings.show_image.label", "default": true },
+    { "type": "select", "id": "image_width", "label": "t:sections.editorial-hero.settings.image_width.label", "default": "wide", "options": [
+      { "value": "text", "label": "t:sections.editorial-hero.settings.image_width.options.column" },
+      { "value": "wide", "label": "t:sections.main-article.settings.image_width.options.wide" },
+      { "value": "full", "label": "t:sections.editorial-hero.settings.image_width.options.full" }
+    ] },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "16/9", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" },
+      { "value": "16/9", "label": "t:sections.editorial.settings.image_ratio.options.wide" },
+      { "value": "21/9", "label": "t:sections.editorial.settings.image_ratio.options.panorama" }
+    ] },
+    { "type": "checkbox", "id": "show_tags", "label": "t:sections.main-article.settings.show_tags.label", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "t:sections.main-article.settings.show_share.label", "default": true },
+    { "type": "checkbox", "id": "show_comments", "label": "t:sections.main-article.settings.show_comments.label", "default": true },
+    { "type": "checkbox", "id": "show_more", "label": "t:sections.main-article.settings.show_more.label", "default": true },
+    { "type": "text", "id": "more_heading", "label": "t:sections.main-article.settings.more_heading.label", "default": "More from the journal" },
+    { "type": "text", "id": "more_link_label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "View all" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+{%- comment -%}
+  Journal index. Reference: Tekla stories (docs/reference/editorial.md 2.7): title + intro, tag filter links
+  (active = 1px underline), 3-up 16:10 cards with 44px row gap, then "Showing X of Y", a progress bar and an
+  outlined "Show more" that loads the next page in place (it is a plain link to page n+1 without JS).
+  Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign heading = s.heading | default: blog.title
+  assign col_vw = 100 | divided_by: s.columns
+  assign card_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'
+-%}
+<div class="section ed-section main-blog color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="page-width">
+    {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
+    <div class="main-blog__header">
+      {% render 'section-heading', heading: heading, heading_tag: 'h1', heading_size: s.heading_size, text: s.text %}
+    </div>
+    {%- if s.show_tags and blog.all_tags.size > 0 -%}
+      <nav class="main-blog__tags" aria-label="{{ 'editorial.blog.filter' | t }}">
+        <ul class="list-unstyled" role="list">
+          <li><a class="main-blog__tag" href="{{ blog.url }}"{% if current_tags == blank %} aria-current="page"{% endif %}>{{ 'editorial.blog.all' | t }}</a></li>
+          {%- for tag in blog.all_tags -%}
+            <li><a class="main-blog__tag" href="{{ blog.url }}/tagged/{{ tag | handleize }}"{% if current_tags contains tag %} aria-current="page"{% endif %}>{{ tag }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+    {%- paginate blog.articles by s.per_page -%}
+      <blog-load-more>
+        {%- if blog.articles.size > 0 -%}
+          <ul class="main-blog__grid list-unstyled" role="list" data-blog-grid>
+            {%- for article in blog.articles -%}
+              <li class="main-blog__item">{% render 'article-card', article: article, ratio: s.image_ratio, show_excerpt: s.show_excerpt, show_date: s.show_date, show_tag: s.show_tag, heading_tag: 'h2', sizes: card_sizes %}</li>
+            {%- endfor -%}
+          </ul>
+          {%- liquid
+            assign shown = paginate.current_offset | plus: blog.articles.size
+            assign total = paginate.items
+            assign pct = shown | times: 100 | divided_by: total
+          -%}
+          <div class="main-blog__more" data-blog-more>
+            <p class="main-blog__count" aria-live="polite" data-blog-count>{{ 'editorial.blog.showing' | t: shown: shown, total: total }}</p>
+            <div class="main-blog__progress" aria-hidden="true"><span data-blog-progress style="width: {{ pct }}%"></span></div>
+            {%- if paginate.next -%}
+              <a class="button button--secondary main-blog__button" href="{{ paginate.next.url }}" data-blog-next>{{ 'editorial.blog.show_more' | t }}</a>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <p class="main-blog__empty">{{ 'editorial.blog.empty' | t }}</p>
+        {%- endif -%}
+      </blog-load-more>
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "section-main-blog",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial-hero.settings.heading.label", "info": "t:sections.editorial-hero.settings.heading.info" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+      { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial-hero.settings.text.label" },
+    { "type": "checkbox", "id": "show_tags", "label": "t:sections.main-blog.settings.show_tags.label", "default": true },
+    { "type": "range", "id": "per_page", "min": 3, "max": 24, "step": 3, "label": "t:sections.main-blog.settings.per_page.label", "default": 9 },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "16/10", "options": [
+      { "value": "16/10", "label": "t:sections.main-blog.settings.image_ratio.options.landscape" },
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" }
+    ] },
+    { "type": "checkbox", "id": "show_date", "label": "t:sections.main-blog.settings.show_date.label", "default": true },
+    { "type": "checkbox", "id": "show_tag", "label": "t:sections.main-blog.settings.show_tag.label", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "t:sections.main-blog.settings.show_excerpt.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ]
+}
+{% endschema %}

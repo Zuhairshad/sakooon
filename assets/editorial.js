@@ -144,6 +144,44 @@
   }
   if (!customElements.get('size-guide')) customElements.define('size-guide', SizeGuide);
 
+  /* ---------- <blog-load-more> ----------
+     "Show more" is a link to the next page; with JS it fetches that page and appends its cards in place,
+     then updates the count, progress bar and next link. Focus moves to the first new card. */
+  class BlogLoadMore extends HTMLElement {
+    connectedCallback() {
+      this._onClick = (e) => { const a = e.target.closest('[data-blog-next]'); if (a) { e.preventDefault(); this.load(a); } };
+      this.addEventListener('click', this._onClick);
+    }
+    disconnectedCallback() { this.removeEventListener('click', this._onClick); }
+    async load(link) {
+      if (this.busy) return; this.busy = true; link.setAttribute('aria-busy', 'true');
+      try {
+        const res = await fetch(link.href, { credentials: 'same-origin' });
+        if (!res.ok) throw new Error(res.status);
+        const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+        const incoming = doc.querySelector('blog-load-more');
+        const grid = this.querySelector('[data-blog-grid]');
+        const items = incoming ? Array.from(incoming.querySelectorAll('[data-blog-grid] > li')) : [];
+        items.forEach((li) => grid.append(document.importNode(li, true)));
+        ['[data-blog-count]', '[data-blog-progress]'].forEach((sel) => { const from = incoming && incoming.querySelector(sel), to = this.querySelector(sel); if (from && to) to.replaceWith(document.importNode(from, true)); });
+        const next = incoming && incoming.querySelector('[data-blog-next]');
+        if (next) link.href = next.href; else link.remove();
+        const first = grid.children[grid.children.length - items.length];
+        const focusable = first && first.querySelector('a');
+        if (focusable) focusable.focus({ preventScroll: true });
+      } catch (err) {
+        window.location.href = link.href; // fall back to normal navigation
+      } finally { this.busy = false; link.removeAttribute('aria-busy'); }
+    }
+  }
+  if (!customElements.get('blog-load-more')) customElements.define('blog-load-more', BlogLoadMore);
+
+  /* Copy-link button on articles. */
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-copy-url]'); if (!btn) return;
+    try { await navigator.clipboard.writeText(btn.dataset.copyUrl); const prev = btn.textContent; btn.textContent = btn.dataset.copied; setTimeout(() => { btn.textContent = prev; }, 2000); } catch (err) { /* clipboard unavailable */ }
+  });
+
   /* Open an accordion when the URL hash targets it (e.g. a PDP linking to /pages/faq#faq-<id>). */
   const openFromHash = () => {
     if (!location.hash) return;

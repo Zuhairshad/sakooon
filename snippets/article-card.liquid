@@ -1,0 +1,37 @@
+{%- comment -%}
+  Journal article card. Owner: shad-8b.
+  {% render 'article-card', article: article, ratio: '16/10', show_excerpt: true, show_date: true, show_tag: true, heading_tag: 'h2', sizes: '...' %}
+  Reference: Tekla story card (docs/reference/editorial.md 2.7): 16:10 image, title, "date | category" meta, excerpt.
+  With no article it renders an onboarding placeholder.
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: '16/10'
+  assign heading_tag = heading_tag | default: 'h2'
+  assign sizes = sizes | default: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'
+-%}
+<article class="article-card">
+  {%- if article != blank -%}
+    {%- assign img_alt = article.image.alt | default: '' -%}
+    <a class="article-card__link" href="{{ article.url }}">
+      <div class="article-card__media media" style="--aspect: {{ ratio }}">
+        {% render 'image', image: article.image, sizes: sizes, aspect: ratio, alt: img_alt, placeholder: 'lifestyle-1' %}
+      </div>
+      <{{ heading_tag }} class="article-card__title">{{ article.title }}</{{ heading_tag }}>
+    </a>
+    {%- if show_date or show_tag and article.tags.size > 0 -%}
+      <p class="article-card__meta">
+        {%- if show_date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>{%- endif -%}
+        {%- if show_date and show_tag and article.tags.size > 0 -%}<span class="article-card__sep" aria-hidden="true">|</span>{%- endif -%}
+        {%- if show_tag and article.tags.size > 0 -%}<span>{{ article.tags.first }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+    {%- if show_excerpt -%}
+      {%- assign excerpt = article.excerpt | default: article.content | strip_html | truncatewords: 24 -%}
+      {%- if excerpt != blank -%}<p class="article-card__excerpt">{{ excerpt | strip_html }}</p>{%- endif -%}
+    {%- endif -%}
+  {%- else -%}
+    <div class="article-card__media media" style="--aspect: {{ ratio }}">{% render 'placeholder', name: 'lifestyle-1', aspect: ratio %}</div>
+    <{{ heading_tag }} class="article-card__title">{{ 'onboarding.article_title' | t }}</{{ heading_tag }}>
+    {%- if show_excerpt -%}<p class="article-card__excerpt">{{ 'onboarding.article_excerpt' | t }}</p>{%- endif -%}
+  {%- endif -%}
+</article>
