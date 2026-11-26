@@ -175,7 +175,7 @@
             "label": "600"
           }
         ],
-        "default": "400"
+        "default": "300"
       },
       {
         "type": "range",
@@ -222,7 +222,7 @@
         "step": 1,
         "unit": "px",
         "label": "t:settings_schema.typography.settings.body_size.label",
-        "default": 16
+        "default": 14
       },
       {
         "type": "range",

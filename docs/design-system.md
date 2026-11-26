@@ -22,7 +22,7 @@ Muted text must hold AA on its background (min 4.5:1 for body, 3:1 for >=24px).
 
 ### Typography
 --font-body-family, --font-heading-family (Shopify font picker; default Inter), --font-body-weight 400,
---font-heading-weight 400 (provisional, Tekla-like; setting), --font-body-size 16px (setting 14-18).
+--font-heading-weight 300 (measured: Tekla 300 everywhere, Parachute display 300; setting), --font-body-size 14px (measured: Tekla 14/21, Parachute UI 14/19.6; setting 14-18).
 Scale (provisional, fluid with clamp(), mobile -> desktop):
 --text-xs 12px, --text-sm 13/14px, --text-base 15/16px, --text-md 17/18px, --text-lg 20/22px,
 --text-xl 24/28px, --text-2xl 30/36px, --text-3xl 36/48px, --text-4xl 44/64px.

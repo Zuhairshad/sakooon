@@ -57,6 +57,15 @@ function shopImage(ref) {
   return file ? image({ url: `/images/${file}`, altText: '', width: 1600, height: 1200 }) : null;
 }
 
+/* Fixtures (tools/preview/fixtures/*.json) extend the sample catalogue with shapes the snapshot lacks (colour x size variants, metafields). */
+const FIXTURE_DIR = path.join(__dirname, 'fixtures');
+const FIXTURES = exists(FIXTURE_DIR) ? fs.readdirSync(FIXTURE_DIR).filter((f) => f.endsWith('.json')).map((f) => readJson(path.join(FIXTURE_DIR, f))) : [];
+const FIXTURE_METAFIELDS = {};
+for (const fx of FIXTURES) {
+  for (const fp of fx.products || []) if (!snapshot.products.some((p) => p.handle === fp.handle)) snapshot.products.push(fp);
+  for (const [handle, handles] of Object.entries(fx.collectionProducts || {})) { const c = snapshot.collections.find((x) => x.handle === handle); if (c) c.productHandles = [...new Set([...(c.productHandles || []), ...handles])]; }
+  Object.assign(FIXTURE_METAFIELDS, fx.metafields || {});
+}
 const collectionsRaw = [...snapshot.collections, ...extras.collections.filter((x) => !snapshot.collections.some((c) => c.handle === x.handle))];
 
 const PRODUCTS = snapshot.products.map((p) => {
@@ -89,7 +98,7 @@ const PRODUCTS = snapshot.products.map((p) => {
       name: o.name, position: i + 1, values: o.optionValues.map((v) => v.name), selected_value: first?.options[i],
     })),
     options_by_name: Object.fromEntries(opts.map((o, i) => [o.name, { name: o.name, values: o.optionValues.map((v) => v.name), selected_value: first?.options[i] }])),
-    object_type: 'product', collections: [], metafields: {}, seo: p.seo, template_suffix: null, requires_selling_plan: false, selling_plan_groups: [],
+    object_type: 'product', collections: [], metafields: FIXTURE_METAFIELDS[p.handle] || {}, seo: p.seo, template_suffix: null, requires_selling_plan: false, selling_plan_groups: [],
   };
 });
 const productByHandle = Object.fromEntries(PRODUCTS.map((p) => [p.handle, p]));
@@ -436,6 +445,42 @@ const ROUTES = {
   cart_update_url: '/cart/update', cart_clear_url: '/cart/clear', product_recommendations_url: '/recommendations/products',
 };
 
+/* Storefront filtering approximation: builds Shopify-shaped `collection.filters` (list filters per option/type/availability + price_range)
+   and applies filter.* / sort_by params. Values carry param_name/value/label/count/active/url_to_add/url_to_remove like Shopify. */
+function applyFacets(collection, url) {
+  const sp = url.searchParams;
+  const base = url.pathname;
+  const withParams = (mutate) => { const q = new URLSearchParams(sp); q.delete('page'); mutate(q); const str = q.toString(); return base + (str ? `?${str}` : ''); };
+  const all = collection.products;
+  const optionNames = [...new Set(all.flatMap((p) => p.options))];
+  const defs = [
+    { label: 'Availability', param: 'filter.v.availability', type: 'list', get: (p) => [p.available ? '1' : '0'], labelFor: (v) => (v === '1' ? 'In stock' : 'Out of stock'), match: (p, vals) => vals.includes(p.available ? '1' : '0') },
+    ...optionNames.map((name) => ({ label: name, param: `filter.v.option.${name.toLowerCase()}`, type: 'list', get: (p) => p.options_with_values.find((o) => o.name === name)?.values || [], labelFor: (v) => v, match: (p, vals) => (p.options_with_values.find((o) => o.name === name)?.values || []).some((v) => vals.includes(v)) })),
+    { label: 'Product type', param: 'filter.p.product_type', type: 'list', get: (p) => (p.type ? [p.type] : []), labelFor: (v) => v, match: (p, vals) => vals.includes(p.type) },
+  ];
+  const active = defs.map((d) => ({ d, vals: sp.getAll(d.param) }));
+  const gte = Number(sp.get('filter.v.price.gte') || 0) * 100, lte = sp.get('filter.v.price.lte') ? Number(sp.get('filter.v.price.lte')) * 100 : Infinity;
+  let products = all.filter((p) => active.every(({ d, vals }) => !vals.length || d.match(p, vals)) && p.price_max >= gte && p.price_min <= lte);
+  const sortBy = sp.get('sort_by') || collection.default_sort_by || 'manual';
+  const sorters = { 'price-ascending': (a, b) => a.price - b.price, 'price-descending': (a, b) => b.price - a.price, 'title-ascending': (a, b) => a.title.localeCompare(b.title), 'title-descending': (a, b) => b.title.localeCompare(a.title), 'created-descending': (a, b) => new Date(b.created_at) - new Date(a.created_at), 'created-ascending': (a, b) => new Date(a.created_at) - new Date(b.created_at) };
+  if (sorters[sortBy]) products = [...products].sort(sorters[sortBy]);
+  const filters = defs.map((d) => {
+    const selected = sp.getAll(d.param);
+    const values = [...new Set(all.flatMap(d.get))].map((v) => {
+      const isActive = selected.includes(v);
+      const count = all.filter((p) => d.match(p, [v]) && active.every(({ d: od, vals }) => od === d || !vals.length || od.match(p, vals))).length;
+      return { label: d.labelFor(v), value: v, param_name: d.param, count, active: isActive, url_to_add: withParams((q) => q.append(d.param, v)), url_to_remove: withParams((q) => { const rest = q.getAll(d.param).filter((x) => x !== v); q.delete(d.param); rest.forEach((x) => q.append(d.param, x)); }), display: null, swatch: null };
+    });
+    return { label: d.label, param_name: d.param, type: d.type, presentation: 'text', operator: 'OR', values, active_values: values.filter((v) => v.active), inactive_values: values.filter((v) => !v.active), url_to_remove: withParams((q) => q.delete(d.param)), false_value: null, true_value: null, min_value: null, max_value: null, range_max: null };
+  }).filter((f) => f.values.length > 1 || f.active_values.length);
+  const maxPrice = Math.max(0, ...all.map((p) => p.price_max));
+  filters.push({ label: 'Price', param_name: 'filter.v.price', type: 'price_range', presentation: 'text', values: [], active_values: [], inactive_values: [], range_max: maxPrice,
+    min_value: { param_name: 'filter.v.price.gte', value: sp.get('filter.v.price.gte') ? Number(sp.get('filter.v.price.gte')) * 100 : null },
+    max_value: { param_name: 'filter.v.price.lte', value: sp.get('filter.v.price.lte') ? Number(sp.get('filter.v.price.lte')) * 100 : null },
+    url_to_remove: withParams((q) => { q.delete('filter.v.price.gte'); q.delete('filter.v.price.lte'); }) });
+  return { ...collection, products, products_count: products.length, all_products_count: all.length, filters, sort_by: sortBy, current_type: null, current_vendor: null };
+}
+
 function resolveRoute(url) {
   const p = decodeURIComponent(url.pathname).replace(/\/+$/, '') || '/';
   const view = url.searchParams.get('view');
@@ -455,7 +500,7 @@ function resolveRoute(url) {
   }
   if (p === '/collections') return { name: 'list-collections', ...tplFor('list-collections'), page_type: 'list-collections', title: 'Collections' };
   if ((m = /^\/collections\/([^/]+)$/.exec(p)) && collectionByHandle[m[1]]) {
-    const collection = collectionByHandle[m[1]];
+    const collection = applyFacets(collectionByHandle[m[1]], url);
     return { name: 'collection', ...tplFor('collection'), page_type: 'collection', title: collection.title, vars: { collection, current_tags: null } };
   }
   if ((m = /^\/pages\/([^/]+)$/.exec(p)) && pageByHandle[m[1]]) {
@@ -581,6 +626,7 @@ http.createServer(async (req, res) => {
     if (p === '/cart/clear.js') { cart.lines = []; return sendJson(res, cartJson()); }
     let m;
     if ((m = /^\/products\/([^/]+)\.js$/.exec(p)) && productByHandle[m[1]]) return sendJson(res, productJs(productByHandle[m[1]]));
+    if (p === '/products.json') return sendJson(res, { products: PRODUCTS.slice(0, Number(url.searchParams.get('limit') || 30)).map((x) => ({ id: x.id, handle: x.handle, title: x.title, product_type: x.type, tags: x.tags, variants: x.variants.map((v) => ({ id: v.id, title: v.title, price: (v.price / 100).toFixed(2), available: v.available })), options: x.options_with_values.map((o) => ({ name: o.name, values: o.values })) })) });
     if (p === '/search/suggest.json') {
       const q = (url.searchParams.get('q') || '').toLowerCase();
       const products = PRODUCTS.filter((x) => `${x.title} ${x.type} ${x.tags.join(' ')}`.toLowerCase().includes(q)).slice(0, 6)

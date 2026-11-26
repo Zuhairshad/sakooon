@@ -3,36 +3,64 @@
     "color_schemes": {
       "paper": {
         "settings": {
-          "background": "#F6F4F0", "foreground": "#1C1B19", "foreground_muted": "#5F5B55", "border": "#D9D4CC",
-          "accent": "#1C1B19", "accent_contrast": "#FFFFFF", "button_background": "#1C1B19", "button_text": "#FFFFFF", "button_border": "#1C1B19"
+          "background": "#F6F4F0",
+          "foreground": "#1C1B19",
+          "foreground_muted": "#5F5B55",
+          "border": "#D9D4CC",
+          "accent": "#1C1B19",
+          "accent_contrast": "#FFFFFF",
+          "button_background": "#1C1B19",
+          "button_text": "#FFFFFF",
+          "button_border": "#1C1B19"
         }
       },
       "white": {
         "settings": {
-          "background": "#FFFFFF", "foreground": "#1C1B19", "foreground_muted": "#5F5B55", "border": "#E2DED7",
-          "accent": "#1C1B19", "accent_contrast": "#FFFFFF", "button_background": "#1C1B19", "button_text": "#FFFFFF", "button_border": "#1C1B19"
+          "background": "#FFFFFF",
+          "foreground": "#1C1B19",
+          "foreground_muted": "#5F5B55",
+          "border": "#E2DED7",
+          "accent": "#1C1B19",
+          "accent_contrast": "#FFFFFF",
+          "button_background": "#1C1B19",
+          "button_text": "#FFFFFF",
+          "button_border": "#1C1B19"
         }
       },
       "sand": {
         "settings": {
-          "background": "#E9E3DA", "foreground": "#1C1B19", "foreground_muted": "#5A554D", "border": "#CFC7BB",
-          "accent": "#1C1B19", "accent_contrast": "#FFFFFF", "button_background": "#1C1B19", "button_text": "#FFFFFF", "button_border": "#1C1B19"
+          "background": "#E9E3DA",
+          "foreground": "#1C1B19",
+          "foreground_muted": "#5A554D",
+          "border": "#CFC7BB",
+          "accent": "#1C1B19",
+          "accent_contrast": "#FFFFFF",
+          "button_background": "#1C1B19",
+          "button_text": "#FFFFFF",
+          "button_border": "#1C1B19"
         }
       },
       "ink": {
         "settings": {
-          "background": "#1C1B19", "foreground": "#F6F4F0", "foreground_muted": "#B8B2A8", "border": "#3A3835",
-          "accent": "#F6F4F0", "accent_contrast": "#1C1B19", "button_background": "#F6F4F0", "button_text": "#1C1B19", "button_border": "#F6F4F0"
+          "background": "#1C1B19",
+          "foreground": "#F6F4F0",
+          "foreground_muted": "#B8B2A8",
+          "border": "#3A3835",
+          "accent": "#F6F4F0",
+          "accent_contrast": "#1C1B19",
+          "button_background": "#F6F4F0",
+          "button_text": "#1C1B19",
+          "button_border": "#F6F4F0"
         }
       }
     },
     "type_heading_font": "inter_n4",
     "type_body_font": "inter_n4",
-    "heading_weight": "400",
+    "heading_weight": "300",
     "heading_scale": 100,
     "heading_letter_spacing": -1,
     "heading_uppercase_eyebrows": true,
-    "body_size": 16,
+    "body_size": 14,
     "body_scale": 100,
     "page_width": 1440,
     "page_gutter_desktop": 48,

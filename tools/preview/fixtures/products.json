@@ -1,0 +1,1443 @@
+{
+ "products": [
+  {
+   "id": "gid://shopify/Product/9001",
+   "handle": "fixture-quilted-bed-sheet-set",
+   "title": "Quilted Bed Sheet Set (fixture)",
+   "vendor": "Sakooon",
+   "productType": "Bed Sheets",
+   "tags": [
+    "fixture",
+    "percale"
+   ],
+   "description": "Quilted Bed Sheet Set (fixture). Placeholder description for the preview fixture; real copy arrives in Phase 2.",
+   "descriptionHtml": "<p>Quilted Bed Sheet Set (fixture). Placeholder description for the preview fixture; real copy arrives in Phase 2.</p>",
+   "createdAt": "2026-11-01T00:00:00Z",
+   "availableForSale": true,
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "options": [
+    {
+     "name": "Colour",
+     "optionValues": [
+      {
+       "name": "Sage Green"
+      },
+      {
+       "name": "Periwinkle Blue"
+      },
+      {
+       "name": "Dusty Blue"
+      },
+      {
+       "name": "Butter Yellow"
+      },
+      {
+       "name": "Ivory"
+      },
+      {
+       "name": "Charcoal Grey"
+      },
+      {
+       "name": "Blush Pink"
+      },
+      {
+       "name": "Rust"
+      },
+      {
+       "name": "Emerald Green"
+      },
+      {
+       "name": "Black"
+      },
+      {
+       "name": "Slate Grey"
+      }
+     ]
+    },
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "Single"
+      },
+      {
+       "name": "Queen"
+      },
+      {
+       "name": "King"
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+    "altText": "Quilted Bed Sheet Set (fixture) in Sage Green",
+    "width": 1600,
+    "height": 2000
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Sage Green",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Periwinkle Blue",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Dusty Blue",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Butter Yellow",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Ivory",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Charcoal Grey",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Blush Pink",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Rust",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Emerald Green",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-black.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Black",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+      "altText": "Quilted Bed Sheet Set (fixture) in Slate Grey",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-white-bedding-bedroom.webp",
+      "altText": "Quilted Bed Sheet Set (fixture)",
+      "width": 1600,
+      "height": 2000
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/900101",
+      "title": "Sage Green / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Sage Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Sage Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900102",
+      "title": "Sage Green / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Sage Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Sage Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900103",
+      "title": "Sage Green / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Sage Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Sage Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900104",
+      "title": "Periwinkle Blue / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Periwinkle Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Periwinkle Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900105",
+      "title": "Periwinkle Blue / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Periwinkle Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Periwinkle Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900106",
+      "title": "Periwinkle Blue / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Periwinkle Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-periwinkle-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Periwinkle Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900107",
+      "title": "Dusty Blue / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Dusty Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Dusty Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900108",
+      "title": "Dusty Blue / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Dusty Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Dusty Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900109",
+      "title": "Dusty Blue / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Dusty Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-dusty-blue.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Dusty Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900110",
+      "title": "Butter Yellow / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Butter Yellow"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Butter Yellow",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900111",
+      "title": "Butter Yellow / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Butter Yellow"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Butter Yellow",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900112",
+      "title": "Butter Yellow / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Butter Yellow"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-butter-yellow.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Butter Yellow",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900113",
+      "title": "Ivory / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Ivory"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Ivory",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900114",
+      "title": "Ivory / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Ivory"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Ivory",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900115",
+      "title": "Ivory / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Ivory"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-ivory.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Ivory",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900116",
+      "title": "Charcoal Grey / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Charcoal Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Charcoal Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900117",
+      "title": "Charcoal Grey / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Charcoal Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Charcoal Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900118",
+      "title": "Charcoal Grey / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Charcoal Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Charcoal Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900119",
+      "title": "Blush Pink / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Blush Pink"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Blush Pink",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900120",
+      "title": "Blush Pink / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Blush Pink"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Blush Pink",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900121",
+      "title": "Blush Pink / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Blush Pink"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Blush Pink",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900122",
+      "title": "Rust / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Rust"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Rust",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900123",
+      "title": "Rust / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Rust"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Rust",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900124",
+      "title": "Rust / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": false,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Rust"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-rust.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Rust",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900125",
+      "title": "Emerald Green / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Emerald Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Emerald Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900126",
+      "title": "Emerald Green / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Emerald Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Emerald Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900127",
+      "title": "Emerald Green / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Emerald Green"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-emerald-green.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Emerald Green",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900128",
+      "title": "Black / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Black"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-black.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Black",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900129",
+      "title": "Black / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Black"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-black.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Black",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900130",
+      "title": "Black / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Black"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-black.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Black",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900131",
+      "title": "Slate Grey / Single",
+      "price": {
+       "amount": "4990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Slate Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Single"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Slate Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900132",
+      "title": "Slate Grey / Queen",
+      "price": {
+       "amount": "6490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Slate Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Slate Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900133",
+      "title": "Slate Grey / King",
+      "price": {
+       "amount": "7490",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": null,
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Slate Grey"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-quilted-bed-sheet-set-slate-grey.webp",
+       "altText": "Quilted Bed Sheet Set (fixture) in Slate Grey",
+       "width": 1600,
+       "height": 2000
+      }
+     }
+    ]
+   },
+   "collections": [
+    "bed-sheets"
+   ]
+  },
+  {
+   "id": "gid://shopify/Product/9002",
+   "handle": "fixture-two-tone-duvet-cover-set",
+   "title": "Two-Tone Duvet Cover Set (fixture)",
+   "vendor": "Sakooon",
+   "productType": "Duvet Covers",
+   "tags": [
+    "fixture",
+    "sateen"
+   ],
+   "description": "Two-Tone Duvet Cover Set (fixture). Placeholder description for the preview fixture; real copy arrives in Phase 2.",
+   "descriptionHtml": "<p>Two-Tone Duvet Cover Set (fixture). Placeholder description for the preview fixture; real copy arrives in Phase 2.</p>",
+   "createdAt": "2026-11-01T00:00:00Z",
+   "availableForSale": true,
+   "seo": {
+    "title": null,
+    "description": null
+   },
+   "options": [
+    {
+     "name": "Colour",
+     "optionValues": [
+      {
+       "name": "Forest Green / Lime"
+      },
+      {
+       "name": "Grey / White"
+      },
+      {
+       "name": "Royal Blue / Sky Blue"
+      },
+      {
+       "name": "Rust / Peach"
+      },
+      {
+       "name": "Black / White"
+      }
+     ]
+    },
+    {
+     "name": "Bedding size",
+     "optionValues": [
+      {
+       "name": "Queen"
+      },
+      {
+       "name": "King"
+      }
+     ]
+    }
+   ],
+   "featuredImage": {
+    "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+    "altText": "Two-Tone Duvet Cover Set (fixture) in Forest Green / Lime",
+    "width": 1600,
+    "height": 2000
+   },
+   "images": {
+    "nodes": [
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture) in Forest Green / Lime",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture) in Grey / White",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture) in Royal Blue / Sky Blue",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture) in Rust / Peach",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-black-white_2.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture) in Black / White",
+      "width": 1600,
+      "height": 2000
+     },
+     {
+      "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white_2.webp",
+      "altText": "Two-Tone Duvet Cover Set (fixture)",
+      "width": 1600,
+      "height": 2000
+     }
+    ]
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/900201",
+      "title": "Forest Green / Lime / Queen",
+      "price": {
+       "amount": "8990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "10990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Forest Green / Lime"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Forest Green / Lime",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900202",
+      "title": "Forest Green / Lime / King",
+      "price": {
+       "amount": "9990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "11990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Forest Green / Lime"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-forest-green-lime-green.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Forest Green / Lime",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900203",
+      "title": "Grey / White / Queen",
+      "price": {
+       "amount": "8990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "10990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Grey / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Grey / White",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900204",
+      "title": "Grey / White / King",
+      "price": {
+       "amount": "9990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "11990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Grey / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Grey / White",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900205",
+      "title": "Royal Blue / Sky Blue / Queen",
+      "price": {
+       "amount": "8990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "10990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Royal Blue / Sky Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Royal Blue / Sky Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900206",
+      "title": "Royal Blue / Sky Blue / King",
+      "price": {
+       "amount": "9990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "11990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Royal Blue / Sky Blue"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Royal Blue / Sky Blue",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900207",
+      "title": "Rust / Peach / Queen",
+      "price": {
+       "amount": "8990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "10990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Rust / Peach"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Rust / Peach",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900208",
+      "title": "Rust / Peach / King",
+      "price": {
+       "amount": "9990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "11990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Rust / Peach"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-rust-peach_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Rust / Peach",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900209",
+      "title": "Black / White / Queen",
+      "price": {
+       "amount": "8990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "10990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Black / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "Queen"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-black-white_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Black / White",
+       "width": 1600,
+       "height": 2000
+      }
+     },
+     {
+      "id": "gid://shopify/ProductVariant/900210",
+      "title": "Black / White / King",
+      "price": {
+       "amount": "9990",
+       "currencyCode": "PKR"
+      },
+      "compareAtPrice": {
+       "amount": "11990",
+       "currencyCode": "PKR"
+      },
+      "availableForSale": true,
+      "selectedOptions": [
+       {
+        "name": "Colour",
+        "value": "Black / White"
+       },
+       {
+        "name": "Bedding size",
+        "value": "King"
+       }
+      ],
+      "image": {
+       "url": "/images/sakooon-two-tone-duvet-cover-set-black-white_2.webp",
+       "altText": "Two-Tone Duvet Cover Set (fixture) in Black / White",
+       "width": 1600,
+       "height": 2000
+      }
+     }
+    ]
+   },
+   "collections": [
+    "duvet-covers"
+   ]
+  }
+ ],
+ "collectionProducts": {
+  "bed-sheets": [
+   "fixture-quilted-bed-sheet-set"
+  ],
+  "duvet-covers": [
+   "fixture-two-tone-duvet-cover-set"
+  ]
+ },
+ "metafields": {
+  "fixture-quilted-bed-sheet-set": {
+   "sakooon": {
+    "package_contents": [
+     "1 fitted sheet",
+     "1 flat sheet",
+     "2 pillowcases"
+    ],
+    "dimensions": "<p>Single 90 x 190 cm, Queen 150 x 200 cm, King 180 x 200 cm</p>",
+    "benefits": [
+     "Breathable",
+     "Softens with every wash"
+    ]
+   }
+  }
+ }
+}

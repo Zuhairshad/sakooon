@@ -1,7 +1,6 @@
 # Metafield and metaobject contracts
 
-Owner: Fable, co-authored with shad-8b. Draft v0.1 (2026-11-26). Final field list is confirmed after
-docs/reference/fabric-model.md lands. Nothing here is created in the store yet; Shopify Admin setup is
+Owner: Fable, co-authored with shad-8b. v0.2 (2026-11-26) incorporating docs/reference/fabric-model.md and the editorial review. Nothing here is created in the store yet; Shopify Admin setup is
 documented at the end and requires the user's authorization.
 
 Rules
@@ -12,23 +11,32 @@ Rules
 - Access: `product.metafields.sakooon.<key>`; metaobject references via `.value` (single) or `.value` list.
 
 ## Metaobject: Fabric (`type: fabric`)
-Definition handle `fabric`; storefront access enabled, with web pages enabled (template `metaobject/fabric.json`, owner shad-8b).
+Definition handle `fabric`; capabilities: storefront access, **publishable** (drafts stay hidden), web pages (template `metaobject/fabric.json`, owner shad-8b).
+Link to a fabric page only via `fabric.system.url` (Shopify generates `/pages/<definition>/<handle>`-style URLs; never hardcode the pattern).
 
 | key | type | notes |
 | --- | --- | --- |
 | name (display name) | single_line_text | required |
 | handle | (system) | URL `/metaobjects/fabric/<handle>` or via page template |
 | tagline | single_line_text | short descriptor |
+| summary | multi_line_text (<=280 chars) | cards, compare table, SEO description |
+| fibre | single_line_text, choices: cotton, linen, cotton-linen, lyocell, wool, other | |
+| finish | single_line_text, choices: stonewashed, peached, garment-washed, none | |
+| yarn | single_line_text | |
 | description | rich_text | editorial description |
 | composition | single_line_text | e.g. "100% long-staple cotton" (verified only) |
-| weave | single_line_text | percale, sateen, twill, waffle, terry |
+| weave | single_line_text, choices: percale, sateen, plain, twill, jersey, flannel, terry, waffle, other | |
 | thread_count | number_integer | only when verified |
 | gsm | number_integer | towels/duvets; only when verified |
 | texture | single_line_text | |
 | feel | single_line_text | crisp, silky, soft, airy |
 | softness | rating (1-5) | |
 | breathability | rating (1-5) | |
-| warmth | rating (1-5) | 1 = cool sleeper, 5 = warm |
+| warmth | rating (1-5) | a POSITION on a cool-to-warm scale (1 cool, 5 warm), not a quality score; fabric-rating renders it as cool <-> warm |
+| seasons | list.single_line_text, choices: all-season, warm-weather, cold-weather | |
+| care_symbols | list.single_line_text, fixed set: wash-30, wash-40, wash-60, hand-wash, no-bleach, tumble-low, tumble-none, line-dry, iron-low, iron-medium, iron-high, no-iron, dry-clean, no-dry-clean | rendered by snippets/care-icons.liquid (owner shad-8b) |
+| swatch_color | color | fabric chip in guides/compare |
+| sort_order | number_integer | ordering in guides when a page does not list fabrics explicitly |
 | durability | rating (1-5) | |
 | best_for | list.single_line_text | e.g. "Hot sleepers" |
 | care | rich_text | fabric-specific care |
@@ -38,8 +46,25 @@ Definition handle `fabric`; storefront access enabled, with web pages enabled (t
 | gallery | list.file_reference | |
 | collection | collection_reference | shop this fabric |
 | related_products | list.product_reference | |
-| certifications | list.single_line_text | verified certifications only; blank hides the row |
+| certifications | list.metaobject_reference (certification) | rendered only when issuer, licence_number and certificate_url are present and valid_until is not past |
 | origin | single_line_text | country/region of origin, if verified |
+
+## Metaobject: Certification (`type: certification`)
+| key | type | notes |
+| --- | --- | --- |
+| name | single_line_text | required |
+| issuer | single_line_text | required for display |
+| licence_number | single_line_text | required for display |
+| certificate_url | url | required for display (public verification page) |
+| scope | single_line_text | what is certified |
+| valid_until | date | hidden when past |
+| logo | file_reference | |
+Free-text certifications are not allowed anywhere in the theme: a claim without issuer, licence number and verification link does not render.
+
+## Variant metafields (namespace `sakooon`)
+| key | type | used by |
+| --- | --- | --- |
+| fabric | metaobject_reference (fabric) | when fabric is a variant option; resolution order variant.sakooon.fabric -> product.sakooon.fabric via snippets/fabric-resolve.liquid (owner shad-8b, used by shad-d8) |
 
 ## Product metafields (namespace `sakooon`)
 | key | type | used by |
@@ -52,13 +77,13 @@ Definition handle `fabric`; storefront access enabled, with web pages enabled (t
 | weight | weight | PDP specifications |
 | product_weight_gsm | number_integer | duvets/towels |
 | benefits | list.single_line_text | PDP highlights |
-| care_instructions | rich_text | overrides fabric.care when set |
+| care_instructions | rich_text | resolution: product.sakooon.care_instructions -> fabric.care |
 | drying_instructions | rich_text | |
 | size_guide | page_reference | PDP size guide dialog content |
-| care_guide | page_reference | PDP link |
+| care_guide | page_reference | resolution: product.sakooon.care_guide -> fabric.care_guide |
 | complementary_products | list.product_reference | "Complete the bed" (falls back to Shopify Search & Discovery complementary) |
 | origin | single_line_text | |
-| certifications | list.single_line_text | verified only |
+| certifications | list.metaobject_reference (certification) | same validity rules as fabric.certifications |
 | feel | single_line_text | |
 | shipping_note | single_line_text | per product shipping/returns override |
 | siblings | list.product_reference | colour siblings when each colour is a separate product (fallback for stores that do not use a Colour option); card and PDP swatches render from `Colour` option values first, then `siblings` |
@@ -93,12 +118,13 @@ Standard product metafields to respect if present: `product.metafields.shopify.*
 | related_products | list.product_reference |
 | related_collection | collection_reference |
 
-## Metaobject: Care guide (`type: care_guide`) (proposed, 8b to confirm vs. page-based approach)
-Fields: name, product_type (bedsheets/pillows/comforters/towels), washing (rich_text), drying (rich_text), storage (rich_text),
-longevity (rich_text), icons (list.single_line_text from fixed set), related_fabrics, related_collection.
+## Care guides are pages (decision 2026-11-26)
+Care guides use `templates/page.care-guide.json` with a `care-guide` section and topic blocks (washing, drying, storage, longevity),
+per product type via settings/blocks. A `care_guide` metaobject is deferred (not needed for Phase 1).
+Page metafield `related_fabrics` drives fabric-guide and compare ordering; when blank, sections list all published fabrics by `sort_order`.
 
 ## Shopify Admin configuration required (Phase 2/3, with authorization)
-1. Settings > Custom data > Metaobjects: create `Fabric` and (optionally) `Care guide` with the fields above; enable Storefront access and web pages for Fabric.
+1. Settings > Custom data > Metaobjects: create `Fabric` (storefront access, publishable, web pages), `Certification` and `Colour family` with the fields above.
 2. Settings > Custom data > Products / Collections / Pages: create the `sakooon.*` definitions above, storefront access on.
 3. Install Shopify Search & Discovery for filters, complementary and related products.
 4. Navigation: menus `main-menu`, `footer`, `footer-support`, `footer-shop`, `footer-guides`, `legal` (names configurable in theme settings).

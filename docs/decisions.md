@@ -53,3 +53,14 @@ only Fable runs it (single development theme) and workers test against the previ
 Proposed by shad-d8 from the Parachute investigation. Variant option gives variant media and native filters; the live store
 currently sells colours as separate products, so `sakooon.siblings` keeps that working. Colour filtering via `sakooon.color_family`
 metaobject references (Search & Discovery). Facets apply via the Section Rendering API with history.pushState, not a full reload.
+
+## 2026-11-26 D11: Typography defaults from measurements; one grotesk stays
+Both references set UI/body at 14px and display weight at 300. Defaults changed: body_size 14, heading_weight 300.
+Tekla uses one sans family; Parachute adds a light serif display. We keep one grotesk (D4) for Phase 1 since the heading font is a
+setting; Phase 2 brand typography decides whether a serif display enters. Tekla's 732px text column and 4:5 imagery are adopted
+for editorial templates; Parachute's 12-col/8px-gap geometry for commerce templates (section-level, not global tokens).
+
+## 2026-11-26 D12: Certifications are verified metaobjects only; care guides are pages
+From the editorial review: free-text certification fields are removed everywhere; a `certification` metaobject with issuer,
+licence number, verification URL and expiry is required for anything to render. Care guides are pages with topic blocks; the
+care_guide metaobject is deferred.
