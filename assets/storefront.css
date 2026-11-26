@@ -195,6 +195,7 @@ a.footer__link:hover, .footer__link[aria-current="page"] { color: var(--color-fo
 .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-8); margin-top: var(--space-12); padding-top: var(--space-6); border-top: var(--border-width) solid var(--color-border); }
 .footer__wordmark { font-size: var(--text-md); font-weight: var(--font-body-weight-bold, 500); letter-spacing: 0.24em; text-transform: uppercase; text-decoration: none; color: inherit; }
 .footer__logo { width: 128px; height: auto; }
+.footer__wordmark { display: inline-flex; align-items: center; min-height: var(--touch-target); }
 .footer__block:not(:has(*)) { display: none; }
 .footer__brand { display: inline-block; color: inherit; }
 .footer__brand-logo { width: 176px; max-width: 100%; height: auto; }
@@ -385,6 +386,7 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 }
 .fabric-discovery__swatch:hover { transform: scale(1.08); }
 .fabric-discovery__swatch[aria-selected="true"] { outline: var(--border-width) solid var(--color-foreground); outline-offset: 3px; }
+.fabric-discovery__summary { max-width: 640px; margin-top: var(--space-4); color: var(--color-foreground-muted); font-size: var(--text-sm); }
 .fabric-discovery__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-4); font-size: var(--text-sm); }
 .fabric-discovery__panel[hidden] { display: none; }
 .fabric-discovery__track { display: grid; grid-auto-flow: column; grid-auto-columns: min(var(--discovery-card, 344px), 62vw); gap: var(--space-2); overflow-x: auto; scroll-snap-type: x mandatory; }

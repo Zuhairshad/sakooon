@@ -483,7 +483,8 @@
       "play_video": "Play video",
       "pause_video": "Pause video",
       "hotspot": "View {{ title }}",
-      "slide_label": "{{ index }} of {{ count }}"
+      "slide_label": "{{ index }} of {{ count }}",
+      "about_fabric": "About {{ name }}"
     }
   },
   "onboarding": {
