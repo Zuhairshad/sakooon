@@ -223,6 +223,9 @@
       this.slides.forEach((s, n) => s.toggleAttribute('inert', this.horizontal() && n !== i));
     }
     openZoom(mediaId) {
+      // Zoom images ship in <template data-deferred-media> (product-gallery.liquid): swap them in on first open.
+      const dialog = document.getElementById(`ProductZoom-${this.dataset.sectionId}`);
+      if (dialog) dialog.querySelectorAll('template[data-deferred-media]').forEach((t) => t.replaceWith(t.content.cloneNode(true)));
       // theme-drawer delegation opens the dialog; scroll the clicked image into view once it is visible.
       requestAnimationFrame(() => {
         const item = document.querySelector(`#ProductZoom-${this.dataset.sectionId} [data-zoom-item="${mediaId}"]`);

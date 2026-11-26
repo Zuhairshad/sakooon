@@ -123,7 +123,8 @@
             {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
             {%- assign n = n | plus: 1 -%}
             <li class="product-zoom__item" data-zoom-item="{{ media.id }}">
-              {%- render 'image', image: media, sizes: '100vw', widths: '960,1440,1920,2400,3000' -%}
+              {%- comment -%} Deferred: the closed dialog would otherwise download every full-size image (product.js hydrates on zoom). {%- endcomment -%}
+              <template data-deferred-media>{%- render 'image', image: media, sizes: '100vw', widths: '960,1440,1920,2400,3000' -%}</template>
             </li>
           {%- endfor -%}
         </ul>

@@ -1,7 +1,8 @@
 {%- comment -%}
   Variant picker. Owner: shad-d8. Behaviour: <variant-picker> in assets/product.js.
   {% render 'variant-picker', product: product, section_id: section.id, form_id: form_id, other_style: block.settings.other_style %}
-  - Colour option (names in settings.swatch_option_names): radio swatches (option-value swatch -> named colour -> text chip).
+  - Colour/Design option (names in settings.swatch_option_names): radio swatches. Chip order: native option-value swatch ->
+    variant sakooon.swatch_color (+ swatch_color_secondary as a split chip) -> the value's variant image -> text chip.
   - Other options: native <select> styled as a filled row (reference) or radio pills (other_style: 'pills').
   - An option with a single value (Bedding size: King on the sheet sets) renders as a plain "Name  Value" line.
   - Availability per value is relative to the other selected options: unavailable combinations are disabled, sold-out ones marked.
@@ -12,7 +13,6 @@
   assign current = product.selected_or_first_available_variant
   assign other_style = other_style | default: 'select'
   assign colour_names = settings.swatch_option_names | default: 'Color, Colour' | downcase | split: ','
-  assign named_colours = ',white,ivory,beige,linen,wheat,tan,khaki,sienna,brown,chocolate,black,gray,grey,silver,gainsboro,whitesmoke,snow,seashell,navy,blue,lightblue,skyblue,steelblue,slateblue,teal,green,olive,olivedrab,darkolivegreen,sage,mintcream,pink,lightpink,mistyrose,lavender,lavenderblush,plum,thistle,purple,red,maroon,coral,salmon,peachpuff,bisque,antiquewhite,oldlace,cornsilk,lemonchiffon,yellow,gold,orange,rosybrown,indigo,charcoal,'
   assign has_colour_option = false
 -%}
 {%- unless product.has_only_default_variant -%}
@@ -57,9 +57,13 @@
                 endcomment
                 assign exists = false
                 assign available = false
+                assign value_variant = nil
                 for v in product.variants
                   if v.options[idx] != value_name
                     continue
+                  endif
+                  if value_variant == nil
+                    assign value_variant = v
                   endif
                   assign matches = true
                   for o in v.options
@@ -69,6 +73,7 @@
                   endfor
                   if matches
                     assign exists = true
+                    assign value_variant = v
                     if v.available
                       assign available = true
                     endif
@@ -78,24 +83,25 @@
                 assign chip_style = ''
                 assign chip_class = 'swatch__chip'
                 if is_colour
+                  assign chip_colour = value_variant.metafields.sakooon.swatch_color.value
+                  assign chip_colour_2 = value_variant.metafields.sakooon.swatch_color_secondary.value
                   if value.swatch.image
                     assign swatch_src = value.swatch.image | image_url: width: 72
                     assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
                   elsif value.swatch.color
                     assign chip_style = 'background-color: ' | append: value.swatch.color
-                  else
-                    assign named = value_name | handle | remove: '-'
-                    assign needle = ',' | append: named | append: ','
-                    if named_colours contains needle
-                      if named == 'charcoal'
-                        assign named = 'dimgray'
-                      elsif named == 'sage'
-                        assign named = 'darkseagreen'
-                      endif
-                      assign chip_style = 'background-color: ' | append: named
+                  elsif chip_colour != blank
+                    if chip_colour_2 != blank
+                      assign chip_style = 'background: linear-gradient(135deg, ' | append: chip_colour | append: ' 50%, ' | append: chip_colour_2 | append: ' 50%)'
                     else
-                      assign chip_class = 'swatch__chip swatch__chip--text'
+                      assign chip_style = 'background-color: ' | append: chip_colour
                     endif
+                  elsif value_variant.featured_image != blank
+                    assign swatch_src = value_variant.featured_image | image_url: width: 360
+                    assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
+                    assign chip_class = 'swatch__chip swatch__chip--image'
+                  else
+                    assign chip_class = 'swatch__chip swatch__chip--text'
                   endif
                 endif
               -%}

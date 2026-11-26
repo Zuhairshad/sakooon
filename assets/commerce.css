@@ -35,7 +35,9 @@ product-recommendations, cart-recommendations, facets-form, product-gallery, var
 .swatch.is-selected::after { opacity: 1; }
 .swatch:focus-visible { outline: none; }
 .swatch:focus-visible::after { opacity: 1; box-shadow: 0 0 0 2px var(--color-accent); }
-/* Text chip fallback when a value has no swatch and no recognisable colour name */
+/* Text chip fallback when a value has no swatch, no swatch_color and no variant image */
+/* Image chip from the variant's packshot: zoomed onto the bed so the chip shows the fabric, not the room. */
+.swatch__chip--image { background-size: 420%; background-position: 50% 27%; }
 .swatch--text { min-width: 0; }
 .swatch__chip--text {
   width: auto; height: auto; min-height: var(--swatch-size); padding: 0 var(--space-2); border-radius: 999px;
@@ -467,3 +469,6 @@ predictive-search.is-loading .search-drawer__body { opacity: .6; }
   overflow-wrap: anywhere;
 }
 .cart-line__sold-out { font-size: var(--text-xs); color: var(--color-error); }
+/* Below-the-fold rails ("Complete the bed", "You may also like"): skip rendering, and the swatch-chip background images,
+   until they approach the viewport. */
+.product-recs { content-visibility: auto; contain-intrinsic-size: auto 640px; }

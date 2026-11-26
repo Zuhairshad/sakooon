@@ -11,8 +11,8 @@ Everything is optional: a blank field hides its row, badge or block. Nothing fal
 | Need | Admin | Theme behaviour |
 |---|---|---|
 | Colour as a real option (decision D10) | Product > Variants: option named **Colour** (or Color) plus Size, e.g. Colour × Bedding size | PDP colour radios, card swatches, colour-filtered gallery, `filter.v.option.colour` |
-| Option names treated as colour | Theme settings > Product cards > "Swatch option names" (default `Color, Colour`) | Case-insensitive match |
-| Swatch colour or texture | Products > Category "Bedding…" > link the Colour option to the **Color** category metafield, then set each value's swatch (colour or image) | `value.swatch.color` / `value.swatch.image`. Without one, CSS named colours (white, ivory, black, navy, sage…) are used, otherwise a text chip |
+| Option names treated as swatches | Theme settings > Product cards > "Swatch option names" (default `Color, Colour, Design, Pattern`) | Case-insensitive match. "Design" (yarn-dyed prints) renders image chips |
+| Swatch colour | Variant metafield `sakooon.swatch_color` (color), plus `sakooon.swatch_color_secondary` for two-tone colourways (split diagonal chip). Native option-value swatches (Category metafield "Color") take precedence when set | Order: native swatch → `swatch_color` (+ secondary) → the value's variant image, zoomed onto the bed → text chip. Values in docs/metafield-contracts.md §Admin values |
 | Variant images per colour | Variant > image: assign the first image of each colour's group. Order media so each colour's images follow its variant image | Gallery shows only the selected colour's group plus media before the first variant image (main-product setting "Show only the selected colour's media") |
 | Colour as separate products (current live catalogue) | Product metafield `sakooon.siblings` (list of products), plus `sakooon.swatch_color` (color) or `sakooon.swatch_image` (file) on each sibling | Card and PDP swatches link to the sibling products; colour order: swatch_color → swatch_image → featured image |
 

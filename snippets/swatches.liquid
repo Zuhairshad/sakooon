@@ -2,7 +2,8 @@
   Colour swatches for a product. Owner: shad-d8. Decision D10 / docs/metafield-contracts.md.
   Source order: the product's colour option (names in settings.swatch_option_names), else sakooon.siblings.
   Colour order per swatch:
-    option value: value.swatch.color / value.swatch.image -> CSS named colour from the value handle -> text chip
+    option value: native value.swatch (image/color) -> variant sakooon.swatch_color (+ swatch_color_secondary: split chip)
+                  -> the value's variant image (zoomed crop) -> text chip
     sibling:      sakooon.swatch_color -> sakooon.swatch_image -> featured image
   Each swatch is a link (variant URL, or the sibling product URL), so it works without JS.
 
@@ -30,6 +31,21 @@
     endif
   endfor
 
+  # The selected chip matches the image the card shows: the value whose variant image is the product's featured image
+  # (the two-tone set's first image is Forest Green while its first variant is Grey / White). Else the selected value.
+  assign featured_value = nil
+  if colour_option and product.featured_image != blank
+    assign featured_src = product.featured_image.src | split: '?' | first
+    assign colour_idx = colour_option.position | minus: 1
+    for v in product.variants
+      assign v_src = v.featured_image.src | split: '?' | first
+      if v_src == featured_src
+        assign featured_value = v.options[colour_idx]
+        break
+      endif
+    endfor
+  endif
+
   assign siblings = product.metafields.sakooon.siblings.value
   if colour_option
     assign total = colour_option.values.size
@@ -56,57 +72,86 @@
     assign more = 0
   endif
 
-  comment
-    CSS named colours that are plausible bedding colour names; compared against the value handle with dashes removed.
-  endcomment
-  assign named_colours = ',white,ivory,beige,linen,wheat,tan,khaki,sienna,brown,chocolate,black,gray,grey,silver,gainsboro,whitesmoke,snow,seashell,navy,blue,lightblue,skyblue,steelblue,slateblue,teal,green,olive,olivedrab,darkolivegreen,sage,mintcream,pink,lightpink,mistyrose,lavender,lavenderblush,plum,thistle,purple,red,maroon,coral,salmon,peachpuff,bisque,antiquewhite,oldlace,cornsilk,lemonchiffon,yellow,gold,orange,rosybrown,indigo,charcoal,'
 -%}
 {%- if total > 0 -%}
   <ul class="swatches swatches--{{ size }}{% if class %} {{ class }}{% endif %}" role="list">
     {%- if colour_option -%}
-      {%- for value in colour_option.values limit: shown -%}
+      {%- liquid
+        # Featured value first so the selected chip is always among the visible ones, then the rest in option order.
+        assign ordered = ''
+        if featured_value != nil
+          assign ordered = featured_value
+        endif
+        for v in colour_option.values
+          assign v_name = v.name | default: v
+          if v_name != featured_value
+            assign ordered = ordered | append: '||' | append: v_name
+          endif
+        endfor
+        assign ordered_names = ordered | remove_first: '||' | split: '||'
+        if featured_value != nil
+          assign ordered_names = ordered | split: '||'
+        endif
+      -%}
+      {%- for wanted in ordered_names limit: shown -%}
         {%- liquid
+          for v in colour_option.values
+            assign v_name = v.name | default: v
+            if v_name == wanted
+              assign value = v
+              break
+            endif
+          endfor
           assign value_name = value.name | default: value
           assign value_url = value.variant.url
+          assign value_variant = value.variant
           if value.product_url != blank
             assign value_url = value.product_url
           endif
-          if value_url == blank
+          if value_variant == blank
+            assign idx = colour_option.position | minus: 1
             for v in product.variants
-              assign idx = colour_option.position | minus: 1
               if v.options[idx] == value_name
-                assign value_url = v.url
+                assign value_variant = v
                 if v.available
                   break
                 endif
               endif
             endfor
           endif
+          if value_url == blank
+            assign value_url = value_variant.url
+          endif
           assign value_url = value_url | default: product.url
           assign is_selected = false
-          if value.selected or colour_option.selected_value == value_name
+          if featured_value != nil
+            if featured_value == value_name
+              assign is_selected = true
+            endif
+          elsif value.selected or colour_option.selected_value == value_name
             assign is_selected = true
           endif
           assign chip_style = ''
           assign chip_class = 'swatch__chip'
+          assign chip_colour = value_variant.metafields.sakooon.swatch_color.value
+          assign chip_colour_2 = value_variant.metafields.sakooon.swatch_color_secondary.value
           if value.swatch.image
             assign swatch_src = value.swatch.image | image_url: width: 72
             assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
           elsif value.swatch.color
             assign chip_style = 'background-color: ' | append: value.swatch.color
-          else
-            assign named = value_name | handle | remove: '-'
-            assign needle = ',' | append: named | append: ','
-            if named_colours contains needle
-              if named == 'charcoal'
-                assign named = 'dimgray'
-              elsif named == 'sage'
-                assign named = 'darkseagreen'
-              endif
-              assign chip_style = 'background-color: ' | append: named
+          elsif chip_colour != blank
+            if chip_colour_2 != blank
+              assign chip_style = 'background: linear-gradient(135deg, ' | append: chip_colour | append: ' 50%, ' | append: chip_colour_2 | append: ' 50%)'
             else
-              assign chip_class = 'swatch__chip swatch__chip--text'
+              assign chip_style = 'background-color: ' | append: chip_colour
             endif
+          elsif value_variant.featured_image != blank
+            assign swatch_src = value_variant.featured_image | image_url: width: 360
+            assign chip_style = 'background-image: url(' | append: swatch_src | append: ')'
+            assign chip_class = 'swatch__chip swatch__chip--image'
+          else
+            assign chip_class = 'swatch__chip swatch__chip--text'
           endif
         -%}
         <li class="swatches__item">
