@@ -12,7 +12,7 @@
   endif
 -%}
 <div class="section ed-section guide-anchor-nav{% if s.sticky %} guide-anchor-nav--sticky{% endif %} guide-anchor-nav--{{ s.style }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <guide-anchor-nav class="page-width{% if s.content_width == 'text' %} page-width--text{% elsif s.content_width == 'narrow' %} page-width--narrow{% endif %}" data-auto="{% if section.blocks.size == 0 %}true{% else %}false{% endif %}">
+  <guide-anchor-nav class="page-width ed-wide{% if s.content_width == 'text' %} page-width--text{% elsif s.content_width == 'narrow' %} page-width--narrow{% endif %}" data-auto="{% if section.blocks.size == 0 %}true{% else %}false{% endif %}">
     <nav class="guide-anchor-nav__nav" aria-label="{{ nav_label | escape }}">
       {%- if s.label != blank -%}<p class="guide-anchor-nav__title">{{ s.label }}</p>{%- endif -%}
       <ul class="guide-anchor-nav__list list-unstyled no-scrollbar" role="list">

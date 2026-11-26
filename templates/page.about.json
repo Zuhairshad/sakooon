@@ -8,7 +8,8 @@
         "content_width": "narrow",
         "text": "<p>Introduce your brand in two or three sentences: who you are, what you make and why it matters to the people who sleep with it.</p>",
         "padding_top": 80,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "heading_size": "h3"
       }
     },
     "story": {

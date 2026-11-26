@@ -33,7 +33,7 @@
 -%}
 {%- if products != blank or request.design_mode -%}
 <div class="section ed-section related-editorial color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
-  <div class="page-width">
+  <div class="page-width ed-wide">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: heading, heading_size: s.heading_size, link_label: s.link_label, link_url: link_url %}
     <ul class="related-editorial__list list-unstyled{% if s.mobile_rail %} related-editorial__list--rail{% endif %}" role="list">
       {%- if products != blank -%}

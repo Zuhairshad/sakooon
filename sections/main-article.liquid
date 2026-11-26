@@ -95,7 +95,7 @@
       endfor
     -%}
     {%- if more_count > 0 -%}
-      <div class="page-width main-article__more">
+      <div class="page-width ed-wide main-article__more">
         {% render 'section-heading', heading: s.more_heading, heading_size: 'h4', link_label: s.more_link_label, link_url: blog.url %}
         <ul class="main-blog__grid list-unstyled" role="list" style="--ed-cols: 3">
           {%- assign n = 0 -%}
@@ -117,7 +117,7 @@
   "class": "section-main-article",
   "settings": [
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
       { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
       { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
       { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }

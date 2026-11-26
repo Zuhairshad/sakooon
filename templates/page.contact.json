@@ -7,7 +7,8 @@
         "content_width": "page",
         "text": "<p>We're here to help with orders, sizing, care and anything else. Choose the route that suits you.</p>",
         "padding_top": 80,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "heading_size": "h3"
       }
     },
     "routes": {

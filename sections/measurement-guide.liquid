@@ -19,7 +19,7 @@
   endif
 -%}
 <div id="{{ anchor }}" class="section ed-section measurement-guide color-scheme-{{ s.color_scheme }}" data-anchor-target data-anchor-label="{{ nav_label | escape }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
-  <div class="page-width{% if s.content_width == 'narrow' %} page-width--narrow{% elsif s.content_width == 'text' %} page-width--text{% endif %}">
+  <div class="page-width ed-wide{% if s.content_width == 'narrow' %} page-width--narrow{% elsif s.content_width == 'text' %} page-width--text{% endif %}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
     <ol class="measurement-guide__steps list-unstyled" role="list">
       {%- for block in steps -%}

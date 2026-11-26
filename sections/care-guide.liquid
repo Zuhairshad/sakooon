@@ -12,7 +12,7 @@
     when 'text'
       assign width_class = 'page-width page-width--text'
     else
-      assign width_class = 'page-width'
+      assign width_class = 'page-width ed-wide'
   endcase
   assign col_vw = 100 | divided_by: s.columns
   assign img_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 50vw, 100vw'

@@ -4,7 +4,7 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 <div class="section ed-section editorial-stats color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
-  <div class="page-width">
+  <div class="page-width ed-wide">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
     <dl class="editorial-stats__list">
       {%- for block in section.blocks -%}

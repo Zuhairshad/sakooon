@@ -15,7 +15,7 @@
   assign rating_rows = 'softness,breathability,durability,warmth' | split: ','
 -%}
 <div class="section ed-section fabric-compare color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
-  <div class="page-width">
+  <div class="page-width ed-wide">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
     {%- if handles == blank -%}
       {%- if request.design_mode -%}<p class="fabric-compare__empty">{{ 'editorial.fabric_compare.empty' | t }}</p>{%- endif -%}

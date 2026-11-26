@@ -7,7 +7,8 @@
         "content_width": "text",
         "text": "<p>Answers to the questions we hear most. Can't find what you need? Get in touch and we'll help.</p>",
         "padding_top": 80,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "heading_size": "h3"
       }
     },
     "nav": {

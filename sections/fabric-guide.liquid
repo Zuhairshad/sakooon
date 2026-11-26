@@ -35,7 +35,7 @@
   endif
 -%}
 <div class="section ed-section fabric-guide color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
-  <fabric-guide class="page-width" data-filter-by="{{ s.filter_by }}">
+  <fabric-guide class="page-width ed-wide" data-filter-by="{{ s.filter_by }}">
     {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
     {%- if s.show_filters and filters.size > 1 -%}
       <div class="fabric-guide__filters" role="group" aria-label="{{ 'editorial.fabric_guide.filter_label' | t }}">

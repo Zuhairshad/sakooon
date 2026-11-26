@@ -405,3 +405,7 @@ blog-load-more { display: block; }
 .main-article__comment { padding-bottom: var(--space-5); border-bottom: var(--border-width) solid var(--color-border); }
 .main-article__comment-form { display: grid; gap: var(--space-5); }
 .main-article__more { margin-top: var(--space-20); }
+
+/* Editorial wide container: Tekla's 1168px content width (docs/reference/editorial.md section 1). Only applies when
+   no narrower page-width modifier is present. */
+.page-width.ed-wide:not(.page-width--text, .page-width--narrow, .page-width--full) { max-width: calc(1168px + 2 * var(--page-gutter)); }

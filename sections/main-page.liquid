@@ -5,7 +5,7 @@
     when 'narrow'
       assign width_class = 'page-width page-width--narrow'
     when 'page'
-      assign width_class = 'page-width'
+      assign width_class = 'page-width ed-wide'
     else
       assign width_class = 'page-width page-width--text'
   endcase
@@ -30,7 +30,7 @@
   "settings": [
     { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
     { "type": "checkbox", "id": "show_title", "label": "t:sections.main-page.settings.show_title.label", "default": true },
-    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
       { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
       { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
       { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }

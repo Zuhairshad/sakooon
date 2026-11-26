@@ -8,7 +8,8 @@
         "content_width": "page",
         "text": "<p>Every fabric feels, breathes and wears differently. Use this guide to compare them and find the one that suits the way you sleep.</p>",
         "padding_top": 80,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "heading_size": "h3"
       }
     },
     "guide": {

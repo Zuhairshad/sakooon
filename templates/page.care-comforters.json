@@ -8,7 +8,8 @@
         "content_width": "text",
         "text": "<p>Introduce how to care for your duvets and comforters: what matters most and how often.</p>",
         "padding_top": 80,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "heading_size": "h3"
       }
     },
     "nav": {
