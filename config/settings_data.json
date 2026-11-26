@@ -63,7 +63,8 @@
           "accent_contrast": "#163322",
           "button_background": "#F5F2EC",
           "button_text": "#163322",
-          "button_border": "#F5F2EC"
+          "button_border": "#F5F2EC",
+          "background_gradient": "radial-gradient(ellipse 75% 65% at 50% 22%, #1B3D2A 0%, #163322 100%)"
         }
       }
     },
