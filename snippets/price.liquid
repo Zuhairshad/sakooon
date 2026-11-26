@@ -53,7 +53,8 @@
       {%- if varies and range -%}
         {{ price_min | money }} &ndash; {{ price_max | money }}
       {%- elsif varies -%}
-        {{ 'products.product.price.from_price_html' | t: price: price_min | money }}
+        {%- assign price_min_money = price_min | money -%}
+        {{ 'products.product.price.from_price_html' | t: price: price_min_money }}
       {%- else -%}
         {{ price_min | money }}
       {%- endif -%}

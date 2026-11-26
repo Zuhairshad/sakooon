@@ -83,7 +83,7 @@
         data-limit="{{ section.settings.products_limit }}"
         {% unless settings.predictive_search_enabled %}data-disabled{% endunless %}
       >
-        <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form page-width">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form page-width" aria-label="{{ 'general.search.search' | t }}">
           <div class="search-drawer__field">
             {%- render 'icon', icon: 'search', size: 20, class: 'search-drawer__icon' -%}
             <label for="SearchDrawerInput" class="visually-hidden">{{ 'general.search.search' | t }}</label>

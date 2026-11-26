@@ -29,7 +29,7 @@ for (const width of [1440, 768, 390]) {
   await page.waitForTimeout(500);
   check(`filter drawer opens ${tag}`, await page.locator('#facets-drawer[open]').count() === 1);
   const dw = (await page.locator('#facets-drawer .drawer').boundingBox()).width;
-  check(`drawer width ${tag}`, width >= 768 ? Math.round(dw) === 600 : Math.round(dw) === width, `${Math.round(dw)}px`);
+  check(`drawer width ${tag}`, width >= 768 ? Math.round(dw) === Math.min(600, width / 2) : Math.round(dw) === width, `${Math.round(dw)}px`);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/collection-filters-open-${width}.png` });
 
   // pick the first enabled checkbox of a list filter + a sort option

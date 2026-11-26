@@ -1,0 +1,115 @@
+{%- comment -%}
+  Cart page. Owner: shad-d8. Shares snippets/cart-line.liquid and <cart-items> (assets/cart.js) with the cart drawer:
+  quantity/remove go through /cart/change.js and this section re-renders from the `sections` response.
+  Without JS it is a plain cart form: quantity fields are `updates[]`, the Update button posts them, Remove links use
+  item.url_to_remove, Check out posts with name="checkout".
+{%- endcomment -%}
+<div
+  class="section main-cart color-scheme-{{ section.settings.color_scheme }}"
+  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width main-cart__inner">
+  <cart-items data-cart-section="{{ section.id }}">
+    <div data-cart-content>
+      <h1 class="main-cart__title">
+        {{- 'sections.cart.title' | t -}}
+        {%- if cart.item_count > 0 %} <span class="main-cart__count">({{ cart.item_count }})</span>{% endif -%}
+      </h1>
+      {%- if cart.item_count > 0 -%}
+        <form action="{{ routes.cart_url }}" method="post" id="CartPageForm" class="main-cart__grid" novalidate>
+          <div class="main-cart__lines">
+            <ul class="list-unstyled" role="list" aria-label="{{ 'sections.cart.caption' | t }}">
+              {%- for item in cart.items -%}
+                {%- render 'cart-line', item: item, index: forloop.index, id_prefix: 'CartPage' -%}
+              {%- endfor -%}
+            </ul>
+            <noscript><button type="submit" name="update" class="button button--secondary main-cart__update">{{ 'sections.cart.update' | t }}</button></noscript>
+          </div>
+
+          <aside class="main-cart__summary" aria-labelledby="CartSummaryTitle">
+            <h2 class="visually-hidden" id="CartSummaryTitle">{{ 'sections.cart.estimated_total' | t }}</h2>
+            {%- liquid
+              assign threshold = settings.cart_free_shipping_threshold | strip | plus: 0
+              assign threshold_cents = threshold | times: 100
+            -%}
+            {%- if settings.cart_free_shipping_bar and threshold_cents > 0 -%}
+              {%- liquid
+                assign remaining = threshold_cents | minus: cart.total_price
+                assign progress = cart.total_price | times: 100 | divided_by: threshold_cents
+                if progress > 100
+                  assign progress = 100
+                endif
+              -%}
+              <div class="main-cart__shipping">
+                <p>
+                  {%- if remaining > 0 -%}{%- assign remaining_money = remaining | money -%}{{ 'sections.cart.free_shipping_remaining_html' | t: remaining: remaining_money }}{%- else -%}{{ 'sections.cart.free_shipping_reached' | t }}{%- endif -%}
+                </p>
+                <div class="cart-drawer__meter" aria-hidden="true"><span style="width: {{ progress }}%"></span></div>
+              </div>
+            {%- endif -%}
+
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              <ul class="main-cart__discounts list-unstyled">
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <li class="cart-drawer__row"><span>{{ discount.title }}</span><span>&minus;{{ discount.total_allocated_amount | money }}</span></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            <div class="cart-drawer__row main-cart__subtotal">
+              <span>{{ 'sections.cart.subtotal' | t }}</span>
+              <span data-cart-subtotal>{{ cart.total_price | money_with_currency }}</span>
+            </div>
+            <p class="cart-drawer__taxes">
+              {%- if cart.taxes_included -%}
+                {%- if shop.shipping_policy.body != blank -%}{{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}{%- else -%}{{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}{%- endif -%}
+              {%- elsif shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+              {%- else -%}
+                {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+              {%- endif -%}
+            </p>
+
+            {%- if settings.cart_show_note -%}
+              <div class="main-cart__note field">
+                <label class="field__label" for="CartPageNote">{{ 'sections.cart.note' | t }}</label>
+                <textarea id="CartPageNote" name="note" rows="3" data-cart-note>{{ cart.note }}</textarea>
+              </div>
+            {%- endif -%}
+
+            <button type="submit" name="checkout" class="button button--full main-cart__checkout">{{ 'sections.cart.checkout' | t }}</button>
+            {%- if additional_checkout_buttons and section.settings.show_additional_checkout -%}
+              <div class="main-cart__additional">{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+            <a href="{{ section.settings.continue_link | default: routes.all_products_collection_url }}" class="link main-cart__continue">{{ 'sections.cart.continue_shopping' | t }}</a>
+          </aside>
+        </form>
+      {%- else -%}
+        <div class="main-cart__empty">
+          <p class="main-cart__empty-text">{{ 'sections.cart.empty' | t }}</p>
+          <a href="{{ section.settings.continue_link | default: routes.all_products_collection_url }}" class="button">{{ 'sections.cart.continue_shopping' | t }}</a>
+          {%- if shop.customer_accounts_enabled and customer == nil -%}
+            <p class="main-cart__login">{{ 'sections.cart.login.title' | t }} {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      <p class="form__message form__message--error" role="alert" data-cart-error hidden></p>
+    </div>
+  </cart-items>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-cart.name",
+  "class": "section-main-cart",
+  "settings": [
+    { "type": "url", "id": "continue_link", "label": "t:sections.main-cart.settings.continue_link.label" },
+    { "type": "checkbox", "id": "show_additional_checkout", "label": "t:sections.main-cart.settings.show_additional_checkout.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ]
+}
+{% endschema %}

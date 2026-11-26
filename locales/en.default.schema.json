@@ -1535,6 +1535,20 @@
           "content": "Uses the complementary_products metafield, then complementary products from Search & Discovery."
         }
       }
+    },
+    "main-cart": {
+      "name": "Cart",
+      "settings": {
+        "continue_link": {
+          "label": "Continue shopping link"
+        },
+        "show_additional_checkout": {
+          "label": "Show accelerated checkout buttons"
+        }
+      }
+    },
+    "main-search": {
+      "name": "Search results"
     }
   }
 }

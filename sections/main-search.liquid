@@ -1,0 +1,157 @@
+{%- comment -%}
+  Search results page. Owner: shad-d8.
+  Search form, result count, native filtering/sorting for product results (snippets/facets.liquid in a drawer, shared with
+  collections; assets/facets.js re-renders this section), product grid of product cards, pages/articles as a list,
+  pagination, no-results and empty-query states. Without JS: plain GET form and links.
+{%- endcomment -%}
+{%- liquid
+  assign per_page = section.settings.products_per_page
+  assign active_count = 0
+  for filter in search.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+  assign encoded_terms = search.terms | url_encode
+  assign clear_url = routes.search_url | append: '?q=' | append: encoded_terms | append: '&options%5Bprefix%5D=last'
+-%}
+<div
+  class="section main-search main-collection color-scheme-{{ section.settings.color_scheme }}"
+  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px; --collection-columns: {{ section.settings.columns_desktop }};"
+  data-facets-section="{{ section.id }}"
+>
+  <div class="main-search__header page-width page-width--full">
+    <h1 class="main-search__title">{{ 'templates.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="main-search__form" aria-label="{{ 'templates.search.title' | t }}">
+      <label for="MainSearchInput-{{ section.id }}" class="visually-hidden">{{ 'general.search.search' | t }}</label>
+      <div class="search-drawer__field main-search__field">
+        {%- render 'icon', icon: 'search', size: 20, class: 'search-drawer__icon' -%}
+        <input type="search" id="MainSearchInput-{{ section.id }}" name="q" value="{{ search.terms | escape }}" class="search-drawer__input" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" enterkeyhint="search">
+        <input type="hidden" name="options[prefix]" value="last">
+      </div>
+      <button type="submit" class="button main-search__submit">{{ 'general.search.search' | t }}</button>
+    </form>
+  </div>
+
+  {%- if search.performed -%}
+    {%- paginate search.results by per_page -%}
+      <div class="main-collection__toolbar page-width page-width--full">
+        {%- if section.settings.enable_filtering and search.results_count > 0 or active_count > 0 -%}
+          <button type="button" class="main-collection__filter-button" data-drawer-open="facets-drawer" aria-controls="facets-drawer">
+            {%- render 'icon', icon: 'sliders', size: 16 -%}
+            <span>{{ 'products.facets.filter_and_sort' | t }}</span>
+            {%- if active_count > 0 -%}<span class="main-collection__filter-count">({{ active_count }})</span>{%- endif -%}
+          </button>
+        {%- endif -%}
+        <p class="main-collection__count" id="SearchCount-{{ section.id }}" tabindex="-1" data-facets-count role="status">
+          {{- 'templates.search.results_with_count_and_term' | t: count: search.results_count, terms: search.terms -}}
+        </p>
+      </div>
+
+      {%- if active_count > 0 -%}
+        <div class="main-collection__active page-width page-width--full">
+          <ul class="facets__pills list-unstyled" role="list" aria-label="{{ 'products.facets.filter_by_label' | t | remove: ':' }}">
+            {%- for filter in search.filters -%}
+              {%- for value in filter.active_values -%}
+                <li><a href="{{ value.url_to_remove }}" class="facets__pill" data-facets-link><span class="visually-hidden">{{ filter.label | escape }}:</span> {{ value.label | escape }}{%- render 'icon', icon: 'close', size: 12 -%}</a></li>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' and filter.min_value.value != nil or filter.type == 'price_range' and filter.max_value.value != nil -%}
+                <li><a href="{{ filter.url_to_remove }}" class="facets__pill" data-facets-link>{{ filter.min_value.value | default: 0 | money }}&ndash;{{ filter.max_value.value | default: filter.range_max | money }}{%- render 'icon', icon: 'close', size: 12 -%}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+            <li><a href="{{ clear_url }}" class="facets__clear" data-facets-link>{{ 'products.facets.clear_all' | t }}</a></li>
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="main-collection__results page-width page-width--full" data-facets-results>
+        {%- if search.results_count == 0 -%}
+          <div class="main-collection__empty">
+            <h2 class="main-collection__empty-title">{{ 'templates.search.no_results' | t: terms: search.terms }}</h2>
+            {%- if active_count > 0 -%}<p>{{ 'templates.collection.use_fewer_filters_html' | t: link: clear_url }}</p>{%- endif -%}
+          </div>
+        {%- else -%}
+          {%- liquid
+            assign has_products = false
+            for item in search.results
+              if item.object_type == 'product'
+                assign has_products = true
+              endif
+            endfor
+          -%}
+          {%- if has_products -%}
+        <h2 class="visually-hidden">{{ 'general.search.products' | t }}</h2>
+            <ul class="product-grid" role="list" aria-labelledby="SearchCount-{{ section.id }}">
+              {%- for item in search.results -%}
+                {%- if item.object_type == 'product' -%}
+                  <li class="product-grid__item">
+                    {%- assign lazy = true -%}{%- if forloop.index <= 4 -%}{%- assign lazy = false -%}{%- endif -%}
+                    {%- render 'product-card', product: item, columns_desktop: section.settings.columns_desktop, lazy: lazy -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- capture other_results -%}
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'page' or item.object_type == 'article' -%}
+                <li class="main-search__other-item">
+                  <a href="{{ item.url }}" class="main-search__other-link">
+                    <span class="main-search__other-type">{%- if item.object_type == 'article' -%}{{ 'templates.search.articles' | t }}{%- else -%}{{ 'templates.search.pages' | t }}{%- endif -%}</span>
+                    <span class="main-search__other-title">{{ item.title | escape }}</span>
+                    {%- assign excerpt = item.excerpt | default: item.content | strip_html | truncatewords: 24 -%}
+                    {%- if excerpt != blank -%}<span class="main-search__other-excerpt">{{ excerpt }}</span>{%- endif -%}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if other_results != blank -%}
+            <ul class="main-search__others list-unstyled" role="list">{{ other_results }}</ul>
+          {%- endif -%}
+          {%- render 'pagination', paginate: paginate, anchor: '' -%}
+        {%- endif -%}
+      </div>
+    {%- endpaginate -%}
+
+    {%- if section.settings.enable_filtering -%}
+      <theme-drawer id="facets-drawer" class="facets-drawer" data-side="left" data-lock-scroll>
+        <div class="overlay" data-drawer-close></div>
+        <div class="drawer drawer--left facets-drawer__panel color-scheme-{{ section.settings.drawer_color_scheme }}" role="dialog" aria-modal="true" aria-labelledby="FacetsTitle-{{ section.id }}">
+          <div class="drawer__header">
+            <h2 class="drawer__title" id="FacetsTitle-{{ section.id }}">{{ 'products.facets.filter_and_sort' | t }}</h2>
+            <button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', icon: 'close', size: 20 -%}</button>
+          </div>
+          <facets-form class="drawer__body facets" data-section-id="{{ section.id }}">
+            {%- render 'facets', results: search, section_id: section.id, results_url: routes.search_url, terms: search.terms -%}
+          </facets-form>
+        </div>
+      </theme-drawer>
+    {%- endif -%}
+  {%- else -%}
+    <div class="main-collection__empty page-width">
+      <p class="main-search__hint">{{ 'general.search.placeholder' | t }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-search.name",
+  "class": "section-main-search",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "min": 8, "max": 48, "step": 4, "label": "t:sections.main-collection.settings.products_per_page.label", "default": 24 },
+    { "type": "range", "id": "columns_desktop", "min": 2, "max": 5, "step": 1, "label": "t:sections.main-collection.settings.columns_desktop.label", "default": 4 },
+    { "type": "checkbox", "id": "enable_filtering", "label": "t:sections.main-collection.settings.enable_filtering.label", "info": "t:sections.main-collection.settings.enable_filtering.info", "default": true },
+    { "type": "color_scheme", "id": "drawer_color_scheme", "label": "t:sections.main-collection.settings.drawer_color_scheme.label", "default": "white" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ]
+}
+{% endschema %}
