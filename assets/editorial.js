@@ -102,7 +102,7 @@
       this.chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
       let shown = 0;
       this.querySelectorAll('.fabric-guide__item').forEach((item) => {
-        const card = item.querySelector('.fabric-card');
+        const card = item.matches('.fabric-panel') ? item : item.querySelector('.fabric-card');
         const match = !value || (card && card.dataset[this.attr] === value);
         item.hidden = !match;
         if (match) shown += 1;

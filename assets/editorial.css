@@ -422,3 +422,28 @@ blog-load-more { display: block; }
   .faq__jump .faq__jump-list { display: block; }
   .faq__jump-link { min-height: 36px; }
 }
+
+/* fabric-guide "panels" layout (Parachute fabric guide: framed panel, texture banner with the name, info / shop split). */
+.fabric-guide__panels { display: grid; gap: var(--space-10); }
+.fabric-panel { border: var(--border-width) solid var(--color-foreground); }
+.fabric-panel[hidden] { display: none; }
+.fabric-panel__banner { position: relative; aspect-ratio: 21 / 10; }
+.fabric-panel__name { position: absolute; left: var(--space-6); bottom: var(--space-5); margin: 0; color: #fff; text-shadow: 0 1px 12px rgba(0, 0, 0, .25); }
+.fabric-panel__name a { color: inherit; text-decoration: none; }
+.fabric-panel__name a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
+.fabric-panel__body { display: grid; gap: var(--space-8); padding: var(--space-6) var(--space-5) var(--space-8); }
+.fabric-panel__info { display: flex; flex-direction: column; gap: var(--space-5); }
+.fabric-panel__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.fabric-panel__chips li { padding: 2px var(--space-2); font-size: var(--text-xs); border: var(--border-width) solid var(--color-foreground); }
+.fabric-panel__statement { font-family: var(--font-heading-family); font-weight: var(--font-heading-weight); font-size: var(--text-lg); line-height: 1.4; }
+.fabric-panel__accordions { border-top: var(--border-width) solid var(--color-border); }
+.fabric-panel__shop { display: flex; flex-direction: column; gap: var(--space-5); min-width: 0; }
+.fabric-panel__products { display: flex; gap: var(--space-3); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.fabric-panel__products::-webkit-scrollbar { display: none; }
+.fabric-panel__products > li { flex: 0 0 min(160px, 42%); scroll-snap-align: start; }
+.fabric-panel__products:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+@media (min-width: 1024px) {
+  .fabric-panel__banner { aspect-ratio: 43 / 5; }
+  .fabric-panel__body { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); padding: var(--space-12) var(--space-16); }
+  .fabric-panel__products > li { flex-basis: calc((100% - 3 * var(--space-3)) / 3.3); }
+}

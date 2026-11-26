@@ -552,7 +552,8 @@
       "verify": "Verify certificate",
       "new_window": "(opens in a new window)",
       "select_fabric": "Select a fabric in this section's settings to preview its content.",
-      "images": "{{ name }} images"
+      "images": "{{ name }} images",
+      "shop_all": "Shop all {{ name }}"
     },
     "care": {
       "about_fabric": "About {{ name }}"

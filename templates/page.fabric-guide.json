@@ -24,7 +24,10 @@
         "filter_by": "weave",
         "card_link_label": "Read more",
         "padding_top": 0,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "layout": "panels",
+        "panel_feel_label": "Feel and benefits",
+        "panel_care_label": "Craftsmanship and care"
       }
     },
     "compare": {

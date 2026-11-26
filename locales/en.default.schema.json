@@ -921,6 +921,19 @@
             "weave": "Weave",
             "fibre": "Fibre"
           }
+        },
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "grid": "Card grid",
+            "panels": "Panels with products"
+          }
+        },
+        "panel_feel_label": {
+          "label": "Panel: feel heading"
+        },
+        "panel_care_label": {
+          "label": "Panel: care heading"
         }
       },
       "blocks": {

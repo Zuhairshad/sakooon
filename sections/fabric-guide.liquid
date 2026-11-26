@@ -46,6 +46,78 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
+    {%- if s.layout == 'panels' and handles != blank -%}
+      <div class="fabric-guide__panels">
+        {%- for h in handle_list -%}
+          {%- assign f = shop.metaobjects.fabric[h] -%}
+          {%- if f == blank -%}{%- continue -%}{%- endif -%}
+          {%- liquid
+            assign banner = f.texture_image.value | default: f.lifestyle_image.value
+            assign chips = f.feel.value | split: ','
+            if chips.size == 0 and f.best_for.value != blank
+              assign chips = f.best_for.value
+            endif
+            assign products = f.related_products.value
+            if products == blank and f.collection.value != blank
+              assign products = f.collection.value.products
+            endif
+            assign panel_id = 'fabric-panel-' | append: section.id | append: '-' | append: h
+            assign sub_tag = 'h4'
+            if item_tag == 'h2'
+              assign sub_tag = 'h3'
+            endif
+          -%}
+          <article class="fabric-panel fabric-guide__item" data-weave="{{ f.weave.value | handleize }}" data-fibre="{{ f.fibre.value | handleize }}" aria-labelledby="{{ panel_id }}-title">
+            <div class="fabric-panel__banner media">
+              {% render 'image', image: banner, sizes: '(min-width: 1280px) 1168px, 100vw', aspect: 'natural', alt: '', placeholder: 'collection-1' %}
+              <{{ item_tag }} class="fabric-panel__name h2" id="{{ panel_id }}-title">
+                {%- if f.system.url != blank -%}<a href="{{ f.system.url }}">{{ f.name.value }}</a>{%- else -%}{{ f.name.value }}{%- endif -%}
+              </{{ item_tag }}>
+            </div>
+            <div class="fabric-panel__body">
+              <div class="fabric-panel__info">
+                {%- if chips.size > 0 -%}
+                  <ul class="fabric-panel__chips list-unstyled" role="list">{%- for c in chips limit: 4 -%}{%- assign chip = c | strip -%}{%- if chip != blank -%}<li>{{ chip | capitalize }}</li>{%- endif -%}{%- endfor -%}</ul>
+                {%- endif -%}
+                {%- if f.summary.value != blank -%}<p class="fabric-panel__statement">{{ f.summary.value }}</p>{%- endif -%}
+                <div class="fabric-panel__accordions">
+                  {%- capture feel_content -%}
+                    {%- if f.description.value != blank -%}{{ f.description | metafield_tag }}{%- endif -%}
+                    {%- if s.show_ratings -%}{% render 'fabric-rating', fabric: f, compact: true %}{%- endif -%}
+                  {%- endcapture -%}
+                  {%- if feel_content != blank -%}
+                    {%- assign acc_id = panel_id | append: '-feel' -%}
+                    {% render 'accordion', id: acc_id, title: s.panel_feel_label, content: feel_content, icon: 'chevron-down', heading_tag: sub_tag %}
+                  {%- endif -%}
+                  {%- capture care_content -%}
+                    {%- if f.care_symbols.value != blank -%}{% render 'care-icons', symbols: f.care_symbols.value %}{%- endif -%}
+                    {%- if f.care.value != blank -%}{{ f.care | metafield_tag }}{%- endif -%}
+                    {%- if f.care_guide.value != blank -%}<p><a class="link" href="{{ f.care_guide.value.url }}">{{ f.care_guide.value.title }}</a></p>{%- endif -%}
+                  {%- endcapture -%}
+                  {%- if care_content != blank -%}
+                    {%- assign acc_id = panel_id | append: '-care' -%}
+                    {% render 'accordion', id: acc_id, title: s.panel_care_label, content: care_content, icon: 'chevron-down', heading_tag: sub_tag %}
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- if products != blank or f.collection.value != blank -%}
+                <div class="fabric-panel__shop">
+                  {%- if products != blank -%}
+                    <ul class="fabric-panel__products list-unstyled" role="list" tabindex="0" aria-label="{{ 'editorial.fabric.shop' | t: name: f.name.value | escape }}">
+                      {%- for product in products limit: 6 -%}<li>{% render 'product-card', product: product, columns_desktop: 3, image_ratio: 'portrait', heading_tag: sub_tag, show_swatches: true %}</li>{%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                  {%- if f.collection.value != blank -%}
+                    {%- assign shop_label = 'editorial.fabric.shop_all' | t: name: f.name.value -%}
+                    {% render 'button', label: shop_label, url: f.collection.value.url, style: 'primary', full_width: true %}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
     <ul class="fabric-guide__grid list-unstyled" role="list">
       {%- if handles != blank -%}
         {%- for h in handle_list -%}
@@ -60,6 +132,7 @@
         {%- endfor -%}
       {%- endif -%}
     </ul>
+    {%- endif -%}
     <p class="fabric-guide__empty" hidden>{{ 'editorial.fabric_guide.no_results' | t }}</p>
   </fabric-guide>
 </div>
@@ -83,6 +156,12 @@
     { "type": "paragraph", "content": "t:sections.fabric-guide.settings.source.content" },
     { "type": "range", "id": "limit", "min": 2, "max": 24, "step": 1, "label": "t:sections.fabric-guide.settings.limit.label", "default": 12 },
     { "type": "checkbox", "id": "exclude_current", "label": "t:sections.fabric-guide.settings.exclude_current.label", "default": true },
+    { "type": "select", "id": "layout", "label": "t:sections.fabric-guide.settings.layout.label", "default": "grid", "options": [
+      { "value": "grid", "label": "t:sections.fabric-guide.settings.layout.options.grid" },
+      { "value": "panels", "label": "t:sections.fabric-guide.settings.layout.options.panels" }
+    ] },
+    { "type": "text", "id": "panel_feel_label", "label": "t:sections.fabric-guide.settings.panel_feel_label.label", "default": "Feel and benefits" },
+    { "type": "text", "id": "panel_care_label", "label": "t:sections.fabric-guide.settings.panel_care_label.label", "default": "Craftsmanship and care" },
     { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 3 },
     { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
       { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
