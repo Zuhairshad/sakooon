@@ -77,7 +77,7 @@
                         {%- if target == link_handle -%}
                           <a class="mobile-nav__promo" href="{{ block.settings.link | default: link.url }}">
                             <div class="media" style="--aspect: 4/5">
-                              {%- render 'image', image: block.settings.image, sizes: '224px', widths: '240,480', aspect: '4/5', placeholder: 'lifestyle-1' -%}
+                              <template data-deferred-media>{%- render 'image', image: block.settings.image, sizes: '224px', widths: '240,480', aspect: '4/5', placeholder: 'lifestyle-1' -%}</template>
                             </div>
                             {%- if block.settings.heading != blank -%}<span class="mobile-nav__promo-title">{{ block.settings.heading | escape }}</span>{%- endif -%}
                           </a>

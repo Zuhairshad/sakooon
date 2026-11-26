@@ -16,6 +16,11 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = window.matchMedia('(min-width: 1024px)');
   const publish = (event, payload) => theme.pubsub && theme.pubsub.publish(event, payload);
+  /* Menu promo images ship inside <template data-deferred-media> so closed panels request nothing;
+     they are swapped in on the first hover/focus/open of their panel. */
+  const hydrateMedia = (root) => {
+    if (root) root.querySelectorAll('template[data-deferred-media]').forEach((t) => t.replaceWith(t.content.cloneNode(true)));
+  };
 
   /* ---------- <sticky-header data-mode="always|hide_on_scroll|none"> ---------- */
   class StickyHeader extends HTMLElement {
@@ -114,7 +119,8 @@
         on(entry.trigger, 'keydown', (e) => {
           if (e.key === 'ArrowDown') { e.preventDefault(); this.open(entry, 'keyboard'); this.focusFirst(entry); }
         });
-        on(entry.item, 'pointerenter', (e) => { if (e.pointerType === 'mouse') this.intent(entry, true); });
+        on(entry.item, 'pointerenter', (e) => { hydrateMedia(entry.panel); if (e.pointerType === 'mouse') this.intent(entry, true); });
+        on(entry.trigger, 'focus', () => hydrateMedia(entry.panel));
         on(entry.item, 'pointerleave', (e) => { if (e.pointerType === 'mouse') this.intent(entry, false); });
         on(entry.item, 'focusout', (e) => {
           if (this.current === entry && e.relatedTarget && !entry.item.contains(e.relatedTarget)) this.close();
@@ -163,6 +169,7 @@
 
     open(entry, by, instant) {
       clearTimeout(this._timer);
+      hydrateMedia(entry.panel);
       const switching = !!this.current && this.current !== entry;
       if (switching) this.setOpen(this.current, false);
       this.current = entry;
@@ -224,6 +231,7 @@
     openLevel(opener) {
       const level = document.getElementById(opener.getAttribute('aria-controls'));
       if (!level) return;
+      hydrateMedia(level);
       this.scrollTop = 0;
       this.active = { opener, level };
       opener.setAttribute('aria-expanded', 'true');
