@@ -409,8 +409,9 @@ const F = {
     if (!f || !f.family || FONT_EMITTED.has(f.family)) return '';
     FONT_EMITTED.add(f.family);
     /* Request only weights the family is likely to have: its own weight plus 400-600 (a missing weight makes Google reject the whole request). */
-    const weights = [...new Set([f.weight || 400, 400, 500, 600])].sort((a, b) => a - b);
-    const axes = [...weights.map((w) => `0,${w}`), '1,400'].join(';');
+    const serif = f.fallback_families === 'serif';
+    const weights = serif ? [f.weight || 400] : [...new Set([f.weight || 400, 400, 500, 600])].sort((a, b) => a - b);
+    const axes = serif ? `0,${weights[0]}` : [...weights.map((w) => `0,${w}`), '1,400'].join(';');
     return `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.family).replace(/%20/g, '+')}:ital,wght@${axes}&display=swap');`;
   },
   font_url: (f) => '', font_modify: (f, prop, val) => {
