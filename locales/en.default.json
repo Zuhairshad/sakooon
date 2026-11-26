@@ -108,7 +108,10 @@
       },
       "on_sale": "Sale",
       "badge_percent_off": "{{ percent }}% off",
-      "more_colours": { "one": "{{ count }} more colour", "other": "{{ count }} more colours" },
+      "more_colours": {
+        "one": "{{ count }} more colour",
+        "other": "{{ count }} more colours"
+      },
       "view_full_details": "View full details",
       "media": {
         "gallery_viewer": "Gallery viewer",
@@ -258,7 +261,10 @@
       "free_shipping_remaining_html": "You are {{ remaining }} away from free shipping",
       "free_shipping_reached": "You qualify for free shipping",
       "complementary_heading": "Complete the bed",
-      "updated": "Cart updated"
+      "updated": "Cart updated",
+      "remove": "Remove",
+      "continue_shopping": "Continue shopping",
+      "view_cart": "View cart"
     },
     "footer": {
       "payment": "Payment methods",

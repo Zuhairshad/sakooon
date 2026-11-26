@@ -411,6 +411,16 @@
     },
     "announcement-bar": {
       "name": "Announcement bar"
+    },
+    "cart-drawer": {
+      "name": "Cart drawer",
+      "settings": {
+        "drawer_width": { "label": "Drawer width on desktop" },
+        "empty_link": { "label": "Empty cart button link", "info": "Defaults to all products" },
+        "recommendations": { "header": "Recommendations" },
+        "show_recommendations": { "label": "Show complementary products", "info": "Uses complementary products from Shopify Search & Discovery for the first item in the cart." },
+        "recommendations_heading": { "label": "Recommendations heading" }
+      }
     }
   }
 }
