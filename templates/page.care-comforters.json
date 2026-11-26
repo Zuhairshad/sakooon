@@ -124,7 +124,7 @@
             "icon": "none",
             "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
             "heading": "Bed sheets",
-            "text": "",
+            "text": "<p>How to wash, dry, iron and store cotton, cotton satin and quilted cotton sheets and pillow covers so they stay soft and keep their colour. General guidance, plus the care given for our Quilted Bed Sheet Set.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-bedsheets"
           }
@@ -135,7 +135,7 @@
             "icon": "none",
             "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
             "heading": "Pillows",
-            "text": "",
+            "text": "<p>Keeping filled pillows fresh: covers, airing and spot-cleaning, when a pillow can be washed, drying it completely, and the simple fold test that shows when a pillow needs replacing.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-pillows"
           }

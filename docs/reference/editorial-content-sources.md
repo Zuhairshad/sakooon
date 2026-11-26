@@ -38,6 +38,8 @@ Source keys:
 | Every washing, drying, ironing, storing and replacement instruction on the care hub, bed sheets, duvets and pillows pages, plus their FAQs | G. Each hero says "General guidance … not specific to one product. Always follow the care label" |
 | "Care label: Quilted Bed Sheet Set": wash 40°C, no bleach, tumble dry low | P:quilted-bed-sheet-set-king |
 | Care symbol meanings on the hub | G (standard laundry symbols) |
+| Care hub cards and "More care guides" cards (3 lines each): what each guide covers | G (summaries of the general-guidance pages; the bed-sheet card names the Quilted Bed Sheet Set care, from P:quilted-bed-sheet-set-king) |
+| Fabric pages: header overview, Care row text, fabric-guide panel accordions | the fabric `overview` / `care_summary` rows above |
 
 ## Size and measuring guides
 | Statement | Source |

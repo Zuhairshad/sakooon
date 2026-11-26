@@ -15,12 +15,6 @@
     "detail": {
       "type": "fabric-detail",
       "blocks": {
-        "description": {
-          "type": "description",
-          "settings": {
-            "heading": "About this fabric"
-          }
-        },
         "specs": {
           "type": "specs",
           "settings": {
@@ -48,7 +42,6 @@
         }
       },
       "block_order": [
-        "description",
         "specs",
         "care",
         "certifications",

@@ -548,3 +548,8 @@ guide-anchor-nav.guide-sidebar[data-empty] .guide-anchor-nav__nav { display: non
    theme page width instead of the centred 1168px column; prose keeps a readable measure. */
 main:has(.editorial-hero--page) .page-width.ed-wide:not(.page-width--text, .page-width--narrow, .page-width--full) { max-width: var(--page-width); }
 main:has(.editorial-hero--page) .size-guide__intro, main:has(.editorial-hero--page) .size-guide .section-heading__body { max-width: 72ch; }
+
+/* Fabric page: the overview reads as body copy before the facts; care rows end with an arrow link. */
+.main-fabric__overview { max-width: 56ch; font-size: 16px; line-height: 1.6; }
+.main-fabric__care-link, .fabric-detail .link--arrow, .fabric-panel .link--arrow { font-size: var(--text-sm); text-decoration: underline; text-underline-offset: .3em; text-decoration-thickness: 1px; }
+.fabric-detail__care-text { max-width: 64ch; }

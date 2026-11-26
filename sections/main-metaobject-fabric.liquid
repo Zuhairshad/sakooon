@@ -1,5 +1,6 @@
 {%- comment -%}
-  Fabric page header for templates/metaobject/fabric.json: imagery, name, summary, key specifications,
+  Fabric page header for templates/metaobject/fabric.json: imagery, name, summary as the lead, the 5-6 line
+  overview, key specifications,
   ratings and a link to shop the fabric. Reads the `metaobject` of the web page; the fabric picker is a
   fallback so the section can also sit on a page template. Every field is optional and blank-guarded.
   Reference: Tekla care detail (docs/reference/editorial.md 2.4). Owner: shad-8b.
@@ -66,6 +67,7 @@
         {%- if fabric != blank -%}
           {%- if fabric.tagline.value != blank -%}<p class="main-fabric__tagline">{{ fabric.tagline.value }}</p>{%- endif -%}
           {%- if fabric.summary.value != blank -%}<p class="main-fabric__summary">{{ fabric.summary.value }}</p>{%- endif -%}
+          {%- if fabric.overview.value != blank -%}<p class="main-fabric__overview">{{ fabric.overview.value | newline_to_br }}</p>{%- endif -%}
           {%- capture specs -%}
             {%- for key in spec_keys -%}
               {%- assign v = fabric[key].value -%}
@@ -90,7 +92,7 @@
                 {%- assign shop_label = 'editorial.fabric.shop' | t: name: name -%}
                 {% render 'button', label: shop_label, url: shop_collection.url, style: 'primary' %}
               {%- endif -%}
-              {%- if fabric.care_guide.value != blank -%}<a class="link" href="{{ fabric.care_guide.value.url }}">{{ 'editorial.fabric.care_guide' | t }}</a>{%- endif -%}
+              {%- if fabric.care_guide.value != blank -%}<a class="link link--arrow main-fabric__care-link" href="{{ fabric.care_guide.value.url }}">{{ 'editorial.fabric.read_care_guide' | t }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a>{%- endif -%}
             </div>
           {%- endif -%}
         {%- else -%}

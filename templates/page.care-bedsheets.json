@@ -148,7 +148,7 @@
             "icon": "none",
             "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
             "heading": "Duvets and duvet covers",
-            "text": "",
+            "text": "<p>Caring for a duvet filling and its cover: why the cover does most of the work, how to keep the filling lofty, when a filling can be washed, and how to dry and store it through the warm months.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-comforters"
           }
@@ -159,7 +159,7 @@
             "icon": "none",
             "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
             "heading": "Pillows",
-            "text": "",
+            "text": "<p>Keeping filled pillows fresh: covers, airing and spot-cleaning, when a pillow can be washed, drying it completely, and the simple fold test that shows when a pillow needs replacing.</p>",
             "link_label": "Read the guide",
             "link_url": "/pages/care-pillows"
           }

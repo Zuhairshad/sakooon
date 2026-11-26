@@ -43,9 +43,14 @@
           {%- when 'ratings' -%}
             {% render 'fabric-rating', fabric: fabric %}
           {%- when 'care' -%}
+            {%- comment -%} care_summary (5-6 lines) replaces the short care text; symbols follow; the guide link closes the row. {%- endcomment -%}
+            {%- if fabric.care_summary.value != blank -%}
+              <p class="fabric-detail__care-text">{{ fabric.care_summary.value | newline_to_br }}</p>
+            {%- elsif fabric.care.value != blank -%}
+              <div class="rte fabric-detail__care-text">{{ fabric.care | metafield_tag }}</div>
+            {%- endif -%}
             {%- if fabric.care_symbols.value != blank -%}{% render 'care-icons', symbols: fabric.care_symbols.value %}{%- endif -%}
-            {%- if fabric.care.value != blank -%}<div class="rte fabric-detail__care-text">{{ fabric.care | metafield_tag }}</div>{%- endif -%}
-            {%- if fabric.care_guide.value != blank -%}<p><a class="link" href="{{ fabric.care_guide.value.url }}">{{ block.settings.link_label | default: fabric.care_guide.value.title }}</a></p>{%- endif -%}
+            {%- if fabric.care_guide.value != blank and fabric.care_summary.value != blank or fabric.care_guide.value != blank and fabric.care.value != blank -%}<p><a class="link link--arrow" href="{{ fabric.care_guide.value.url }}">{{ block.settings.link_label | default: fabric.care_guide.value.title }}{% render 'icon', icon: 'arrow-right', size: 16 %}</a></p>{%- endif -%}
           {%- when 'certifications' -%}
             {%- for cert in fabric.certifications.value -%}
               {%- liquid
