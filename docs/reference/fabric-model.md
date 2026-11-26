@@ -105,7 +105,7 @@ Sakooon must never imply certifications it does not hold. Sections only render a
 | collection | `sakooon.fabric` | metaobject_reference → fabric | optional | fabric collections show the fabric story, ratings and texture image in the collection header |
 | page | `sakooon.related_fabrics` | list.metaobject_reference → fabric | optional | which fabrics a guide or comparison page shows, in order. When blank, show all published fabrics sorted by `sort_order` (Liquid: `shop.metaobjects.fabric.values`) |
 
-Theme-side resolution (one snippet, `fabric-resolve`, for everyone to use):
+Theme-side resolution (an inline pattern: a snippet can't return a value, because `render` scopes are isolated):
 `fabric = variant.metafields.sakooon.fabric.value | default: product.metafields.sakooon.fabric.value`
 `care_text = product.metafields.sakooon.care_instructions | default: fabric.care` · `care_page = product.metafields.sakooon.care_guide.value | default: fabric.care_guide.value`
 
