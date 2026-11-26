@@ -421,6 +421,17 @@
         "show_recommendations": { "label": "Show complementary products", "info": "Uses complementary products from Shopify Search & Discovery for the first item in the cart." },
         "recommendations_heading": { "label": "Recommendations heading" }
       }
+    },
+    "search-drawer": {
+      "name": "Search drawer",
+      "settings": {
+        "products_limit": { "label": "Products shown" },
+        "idle": { "header": "Before typing" },
+        "popular_heading": { "label": "Popular searches heading" },
+        "popular_terms": { "label": "Popular searches", "info": "Comma-separated, e.g. percale, duvet cover, pillow" },
+        "featured_collection": { "label": "Featured products collection" },
+        "featured_heading": { "label": "Featured products heading", "info": "Defaults to the collection title" }
+      }
     }
   }
 }
