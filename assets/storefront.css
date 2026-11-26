@@ -61,7 +61,7 @@ body:has(#MainContent > .shopify-section:first-child [data-header-overlay]) .hea
 @media (min-width: 1024px) {
   .header__nav { display: block; }
   .header--nav_left .header__bar { grid-template-columns: 1fr auto auto; grid-template-areas: "nav logo actions"; }
-  .header--logo_left .header__bar { grid-template-columns: auto 1fr auto; grid-template-areas: "logo nav actions"; }
+  .header--logo_left .header__bar { grid-template-columns: auto 1fr auto; grid-template-areas: "logo nav actions"; column-gap: var(--space-10); }
   .header--logo_center .header__bar { grid-template-columns: 1fr auto 1fr; grid-template-areas: "nav logo actions"; }
 }
 .header__logo-img { width: var(--header-logo-width-mobile, 90px); max-height: calc(var(--header-bar-height) - 16px); object-fit: contain; object-position: left center; }

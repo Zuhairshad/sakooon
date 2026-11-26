@@ -89,7 +89,7 @@
       "settings": {
         "color_scheme": "white",
         "menu": "main-menu",
-        "layout": "nav_left",
+        "layout": "logo_left",
         "show_border": false,
         "sticky_mode": "always",
         "transparent_on_home": true,
