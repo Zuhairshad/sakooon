@@ -1,10 +1,53 @@
 {%- comment -%}
   One metafield-driven accordion row for the PDP. Owner: shad-d8. Uses <theme-disclosure> (global.js).
   {% render 'product-accordions', product: product, block: block, section_id: section.id %}
-  block.settings: source (description | dimensions | composition | feel | specifications | whats_included | care | shipping_returns | custom),
+  block.settings: source (description_sections | description | dimensions | composition | feel | specifications | whats_included | care | shipping_returns | custom),
                   heading (optional override), subtitle, open, content (richtext, for custom/shipping), page (page, for custom/shipping), icon.
   Sources (docs/metafield-contracts.md). Fabric resolution is inline: variant -> product. Blank sources render nothing (no "N/A").
+  description_sections: the product description split at its <h3>/<h2> headings ("What's in the set", "Why you'll love it",
+  "Specifications", "Care", "Frequently asked questions"...). Text before the first heading becomes the "Description" row
+  (open when block.settings.open); each heading becomes its own row titled with the merchant's heading text. A description
+  without headings renders as one "Description" row, like source 'description'.
 {%- endcomment -%}
+{%- if block.settings.source == 'description_sections' -%}
+  {%- liquid
+    assign normalised = product.description | replace: '<h2', '<h3' | replace: '</h2>', '</h3>'
+    assign chunks = normalised | split: '<h3'
+    assign group = 'product-' | append: section_id
+  -%}
+  {%- for chunk in chunks -%}
+    {%- liquid
+      assign row_open = false
+      if forloop.first
+        assign row_heading = block.settings.heading
+        if row_heading == blank
+          assign row_heading = 'products.product.description' | t
+        endif
+        assign row_body = chunk | strip
+        assign row_open = block.settings.open
+      else
+        assign heading_raw = chunk | split: '</h3>' | first
+        assign row_heading = heading_raw | prepend: '<h3' | append: '</h3>' | strip_html | strip
+        assign row_body = chunk | remove_first: heading_raw | remove_first: '</h3>' | strip
+      endif
+      assign row_text = row_body | strip_html | strip
+      assign panel_id = 'Accordion-' | append: section_id | append: '-' | append: block.id | append: '-' | append: forloop.index
+    -%}
+    {%- if row_text != blank and row_heading != blank -%}
+      <theme-disclosure class="product-accordion" data-group="{{ group }}"{% if row_open %} open{% endif %} {% if forloop.first %}{{ block.shopify_attributes }}{% endif %}>
+        <button type="button" class="disclosure__trigger product-accordion__trigger" aria-expanded="{% if row_open %}true{% else %}false{% endif %}" aria-controls="{{ panel_id }}">
+          <span class="product-accordion__titles">
+            <span class="product-accordion__title">{{ row_heading | escape }}</span>
+          </span>
+          {%- render 'icon', icon: 'plus', size: 16, class: 'icon-plus' -%}
+        </button>
+        <div class="disclosure__panel" id="{{ panel_id }}"{% if row_open %} data-open{% endif %}>
+          <div class="disclosure__content product-accordion__content"><div class="rte product-accordion__rte">{{ row_body }}</div></div>
+        </div>
+      </theme-disclosure>
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
 {%- liquid
   assign source = block.settings.source
   assign variant = product.selected_or_first_available_variant
@@ -91,8 +134,12 @@
 
     {%- when 'care' -%}
       {%- assign default_heading = 'products.product.care' | t -%}
+      {%- comment -%} A "Care" heading in the description is already its own row (description_sections); keep only the guide link here. {%- endcomment -%}
+      {%- assign description_care = false -%}
+      {%- if product.description contains '>Care</h3>' or product.description contains '>Care</h2>' -%}{%- assign description_care = true -%}{%- endif -%}
       {%- if mf.care_instructions != blank -%}
         <div class="rte">{{ mf.care_instructions | metafield_tag }}</div>
+      {%- elsif description_care -%}
       {%- elsif fabric.care != blank -%}
         <div class="rte">{{ fabric.care | metafield_tag }}</div>
       {%- endif -%}
@@ -130,4 +177,5 @@
       <div class="disclosure__content product-accordion__content">{{ body }}</div>
     </div>
   </theme-disclosure>
+{%- endif -%}
 {%- endif -%}

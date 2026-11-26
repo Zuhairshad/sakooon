@@ -82,6 +82,25 @@
     return !variant.options.includes(current);
   }
 
+  /**
+   * Update the picker without replacing its nodes, so the control the shopper used keeps focus and identity
+   * (screen readers do not re-announce the group). Falls back to a replace when the structure differs.
+   */
+  function syncInPlace(region, next) {
+    const a = [region, ...region.querySelectorAll('*')];
+    const b = [next, ...next.querySelectorAll('*')];
+    if (a.length !== b.length || a.some((el, i) => el.tagName !== b[i].tagName)) return false;
+    a.forEach((el, i) => {
+      const src = b[i];
+      for (const { name } of Array.from(el.attributes)) if (!src.hasAttribute(name)) el.removeAttribute(name);
+      for (const { name, value } of Array.from(src.attributes)) if (el.getAttribute(name) !== value) el.setAttribute(name, value);
+      if (el.tagName === 'INPUT') { el.checked = src.hasAttribute('checked'); el.disabled = src.hasAttribute('disabled'); }
+      if (el.tagName === 'OPTION') { el.selected = src.hasAttribute('selected'); el.disabled = src.hasAttribute('disabled'); }
+      if (!el.children.length && el.textContent !== src.textContent) el.textContent = src.textContent;
+    });
+    return true;
+  }
+
   async function renderVariant({ section, sectionId, url, variant, previous, focusName, focusValue }) {
     const key = `${url}?variant=${variant.id}`;
     let doc = sectionCache.get(key);
@@ -105,6 +124,7 @@
       if (k === 'sticky') {
         const wasHidden = region.hidden; const fresh = document.importNode(next, true); fresh.hidden = wasHidden; region.replaceWith(fresh); return;
       }
+      if (k.startsWith('picker-') && syncInPlace(region, next)) return;
       region.replaceWith(document.importNode(next, true));
     });
     if (openPanels.size) section.querySelectorAll('theme-disclosure').forEach((d) => {

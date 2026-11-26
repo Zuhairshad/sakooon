@@ -1467,6 +1467,7 @@
             "source": {
               "label": "Content",
               "options": {
+                "description_sections": "Description, split by its headings",
                 "description": "Description",
                 "dimensions": "Dimensions",
                 "composition": "Composition",
