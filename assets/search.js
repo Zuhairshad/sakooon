@@ -98,6 +98,16 @@
   }
   if (!customElements.get('predictive-search')) customElements.define('predictive-search', PredictiveSearch);
 
+  // Autofocus fallback: under prefers-reduced-motion the input can still be mid visibility transition on the
+  // drawer's first frame, so focus() is ignored. Retry once it is visible.
+  document.addEventListener('theme:drawer:open', (e) => {
+    if (!e.detail || e.detail.id !== 'search-drawer') return;
+    const input = document.getElementById('SearchDrawerInput');
+    if (!input) return;
+    const tryFocus = (n) => { if (document.activeElement === input || n > 5) return; input.focus({ preventScroll: true }); setTimeout(() => tryFocus(n + 1), 30); };
+    setTimeout(() => tryFocus(0), 0);
+  });
+
   theme.pubsub && theme.pubsub.subscribe('search:open-request', ({ trigger } = {}) => {
     const d = document.getElementById('search-drawer');
     if (d && typeof d.open === 'function') d.open(trigger);

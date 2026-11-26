@@ -107,6 +107,11 @@
         "unit_price": "Unit price"
       },
       "on_sale": "Sale",
+      "badge_percent_off": "{{ percent }}% off",
+      "more_colours": {
+        "one": "{{ count }} more colour",
+        "other": "{{ count }} more colours"
+      },
       "view_full_details": "View full details",
       "media": {
         "gallery_viewer": "Gallery viewer",

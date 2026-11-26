@@ -1,0 +1,123 @@
+{%- comment -%}
+  Filter + sort form (native Storefront filtering). Owner: shad-d8. Shared by main-collection and main-search.
+  {% render 'facets', results: collection, section_id: section.id, results_url: collection.url %}
+  {% render 'facets', results: search, section_id: section.id, results_url: routes.search_url, terms: search.terms %}
+  Params: results (collection or search; provides filters, sort_options, sort_by, default_sort_by), section_id, results_url,
+          terms (search only: carried as hidden q), show_sort / show_filters / show_counts (default true).
+  GET form: works without JS (full reload); assets/facets.js submits it through the Section Rendering API instead.
+  Colour families (sakooon.color_family metaobjects with a `swatch` field) arrive as list values with value.swatch.
+{%- endcomment -%}
+{%- liquid
+  assign sort_enabled = true
+  if show_sort == false
+    assign sort_enabled = false
+  endif
+  assign filters_enabled = true
+  if show_filters == false
+    assign filters_enabled = false
+  endif
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  assign form_id = 'FacetsForm-' | append: section_id
+-%}
+<form action="{{ results_url }}" method="get" id="{{ form_id }}" class="facets__form" data-facets-form>
+  {%- if terms != blank -%}
+    <input type="hidden" name="q" value="{{ terms | escape }}">
+    <input type="hidden" name="options[prefix]" value="last">
+  {%- endif -%}
+
+  {%- if sort_enabled and results.sort_options.size > 0 -%}
+    <fieldset class="facets__group facets__group--sort">
+      <legend class="facets__legend">{{ 'products.facets.sort_by_label' | t | remove: ':' }}</legend>
+      <div class="facets__options facets__options--grid">
+        {%- for option in results.sort_options -%}
+          <label class="facets__option facets__option--radio">
+            <input type="radio" name="sort_by" value="{{ option.value | escape }}"{% if option.value == sort_by %} checked{% endif %}>
+            <span>{{ option.name | escape }}</span>
+          </label>
+        {%- endfor -%}
+      </div>
+    </fieldset>
+  {%- endif -%}
+
+  {%- if filters_enabled -%}{%- assign filters = results.filters -%}{%- else -%}{%- assign filters = empty -%}{%- endif -%}
+  {%- for filter in filters -%}
+    {%- assign group_id = form_id | append: '-' | append: forloop.index -%}
+    {%- case filter.type -%}
+      {%- when 'list', 'boolean' -%}
+        <fieldset class="facets__group" aria-describedby="{{ group_id }}-count">
+          <legend class="facets__legend">
+            {{- filter.label | escape -}}
+            <span class="facets__selected" id="{{ group_id }}-count">
+              {%- if filter.active_values.size > 0 %} {{ 'products.facets.filters_selected' | t: count: filter.active_values.size }}{% endif -%}
+            </span>
+          </legend>
+          <div class="facets__options facets__options--grid">
+            {%- for value in filter.values -%}
+              {%- liquid
+                assign disabled = false
+                if value.count == 0 and value.active == false
+                  assign disabled = true
+                endif
+                assign input_id = group_id | append: '-' | append: forloop.index
+              -%}
+              <label class="facets__option{% if disabled %} is-disabled{% endif %}" for="{{ input_id }}">
+                <input type="checkbox" id="{{ input_id }}" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% endif %}{% if disabled %} disabled{% endif %}>
+                <span class="facets__label">{{ value.label | escape }}</span>
+                {%- if value.swatch.color or value.swatch.image -%}
+                  {%- liquid
+                    if value.swatch.image
+                      assign swatch_src = value.swatch.image | image_url: width: 48
+                      assign swatch_style = 'background-image: url(' | append: swatch_src | append: ')'
+                    else
+                      assign swatch_style = 'background-color: ' | append: value.swatch.color
+                    endif
+                  -%}
+                  <span class="facets__swatch" style="{{ swatch_style }}" aria-hidden="true"></span>
+                {%- endif -%}
+                {%- unless show_counts == false -%}<span class="facets__count" aria-hidden="true">{{ value.count }}</span>{%- endunless -%}
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- when 'price_range' -%}
+        {%- liquid
+          assign currency = cart.currency.symbol | default: shop.currency
+          assign max_units = filter.range_max | divided_by: 100.0 | ceil
+        -%}
+        <fieldset class="facets__group facets__group--price">
+          <legend class="facets__legend">{{ filter.label | escape }}</legend>
+          <div class="facets__price">
+            <label class="facets__price-field">
+              <span class="facets__price-label">{{ 'products.facets.from' | t }}</span>
+              <span class="facets__price-input">
+                <span aria-hidden="true">{{ currency }}</span>
+                <input type="number" inputmode="decimal" name="{{ filter.min_value.param_name }}" min="0" max="{{ max_units }}" step="1"
+                  {%- if filter.min_value.value != nil %} value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} placeholder="0">
+              </span>
+            </label>
+            <label class="facets__price-field">
+              <span class="facets__price-label">{{ 'products.facets.to' | t }}</span>
+              <span class="facets__price-input">
+                <span aria-hidden="true">{{ currency }}</span>
+                <input type="number" inputmode="decimal" name="{{ filter.max_value.param_name }}" min="0" max="{{ max_units }}" step="1"
+                  {%- if filter.max_value.value != nil %} value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} placeholder="{{ max_units }}">
+              </span>
+            </label>
+          </div>
+          <p class="facets__hint">{{ 'products.facets.max_price' | t: price: filter.range_max | money }}</p>
+        </fieldset>
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <div class="facets__actions">
+    {%- liquid
+      assign reset_url = results_url
+      if terms != blank
+        assign encoded_terms = terms | url_encode
+        assign reset_url = results_url | append: '?q=' | append: encoded_terms | append: '&options%5Bprefix%5D=last'
+      endif
+    -%}
+    <a href="{{ reset_url }}" class="button button--secondary facets__reset" data-facets-link>{{ 'products.facets.reset' | t }}</a>
+    <button type="submit" class="button facets__apply">{{ 'products.facets.apply' | t }}</button>
+  </div>
+</form>
