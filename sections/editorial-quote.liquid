@@ -1,0 +1,44 @@
+{%- comment -%} Pull quote or brand statement. Owner: shad-8b. {%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section ed-section editorial-quote editorial-quote--{{ s.alignment }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width page-width--narrow">
+    {%- if s.quote != blank -%}
+      <figure class="editorial-quote__figure">
+        <blockquote class="editorial-quote__text {{ s.size }}">{{ s.quote }}</blockquote>
+        {%- if s.attribution != blank or s.role != blank -%}
+          <figcaption class="editorial-quote__caption">
+            {%- if s.attribution != blank -%}<span class="editorial-quote__name">{{ s.attribution }}</span>{%- endif -%}
+            {%- if s.role != blank -%}<span class="editorial-quote__role">{{ s.role }}</span>{%- endif -%}
+          </figcaption>
+        {%- endif -%}
+      </figure>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-quote.name",
+  "tag": "section",
+  "class": "section-editorial-quote",
+  "settings": [
+    { "type": "richtext", "id": "quote", "label": "t:sections.editorial-quote.settings.quote.label", "default": "<p>A short statement that captures what you believe about rest, materials or making things well.</p>" },
+    { "type": "text", "id": "attribution", "label": "t:sections.editorial-quote.settings.attribution.label" },
+    { "type": "text", "id": "role", "label": "t:sections.editorial-quote.settings.role.label" },
+    { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+      { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
+    ] },
+    { "type": "select", "id": "alignment", "label": "t:sections.editorial-hero.settings.alignment.label", "default": "center", "options": [
+      { "value": "left", "label": "t:sections.editorial-hero.settings.alignment.options.left" },
+      { "value": "center", "label": "t:sections.editorial-hero.settings.alignment.options.center" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "presets": [ { "name": "t:sections.editorial-quote.presets.name" } ]
+}
+{% endschema %}

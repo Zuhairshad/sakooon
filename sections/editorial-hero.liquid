@@ -1,0 +1,107 @@
+{%- comment -%}
+  Page title block for guides and brand pages: breadcrumbs, eyebrow, h1, intro, optional image and buttons.
+  Reference: Tekla care/ESG headers (docs/reference/editorial.md 2.1-2.4). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign heading = s.heading
+  if heading == blank and request.page_type == 'page'
+    assign heading = page.title
+  elsif heading == blank and request.page_type == 'blog'
+    assign heading = blog.title
+  endif
+  case s.content_width
+    when 'text'
+      assign width_class = 'page-width page-width--text'
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    else
+      assign width_class = 'page-width'
+  endcase
+  assign image_sizes = '(min-width: 1024px) 720px, 100vw'
+  if s.image_width == 'full'
+    assign image_sizes = '100vw'
+  endif
+-%}
+<div class="section ed-section editorial-hero editorial-hero--{{ s.alignment }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="{{ width_class }}">
+    {%- if s.show_breadcrumbs -%}{% render 'breadcrumbs' %}{%- endif -%}
+    <div class="editorial-hero__text{% if s.content_width == 'page' %} editorial-hero__text--column{% endif %}">
+      {% render 'section-heading', eyebrow: s.eyebrow, heading: heading, heading_tag: 'h1', heading_size: s.heading_size, text: s.text, align: s.alignment %}
+      {%- if section.blocks.size > 0 -%}
+        <div class="editorial-hero__buttons">
+          {%- for block in section.blocks -%}
+            {% render 'button', label: block.settings.label, url: block.settings.url, style: block.settings.style, attrs: block.shopify_attributes %}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if s.image != blank or s.show_image_placeholder -%}
+    <div class="editorial-hero__media editorial-hero__media--{{ s.image_width }}{% if s.image_width != 'full' %} {{ width_class }}{% endif %}">
+      <div class="media" style="--aspect: {{ s.image_ratio }}">
+        {% render 'image', image: s.image, sizes: image_sizes, aspect: s.image_ratio, priority: true, placeholder: 'lifestyle-1' %}
+      </div>
+      {%- if s.caption != blank -%}<p class="editorial-caption">{{ s.caption }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-hero.name",
+  "tag": "section",
+  "class": "section-editorial-hero",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "t:sections.editorial-hero.settings.show_breadcrumbs.label", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial-hero.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial-hero.settings.heading.label", "info": "t:sections.editorial-hero.settings.heading.info" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h2", "options": [
+      { "value": "h1", "label": "t:sections.all.heading_size.options.h1" },
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial-hero.settings.text.label" },
+    { "type": "select", "id": "alignment", "label": "t:sections.editorial-hero.settings.alignment.label", "default": "left", "options": [
+      { "value": "left", "label": "t:sections.editorial-hero.settings.alignment.options.left" },
+      { "value": "center", "label": "t:sections.editorial-hero.settings.alignment.options.center" }
+    ] },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "header", "content": "t:sections.editorial-hero.settings.image_header.content" },
+    { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+    { "type": "checkbox", "id": "show_image_placeholder", "label": "t:sections.editorial-hero.settings.show_image_placeholder.label", "default": false },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" },
+      { "value": "16/9", "label": "t:sections.editorial.settings.image_ratio.options.wide" },
+      { "value": "21/9", "label": "t:sections.editorial.settings.image_ratio.options.panorama" }
+    ] },
+    { "type": "select", "id": "image_width", "label": "t:sections.editorial-hero.settings.image_width.label", "default": "column", "options": [
+      { "value": "column", "label": "t:sections.editorial-hero.settings.image_width.options.column" },
+      { "value": "full", "label": "t:sections.editorial-hero.settings.image_width.options.full" }
+    ] },
+    { "type": "text", "id": "caption", "label": "t:sections.editorial.settings.caption.label" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ],
+  "blocks": [
+    { "type": "button", "name": "t:sections.editorial.blocks.button.name", "limit": 2, "settings": [
+      { "type": "text", "id": "label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "Button label" },
+      { "type": "url", "id": "url", "label": "t:sections.editorial.blocks.button.settings.url.label" },
+      { "type": "select", "id": "style", "label": "t:sections.editorial.blocks.button.settings.style.label", "default": "secondary", "options": [
+        { "value": "primary", "label": "t:sections.editorial.blocks.button.settings.style.options.primary" },
+        { "value": "secondary", "label": "t:sections.editorial.blocks.button.settings.style.options.secondary" },
+        { "value": "tertiary", "label": "t:sections.editorial.blocks.button.settings.style.options.tertiary" }
+      ] }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.editorial-hero.presets.name" } ]
+}
+{% endschema %}

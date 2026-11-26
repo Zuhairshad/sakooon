@@ -411,6 +411,425 @@
     },
     "announcement-bar": {
       "name": "Announcement bar"
+    },
+    "editorial": {
+      "settings": {
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "caption": {
+          "label": "Caption"
+        },
+        "columns": {
+          "label": "Columns on desktop"
+        },
+        "image_ratio": {
+          "label": "Image ratio",
+          "options": {
+            "portrait": "Portrait (4:5)",
+            "square": "Square (1:1)",
+            "landscape": "Landscape (5:4)",
+            "wide": "Wide (16:9)",
+            "panorama": "Panorama (21:9)"
+          }
+        }
+      },
+      "blocks": {
+        "button": {
+          "name": "Button",
+          "settings": {
+            "label": {
+              "label": "Label"
+            },
+            "url": {
+              "label": "Link"
+            },
+            "style": {
+              "label": "Style",
+              "options": {
+                "primary": "Solid",
+                "secondary": "Outline",
+                "tertiary": "Text link"
+              }
+            }
+          }
+        }
+      }
+    },
+    "editorial-hero": {
+      "name": "Editorial header",
+      "presets": {
+        "name": "Editorial header"
+      },
+      "settings": {
+        "show_breadcrumbs": {
+          "label": "Show breadcrumbs"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading",
+          "info": "Leave blank to use the page or blog title."
+        },
+        "text": {
+          "label": "Introduction"
+        },
+        "alignment": {
+          "label": "Alignment",
+          "options": {
+            "left": "Left",
+            "center": "Centre"
+          }
+        },
+        "image_header": {
+          "content": "Image"
+        },
+        "image": {
+          "label": "Image"
+        },
+        "show_image_placeholder": {
+          "label": "Show a placeholder when no image is selected"
+        },
+        "image_width": {
+          "label": "Image width",
+          "options": {
+            "column": "Text column",
+            "full": "Full bleed"
+          }
+        }
+      }
+    },
+    "editorial-text": {
+      "name": "Editorial text",
+      "presets": {
+        "name": "Editorial text"
+      },
+      "settings": {
+        "measure": {
+          "label": "Limit line length",
+          "info": "Keeps lines to about 70 characters for long reading."
+        },
+        "paragraph_spacing": {
+          "label": "Paragraph spacing",
+          "options": {
+            "compact": "Compact",
+            "regular": "Regular",
+            "relaxed": "Relaxed"
+          }
+        }
+      },
+      "blocks": {
+        "heading": {
+          "name": "Heading",
+          "settings": {
+            "tag": {
+              "label": "Heading level"
+            },
+            "anchor": {
+              "label": "Anchor ID",
+              "info": "Used by the page navigation. Leave blank to generate one from the heading."
+            }
+          }
+        },
+        "text": {
+          "name": "Text"
+        },
+        "list": {
+          "name": "List",
+          "settings": {
+            "text": {
+              "label": "List"
+            },
+            "style": {
+              "label": "List style",
+              "options": {
+                "dash": "Dash",
+                "bullet": "Bullet",
+                "plain": "Plain",
+                "divided": "Divided rows"
+              }
+            }
+          }
+        },
+        "footnote": {
+          "name": "Footnote"
+        },
+        "link": {
+          "name": "Link"
+        },
+        "image": {
+          "name": "Image"
+        },
+        "page_content": {
+          "name": "Page content"
+        }
+      }
+    },
+    "editorial-image-text": {
+      "name": "Image with text rows",
+      "presets": {
+        "name": "Image with text rows"
+      },
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "seam": "Joined pair",
+            "split": "Half and half",
+            "wide": "Wide image"
+          }
+        },
+        "image_side": {
+          "label": "First image position",
+          "options": {
+            "left": "Left",
+            "right": "Right"
+          }
+        },
+        "alternate": {
+          "label": "Alternate sides"
+        },
+        "stack_text_first": {
+          "label": "Show text before image on mobile"
+        }
+      },
+      "blocks": {
+        "row": {
+          "name": "Row",
+          "settings": {
+            "label": {
+              "label": "Label"
+            }
+          }
+        }
+      }
+    },
+    "editorial-gallery": {
+      "name": "Image gallery",
+      "presets": {
+        "name": "Image gallery"
+      },
+      "settings": {
+        "mobile_rail": {
+          "label": "Scroll horizontally on mobile"
+        }
+      },
+      "blocks": {
+        "image": {
+          "name": "Image"
+        }
+      }
+    },
+    "editorial-quote": {
+      "name": "Quote",
+      "presets": {
+        "name": "Quote"
+      },
+      "settings": {
+        "quote": {
+          "label": "Quote"
+        },
+        "attribution": {
+          "label": "Attribution"
+        },
+        "role": {
+          "label": "Attribution detail"
+        }
+      }
+    },
+    "editorial-stats": {
+      "name": "Figures",
+      "presets": {
+        "name": "Figures"
+      },
+      "settings": {
+        "claims": {
+          "content": "Only publish figures you can substantiate. A figure with no value is hidden."
+        }
+      },
+      "blocks": {
+        "stat": {
+          "name": "Figure",
+          "settings": {
+            "value": {
+              "label": "Value",
+              "info": "For example a year or a count. Leave blank to hide."
+            },
+            "label": {
+              "label": "Description"
+            },
+            "note": {
+              "label": "Source or footnote"
+            }
+          }
+        }
+      }
+    },
+    "editorial-timeline": {
+      "name": "Timeline",
+      "presets": {
+        "name": "Timeline"
+      },
+      "blocks": {
+        "milestone": {
+          "name": "Milestone",
+          "settings": {
+            "marker": {
+              "label": "Year or label"
+            }
+          }
+        }
+      }
+    },
+    "guide-anchor-nav": {
+      "name": "Page navigation",
+      "presets": {
+        "name": "Page navigation"
+      },
+      "settings": {
+        "label": {
+          "label": "Label",
+          "info": "Optional visible label, for example \"On this page\"."
+        },
+        "sticky": {
+          "label": "Stick below the header"
+        },
+        "style": {
+          "label": "Style",
+          "options": {
+            "links": "Underlined links",
+            "pills": "Pills"
+          }
+        },
+        "auto": {
+          "content": "With no links added, the navigation lists every heading on the page that has an anchor."
+        }
+      },
+      "blocks": {
+        "link": {
+          "name": "Link",
+          "settings": {
+            "anchor": {
+              "label": "Anchor ID",
+              "info": "The ID of a heading on this page. Leave blank to generate one from the label."
+            }
+          }
+        }
+      }
+    },
+    "faq": {
+      "name": "FAQ",
+      "presets": {
+        "name": "FAQ"
+      },
+      "settings": {
+        "icon": {
+          "label": "Icon",
+          "options": {
+            "plus": "Plus",
+            "chevron": "Chevron"
+          }
+        },
+        "open_first": {
+          "label": "Open the first question"
+        },
+        "single_open": {
+          "label": "Close other questions when one opens"
+        },
+        "animate": {
+          "label": "Animate opening"
+        },
+        "structured_data": {
+          "label": "Add FAQ structured data",
+          "info": "Helps search engines show your answers. Use on one FAQ section per page."
+        }
+      },
+      "blocks": {
+        "group": {
+          "name": "Topic heading"
+        },
+        "question": {
+          "name": "Question",
+          "settings": {
+            "question": {
+              "label": "Question"
+            },
+            "answer": {
+              "label": "Answer"
+            }
+          }
+        }
+      }
+    },
+    "info-columns": {
+      "name": "Information columns",
+      "presets": {
+        "name": "Information columns"
+      },
+      "settings": {
+        "dividers": {
+          "label": "Show dividers"
+        }
+      },
+      "blocks": {
+        "column": {
+          "name": "Column",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "options": {
+                "none": "None",
+                "mail": "Email",
+                "phone": "Phone",
+                "truck": "Delivery",
+                "refresh": "Returns",
+                "map_pin": "Location",
+                "info": "Information",
+                "shield": "Guarantee"
+              }
+            }
+          }
+        }
+      }
+    },
+    "contact-form": {
+      "name": "Contact form",
+      "presets": {
+        "name": "Contact form"
+      },
+      "settings": {
+        "show_phone": {
+          "label": "Show phone field"
+        },
+        "show_order": {
+          "label": "Show order number field"
+        },
+        "show_topic": {
+          "label": "Show topic menu"
+        },
+        "topics": {
+          "label": "Topics",
+          "info": "One per line."
+        },
+        "side_text": {
+          "label": "Side column text"
+        }
+      }
+    },
+    "main-page": {
+      "name": "Page",
+      "settings": {
+        "show_title": {
+          "label": "Show page title"
+        }
+      }
     }
   }
 }

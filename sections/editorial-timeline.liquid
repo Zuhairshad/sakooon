@@ -1,0 +1,55 @@
+{%- comment -%} Brand story milestones. Owner: shad-8b. {%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section ed-section editorial-timeline color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width page-width--narrow">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text %}
+    <ol class="editorial-timeline__list list-unstyled">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="editorial-timeline__item{% if b.image != blank %} editorial-timeline__item--media{% endif %}" {{ block.shopify_attributes }}>
+          <p class="editorial-timeline__marker">{{ b.marker }}</p>
+          <div class="editorial-timeline__body">
+            {%- if b.heading != blank -%}<h3 class="editorial-timeline__heading h4">{{ b.heading }}</h3>{%- endif -%}
+            {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
+          </div>
+          {%- if b.image != blank -%}
+            <div class="editorial-timeline__media media" style="--aspect: 4/5">
+              {% render 'image', image: b.image, sizes: '(min-width: 1024px) 240px, 40vw', aspect: '4/5' %}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-timeline.name",
+  "tag": "section",
+  "class": "section-editorial-timeline",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Our story" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "milestone", "name": "t:sections.editorial-timeline.blocks.milestone.name", "settings": [
+      { "type": "text", "id": "marker", "label": "t:sections.editorial-timeline.blocks.milestone.settings.marker.label", "default": "Year" },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Milestone" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>What happened, and what it changed.</p>" },
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.editorial-timeline.presets.name", "blocks": [ { "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" } ] } ]
+}
+{% endschema %}
