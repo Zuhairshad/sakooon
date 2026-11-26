@@ -426,6 +426,27 @@ async function renderJsonSections(file, globals, prefix = '') {
   return out.join('\n');
 }
 
+/** Resolve a Section Rendering API id. Group ids look like `sections--header-group__cart-drawer` and carry that entry's settings;
+    anything else is treated as a section file name (what Shopify does for predictive search / recommendations). */
+function resolveSectionId(id) {
+  const m = /^sections--([a-z0-9-]+)__(.+)$/i.exec(id);
+  if (m) {
+    const file = path.join(THEME, 'sections', `${m[1]}.json`);
+    if (exists(file)) { const grp = readJson(file); const entry = grp.sections?.[m[2]]; if (entry) return { type: entry.type, data: entry }; }
+  }
+  return { type: id, data: { type: id } };
+}
+async function renderSectionById(id, globals) { const { type, data } = resolveSectionId(id); return renderSection(type, data, globals, id); }
+async function renderRequestedSections(list, url) {
+  const ids = Array.isArray(list) ? list : String(list || '').split(',').map((x) => x.trim()).filter(Boolean);
+  if (!ids.length) return undefined;
+  const route = resolveRoute(url);
+  const g = globalsFor(route, url);
+  const out = {};
+  for (const id of ids) out[id] = await renderSectionById(id, g);
+  return out;
+}
+
 const escapeHtml = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* -------------------------------------------------------------- routing */
@@ -611,7 +632,9 @@ http.createServer(async (req, res) => {
         if (line) line.quantity += q; else cart.lines.push({ id, quantity: q });
       }
       if (p === '/cart/add') { res.writeHead(302, { Location: '/cart' }); return res.end(); }
-      return sendJson(res, cartJson().items.find((i) => i.id === Number(items[0].id)));
+      const added = { ...cartJson().items.find((i) => i.id === Number(items[0].id)) };
+      if (body.sections) { added.sections = await renderRequestedSections(body.sections, new URL(body.sections_url || '/', `http://${req.headers.host}`)); }
+      return sendJson(res, added);
     }
     if (p === '/cart/change.js' || p === '/cart/update.js') {
       const body = await readBody(req);
@@ -621,12 +644,43 @@ http.createServer(async (req, res) => {
         ref.quantity = Number(body.quantity);
         cart.lines = cart.lines.filter((l) => l.quantity > 0);
       }
-      return sendJson(res, cartJson());
+      const out = cartJson();
+      if (body.sections) out.sections = await renderRequestedSections(body.sections, new URL(body.sections_url || '/', `http://${req.headers.host}`));
+      return sendJson(res, out);
     }
     if (p === '/cart/clear.js') { cart.lines = []; return sendJson(res, cartJson()); }
     let m;
     if ((m = /^\/products\/([^/]+)\.js$/.exec(p)) && productByHandle[m[1]]) return sendJson(res, productJs(productByHandle[m[1]]));
     if (p === '/products.json') return sendJson(res, { products: PRODUCTS.slice(0, Number(url.searchParams.get('limit') || 30)).map((x) => ({ id: x.id, handle: x.handle, title: x.title, product_type: x.type, tags: x.tags, variants: x.variants.map((v) => ({ id: v.id, title: v.title, price: (v.price / 100).toFixed(2), available: v.available })), options: x.options_with_values.map((o) => ({ name: o.name, values: o.values })) })) });
+    if (p === '/search/suggest' && url.searchParams.get('section_id')) {
+      const q = (url.searchParams.get('q') || '').trim();
+      const types = (url.searchParams.get('resources[type]') || 'product,collection,query,page,article').split(',');
+      const limit = Number(url.searchParams.get('resources[limit]') || 6);
+      const ql = q.toLowerCase();
+      const products = types.includes('product') && q ? PRODUCTS.filter((x) => `${x.title} ${x.type} ${x.tags.join(' ')}`.toLowerCase().includes(ql)).slice(0, limit) : [];
+      const collections = types.includes('collection') && q ? COLLECTIONS.filter((c) => c.title.toLowerCase().includes(ql)).slice(0, limit) : [];
+      const pages = types.includes('page') && q ? Object.values(pageByHandle).filter((pg) => `${pg.title} ${pg.content || ''}`.toLowerCase().includes(ql)).slice(0, limit) : [];
+      const articles = types.includes('article') && q ? Object.values(blogByHandle).flatMap((b) => b.articles || []).filter((a) => `${a.title} ${a.content || ''}`.toLowerCase().includes(ql)).slice(0, limit) : [];
+      const queries = types.includes('query') && q ? [{ text: q, styled_text: `<strong>${escapeHtml(q)}</strong>`, url: `/search?q=${encodeURIComponent(q)}` }] : [];
+      const route = resolveRoute(new URL('/search', url));
+      const g = { ...globalsFor(route, url), predictive_search: { performed: true, terms: q, resources: { products, collections, pages, articles, queries } } };
+      return send(res, 200, await renderSectionById(url.searchParams.get('section_id'), g));
+    }
+    if (p === '/recommendations/products' && url.searchParams.get('section_id')) {
+      const pid = Number(url.searchParams.get('product_id'));
+      const intent = url.searchParams.get('intent') || 'related';
+      const limit = Number(url.searchParams.get('limit') || 10);
+      const self = PRODUCTS.find((x) => x.id === pid);
+      let products = PRODUCTS.filter((x) => x.id !== pid);
+      if (self) {
+        const sameCollection = products.filter((x) => x.collections.some((c) => self.collections.includes(c)));
+        products = intent === 'complementary' ? products.filter((x) => !sameCollection.includes(x)).concat(sameCollection) : sameCollection.concat(products.filter((x) => !sameCollection.includes(x)));
+      }
+      products = products.slice(0, limit);
+      const route = resolveRoute(new URL(self ? self.url : '/', url));
+      const g = { ...globalsFor(route, url), recommendations: { performed: true, intent, products, products_count: products.length } };
+      return send(res, 200, await renderSectionById(url.searchParams.get('section_id'), g));
+    }
     if (p === '/search/suggest.json') {
       const q = (url.searchParams.get('q') || '').toLowerCase();
       const products = PRODUCTS.filter((x) => `${x.title} ${x.type} ${x.tags.join(' ')}`.toLowerCase().includes(q)).slice(0, 6)
@@ -639,14 +693,14 @@ http.createServer(async (req, res) => {
     const sectionId = url.searchParams.get('section_id');
     if (sectionId) {
       const route = resolveRoute(url);
-      return send(res, 200, await renderSection(sectionId, { type: sectionId }, globalsFor(route, url), sectionId));
+      return send(res, 200, await renderSectionById(sectionId, globalsFor(route, url)));
     }
     const sectionsParam = url.searchParams.get('sections');
     if (sectionsParam) {
       const route = resolveRoute(url);
       const g = globalsFor(route, url);
       const out = {};
-      for (const id of sectionsParam.split(',')) out[id] = await renderSection(id, { type: id }, g, id);
+      for (const id of sectionsParam.split(',')) out[id] = await renderSectionById(id, g);
       return sendJson(res, out);
     }
 

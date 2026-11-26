@@ -1,16 +1,12 @@
 # Local theme preview
 
-Renders this theme on your machine without a Shopify store, so theme work can run in parallel with the headless app.
+Renders the theme without a Shopify store (LiquidJS). `PORT=9292 npm run preview` from the repo root.
 
-```bash
-cd local-preview
-npm install --ignore-scripts
-npm start            # http://localhost:9292
-```
-
-- Renders the real `layout/`, `templates/*.json`, section groups, `sections/` and `snippets/` with [LiquidJS](https://liquidjs.com).
-- Uses the sample catalogue and images in the headless repo (`../sakooon/data/store.json`, `../sakooon/public/images`). Point `HEADLESS=/path/to/sakooon` at it if your checkout lives elsewhere.
-- Shopify-only filters and tags (`image_url`, `money`, `t`, `form`, `paginate`, `section(s)`, …) and the AJAX endpoints the theme JS calls (`/cart/*.js`, `/products/<handle>.js`, `/search/suggest.json`, `?section_id=`) are stubbed. The cart is held in memory.
-- Theme files are re-read on every request, so refresh to see Liquid/CSS/JS edits. `npm run dev` restarts the server when `server.mjs` changes.
-
-It is an approximation: Liquid edge cases, customer accounts, checkout and real filtering behave differently on Shopify. Check with `shopify theme dev` before shipping. `.shopifyignore` keeps this folder out of theme uploads.
+- Data: `/Users/shad/sakooon/data/store.json` + `public/images` (override with `HEADLESS=/path`), extended by `tools/preview/fixtures/*.json`
+  (colour x size variant products, metafields, extra collection membership).
+- Shimmed: Shopify filters/tags, colour schemes, font_picker objects, link lists, `collection.filters` + `sort_by` from the query string,
+  `/cart.js`, `/cart/add|change|update.js` (with `sections` + `sections_url`), `/products/<handle>.js`, `/products.json`,
+  `/search/suggest.json`, `/search/suggest?section_id=` (predictive_search global), `/recommendations/products?section_id=` (recommendations global),
+  `?section_id=` and `?sections=` including group ids (`sections--header-group__cart-drawer`).
+- Restart only your own instance: `lsof -ti tcp:<port> | xargs kill` (never `pkill -f`).
+- It is an approximation; check real behaviour with `shopify theme dev` before shipping.
