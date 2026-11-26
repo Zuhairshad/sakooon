@@ -2,6 +2,7 @@
   Responsive image. Owner: Fable. See docs/component-contracts.md section 6.
   {% render 'image', image: product.featured_image, sizes: '(min-width: 1024px) 50vw, 100vw', aspect: '4/5', priority: true, class: 'card__img' %}
   Renders a placeholder when image is blank (placeholder: 'product-1' etc.).
+  decorative: true (or alt: '') renders alt="" for images next to visible text (cards), avoiding redundant alt.
 {%- endcomment -%}
 {%- liquid
   assign widths_str = widths | default: '320,480,640,768,960,1280,1600,1920,2400'
@@ -17,7 +18,11 @@
   if image.preview_image
     assign img = image.preview_image
   endif
-  assign alt_text = alt | default: img.alt | default: ''
+  if decorative or alt == ''
+    assign alt_text = ''
+  else
+    assign alt_text = alt | default: img.alt | default: ''
+  endif
 -%}
 {%- if img != blank -%}
   {%- liquid
