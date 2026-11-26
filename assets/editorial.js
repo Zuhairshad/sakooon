@@ -112,6 +112,38 @@
   }
   if (!customElements.get('fabric-guide')) customElements.define('fabric-guide', FabricGuide);
 
+  /* ---------- <size-guide data-size-guide> ----------
+     Self-contained so commerce can inject it into a dialog. Converts every [data-cm] cell between cm and inches.
+     The chosen unit persists per visitor (localStorage, best effort). */
+  const UNIT_KEY = 'sakooon:size-unit';
+  const toInches = (cm) => { const v = cm / 2.54; return v >= 20 ? String(Math.round(v)) : String(Math.round(v * 2) / 2); };
+  class SizeGuide extends HTMLElement {
+    connectedCallback() {
+      this.units = this.querySelector('.size-guide__units');
+      this.cells = Array.from(this.querySelectorAll('[data-cm]'));
+      if (!this.units || !this.cells.length) return;
+      this.units.hidden = false;
+      let unit = this.dataset.defaultUnit || 'cm';
+      try { unit = localStorage.getItem(UNIT_KEY) || unit; } catch (e) { /* storage unavailable */ }
+      this._onChange = (e) => { if (e.target.name && e.target.name.startsWith('size-unit')) this.apply(e.target.value, true); };
+      this.units.addEventListener('change', this._onChange);
+      this.apply(unit, false);
+    }
+    disconnectedCallback() { if (this.units && this._onChange) this.units.removeEventListener('change', this._onChange); }
+    apply(unit, persist) {
+      this.units.querySelectorAll('input').forEach((i) => { i.checked = i.value === unit; });
+      this.cells.forEach((cell) => {
+        const cm = cell.dataset.cm;
+        cell.textContent = unit === 'in' ? cm.replace(/\d+(?:[.,]\d+)?/g, (n) => toInches(parseFloat(n.replace(',', '.')))) : cm;
+      });
+      const label = this.units.querySelector(`input[value="${unit}"] + span`);
+      if (label) this.querySelectorAll('[data-unit-name]').forEach((el) => { el.textContent = label.textContent; });
+      if (persist) { try { localStorage.setItem(UNIT_KEY, unit); } catch (e) { /* storage unavailable */ } }
+      this.dispatchEvent(new CustomEvent('size-guide:unit', { bubbles: true, detail: { unit } }));
+    }
+  }
+  if (!customElements.get('size-guide')) customElements.define('size-guide', SizeGuide);
+
   /* Open an accordion when the URL hash targets it (e.g. a PDP linking to /pages/faq#faq-<id>). */
   const openFromHash = () => {
     if (!location.hash) return;

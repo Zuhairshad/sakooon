@@ -555,6 +555,17 @@
     },
     "care": {
       "about_fabric": "About {{ name }}"
+    },
+    "size_guide": {
+      "units": "Units",
+      "cm": "cm",
+      "in": "in",
+      "index": "Size guide categories",
+      "measured_in": "Measurements in"
+    },
+    "measurement": {
+      "label": "How to measure",
+      "step": "Step {{ number }}"
     }
   }
 }

@@ -1221,6 +1221,76 @@
           }
         }
       }
+    },
+    "size-guide": {
+      "name": "Size guide",
+      "presets": {
+        "name": "Size guide"
+      },
+      "settings": {
+        "default_unit": {
+          "label": "Default unit",
+          "options": {
+            "cm": "Centimetres",
+            "in": "Inches"
+          }
+        },
+        "show_index": {
+          "label": "Show category list"
+        }
+      },
+      "blocks": {
+        "category": {
+          "name": "Product category",
+          "settings": {
+            "title": {
+              "label": "Title"
+            },
+            "handle": {
+              "label": "Anchor",
+              "info": "Use the product type handle (for example duvet-covers) so product pages can link straight to this table."
+            },
+            "intro": {
+              "label": "Introduction"
+            },
+            "table": {
+              "label": "Table",
+              "info": "One row per line, cells separated by |. The first line is the header and the first column labels each row. Enter measurements in centimetres."
+            },
+            "convert": {
+              "label": "Convert measurements to inches"
+            },
+            "zebra": {
+              "label": "Striped rows"
+            },
+            "note": {
+              "label": "Note below the table"
+            }
+          }
+        },
+        "note": {
+          "name": "Note with image"
+        }
+      }
+    },
+    "measurement-guide": {
+      "name": "Measurement guide",
+      "presets": {
+        "name": "Measurement guide"
+      },
+      "blocks": {
+        "step": {
+          "name": "Step",
+          "settings": {
+            "image": {
+              "label": "Diagram"
+            }
+          }
+        },
+        "tip": {
+          "name": "Tip"
+        }
+      }
     }
   }
 }

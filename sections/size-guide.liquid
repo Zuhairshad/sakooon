@@ -1,0 +1,137 @@
+{%- comment -%}
+  Bedding size guide. Contract with shad-d8 (PDP size dialog): the root is <size-guide data-size-guide>,
+  self-contained (category index, tables, cm/in toggle), initialised in connectedCallback so it works when
+  injected into a theme-dialog. Each category has id = product type handle (duvet-covers, fitted-sheets ...)
+  so /pages/size-guide#<handle> deep-links. Tables: one row per line, cells separated by "|", first line is
+  the header. Numbers in measured cells convert between cm and inches client-side; without JS, cm shows.
+  Reference: Tekla size guide (docs/reference/editorial.md 2.10). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign categories = section.blocks | where: 'type', 'category'
+-%}
+<div class="section ed-section size-guide-section color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width page-width--text">
+    <size-guide class="size-guide" data-size-guide data-default-unit="{{ s.default_unit }}">
+      {% render 'section-heading', heading: s.heading, heading_size: s.heading_size, text: s.text %}
+      <fieldset class="size-guide__units" hidden>
+        <legend class="visually-hidden">{{ 'editorial.size_guide.units' | t }}</legend>
+        <label class="size-guide__unit"><input type="radio" name="size-unit-{{ section.id }}" value="cm"{% if s.default_unit == 'cm' %} checked{% endif %}><span>{{ 'editorial.size_guide.cm' | t }}</span></label>
+        <label class="size-guide__unit"><input type="radio" name="size-unit-{{ section.id }}" value="in"{% if s.default_unit == 'in' %} checked{% endif %}><span>{{ 'editorial.size_guide.in' | t }}</span></label>
+      </fieldset>
+      {%- if s.show_index and categories.size > 1 -%}
+        <nav class="size-guide__index" aria-label="{{ 'editorial.size_guide.index' | t }}">
+          <ul class="list-unstyled" role="list">
+            {%- for block in categories -%}
+              {%- assign cat_id = block.settings.handle | default: block.settings.title | handleize -%}
+              <li><a class="size-guide__index-link" href="#{{ cat_id }}"><span>{{ block.settings.title }}</span>{% render 'icon', icon: 'chevron-right', size: 16 %}</a></li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'category' -%}
+            {%- liquid
+              assign b = block.settings
+              assign cat_id = b.handle | default: b.title | handleize
+              assign lines = b.table | newline_to_br | split: '<br />'
+            -%}
+            <section class="size-guide__category" id="{{ cat_id }}" aria-labelledby="{{ cat_id }}-title" {{ block.shopify_attributes }}>
+              <h2 class="size-guide__title h4" id="{{ cat_id }}-title" data-anchor-target>{{ b.title }}</h2>
+              {%- if b.intro != blank -%}<div class="size-guide__intro rte">{{ b.intro }}</div>{%- endif -%}
+              {%- if b.table != blank -%}
+                <div class="size-guide__scroll" role="region" aria-labelledby="{{ cat_id }}-title" tabindex="0">
+                  <table class="size-guide__table{% if b.zebra %} size-guide__table--zebra{% endif %}">
+                    {%- if b.convert -%}<caption class="size-guide__caption">{{ 'editorial.size_guide.measured_in' | t }} <span data-unit-name>{% if s.default_unit == 'in' %}{{ 'editorial.size_guide.in' | t }}{% else %}{{ 'editorial.size_guide.cm' | t }}{% endif %}</span></caption>{%- endif -%}
+                    {%- assign row_index = 0 -%}
+                    {%- for raw_line in lines -%}
+                      {%- assign line = raw_line | strip -%}
+                      {%- if line == blank -%}{%- continue -%}{%- endif -%}
+                      {%- assign cells = line | split: '|' -%}
+                      {%- if row_index == 0 -%}
+                        <thead><tr>{%- for c in cells -%}<th scope="col">{{ c | strip }}</th>{%- endfor -%}</tr></thead><tbody>
+                      {%- else -%}
+                        <tr>
+                          {%- for c in cells -%}
+                            {%- assign cell = c | strip -%}
+                            {%- if forloop.first -%}
+                              <th scope="row">{{ cell }}</th>
+                            {%- else -%}
+                              <td{% if b.convert %} data-cm="{{ cell | escape }}"{% endif %}>{{ cell }}</td>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </tr>
+                      {%- endif -%}
+                      {%- assign row_index = row_index | plus: 1 -%}
+                    {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+              {%- endif -%}
+              {%- if b.note != blank -%}<div class="size-guide__note rte">{{ b.note }}</div>{%- endif -%}
+            </section>
+          {%- when 'note' -%}
+            <div class="size-guide__aside" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <div class="media" style="--aspect: {{ block.settings.ratio }}">{% render 'image', image: block.settings.image, sizes: '(min-width: 768px) 720px, 100vw', aspect: block.settings.ratio %}</div>
+              {%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="h4">{{ block.settings.heading }}</h2>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+              {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}<p><a class="link" href="{{ block.settings.link_url }}">{{ block.settings.link_label }}</a></p>{%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </size-guide>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.size-guide.name",
+  "tag": "section",
+  "class": "section-size-guide",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "select", "id": "default_unit", "label": "t:sections.size-guide.settings.default_unit.label", "default": "cm", "options": [
+      { "value": "cm", "label": "t:sections.size-guide.settings.default_unit.options.cm" },
+      { "value": "in", "label": "t:sections.size-guide.settings.default_unit.options.in" }
+    ] },
+    { "type": "checkbox", "id": "show_index", "label": "t:sections.size-guide.settings.show_index.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "category", "name": "t:sections.size-guide.blocks.category.name", "settings": [
+      { "type": "text", "id": "title", "label": "t:sections.size-guide.blocks.category.settings.title.label", "default": "Duvet covers" },
+      { "type": "text", "id": "handle", "label": "t:sections.size-guide.blocks.category.settings.handle.label", "info": "t:sections.size-guide.blocks.category.settings.handle.info", "default": "duvet-covers" },
+      { "type": "richtext", "id": "intro", "label": "t:sections.size-guide.blocks.category.settings.intro.label" },
+      { "type": "textarea", "id": "table", "label": "t:sections.size-guide.blocks.category.settings.table.label", "info": "t:sections.size-guide.blocks.category.settings.table.info", "default": "Size | Width | Length\nSingle | 140 | 200\nDouble | 200 | 200\nKing | 230 | 220" },
+      { "type": "checkbox", "id": "convert", "label": "t:sections.size-guide.blocks.category.settings.convert.label", "default": true },
+      { "type": "checkbox", "id": "zebra", "label": "t:sections.size-guide.blocks.category.settings.zebra.label", "default": true },
+      { "type": "richtext", "id": "note", "label": "t:sections.size-guide.blocks.category.settings.note.label" }
+    ] },
+    { "type": "note", "name": "t:sections.size-guide.blocks.note.name", "settings": [
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+      { "type": "select", "id": "ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "16/9", "options": [
+        { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+        { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+        { "value": "16/9", "label": "t:sections.editorial.settings.image_ratio.options.wide" }
+      ] },
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Not sure which size?" },
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Measure your mattress first, then choose the size that matches it.</p>" },
+      { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "How to measure your mattress" },
+      { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.size-guide.presets.name", "blocks": [ { "type": "category" } ] } ]
+}
+{% endschema %}
