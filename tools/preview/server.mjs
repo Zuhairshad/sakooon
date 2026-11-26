@@ -49,12 +49,41 @@ function image(img, id = 0) {
 }
 
 /** shopify://shop_images/name.jpg → the matching local .webp, else nil (theme falls back to its SVG art). */
+/* Real pixel dimensions from the file header (WebP VP8/VP8L/VP8X, PNG, JPEG), cached; Shopify Files report true sizes, so must we. */
+const DIM_CACHE = new Map();
+function imageDims(file) {
+  if (DIM_CACHE.has(file)) return DIM_CACHE.get(file);
+  let dims = null;
+  try {
+    const fd = fs.openSync(file, 'r'); const b = Buffer.alloc(65536); const n = fs.readSync(fd, b, 0, b.length, 0); fs.closeSync(fd);
+    if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+      const chunk = b.toString('ascii', 12, 16);
+      if (chunk === 'VP8 ') dims = { width: b.readUInt16LE(26) & 0x3fff, height: b.readUInt16LE(28) & 0x3fff };
+      else if (chunk === 'VP8L') { const v = b.readUInt32LE(21); dims = { width: (v & 0x3fff) + 1, height: ((v >> 14) & 0x3fff) + 1 }; }
+      else if (chunk === 'VP8X') dims = { width: 1 + b.readUIntLE(24, 3), height: 1 + b.readUIntLE(27, 3) };
+    } else if (b.readUInt32BE(0) === 0x89504e47) {
+      dims = { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+    } else if (b[0] === 0xff && b[1] === 0xd8) {
+      let i = 2;
+      while (i + 9 < n) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const marker = b[i + 1]; const len = b.readUInt16BE(i + 2);
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) { dims = { width: b.readUInt16BE(i + 7), height: b.readUInt16BE(i + 5) }; break; }
+        i += 2 + len;
+      }
+    }
+  } catch { dims = null; }
+  DIM_CACHE.set(file, dims);
+  return dims;
+}
 function shopImage(ref) {
   const m = /^shopify:\/\/shop_images\/(.+)$/.exec(ref || '');
   if (!m) return null;
   const base = m[1].replace(/\.[a-z0-9]+$/i, '');
   const file = fs.readdirSync(IMAGES).find((f) => f.replace(/\.[a-z0-9]+$/i, '') === base);
-  return file ? image({ url: `/images/${file}`, altText: '', width: 1600, height: 1200 }) : null;
+  if (!file) return null;
+  const dims = imageDims(path.join(IMAGES, file)) || { width: 1600, height: 1200 };
+  return image({ url: `/images/${file}`, altText: '', width: dims.width, height: dims.height });
 }
 
 /* Fixtures (tools/preview/fixtures/*.json) extend the sample catalogue with shapes the snapshot lacks (colour x size variants, metafields). */
