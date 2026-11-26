@@ -2,8 +2,42 @@
   "type": "header",
   "name": "t:sections.header.name",
   "sections": {
-    "announcement-bar": { "type": "announcement-bar", "blocks": { "announcement-1": { "type": "announcement", "settings": { "text": "Free delivery on orders over a threshold", "link": "" } } }, "block_order": ["announcement-1"], "settings": { "color_scheme": "ink" } },
-    "header": { "type": "header", "settings": { "color_scheme": "paper", "menu": "main-menu", "sticky": true } }
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-1": { "type": "announcement", "settings": { "text": "Complimentary delivery over a set order value", "link": "" } },
+        "announcement-2": { "type": "announcement", "settings": { "text": "Easy returns within a set number of days", "link": "" } },
+        "announcement-3": { "type": "announcement", "settings": { "text": "Sign up for news and offers", "link": "" } }
+      },
+      "block_order": ["announcement-1", "announcement-2", "announcement-3"],
+      "settings": { "color_scheme": "sand", "align": "center", "autoplay": true, "speed": 5, "dismissible": false }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "promo-new-1": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-new-2": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-new-3": { "type": "mega_promo", "settings": { "menu_item": "New", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-bedding-1": { "type": "mega_promo", "settings": { "menu_item": "Bedding", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-bath-1": { "type": "mega_promo", "settings": { "menu_item": "Bath", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-bath-2": { "type": "mega_promo", "settings": { "menu_item": "Bath", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-pillows-1": { "type": "mega_promo", "settings": { "menu_item": "Pillows & Duvets", "heading": "Promo caption", "link": "/collections/all" } },
+        "promo-pillows-2": { "type": "mega_promo", "settings": { "menu_item": "Pillows & Duvets", "heading": "Promo caption", "link": "/collections/all" } }
+      },
+      "block_order": ["promo-new-1", "promo-new-2", "promo-new-3", "promo-bedding-1", "promo-bath-1", "promo-bath-2", "promo-pillows-1", "promo-pillows-2"],
+      "settings": {
+        "color_scheme": "white",
+        "menu": "main-menu",
+        "layout": "nav_left",
+        "show_border": false,
+        "sticky_mode": "always",
+        "transparent_on_home": true,
+        "transparent_text": "light",
+        "mobile_subnav_menu": ""
+      }
+    },
+    "cart-drawer": { "type": "cart-drawer", "settings": {} },
+    "search-drawer": { "type": "search-drawer", "settings": {} }
   },
-  "order": ["announcement-bar", "header"]
+  "order": ["announcement-bar", "header", "cart-drawer", "search-drawer"]
 }
