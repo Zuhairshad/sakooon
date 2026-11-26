@@ -1,0 +1,57 @@
+{%- comment -%}
+  Care symbols with text labels. Owner: shad-8b.
+  {% render 'care-icons', symbols: fabric.care_symbols.value, show_labels: true %}
+  symbols: array (or comma-separated string) of keys from the fixed set in docs/metafield-contracts.md:
+  wash-30 wash-40 wash-60 hand-wash no-bleach tumble-low tumble-none line-dry iron-low iron-medium iron-high
+  no-iron dry-clean no-dry-clean. Unknown keys are skipped. The label is always in the DOM (visually hidden
+  when show_labels is false) so meaning never depends on the icon alone.
+{%- endcomment -%}
+{%- unless symbols == blank -%}
+{%- liquid
+  if symbols.first == blank
+    assign symbol_list = symbols | split: ','
+  else
+    assign symbol_list = symbols
+  endif
+-%}
+<ul class="care-icons list-unstyled{% if show_labels == false %} care-icons--icons-only{% endif %}">
+  {%- for raw in symbol_list -%}
+    {%- liquid
+      assign key = raw | strip | downcase
+      assign icon = ''
+      assign negated = false
+      case key
+        when 'wash-30', 'wash-40', 'wash-60', 'hand-wash'
+          assign icon = 'wash'
+        when 'no-bleach'
+          assign icon = 'no-bleach'
+        when 'tumble-low'
+          assign icon = 'tumble'
+        when 'tumble-none'
+          assign icon = 'tumble'
+          assign negated = true
+        when 'line-dry'
+          assign icon = 'hang-dry'
+        when 'iron-low', 'iron-medium', 'iron-high'
+          assign icon = 'iron'
+        when 'no-iron'
+          assign icon = 'iron'
+          assign negated = true
+        when 'dry-clean'
+          assign icon = 'dry-clean'
+        when 'no-dry-clean'
+          assign icon = 'dry-clean'
+          assign negated = true
+      endcase
+      if icon == ''
+        continue
+      endif
+      assign label_key = 'editorial.care_symbols.' | append: key
+    -%}
+    <li class="care-icons__item">
+      <span class="care-icons__icon{% if negated %} care-icons__icon--no{% endif %}">{% render 'icon', icon: icon, size: 24 %}</span>
+      <span class="care-icons__label{% if show_labels == false %} visually-hidden{% endif %}">{{ label_key | t }}</span>
+    </li>
+  {%- endfor -%}
+</ul>
+{%- endunless -%}

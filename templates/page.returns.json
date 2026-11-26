@@ -1,0 +1,102 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "heading": "",
+        "content_width": "text",
+        "text": "<p>Use this page to explain how returns and exchanges work.</p>",
+        "padding_top": 60,
+        "padding_bottom": 32
+      }
+    },
+    "summary": {
+      "type": "info-columns",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "heading": "At a glance",
+            "text": "<p>Summarise the key points in one or two lines each.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "c1"
+      ],
+      "settings": {
+        "columns": 1,
+        "content_width": "text",
+        "dividers": true,
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "details": {
+      "type": "faq",
+      "blocks": {
+        "group_1": {
+          "type": "group",
+          "settings": {
+            "heading": "Returns and exchanges",
+            "size": "h4"
+          }
+        },
+        "q_1_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I return or exchange an item?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "q_1_2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return part of an order?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "q_1_3": {
+          "type": "question",
+          "settings": {
+            "question": "Which items can't be returned?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        },
+        "group_2": {
+          "type": "group",
+          "settings": {
+            "heading": "Refunds",
+            "size": "h4"
+          }
+        },
+        "q_2_1": {
+          "type": "question",
+          "settings": {
+            "question": "When will I receive my refund?",
+            "answer": "<p>Explain the policy in plain language. State timings, costs and any exceptions clearly.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "group_1",
+        "q_1_1",
+        "q_1_2",
+        "q_1_3",
+        "group_2",
+        "q_2_1"
+      ],
+      "settings": {
+        "content_width": "text",
+        "structured_data": false,
+        "padding_top": 16,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "summary",
+    "details"
+  ]
+}

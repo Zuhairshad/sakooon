@@ -1,0 +1,100 @@
+{%- comment -%}
+  Mobile navigation drawer (<theme-drawer id="mobile-nav">, global.js). Owner: shad-2d.
+  Level 1 lists the top-level links. A link with children or promos opens a level-2 panel that slides in over
+  the list: back button, "All <title>", childless level-2 links, then a labelled group per level-2 link with
+  children, then promo cards in a horizontal row.
+  Params: menu (linklist), section, promo_blocks (all mega_promo blocks of the header section).
+{%- endcomment -%}
+<theme-drawer id="mobile-nav" class="mobile-nav hide-desktop" data-lock-scroll>
+  <div class="overlay" data-drawer-close></div>
+  <div class="drawer drawer--left mobile-nav__drawer" role="dialog" aria-modal="true" aria-label="{{ 'general.accessibility.menu' | t }}">
+    <div class="mobile-nav__top">
+      <button type="button" class="header__icon mobile-nav__close" data-drawer-close aria-label="{{ 'general.accessibility.close_menu' | t }}">
+        {%- render 'icon', icon: 'close', size: 24 -%}
+      </button>
+    </div>
+    <mobile-nav-levels class="mobile-nav__body">
+      <nav class="mobile-nav__nav" aria-label="{{ 'storefront.header.main_menu' | t }}">
+        <ul class="mobile-nav__list list-unstyled" role="list">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign link_handle = link.handle | default: link.title | handleize
+              assign has_promos = false
+              for block in promo_blocks
+                assign target = block.settings.menu_item | handleize
+                if target == link_handle
+                  assign has_promos = true
+                  break
+                endif
+              endfor
+              assign level_id = 'MobileNav-' | append: section.id | append: '-' | append: forloop.index
+            -%}
+            <li class="mobile-nav__item">
+              {%- if link.links.size > 0 or has_promos -%}
+                <button type="button" class="mobile-nav__link" aria-expanded="false" aria-controls="{{ level_id }}" data-level-open>
+                  <span>{{ link.title | escape }}</span>{% render 'icon', icon: 'chevron-right', size: 20 %}
+                </button>
+                <div id="{{ level_id }}" class="mobile-nav__level" data-level>
+                  <button type="button" class="mobile-nav__back" data-level-back>
+                    {%- render 'icon', icon: 'arrow-left', size: 16 -%}<span>{{ 'storefront.header.back' | t }}</span>
+                  </button>
+                  {%- if link.url != blank and link.url != '#' -%}
+                    <a class="mobile-nav__all" href="{{ link.url }}">{{ 'storefront.header.view_all' | t: title: link.title }}</a>
+                  {%- endif -%}
+                  {%- assign singles = 0 -%}
+                  {%- for child in link.links -%}{%- if child.links.size == 0 -%}{%- assign singles = singles | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                  {%- if singles > 0 -%}
+                    <ul class="mobile-nav__group list-unstyled" role="list">
+                      {%- for child in link.links -%}
+                        {%- if child.links.size == 0 -%}
+                          <li><a class="mobile-nav__sublink" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                  {%- for child in link.links -%}
+                    {%- if child.links.size > 0 -%}
+                      <div class="mobile-nav__group">
+                        <p class="mobile-nav__group-label">{{ child.title | escape }}</p>
+                        <ul class="list-unstyled" role="list">
+                          {%- for grandchild in child.links -%}
+                            <li><a class="mobile-nav__sublink" href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if has_promos -%}
+                    <div class="mobile-nav__promos scroll-x no-scrollbar">
+                      {%- for block in promo_blocks -%}
+                        {%- assign target = block.settings.menu_item | handleize -%}
+                        {%- if target == link_handle -%}
+                          <a class="mobile-nav__promo" href="{{ block.settings.link | default: link.url }}">
+                            <div class="media" style="--aspect: 4/5">
+                              {%- render 'image', image: block.settings.image, sizes: '224px', widths: '240,480', aspect: '4/5', placeholder: 'lifestyle-1' -%}
+                            </div>
+                            {%- if block.settings.heading != blank -%}<span class="mobile-nav__promo-title">{{ block.settings.heading | escape }}</span>{%- endif -%}
+                          </a>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <a class="mobile-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+      {%- if shop.customer_accounts_enabled -%}
+        <div class="mobile-nav__utilities">
+          <a class="mobile-nav__utility" href="{{ routes.account_url }}">
+            {%- render 'icon', icon: 'account', size: 20 -%}
+            <span>{{ 'customer.account_fallback' | t }}</span>
+          </a>
+        </div>
+      {%- endif -%}
+    </mobile-nav-levels>
+  </div>
+</theme-drawer>

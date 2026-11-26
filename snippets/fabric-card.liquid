@@ -1,0 +1,40 @@
+{%- comment -%}
+  Fabric card for guides and rails. Owner: shad-8b.
+  {% render 'fabric-card', fabric: fabric, ratio: '4/5', show_summary: true, show_rating: false, heading_tag: 'h3', sizes: '(min-width: 1024px) 33vw, 100vw' %}
+  Image: texture_image, then lifestyle_image. Link: fabric.system.url (only when the fabric has a web page).
+  With no fabric it renders an onboarding placeholder card.
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: '4/5'
+  assign heading_tag = heading_tag | default: 'h3'
+  assign sizes = sizes | default: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'
+  if fabric != blank
+    assign img = fabric.texture_image.value | default: fabric.lifestyle_image.value
+    assign url = fabric.system.url
+    assign name = fabric.name.value
+    assign weave = fabric.weave.value | default: ''
+    assign fibre = fabric.fibre.value | default: ''
+  else
+    assign img = blank
+    assign url = blank
+    assign name = 'onboarding.fabric_name' | t
+    assign weave = ''
+    assign fibre = ''
+  endif
+-%}
+<article class="fabric-card" data-weave="{{ weave | handleize }}" data-fibre="{{ fibre | handleize }}">
+  {%- if url != blank -%}<a class="fabric-card__link" href="{{ url }}">{%- endif -%}
+    <div class="fabric-card__media media" style="--aspect: {{ ratio }}">
+      {% render 'image', image: img, sizes: sizes, aspect: ratio, alt: name, placeholder: 'collection-1' %}
+    </div>
+    <{{ heading_tag }} class="fabric-card__title">{{ name }}</{{ heading_tag }}>
+  {%- if url != blank -%}</a>{%- endif -%}
+  {%- if fabric != blank -%}
+    {%- if fabric.tagline.value != blank -%}<p class="fabric-card__tagline">{{ fabric.tagline.value }}</p>{%- endif -%}
+    {%- if show_summary and fabric.summary.value != blank -%}<p class="fabric-card__summary">{{ fabric.summary.value }}</p>{%- endif -%}
+    {%- if show_rating -%}{% render 'fabric-rating', fabric: fabric, compact: true %}{%- endif -%}
+    {%- if url != blank and link_label != blank -%}<a class="fabric-card__more ed-link-fade" href="{{ url }}" aria-label="{{ link_label }}: {{ name | escape }}">{{ link_label }}</a>{%- endif -%}
+  {%- elsif show_summary -%}
+    <p class="fabric-card__summary">{{ 'onboarding.text' | t | truncatewords: 14 }}</p>
+  {%- endif -%}
+</article>

@@ -1,0 +1,133 @@
+{%- comment -%}
+  Long-form text column: headed rich text, dash lists, footnotes, link lists and inline images.
+  Reference: Tekla ESG / about / care detail (docs/reference/editorial.md 2.1, 2.4, 2.6). Owner: shad-8b.
+  Each heading block gets an id so guide-anchor-nav can link to it.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'page'
+      assign width_class = 'page-width'
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    else
+      assign width_class = 'page-width page-width--text'
+  endcase
+-%}
+<div class="section ed-section editorial-text color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-flow: {{ s.paragraph_spacing }}px">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, align: s.alignment %}
+    <div class="editorial-text__body{% if s.alignment == 'center' %} text-center{% endif %}{% if s.measure %} editorial-text__body--measure{% endif %}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- assign anchor = block.settings.anchor | default: block.settings.heading | handleize -%}
+            <{{ block.settings.tag }} id="{{ anchor }}" class="editorial-text__heading {{ block.settings.size }}" data-anchor-target {{ block.shopify_attributes }}>{{ block.settings.heading }}</{{ block.settings.tag }}>
+          {%- when 'text' -%}
+            <div class="editorial-text__rte rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'list' -%}
+            <div class="editorial-text__rte rte editorial-list editorial-list--{{ block.settings.style }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'footnote' -%}
+            <div class="editorial-text__footnote rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'link' -%}
+            {%- if block.settings.label != blank -%}
+              <p class="editorial-text__link" {{ block.shopify_attributes }}><a class="link" href="{{ block.settings.url | default: '#' }}">{{ block.settings.label }}</a></p>
+            {%- endif -%}
+          {%- when 'image' -%}
+            <figure class="editorial-text__figure" {{ block.shopify_attributes }}>
+              <div class="media" style="--aspect: {{ block.settings.ratio }}">
+                {% render 'image', image: block.settings.image, sizes: '(min-width: 768px) 720px, 100vw', aspect: block.settings.ratio, placeholder: 'lifestyle-2' %}
+              </div>
+              {%- if block.settings.caption != blank -%}<figcaption class="editorial-caption">{{ block.settings.caption }}</figcaption>{%- endif -%}
+            </figure>
+          {%- when 'page_content' -%}
+            {%- if page.content != blank -%}<div class="editorial-text__rte rte" {{ block.shopify_attributes }}>{{ page.content }}</div>{%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-text.name",
+  "tag": "section",
+  "class": "section-editorial-text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "select", "id": "alignment", "label": "t:sections.editorial-hero.settings.alignment.label", "default": "left", "options": [
+      { "value": "left", "label": "t:sections.editorial-hero.settings.alignment.options.left" },
+      { "value": "center", "label": "t:sections.editorial-hero.settings.alignment.options.center" }
+    ] },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "text", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "checkbox", "id": "measure", "label": "t:sections.editorial-text.settings.measure.label", "info": "t:sections.editorial-text.settings.measure.info", "default": false },
+    { "type": "select", "id": "paragraph_spacing", "label": "t:sections.editorial-text.settings.paragraph_spacing.label", "default": "20", "options": [
+      { "value": "16", "label": "t:sections.editorial-text.settings.paragraph_spacing.options.compact" },
+      { "value": "20", "label": "t:sections.editorial-text.settings.paragraph_spacing.options.regular" },
+      { "value": "24", "label": "t:sections.editorial-text.settings.paragraph_spacing.options.relaxed" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "heading", "name": "t:sections.editorial-text.blocks.heading.name", "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label", "default": "Heading" },
+      { "type": "select", "id": "tag", "label": "t:sections.editorial-text.blocks.heading.settings.tag.label", "default": "h2", "options": [
+        { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+      ] },
+      { "type": "select", "id": "size", "label": "t:sections.all.heading_size.label", "default": "h4", "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+        { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+        { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+      ] },
+      { "type": "text", "id": "anchor", "label": "t:sections.editorial-text.blocks.heading.settings.anchor.label", "info": "t:sections.editorial-text.blocks.heading.settings.anchor.info" }
+    ] },
+    { "type": "text", "name": "t:sections.editorial-text.blocks.text.name", "settings": [
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Share the story behind your products, materials or the way they are made. Keep paragraphs short and focused on one idea.</p>" }
+    ] },
+    { "type": "list", "name": "t:sections.editorial-text.blocks.list.name", "settings": [
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial-text.blocks.list.settings.text.label", "default": "<ul><li>First point</li><li>Second point</li><li>Third point</li></ul>" },
+      { "type": "select", "id": "style", "label": "t:sections.editorial-text.blocks.list.settings.style.label", "default": "dash", "options": [
+        { "value": "dash", "label": "t:sections.editorial-text.blocks.list.settings.style.options.dash" },
+        { "value": "bullet", "label": "t:sections.editorial-text.blocks.list.settings.style.options.bullet" },
+        { "value": "plain", "label": "t:sections.editorial-text.blocks.list.settings.style.options.plain" },
+        { "value": "divided", "label": "t:sections.editorial-text.blocks.list.settings.style.options.divided" }
+      ] }
+    ] },
+    { "type": "footnote", "name": "t:sections.editorial-text.blocks.footnote.name", "settings": [
+      { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label", "default": "<p>Footnote or clarification.</p>" }
+    ] },
+    { "type": "link", "name": "t:sections.editorial-text.blocks.link.name", "settings": [
+      { "type": "text", "id": "label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "Link label" },
+      { "type": "url", "id": "url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] },
+    { "type": "image", "name": "t:sections.editorial-text.blocks.image.name", "settings": [
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+      { "type": "select", "id": "ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "5/4", "options": [
+        { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+        { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+        { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" },
+        { "value": "16/9", "label": "t:sections.editorial.settings.image_ratio.options.wide" }
+      ] },
+      { "type": "text", "id": "caption", "label": "t:sections.editorial.settings.caption.label" }
+    ] },
+    { "type": "page_content", "name": "t:sections.editorial-text.blocks.page_content.name", "limit": 1, "settings": [] }
+  ],
+  "presets": [ {
+    "name": "t:sections.editorial-text.presets.name",
+    "blocks": [ { "type": "heading" }, { "type": "text" }, { "type": "text" } ]
+  } ]
+}
+{% endschema %}

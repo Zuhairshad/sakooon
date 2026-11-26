@@ -415,47 +415,685 @@
     "cart-drawer": {
       "name": "Cart drawer",
       "settings": {
-        "drawer_width": { "label": "Drawer width on desktop" },
-        "empty_link": { "label": "Empty cart button link", "info": "Defaults to all products" },
-        "recommendations": { "header": "Recommendations" },
-        "show_recommendations": { "label": "Show complementary products", "info": "Uses complementary products from Shopify Search & Discovery for the first item in the cart." },
-        "recommendations_heading": { "label": "Recommendations heading" }
+        "drawer_width": {
+          "label": "Drawer width on desktop"
+        },
+        "empty_link": {
+          "label": "Empty cart button link",
+          "info": "Defaults to all products"
+        },
+        "recommendations": {
+          "header": "Recommendations"
+        },
+        "show_recommendations": {
+          "label": "Show complementary products",
+          "info": "Uses complementary products from Shopify Search & Discovery for the first item in the cart."
+        },
+        "recommendations_heading": {
+          "label": "Recommendations heading"
+        }
       }
     },
     "search-drawer": {
       "name": "Search drawer",
       "settings": {
-        "products_limit": { "label": "Products shown" },
-        "idle": { "header": "Before typing" },
-        "popular_heading": { "label": "Popular searches heading" },
-        "popular_terms": { "label": "Popular searches", "info": "Comma-separated, e.g. percale, duvet cover, pillow" },
-        "featured_collection": { "label": "Featured products collection" },
-        "featured_heading": { "label": "Featured products heading", "info": "Defaults to the collection title" }
+        "products_limit": {
+          "label": "Products shown"
+        },
+        "idle": {
+          "header": "Before typing"
+        },
+        "popular_heading": {
+          "label": "Popular searches heading"
+        },
+        "popular_terms": {
+          "label": "Popular searches",
+          "info": "Comma-separated, e.g. percale, duvet cover, pillow"
+        },
+        "featured_collection": {
+          "label": "Featured products collection"
+        },
+        "featured_heading": {
+          "label": "Featured products heading",
+          "info": "Defaults to the collection title"
+        }
+      }
+    },
+    "editorial": {
+      "settings": {
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "caption": {
+          "label": "Caption"
+        },
+        "columns": {
+          "label": "Columns on desktop"
+        },
+        "image_ratio": {
+          "label": "Image ratio",
+          "options": {
+            "portrait": "Portrait (4:5)",
+            "square": "Square (1:1)",
+            "landscape": "Landscape (5:4)",
+            "wide": "Wide (16:9)",
+            "panorama": "Panorama (21:9)"
+          }
+        }
+      },
+      "blocks": {
+        "button": {
+          "name": "Button",
+          "settings": {
+            "label": {
+              "label": "Label"
+            },
+            "url": {
+              "label": "Link"
+            },
+            "style": {
+              "label": "Style",
+              "options": {
+                "primary": "Solid",
+                "secondary": "Outline",
+                "tertiary": "Text link"
+              }
+            }
+          }
+        }
+      }
+    },
+    "editorial-hero": {
+      "name": "Editorial header",
+      "presets": {
+        "name": "Editorial header"
+      },
+      "settings": {
+        "show_breadcrumbs": {
+          "label": "Show breadcrumbs"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading",
+          "info": "Leave blank to use the page or blog title."
+        },
+        "text": {
+          "label": "Introduction"
+        },
+        "alignment": {
+          "label": "Alignment",
+          "options": {
+            "left": "Left",
+            "center": "Centre"
+          }
+        },
+        "image_header": {
+          "content": "Image"
+        },
+        "image": {
+          "label": "Image"
+        },
+        "show_image_placeholder": {
+          "label": "Show a placeholder when no image is selected"
+        },
+        "image_width": {
+          "label": "Image width",
+          "options": {
+            "column": "Text column",
+            "full": "Full bleed"
+          }
+        }
+      }
+    },
+    "editorial-text": {
+      "name": "Editorial text",
+      "presets": {
+        "name": "Editorial text"
+      },
+      "settings": {
+        "measure": {
+          "label": "Limit line length",
+          "info": "Keeps lines to about 70 characters for long reading."
+        },
+        "paragraph_spacing": {
+          "label": "Paragraph spacing",
+          "options": {
+            "compact": "Compact",
+            "regular": "Regular",
+            "relaxed": "Relaxed"
+          }
+        }
+      },
+      "blocks": {
+        "heading": {
+          "name": "Heading",
+          "settings": {
+            "tag": {
+              "label": "Heading level"
+            },
+            "anchor": {
+              "label": "Anchor ID",
+              "info": "Used by the page navigation. Leave blank to generate one from the heading."
+            }
+          }
+        },
+        "text": {
+          "name": "Text"
+        },
+        "list": {
+          "name": "List",
+          "settings": {
+            "text": {
+              "label": "List"
+            },
+            "style": {
+              "label": "List style",
+              "options": {
+                "dash": "Dash",
+                "bullet": "Bullet",
+                "plain": "Plain",
+                "divided": "Divided rows"
+              }
+            }
+          }
+        },
+        "footnote": {
+          "name": "Footnote"
+        },
+        "link": {
+          "name": "Link"
+        },
+        "image": {
+          "name": "Image"
+        },
+        "page_content": {
+          "name": "Page content"
+        }
+      }
+    },
+    "editorial-image-text": {
+      "name": "Image with text rows",
+      "presets": {
+        "name": "Image with text rows"
+      },
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "seam": "Joined pair",
+            "split": "Half and half",
+            "wide": "Wide image"
+          }
+        },
+        "image_side": {
+          "label": "First image position",
+          "options": {
+            "left": "Left",
+            "right": "Right"
+          }
+        },
+        "alternate": {
+          "label": "Alternate sides"
+        },
+        "stack_text_first": {
+          "label": "Show text before image on mobile"
+        }
+      },
+      "blocks": {
+        "row": {
+          "name": "Row",
+          "settings": {
+            "label": {
+              "label": "Label"
+            }
+          }
+        }
+      }
+    },
+    "editorial-gallery": {
+      "name": "Image gallery",
+      "presets": {
+        "name": "Image gallery"
+      },
+      "settings": {
+        "mobile_rail": {
+          "label": "Scroll horizontally on mobile"
+        }
+      },
+      "blocks": {
+        "image": {
+          "name": "Image"
+        }
+      }
+    },
+    "editorial-quote": {
+      "name": "Quote",
+      "presets": {
+        "name": "Quote"
+      },
+      "settings": {
+        "quote": {
+          "label": "Quote"
+        },
+        "attribution": {
+          "label": "Attribution"
+        },
+        "role": {
+          "label": "Attribution detail"
+        }
+      }
+    },
+    "editorial-stats": {
+      "name": "Figures",
+      "presets": {
+        "name": "Figures"
+      },
+      "settings": {
+        "claims": {
+          "content": "Only publish figures you can substantiate. A figure with no value is hidden."
+        }
+      },
+      "blocks": {
+        "stat": {
+          "name": "Figure",
+          "settings": {
+            "value": {
+              "label": "Value",
+              "info": "For example a year or a count. Leave blank to hide."
+            },
+            "label": {
+              "label": "Description"
+            },
+            "note": {
+              "label": "Source or footnote"
+            }
+          }
+        }
+      }
+    },
+    "editorial-timeline": {
+      "name": "Timeline",
+      "presets": {
+        "name": "Timeline"
+      },
+      "blocks": {
+        "milestone": {
+          "name": "Milestone",
+          "settings": {
+            "marker": {
+              "label": "Year or label"
+            }
+          }
+        }
+      }
+    },
+    "guide-anchor-nav": {
+      "name": "Page navigation",
+      "presets": {
+        "name": "Page navigation"
+      },
+      "settings": {
+        "label": {
+          "label": "Label",
+          "info": "Optional visible label, for example \"On this page\"."
+        },
+        "sticky": {
+          "label": "Stick below the header"
+        },
+        "style": {
+          "label": "Style",
+          "options": {
+            "links": "Underlined links",
+            "pills": "Pills"
+          }
+        },
+        "auto": {
+          "content": "With no links added, the navigation lists every heading on the page that has an anchor."
+        }
+      },
+      "blocks": {
+        "link": {
+          "name": "Link",
+          "settings": {
+            "anchor": {
+              "label": "Anchor ID",
+              "info": "The ID of a heading on this page. Leave blank to generate one from the label."
+            }
+          }
+        }
+      }
+    },
+    "faq": {
+      "name": "FAQ",
+      "presets": {
+        "name": "FAQ"
+      },
+      "settings": {
+        "icon": {
+          "label": "Icon",
+          "options": {
+            "plus": "Plus",
+            "chevron": "Chevron"
+          }
+        },
+        "open_first": {
+          "label": "Open the first question"
+        },
+        "single_open": {
+          "label": "Close other questions when one opens"
+        },
+        "animate": {
+          "label": "Animate opening"
+        },
+        "structured_data": {
+          "label": "Add FAQ structured data",
+          "info": "Helps search engines show your answers. Use on one FAQ section per page."
+        }
+      },
+      "blocks": {
+        "group": {
+          "name": "Topic heading"
+        },
+        "question": {
+          "name": "Question",
+          "settings": {
+            "question": {
+              "label": "Question"
+            },
+            "answer": {
+              "label": "Answer"
+            }
+          }
+        }
+      }
+    },
+    "info-columns": {
+      "name": "Information columns",
+      "presets": {
+        "name": "Information columns"
+      },
+      "settings": {
+        "dividers": {
+          "label": "Show dividers"
+        }
+      },
+      "blocks": {
+        "column": {
+          "name": "Column",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "options": {
+                "none": "None",
+                "mail": "Email",
+                "phone": "Phone",
+                "truck": "Delivery",
+                "refresh": "Returns",
+                "map_pin": "Location",
+                "info": "Information",
+                "shield": "Guarantee"
+              }
+            }
+          }
+        }
+      }
+    },
+    "contact-form": {
+      "name": "Contact form",
+      "presets": {
+        "name": "Contact form"
+      },
+      "settings": {
+        "show_phone": {
+          "label": "Show phone field"
+        },
+        "show_order": {
+          "label": "Show order number field"
+        },
+        "show_topic": {
+          "label": "Show topic menu"
+        },
+        "topics": {
+          "label": "Topics",
+          "info": "One per line."
+        },
+        "side_text": {
+          "label": "Side column text"
+        }
+      }
+    },
+    "main-page": {
+      "name": "Page",
+      "settings": {
+        "show_title": {
+          "label": "Show page title"
+        }
+      }
+    },
+    "fabric-guide": {
+      "name": "Fabric guide",
+      "presets": {
+        "name": "Fabric guide"
+      },
+      "settings": {
+        "source": {
+          "content": "Shows the fabrics picked below. With none picked, it uses the page's related fabrics, and otherwise every published fabric in sort order."
+        },
+        "limit": {
+          "label": "Maximum fabrics"
+        },
+        "exclude_current": {
+          "label": "Hide the fabric being viewed"
+        },
+        "show_summary": {
+          "label": "Show summary"
+        },
+        "show_ratings": {
+          "label": "Show ratings"
+        },
+        "card_link_label": {
+          "label": "Card link label"
+        },
+        "show_filters": {
+          "label": "Show filters"
+        },
+        "filter_by": {
+          "label": "Filter by",
+          "options": {
+            "weave": "Weave",
+            "fibre": "Fibre"
+          }
+        }
+      },
+      "blocks": {
+        "fabric": {
+          "name": "Fabric",
+          "settings": {
+            "fabric": {
+              "label": "Fabric"
+            }
+          }
+        }
+      }
+    },
+    "fabric-compare": {
+      "name": "Fabric comparison",
+      "presets": {
+        "name": "Fabric comparison"
+      },
+      "settings": {
+        "show_images": {
+          "label": "Show fabric images"
+        },
+        "rows_header": {
+          "content": "Rows"
+        },
+        "row_summary": {
+          "label": "Summary"
+        },
+        "row_composition": {
+          "label": "Composition"
+        },
+        "row_weave": {
+          "label": "Weave"
+        },
+        "row_finish": {
+          "label": "Finish"
+        },
+        "row_thread_count": {
+          "label": "Thread count"
+        },
+        "row_gsm": {
+          "label": "Weight (g/m²)"
+        },
+        "row_feel": {
+          "label": "Feel"
+        },
+        "row_texture": {
+          "label": "Texture"
+        },
+        "row_origin": {
+          "label": "Made in"
+        },
+        "row_best_for": {
+          "label": "Best for"
+        },
+        "row_ratings": {
+          "label": "Ratings"
+        },
+        "row_care": {
+          "label": "Care symbols"
+        }
+      }
+    },
+    "main-metaobject-fabric": {
+      "name": "Fabric header",
+      "settings": {
+        "fabric": {
+          "label": "Fabric",
+          "info": "Only used when this section is not on a fabric page."
+        },
+        "guide_page": {
+          "label": "Fabric guide page",
+          "info": "Shown in the breadcrumbs."
+        },
+        "show_secondary": {
+          "label": "Show second image"
+        }
+      }
+    },
+    "fabric-detail": {
+      "name": "Fabric details",
+      "presets": {
+        "name": "Fabric details"
+      },
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options": {
+            "stacked": "Stacked",
+            "columns": "Heading beside content"
+          }
+        }
+      },
+      "blocks": {
+        "description": {
+          "name": "Description"
+        },
+        "specs": {
+          "name": "Specifications"
+        },
+        "ratings": {
+          "name": "Ratings"
+        },
+        "care": {
+          "name": "Care",
+          "settings": {
+            "link_label": {
+              "label": "Care guide link label"
+            }
+          }
+        },
+        "certifications": {
+          "name": "Certifications",
+          "settings": {
+            "rules": {
+              "content": "Only certifications with an issuer, licence number and verification link, and not past their expiry date, are shown."
+            }
+          }
+        },
+        "gallery": {
+          "name": "Gallery"
+        }
       }
     },
     "main-collection": {
       "name": "Collection products",
       "settings": {
-        "products_per_page": { "label": "Products per page" },
-        "columns_desktop": { "label": "Columns on desktop" },
-        "swatch_limit": { "label": "Colour swatches per card", "info": "More colours collapse into +N" },
-        "filtering": { "header": "Filtering and sorting" },
-        "enable_filtering": { "label": "Enable filtering", "info": "Customise filters with the Search & Discovery app" },
-        "enable_sorting": { "label": "Enable sorting" },
-        "drawer_color_scheme": { "label": "Filter drawer colour scheme" },
-        "empty_link": { "label": "Empty collection button link" }
+        "products_per_page": {
+          "label": "Products per page"
+        },
+        "columns_desktop": {
+          "label": "Columns on desktop"
+        },
+        "swatch_limit": {
+          "label": "Colour swatches per card",
+          "info": "More colours collapse into +N"
+        },
+        "filtering": {
+          "header": "Filtering and sorting"
+        },
+        "enable_filtering": {
+          "label": "Enable filtering",
+          "info": "Customise filters with the Search & Discovery app"
+        },
+        "enable_sorting": {
+          "label": "Enable sorting"
+        },
+        "drawer_color_scheme": {
+          "label": "Filter drawer colour scheme"
+        },
+        "empty_link": {
+          "label": "Empty collection button link"
+        }
       },
       "blocks": {
         "promo": {
           "name": "Promo tile",
           "settings": {
-            "position": { "label": "Show before product number" },
-            "span": { "label": "Width", "options": { "one": "One column", "two": "Two columns" } },
-            "image": { "label": "Image" },
-            "eyebrow": { "label": "Eyebrow" },
-            "heading": { "label": "Heading" },
-            "link_label": { "label": "Link label" },
-            "link": { "label": "Link" }
+            "position": {
+              "label": "Show before product number"
+            },
+            "span": {
+              "label": "Width",
+              "options": {
+                "one": "One column",
+                "two": "Two columns"
+              }
+            },
+            "image": {
+              "label": "Image"
+            },
+            "eyebrow": {
+              "label": "Eyebrow"
+            },
+            "heading": {
+              "label": "Heading"
+            },
+            "link_label": {
+              "label": "Link label"
+            },
+            "link": {
+              "label": "Link"
+            }
           }
         }
       }
@@ -463,14 +1101,32 @@
     "collection-banner": {
       "name": "Collection banner",
       "settings": {
-        "show_image": { "label": "Show image" },
-        "show_image_mobile": { "label": "Show image on phones" },
-        "image": { "label": "Image", "info": "Overrides the collection banner metafield and the collection image" },
-        "show_count": { "label": "Show product count" },
-        "show_description": { "label": "Show description" },
-        "back_label": { "label": "Back link label", "info": "e.g. Sheets" },
-        "back_link": { "label": "Back link" },
-        "show_divider": { "label": "Show divider below" }
+        "show_image": {
+          "label": "Show image"
+        },
+        "show_image_mobile": {
+          "label": "Show image on phones"
+        },
+        "image": {
+          "label": "Image",
+          "info": "Overrides the collection banner metafield and the collection image"
+        },
+        "show_count": {
+          "label": "Show product count"
+        },
+        "show_description": {
+          "label": "Show description"
+        },
+        "back_label": {
+          "label": "Back link label",
+          "info": "e.g. Sheets"
+        },
+        "back_link": {
+          "label": "Back link"
+        },
+        "show_divider": {
+          "label": "Show divider below"
+        }
       }
     }
   }

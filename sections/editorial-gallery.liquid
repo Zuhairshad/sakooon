@@ -1,0 +1,84 @@
+{%- comment -%}
+  2-4 up images with captions and optional links; becomes a scroll rail on mobile.
+  Reference: Tekla about 4-up category tiles, article 2-up (docs/reference/editorial.md 2.6, 2.8). Owner: shad-8b.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.content_width
+    when 'narrow'
+      assign width_class = 'page-width page-width--narrow'
+    when 'text'
+      assign width_class = 'page-width page-width--text'
+    when 'full'
+      assign width_class = 'page-width page-width--full'
+    else
+      assign width_class = 'page-width'
+  endcase
+  assign col_vw = 100 | divided_by: s.columns
+  assign image_sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, 75vw'
+-%}
+<div class="section ed-section editorial-gallery color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --ed-cols: {{ s.columns }}">
+  <div class="{{ width_class }}">
+    {% render 'section-heading', eyebrow: s.eyebrow, heading: s.heading, heading_size: s.heading_size, text: s.text, link_label: s.link_label, link_url: s.link_url %}
+    <ul class="editorial-gallery__list list-unstyled{% if s.mobile_rail %} editorial-gallery__list--rail{% endif %}" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="editorial-gallery__item" {{ block.shopify_attributes }}>
+          {%- if b.url != blank -%}<a class="editorial-gallery__link" href="{{ b.url }}">{%- endif -%}
+          <div class="media" style="--aspect: {{ s.image_ratio }}">
+            {% render 'image', image: b.image, sizes: image_sizes, aspect: s.image_ratio, placeholder: 'lifestyle-1' %}
+          </div>
+          {%- if b.caption != blank -%}<p class="editorial-gallery__caption">{{ b.caption }}</p>{%- endif -%}
+          {%- if b.url != blank -%}</a>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.editorial-gallery.name",
+  "tag": "section",
+  "class": "section-editorial-gallery",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:sections.editorial.settings.eyebrow.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.editorial.settings.heading.label" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h4", "options": [
+      { "value": "h2", "label": "t:sections.all.heading_size.options.h2" },
+      { "value": "h3", "label": "t:sections.all.heading_size.options.h3" },
+      { "value": "h4", "label": "t:sections.all.heading_size.options.h4" }
+    ] },
+    { "type": "richtext", "id": "text", "label": "t:sections.editorial.settings.text.label" },
+    { "type": "text", "id": "link_label", "label": "t:sections.editorial.blocks.button.settings.label.label" },
+    { "type": "url", "id": "link_url", "label": "t:sections.editorial.blocks.button.settings.url.label" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "t:sections.editorial.settings.columns.label", "default": 4 },
+    { "type": "select", "id": "image_ratio", "label": "t:sections.editorial.settings.image_ratio.label", "default": "4/5", "options": [
+      { "value": "4/5", "label": "t:sections.editorial.settings.image_ratio.options.portrait" },
+      { "value": "1/1", "label": "t:sections.editorial.settings.image_ratio.options.square" },
+      { "value": "5/4", "label": "t:sections.editorial.settings.image_ratio.options.landscape" },
+      { "value": "16/9", "label": "t:sections.editorial.settings.image_ratio.options.wide" }
+    ] },
+    { "type": "checkbox", "id": "mobile_rail", "label": "t:sections.editorial-gallery.settings.mobile_rail.label", "default": true },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "narrow", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" },
+      { "value": "full", "label": "t:sections.all.layout.content_width.options.full" }
+    ] },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 80 }
+  ],
+  "blocks": [
+    { "type": "image", "name": "t:sections.editorial-gallery.blocks.image.name", "settings": [
+      { "type": "image_picker", "id": "image", "label": "t:sections.editorial-hero.settings.image.label" },
+      { "type": "text", "id": "caption", "label": "t:sections.editorial.settings.caption.label", "default": "Caption" },
+      { "type": "url", "id": "url", "label": "t:sections.editorial.blocks.button.settings.url.label" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.editorial-gallery.presets.name", "blocks": [ { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" } ] } ]
+}
+{% endschema %}

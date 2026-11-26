@@ -433,6 +433,39 @@
       "success_moderated": "Your comment was posted successfully. We will publish it in a little while, as our blog is moderated."
     }
   },
+  "storefront": {
+    "header": {
+      "open_submenu": "{{ title }} menu",
+      "view_all": "All {{ title }}",
+      "back": "Back",
+      "main_menu": "Main menu",
+      "secondary_menu": "Quick links",
+      "account": "Account"
+    },
+    "announcement": {
+      "previous": "Previous announcement",
+      "next": "Next announcement",
+      "pause": "Pause announcements",
+      "play": "Play announcements",
+      "dismiss": "Dismiss announcement"
+    },
+    "footer": {
+      "newsletter_label": "Email address",
+      "newsletter_submit": "Subscribe",
+      "newsletter_success": "Thanks for subscribing.",
+      "country_label": "Country/region",
+      "back_to_top": "Back to top"
+    },
+    "sections": {
+      "previous": "Previous",
+      "next": "Next",
+      "view_all": "View all",
+      "play_video": "Play video",
+      "pause_video": "Pause video",
+      "hotspot": "View {{ title }}",
+      "slide_label": "{{ index }} of {{ count }}"
+    }
+  },
   "onboarding": {
     "product_title": "Example product title",
     "collection_title": "Your collection's name",
@@ -443,5 +476,82 @@
     "fabric_name": "Fabric name",
     "article_title": "Article title",
     "article_excerpt": "A short summary of the article appears here."
+  },
+  "editorial": {
+    "anchor_nav": {
+      "label": "On this page"
+    },
+    "fabric_rating": {
+      "softness": "Softness",
+      "breathability": "Breathability",
+      "durability": "Durability",
+      "warmth": "Warmth",
+      "cool": "Cool",
+      "warm": "Warm",
+      "value": "{{ value }} out of {{ max }}",
+      "warmth_value": "Warmth {{ value }} of {{ max }}, from cool to warm"
+    },
+    "care_symbols": {
+      "wash-30": "Machine wash at 30°C",
+      "wash-40": "Machine wash at 40°C",
+      "wash-60": "Machine wash at 60°C",
+      "hand-wash": "Hand wash",
+      "no-bleach": "Do not bleach",
+      "tumble-low": "Tumble dry low",
+      "tumble-none": "Do not tumble dry",
+      "line-dry": "Line dry",
+      "iron-low": "Iron on low heat",
+      "iron-medium": "Iron on medium heat",
+      "iron-high": "Iron on high heat",
+      "no-iron": "Do not iron",
+      "dry-clean": "Dry clean",
+      "no-dry-clean": "Do not dry clean"
+    },
+    "contact": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone number",
+      "order": "Order number",
+      "topic": "Topic",
+      "message": "Message",
+      "send": "Send message",
+      "required": "* Required fields",
+      "success": "Thank you for your message. We will get back to you as soon as possible.",
+      "error_heading": "Please check the following:"
+    },
+    "fabric_guide": {
+      "filter_label": "Filter fabrics",
+      "all": "All",
+      "no_results": "No fabrics match this filter."
+    },
+    "fabric_compare": {
+      "label": "Fabric comparison",
+      "caption": "Comparison of fabric characteristics",
+      "empty": "Add fabrics in Settings › Custom data › Metaobjects, or pick them in this section, to build the comparison.",
+      "rows": {
+        "summary": "In short",
+        "composition": "Composition",
+        "weave": "Weave",
+        "finish": "Finish",
+        "thread_count": "Thread count",
+        "gsm": "Weight",
+        "yarn": "Yarn",
+        "feel": "Feel",
+        "texture": "Texture",
+        "origin": "Made in",
+        "best_for": "Best for",
+        "care": "Care"
+      }
+    },
+    "fabric": {
+      "best_for": "Best for",
+      "shop": "Shop {{ name }}",
+      "care_guide": "Care guide",
+      "seasons": "Seasons",
+      "licence": "Licence",
+      "verify": "Verify certificate",
+      "new_window": "(opens in a new window)",
+      "select_fabric": "Select a fabric in this section's settings to preview its content."
+    }
   }
 }

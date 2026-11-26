@@ -1,69 +1,178 @@
-{%- comment -%} STUB handed to shad-2d. Replace entirely; keep the data-drawer-open hooks (docs/component-contracts.md section 3). {%- endcomment -%}
+{%- comment -%}
+  Site header. Owner: shad-2d. Patterns: docs/reference/storefront.md, docs/reference/storefront-nav.md.
+  - Menu: 3-level link list. Level 2 = group heading, level 3 = links. mega_promo blocks attach promo cards to a
+    top-level item by its title/handle.
+  - sticky_mode: always (data-sticky="true"), hide_on_scroll (data-sticky="hide"), none.
+  - transparent_on_home: on the home page the header overlays the first section when that section marks itself with
+    [data-header-overlay] (heroes do this only when they have media). Otherwise it stays solid. Pure CSS, no layout shift.
+  - Handoff hooks for commerce: data-drawer-open="search-drawer" / "cart-drawer", [data-cart-count] (contracts section 3).
+{%- endcomment -%}
 {%- liquid
   assign menu = section.settings.menu
   if menu == blank or menu.links.size == 0
     assign menu = settings.menu_main
   endif
+  assign subnav = section.settings.mobile_subnav_menu
+  assign layout = section.settings.layout
+  case section.settings.sticky_mode
+    when 'always'
+      assign sticky_attr = 'true'
+    when 'hide_on_scroll'
+      assign sticky_attr = 'hide'
+    else
+      assign sticky_attr = 'false'
+  endcase
+  assign transparent = false
+  if section.settings.transparent_on_home and request.page_type == 'index'
+    assign transparent = true
+  endif
+  assign promo_blocks = section.blocks | where: 'type', 'mega_promo'
 -%}
-<header class="header color-scheme-{{ section.settings.color_scheme }}" data-header data-sticky="{{ section.settings.sticky }}">
-  <div class="page-width header__inner">
-    <button type="button" class="header__icon button--icon hide-desktop" data-drawer-open="mobile-nav" aria-label="{{ 'general.accessibility.open_menu' | t }}" aria-expanded="false">{% render 'icon', icon: 'menu', size: 24 %}</button>
-    <nav class="header__nav hide-mobile" aria-label="{{ 'sections.header.menu' | t }}">
-      <ul class="header__menu list-unstyled">
+
+{%- capture logo -%}
+  <a class="header__logo" href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>
+    {%- if settings.logo != blank -%}
+      <span class="visually-hidden">{{ shop.name }}</span>
+      {%- render 'image', image: settings.logo, sizes: '240px', widths: '120,240,360,480', priority: true, class: 'header__logo-img header__logo-img--default', alt: '' -%}
+      {%- if transparent and section.settings.transparent_logo != blank -%}
+        {%- render 'image', image: section.settings.transparent_logo, sizes: '240px', widths: '120,240,360,480', priority: true, class: 'header__logo-img header__logo-img--transparent', alt: '' -%}
+      {%- endif -%}
+    {%- else -%}
+      <span class="header__wordmark">{{ shop.name | escape }}</span>
+    {%- endif -%}
+  </a>
+{%- endcapture -%}
+
+{%- capture nav -%}
+  <header-menu class="header__nav">
+    <nav aria-label="{{ 'storefront.header.main_menu' | t }}">
+      <ul class="header__menu list-unstyled" role="list">
         {%- for link in menu.links -%}
-          <li><a class="header__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
+          {%- liquid
+            assign link_handle = link.handle | default: link.title | handleize
+            assign has_promos = false
+            for block in promo_blocks
+              assign target = block.settings.menu_item | handleize
+              if target == link_handle
+                assign has_promos = true
+                break
+              endif
+            endfor
+            assign panel_id = 'MegaMenu-' | append: section.id | append: '-' | append: forloop.index
+          -%}
+          {%- if link.links.size > 0 or has_promos -%}
+            <li class="header__item" data-mega-item>
+              <button type="button" class="header__link header__trigger" aria-expanded="false" aria-haspopup="true" aria-controls="{{ panel_id }}" data-mega-trigger{% if link.active or link.child_active %} data-active{% endif %}>
+                {{- link.title | escape -}}
+              </button>
+              {%- render 'mega-menu', link: link, section: section, id: panel_id -%}
+            </li>
+          {%- else -%}
+            <li class="header__item">
+              <a class="header__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}{% if link.active %} data-active{% endif %}>{{ link.title | escape }}</a>
+            </li>
+          {%- endif -%}
         {%- endfor -%}
       </ul>
     </nav>
-    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
-      {%- if settings.logo != blank -%}
-        {% render 'image', image: settings.logo, sizes: '200px', widths: '120,240,360', priority: true, class: 'header__logo-img', alt: shop.name %}
-      {%- else -%}
-        <span class="header__wordmark h4">{{ shop.name }}</span>
-      {%- endif -%}
-    </a>
-    <div class="header__actions">
-      <button type="button" class="header__icon button--icon" data-drawer-open="search-drawer" aria-label="{{ 'general.search.search' | t }}" aria-expanded="false">{% render 'icon', icon: 'search', size: 22 %}</button>
-      {%- if shop.customer_accounts_enabled -%}
-        <a class="header__icon button--icon hide-mobile" href="{{ routes.account_url }}" aria-label="{{ 'customer.account_fallback' | t }}">{% render 'icon', icon: 'account', size: 22 %}</a>
-      {%- endif -%}
-      <a href="{{ routes.cart_url }}" class="header__icon button--icon header__cart" data-drawer-open="cart-drawer" aria-label="{{ 'general.cart.view' | t: count: cart.item_count }}" aria-expanded="false">
-        {% render 'icon', icon: 'bag', size: 22 %}<span class="header__cart-count text-caption" data-cart-count{% if cart.item_count == 0 %} data-empty{% endif %}>{{ cart.item_count }}</span>
-      </a>
+  </header-menu>
+{%- endcapture -%}
+
+<sticky-header class="header-wrapper" data-mode="{{ section.settings.sticky_mode }}">
+  <header
+    class="header header--{{ layout }} color-scheme-{{ section.settings.color_scheme }}{% if transparent %} header--transparent-capable header--transparent-{{ section.settings.transparent_text }}{% endif %}{% if section.settings.show_border %} header--border{% endif %}"
+    data-header
+    data-sticky="{{ sticky_attr }}"
+  >
+    <div class="header__bar">
+      {%- if layout == 'logo_left' -%}{{ logo }}{{ nav }}{%- else -%}{{ nav }}{{ logo }}{%- endif -%}
+      <div class="header__actions">
+        <a class="header__icon" href="{{ routes.search_url }}" data-drawer-open="search-drawer" aria-label="{{ 'general.search.search' | t }}">
+          {%- render 'icon', icon: 'search', size: 20 -%}
+        </a>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="header__icon hide-mobile" href="{{ routes.account_url }}" aria-label="{{ 'customer.account_fallback' | t }}">
+            {%- render 'icon', icon: 'account', size: 20 -%}
+          </a>
+        {%- endif -%}
+        <a class="header__icon header__cart" href="{{ routes.cart_url }}" data-drawer-open="cart-drawer" aria-label="{{ 'general.cart.view' | t: count: cart.item_count }}">
+          {%- render 'icon', icon: 'bag', size: 20 -%}
+          <span class="header__cart-count" data-cart-count{% if cart.item_count == 0 %} data-empty{% endif %} aria-hidden="true">{{ cart.item_count }}</span>
+        </a>
+        <button type="button" class="header__icon header__menu-toggle hide-desktop" data-drawer-open="mobile-nav" aria-controls="mobile-nav" aria-expanded="false" aria-label="{{ 'general.accessibility.open_menu' | t }}">
+          {%- render 'icon', icon: 'menu', size: 22 -%}
+        </button>
+      </div>
     </div>
-  </div>
-</header>
-<theme-drawer id="mobile-nav" data-lock-scroll class="hide-desktop">
-  <div class="overlay" data-drawer-close></div>
-  <div class="drawer drawer--left" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}">
-    <div class="drawer__header"><span class="drawer__title">{{ 'sections.header.menu' | t }}</span><button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close_menu' | t }}">{% render 'icon', icon: 'close', size: 24 %}</button></div>
-    <nav class="drawer__body"><ul class="list-unstyled stack">{%- for link in menu.links -%}<li><a class="h4 link--plain" href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></nav>
-  </div>
-</theme-drawer>
-{% style %}
-  .header { position: relative; z-index: var(--z-sticky); border-bottom: var(--border-width) solid var(--color-border); }
-  .header[data-sticky="true"] { position: sticky; top: 0; }
-  .header__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 64px; gap: var(--space-4); }
-  .header__logo { grid-column: 2; text-decoration: none; display: inline-flex; }
-  .header__logo-img { width: var(--logo-width); height: auto; }
-  .header__menu { display: flex; gap: var(--space-6); }
-  .header__link { text-decoration: none; font-size: var(--text-sm); }
-  .header__link:hover { text-decoration: underline; }
-  .header__actions { display: flex; justify-content: flex-end; gap: var(--space-1); }
-  .header__icon { display: inline-flex; align-items: center; justify-content: center; }
-  .header__cart { position: relative; text-decoration: none; }
-  .header__cart-count { position: absolute; top: 4px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: var(--color-foreground); color: var(--color-background); font-size: 10px; line-height: 16px; text-align: center; }
-  .header__cart-count[data-empty] { display: none; }
-  @media (min-width: 1024px) { .header__inner { min-height: 72px; } }
-{% endstyle %}
+    {%- if subnav != blank and subnav.links.size > 0 -%}
+      <nav class="header__subnav hide-desktop" aria-label="{{ 'storefront.header.secondary_menu' | t }}">
+        <ul class="header__subnav-list list-unstyled no-scrollbar" role="list">
+          {%- for link in subnav.links -%}
+            <li><a class="header__subnav-link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+    <div class="header__backdrop" data-header-backdrop aria-hidden="true"></div>
+  </header>
+</sticky-header>
+
+{%- render 'mobile-nav', menu: menu, section: section, promo_blocks: promo_blocks -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --header-logo-width: {{ settings.logo_width }}px;
+    --header-logo-width-mobile: {{ settings.logo_width | times: 0.75 | round }}px;
+  }
+{%- endstyle -%}
+
 {% schema %}
 {
   "name": "t:sections.header.name",
   "class": "section-header",
+  "max_blocks": 24,
   "settings": [
-    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true }
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Second level links with their own links become column headings in the mega menu." },
+    {
+      "type": "select", "id": "layout", "label": "Desktop layout", "default": "nav_left",
+      "options": [
+        { "value": "nav_left", "label": "Menu left, logo and icons right" },
+        { "value": "logo_left", "label": "Logo left, menu beside it" },
+        { "value": "logo_center", "label": "Menu left, logo centred" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_border", "label": "Show bottom border", "default": false },
+    { "type": "header", "content": "Sticky header" },
+    {
+      "type": "select", "id": "sticky_mode", "label": "Sticky header", "default": "always",
+      "options": [
+        { "value": "always", "label": "Always" },
+        { "value": "hide_on_scroll", "label": "Hide on scroll down, show on scroll up" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    { "type": "header", "content": "Home page" },
+    { "type": "checkbox", "id": "transparent_on_home", "label": "Transparent over the first section", "default": true, "info": "Applies when the first section is a hero with an image or video. The header turns solid on scroll and while a menu is open." },
+    {
+      "type": "select", "id": "transparent_text", "label": "Transparent header text", "default": "light",
+      "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" } ]
+    },
+    { "type": "image_picker", "id": "transparent_logo", "label": "Transparent header logo", "info": "Optional. Shown instead of the theme logo while the header is transparent." },
+    { "type": "header", "content": "Mobile" },
+    { "type": "link_list", "id": "mobile_subnav_menu", "label": "Quick links row", "info": "Optional. A horizontally scrolling row of links under the mobile header." }
+  ],
+  "blocks": [
+    {
+      "type": "mega_promo",
+      "name": "Mega menu promo",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Menu item", "info": "Title of the top-level menu item to show this card in, for example Bedding. Up to 3 cards per item." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "heading", "label": "Caption", "default": "Promo caption" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
   ],
   "enabled_on": { "groups": ["header"] }
 }

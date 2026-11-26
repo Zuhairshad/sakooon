@@ -1,0 +1,113 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "show_breadcrumbs": true,
+        "heading": "",
+        "content_width": "page",
+        "text": "<p>Every fabric feels, breathes and wears differently. Use this guide to compare them and find the one that suits the way you sleep.</p>",
+        "padding_top": 80,
+        "padding_bottom": 64
+      }
+    },
+    "guide": {
+      "type": "fabric-guide",
+      "settings": {
+        "heading": "",
+        "limit": 12,
+        "columns": 3,
+        "show_summary": true,
+        "show_ratings": true,
+        "show_filters": true,
+        "filter_by": "weave",
+        "card_link_label": "Read more",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "compare": {
+      "type": "fabric-compare",
+      "settings": {
+        "heading": "Compare fabrics",
+        "show_images": true,
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "choose": {
+      "type": "editorial-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "How to choose",
+            "tag": "h2",
+            "size": "h4"
+          }
+        },
+        "l": {
+          "type": "list",
+          "settings": {
+            "style": "divided",
+            "text": "<ul><li><strong>Run warm at night?</strong> Look for high breathability and a cooler position on the warmth scale.</li><li><strong>Prefer a soft, lived-in feel?</strong> Look for softness and a washed or brushed finish.</li><li><strong>Want something that lasts?</strong> Compare durability and follow the care guide from the first wash.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "l"
+      ],
+      "settings": {
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "What does thread count tell me?",
+            "answer": "<p>Explain what thread count measures and why it is only one part of how a fabric feels.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Will my sheets soften over time?",
+            "answer": "<p>Describe how each fabric changes with washing and use.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Which fabric is best for warm sleepers?",
+            "answer": "<p>Point customers to the breathability and warmth ratings above.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "heading": "Fabric questions",
+        "heading_size": "h4",
+        "content_width": "text",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "guide",
+    "compare",
+    "choose",
+    "faq"
+  ]
+}

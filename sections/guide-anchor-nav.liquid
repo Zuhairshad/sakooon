@@ -1,0 +1,61 @@
+{%- comment -%}
+  In-page navigation for long guides. Owner: shad-8b.
+  With link blocks it renders those; without blocks, assets/editorial.js builds the list from every
+  [data-anchor-target] heading on the page (editorial-text heading blocks, faq group headings).
+  Sticks below the header (--header-height) and marks the section in view with aria-current.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign nav_label = s.label
+  if nav_label == blank
+    assign nav_label = 'editorial.anchor_nav.label' | t
+  endif
+-%}
+<div class="section ed-section guide-anchor-nav{% if s.sticky %} guide-anchor-nav--sticky{% endif %} guide-anchor-nav--{{ s.style }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <guide-anchor-nav class="page-width{% if s.content_width == 'text' %} page-width--text{% elsif s.content_width == 'narrow' %} page-width--narrow{% endif %}" data-auto="{% if section.blocks.size == 0 %}true{% else %}false{% endif %}">
+    <nav class="guide-anchor-nav__nav" aria-label="{{ nav_label | escape }}">
+      {%- if s.label != blank -%}<p class="guide-anchor-nav__title">{{ s.label }}</p>{%- endif -%}
+      <ul class="guide-anchor-nav__list list-unstyled no-scrollbar" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.label != blank -%}
+            {%- assign target = block.settings.anchor | default: block.settings.label | handleize | remove: '#' -%}
+            <li {{ block.shopify_attributes }}><a class="guide-anchor-nav__link" href="#{{ target }}">{{ block.settings.label }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  </guide-anchor-nav>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.guide-anchor-nav.name",
+  "tag": "section",
+  "class": "section-guide-anchor-nav",
+  "settings": [
+    { "type": "text", "id": "label", "label": "t:sections.guide-anchor-nav.settings.label.label", "info": "t:sections.guide-anchor-nav.settings.label.info" },
+    { "type": "checkbox", "id": "sticky", "label": "t:sections.guide-anchor-nav.settings.sticky.label", "default": true },
+    { "type": "select", "id": "style", "label": "t:sections.guide-anchor-nav.settings.style.label", "default": "links", "options": [
+      { "value": "links", "label": "t:sections.guide-anchor-nav.settings.style.options.links" },
+      { "value": "pills", "label": "t:sections.guide-anchor-nav.settings.style.options.pills" }
+    ] },
+    { "type": "select", "id": "content_width", "label": "t:sections.all.layout.content_width.label", "default": "page", "options": [
+      { "value": "page", "label": "t:sections.all.layout.content_width.options.page" },
+      { "value": "narrow", "label": "t:sections.all.layout.content_width.options.narrow" },
+      { "value": "text", "label": "t:sections.all.layout.content_width.options.text" }
+    ] },
+    { "type": "paragraph", "content": "t:sections.guide-anchor-nav.settings.auto.content" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 32 }
+  ],
+  "blocks": [
+    { "type": "link", "name": "t:sections.guide-anchor-nav.blocks.link.name", "settings": [
+      { "type": "text", "id": "label", "label": "t:sections.editorial.blocks.button.settings.label.label", "default": "Section" },
+      { "type": "text", "id": "anchor", "label": "t:sections.guide-anchor-nav.blocks.link.settings.anchor.label", "info": "t:sections.guide-anchor-nav.blocks.link.settings.anchor.info" }
+    ] }
+  ],
+  "presets": [ { "name": "t:sections.guide-anchor-nav.presets.name" } ]
+}
+{% endschema %}
