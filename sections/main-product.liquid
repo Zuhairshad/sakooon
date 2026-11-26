@@ -1,0 +1,214 @@
+{%- comment -%}
+  Product page main section. Owner: shad-d8. Reference: Parachute PDP (docs/reference/commerce.md section 2).
+  Desktop: 50/50 split, full-bleed gallery left, 460px buy box right (sticky). Phones: swipe gallery, then the buy box.
+  Variant changes (assets/product.js) fetch this section with ?variant=<id>&section_id=<section.id> and swap every
+  [data-pdp-update="<key>"] region; the gallery is swapped only when the colour changes. URL is kept in sync (replaceState).
+  Blocks render in the order set in the editor. Sticky buy bar appears once the main add-to-cart button scrolls away.
+{%- endcomment -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign has_buy_buttons = false
+  for block in section.blocks
+    if block.type == 'buy_buttons'
+      assign has_buy_buttons = true
+    endif
+  endfor
+-%}
+<div
+  class="section main-product main-product--gallery-{{ section.settings.gallery_layout }} color-scheme-{{ section.settings.color_scheme }}"
+  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;"
+  data-product-section="{{ section.id }}"
+  data-product-url="{{ product.url }}"
+  data-variant-id="{{ current.id }}"
+>
+  <div class="main-product__grid">
+    <div class="main-product__media" data-pdp-update="gallery">
+      {%- render 'product-gallery', product: product, section_id: section.id, layout: section.settings.gallery_layout, filter_by_colour: section.settings.media_by_colour -%}
+    </div>
+
+    <div class="main-product__info">
+      <div class="main-product__buybox">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'badge' -%}
+              <div class="main-product__badge" data-pdp-update="badge-{{ block.id }}" {{ block.shopify_attributes }}>
+                {%- liquid
+                  assign badge = ''
+                  if current.available == false
+                    assign badge = 'products.product.sold_out' | t
+                  elsif current.compare_at_price > current.price
+                    assign percent = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price | floor
+                    assign badge = 'products.product.badge_percent_off' | t: percent: percent
+                  elsif block.settings.text != blank
+                    assign badge = block.settings.text
+                  endif
+                -%}
+                {%- if badge != blank -%}<span class="product-card__badge main-product__tag{% if current.compare_at_price > current.price and current.available %} card__badge--sale{% endif %}">{{ badge }}</span>{%- endif -%}
+              </div>
+
+            {%- when 'title' -%}
+              <div class="main-product__title-wrap" {{ block.shopify_attributes }}>
+                {%- if block.settings.show_vendor and product.vendor != blank -%}<p class="main-product__vendor">{{ product.vendor }}</p>{%- endif -%}
+                <h1 class="main-product__title">{{ product.title | escape }}</h1>
+              </div>
+
+            {%- when 'price' -%}
+              <div class="main-product__price" data-pdp-update="price-{{ block.id }}" {{ block.shopify_attributes }}>
+                {%- render 'price', variant: current, price_class: 'price--large' -%}
+                {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+                  <p class="main-product__tax">
+                    {%- if cart.taxes_included -%}{{ 'products.product.taxes_included' | t }}{%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%} {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}{%- endif -%}
+                  </p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              <div class="main-product__picker" data-pdp-update="picker-{{ block.id }}" {{ block.shopify_attributes }}>
+                {%- render 'variant-picker', product: product, section_id: section.id, form_id: form_id, other_style: block.settings.other_style -%}
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div class="main-product__buy" data-pdp-update="buy-{{ block.id }}" {{ block.shopify_attributes }}>
+                {%- render 'buy-buttons', product: product, form_id: form_id, section_id: section.id, block: block -%}
+              </div>
+
+            {%- when 'size_guide' -%}
+              <div class="main-product__size-guide" {{ block.shopify_attributes }}>
+                {%- render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label -%}
+              </div>
+
+            {%- when 'whats_included' -%}
+              {%- if product.metafields.sakooon.package_contents.value.size > 0 -%}
+                <ul class="main-product__includes list-unstyled" role="list" aria-label="{{ 'products.product.whats_included' | t }}" {{ block.shopify_attributes }}>
+                  {%- for item in product.metafields.sakooon.package_contents.value -%}<li>{{ item }}</li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'benefits' -%}
+              {%- if product.metafields.sakooon.benefits.value.size > 0 -%}
+                <ul class="main-product__benefits list-unstyled" role="list" {{ block.shopify_attributes }}>
+                  {%- for item in product.metafields.sakooon.benefits.value -%}<li>{%- render 'icon', icon: 'check', size: 16 -%}<span>{{ item }}</span></li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'accordion' -%}
+              <div class="main-product__accordion" data-pdp-update="accordion-{{ block.id }}">
+                {%- render 'product-accordions', product: product, block: block, section_id: section.id -%}
+              </div>
+
+            {%- when 'pairing' -%}
+              {%- liquid
+                assign pair = block.settings.product
+                if pair == blank
+                  assign pair = product.metafields.sakooon.complementary_products.value.first
+                endif
+              -%}
+              {%- if pair != blank and pair.id != product.id -%}
+                <div class="pairing" {{ block.shopify_attributes }}>
+                  {%- if block.settings.heading != blank -%}<p class="pairing__heading">{{ block.settings.heading | escape }}</p>{%- endif -%}
+                  <a class="pairing__card" href="{{ pair.url }}">
+                    <span class="pairing__media media" style="--aspect: 3/4">
+                      {%- if pair.featured_media -%}{%- render 'image', image: pair.featured_media, sizes: '64px', widths: '64,128,192', aspect: '3/4' -%}{%- else -%}{%- render 'placeholder', name: 'product-1', aspect: '3/4' -%}{%- endif -%}
+                    </span>
+                    <span class="pairing__body">
+                      <span class="pairing__title">{{ pair.title | escape }}</span>
+                      {%- render 'price', product: pair -%}
+                    </span>
+                    {%- render 'icon', icon: 'arrow-right', size: 16, class: 'pairing__arrow' -%}
+                  </a>
+                </div>
+              {%- endif -%}
+
+            {%- when 'text' -%}
+              {%- if block.settings.text != blank -%}<div class="main-product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>{%- endif -%}
+
+            {%- when 'custom_liquid' -%}
+              <div class="main-product__custom" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.enable_sticky_bar and has_buy_buttons -%}
+    <sticky-buy-bar class="sticky-bar color-scheme-{{ section.settings.color_scheme }}" data-form-id="{{ form_id }}" data-pdp-update="sticky" hidden>
+      <div class="sticky-bar__inner page-width page-width--full">
+        <div class="sticky-bar__media media" style="--aspect: 3/4">
+          {%- assign sticky_media = current.featured_media | default: product.featured_media -%}
+          {%- if sticky_media -%}{%- render 'image', image: sticky_media, sizes: '48px', widths: '48,96,144', aspect: '3/4' -%}{%- endif -%}
+        </div>
+        <div class="sticky-bar__text">
+          <p class="sticky-bar__title">{{ product.title | escape }}</p>
+          {%- unless product.has_only_default_variant -%}<p class="sticky-bar__variant">{{ current.title | escape }}</p>{%- endunless -%}
+        </div>
+        <div class="sticky-bar__price">{%- render 'price', variant: current -%}</div>
+        <button type="submit" form="{{ form_id }}" name="add" class="button sticky-bar__button" data-sticky-add data-available="{{ current.available }}" {% unless current.available %}disabled{% endunless %}>
+          {%- if current.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </button>
+      </div>
+    </sticky-buy-bar>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-product.name",
+  "class": "section-main-product",
+  "settings": [
+    { "type": "select", "id": "gallery_layout", "label": "t:sections.main-product.settings.gallery_layout.label", "options": [ { "value": "carousel", "label": "t:sections.main-product.settings.gallery_layout.options.carousel" }, { "value": "stack", "label": "t:sections.main-product.settings.gallery_layout.options.stack" } ], "default": "carousel" },
+    { "type": "checkbox", "id": "media_by_colour", "label": "t:sections.main-product.settings.media_by_colour.label", "info": "t:sections.main-product.settings.media_by_colour.info", "default": true },
+    { "type": "checkbox", "id": "enable_sticky_bar", "label": "t:sections.main-product.settings.enable_sticky_bar.label", "default": true },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 0 }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "badge", "name": "t:sections.main-product.blocks.badge.name", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "t:sections.main-product.blocks.badge.settings.text.label", "info": "t:sections.main-product.blocks.badge.settings.text.info" } ] },
+    { "type": "title", "name": "t:sections.main-product.blocks.title.name", "limit": 1, "settings": [ { "type": "checkbox", "id": "show_vendor", "label": "t:sections.main-product.blocks.title.settings.show_vendor.label", "default": false } ] },
+    { "type": "price", "name": "t:sections.main-product.blocks.price.name", "limit": 1, "settings": [] },
+    { "type": "variant_picker", "name": "t:sections.main-product.blocks.variant_picker.name", "limit": 1, "settings": [
+      { "type": "select", "id": "other_style", "label": "t:sections.main-product.blocks.variant_picker.settings.other_style.label", "options": [ { "value": "select", "label": "t:sections.main-product.blocks.variant_picker.settings.other_style.options.select" }, { "value": "pills", "label": "t:sections.main-product.blocks.variant_picker.settings.other_style.options.pills" } ], "default": "select" }
+    ] },
+    { "type": "buy_buttons", "name": "t:sections.main-product.blocks.buy_buttons.name", "limit": 1, "settings": [
+      { "type": "checkbox", "id": "price_in_button", "label": "t:sections.main-product.blocks.buy_buttons.settings.price_in_button.label", "default": true },
+      { "type": "checkbox", "id": "show_quantity", "label": "t:sections.main-product.blocks.buy_buttons.settings.show_quantity.label", "default": false },
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "t:sections.main-product.blocks.buy_buttons.settings.show_dynamic_checkout.label", "default": false },
+      { "type": "range", "id": "low_stock_threshold", "min": 0, "max": 20, "step": 1, "label": "t:sections.main-product.blocks.buy_buttons.settings.low_stock_threshold.label", "info": "t:sections.main-product.blocks.buy_buttons.settings.low_stock_threshold.info", "default": 5 }
+    ] },
+    { "type": "size_guide", "name": "t:sections.main-product.blocks.size_guide.name", "limit": 1, "settings": [ { "type": "text", "id": "label", "label": "t:sections.main-product.blocks.size_guide.settings.label.label" } ] },
+    { "type": "whats_included", "name": "t:sections.main-product.blocks.whats_included.name", "limit": 1, "settings": [] },
+    { "type": "benefits", "name": "t:sections.main-product.blocks.benefits.name", "limit": 1, "settings": [] },
+    { "type": "accordion", "name": "t:sections.main-product.blocks.accordion.name", "settings": [
+      { "type": "select", "id": "source", "label": "t:sections.main-product.blocks.accordion.settings.source.label", "options": [
+        { "value": "description", "label": "t:sections.main-product.blocks.accordion.settings.source.options.description" },
+        { "value": "dimensions", "label": "t:sections.main-product.blocks.accordion.settings.source.options.dimensions" },
+        { "value": "composition", "label": "t:sections.main-product.blocks.accordion.settings.source.options.composition" },
+        { "value": "feel", "label": "t:sections.main-product.blocks.accordion.settings.source.options.feel" },
+        { "value": "specifications", "label": "t:sections.main-product.blocks.accordion.settings.source.options.specifications" },
+        { "value": "whats_included", "label": "t:sections.main-product.blocks.accordion.settings.source.options.whats_included" },
+        { "value": "care", "label": "t:sections.main-product.blocks.accordion.settings.source.options.care" },
+        { "value": "shipping_returns", "label": "t:sections.main-product.blocks.accordion.settings.source.options.shipping_returns" },
+        { "value": "custom", "label": "t:sections.main-product.blocks.accordion.settings.source.options.custom" }
+      ], "default": "description" },
+      { "type": "text", "id": "heading", "label": "t:sections.main-product.blocks.accordion.settings.heading.label", "info": "t:sections.main-product.blocks.accordion.settings.heading.info" },
+      { "type": "text", "id": "subtitle", "label": "t:sections.main-product.blocks.accordion.settings.subtitle.label" },
+      { "type": "checkbox", "id": "open", "label": "t:sections.main-product.blocks.accordion.settings.open.label", "default": false },
+      { "type": "richtext", "id": "content", "label": "t:sections.main-product.blocks.accordion.settings.content.label", "info": "t:sections.main-product.blocks.accordion.settings.content.info" },
+      { "type": "page", "id": "page", "label": "t:sections.main-product.blocks.accordion.settings.page.label" }
+    ] },
+    { "type": "pairing", "name": "t:sections.main-product.blocks.pairing.name", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "t:sections.main-product.blocks.pairing.settings.heading.label", "default": "Pairs well with" },
+      { "type": "product", "id": "product", "label": "t:sections.main-product.blocks.pairing.settings.product.label", "info": "t:sections.main-product.blocks.pairing.settings.product.info" }
+    ] },
+    { "type": "text", "name": "t:sections.main-product.blocks.text.name", "settings": [ { "type": "richtext", "id": "text", "label": "t:sections.main-product.blocks.text.settings.text.label" } ] },
+    { "type": "custom_liquid", "name": "t:sections.main-product.blocks.custom_liquid.name", "settings": [ { "type": "liquid", "id": "custom_liquid", "label": "t:sections.main-product.blocks.custom_liquid.settings.custom_liquid.label" } ] }
+  ]
+}
+{% endschema %}

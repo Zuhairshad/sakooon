@@ -1,0 +1,70 @@
+{%- comment -%}
+  Product form + add to cart. Owner: shad-d8. Behaviour: <product-form> in assets/product.js (theme.cart.add, cart:updated).
+  {% render 'buy-buttons', product: product, form_id: form_id, section_id: section.id, block: block %}
+  block settings: show_quantity, price_in_button, show_dynamic_checkout, low_stock_threshold.
+  Without JS: a real POST to /cart/add with a <noscript> variant <select>.
+{%- endcomment -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign threshold = block.settings.low_stock_threshold | default: 0
+  assign show_low = false
+  if current.available and threshold > 0 and current.inventory_management == 'shopify' and current.inventory_policy == 'deny' and current.inventory_quantity > 0 and current.inventory_quantity <= threshold
+    assign show_low = true
+  endif
+  assign gift_card = false
+  if product.gift_card?
+    assign gift_card = true
+  endif
+-%}
+<product-form class="buy-buttons" data-section-id="{{ section_id }}">
+  {%- form 'product', product, id: form_id, class: 'buy-buttons__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+    <input type="hidden" name="id" value="{{ current.id }}" data-variant-id{% if current == blank %} disabled{% endif %}>
+    <noscript>
+      <label class="visually-hidden" for="{{ form_id }}-noscript">{{ 'products.product.choose_options' | t }}</label>
+      <select name="id" id="{{ form_id }}-noscript" class="buy-buttons__noscript">
+        {%- for v in product.variants -%}
+          <option value="{{ v.id }}"{% if v.id == current.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} &ndash; {{ 'products.product.sold_out' | t }}{% endunless %} &ndash; {{ v.price | money }}</option>
+        {%- endfor -%}
+      </select>
+    </noscript>
+
+    {%- if block.settings.show_quantity -%}
+      <div class="buy-buttons__quantity">
+        <label class="buy-buttons__quantity-label" for="{{ form_id }}-quantity">{{ 'products.product.quantity.label' | t }}</label>
+        {%- liquid
+          assign quantity_id = form_id | append: '-quantity'
+          assign quantity_min = current.quantity_rule.min | default: 1
+          render 'quantity-input', id: quantity_id, name: 'quantity', value: quantity_min, product_title: product.title, variant: current
+        -%}
+      </div>
+    {%- endif -%}
+
+    <div class="buy-buttons__actions">
+      <button
+        type="submit"
+        name="add"
+        class="button button--full buy-buttons__add"
+        data-add-button
+        data-available="{{ current.available }}"
+        {% unless current.available %}disabled{% endunless %}
+      >
+        <span class="buy-buttons__label" data-add-label>
+          {%- if current.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </span>
+        {%- if block.settings.price_in_button and current.available -%}
+          <span class="buy-buttons__price">
+            {{- current.price | money -}}
+            {%- if current.compare_at_price > current.price -%} <s>{{ current.compare_at_price | money }}</s>{%- endif -%}
+          </span>
+        {%- endif -%}
+      </button>
+      {%- if block.settings.show_dynamic_checkout and gift_card == false -%}
+        {{ form | payment_button }}
+      {%- endif -%}
+    </div>
+    <p class="buy-buttons__low-stock" data-low-stock{% unless show_low %} hidden{% endunless %}>
+      {%- if show_low -%}{{ 'products.product.low_stock' | t: count: current.inventory_quantity }}{%- endif -%}
+    </p>
+    <p class="buy-buttons__error form__message form__message--error" role="alert" data-form-error hidden></p>
+  {%- endform -%}
+</product-form>

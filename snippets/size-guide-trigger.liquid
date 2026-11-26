@@ -1,0 +1,41 @@
+{%- comment -%}
+  Size guide link. Owner: shad-d8. Agreed with shad-8b (editorial):
+  - page: product.metafields.sakooon.size_guide (page_reference); the page renders <size-guide data-size-guide> with one
+    block per category whose id is the product type handle (duvet-covers, sheet-sets, ...).
+  - Link: {{ page.url }}#{{ product.type | handle }} works without JS. product.js opens <theme-dialog id="SizeGuide-..."> instead,
+    filling it with the page's [data-size-guide] element and scrolling to the anchor when present.
+  {% render 'size-guide-trigger', product: product, section_id: section.id, label: block.settings.label %}
+{%- endcomment -%}
+{%- assign guide = product.metafields.sakooon.size_guide.value -%}
+{%- if guide != blank -%}
+  {%- liquid
+    assign anchor = product.type | handle
+    assign dialog_id = 'SizeGuide-' | append: section_id
+    assign fallback_title = 'products.product.size_guide' | t
+    assign guide_title = guide.title | default: fallback_title
+    assign trigger_label = label | default: guide_title
+  -%}
+  <a
+    href="{{ guide.url }}{% if anchor != blank %}#{{ anchor }}{% endif %}"
+    class="size-guide-trigger link"
+    data-size-guide-open="{{ dialog_id }}"
+    data-size-guide-url="{{ guide.url }}"
+    data-size-guide-anchor="{{ anchor }}"
+    aria-haspopup="dialog"
+  >
+    {%- render 'icon', icon: 'info', size: 16 -%}
+    <span>{{ trigger_label | escape }}</span>
+  </a>
+  <theme-dialog id="{{ dialog_id }}" class="size-guide-dialog" data-lock-scroll>
+    <div class="overlay" data-drawer-close></div>
+    <div class="drawer drawer--right size-guide-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="{{ dialog_id }}-title">
+      <div class="drawer__header">
+        <h2 class="drawer__title" id="{{ dialog_id }}-title">{{ guide_title | escape }}</h2>
+        <button type="button" class="button--icon" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', icon: 'close', size: 20 -%}</button>
+      </div>
+      <div class="drawer__body size-guide-dialog__body" data-size-guide-body aria-busy="true">
+        <div class="spinner" aria-hidden="true"></div>
+      </div>
+    </div>
+  </theme-dialog>
+{%- endif -%}

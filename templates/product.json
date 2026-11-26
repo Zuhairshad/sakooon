@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "badge": { "type": "badge", "settings": {} },
+        "title": { "type": "title", "settings": { "show_vendor": false } },
+        "picker": { "type": "variant_picker", "settings": { "other_style": "select" } },
+        "buy": { "type": "buy_buttons", "settings": { "price_in_button": true, "show_quantity": false, "show_dynamic_checkout": false, "low_stock_threshold": 5 } },
+        "includes": { "type": "whats_included", "settings": {} },
+        "size_guide": { "type": "size_guide", "settings": { "label": "" } },
+        "acc_description": { "type": "accordion", "settings": { "source": "description", "heading": "", "subtitle": "", "open": false } },
+        "acc_dimensions": { "type": "accordion", "settings": { "source": "dimensions", "heading": "", "subtitle": "" } },
+        "acc_composition": { "type": "accordion", "settings": { "source": "composition", "heading": "", "subtitle": "" } },
+        "acc_feel": { "type": "accordion", "settings": { "source": "feel", "heading": "", "subtitle": "" } },
+        "acc_specs": { "type": "accordion", "settings": { "source": "specifications", "heading": "", "subtitle": "" } },
+        "acc_included": { "type": "accordion", "settings": { "source": "whats_included", "heading": "", "subtitle": "" } },
+        "acc_care": { "type": "accordion", "settings": { "source": "care", "heading": "", "subtitle": "" } },
+        "acc_shipping": { "type": "accordion", "settings": { "source": "shipping_returns", "heading": "", "subtitle": "" } },
+        "pairing": { "type": "pairing", "settings": { "heading": "Pairs well with" } }
+      },
+      "block_order": ["badge", "title", "picker", "buy", "includes", "size_guide", "acc_description", "acc_dimensions", "acc_composition", "acc_feel", "acc_specs", "acc_included", "acc_care", "acc_shipping", "pairing"],
+      "settings": { "gallery_layout": "carousel", "media_by_colour": true, "enable_sticky_bar": true }
+    },
+    "complementary": { "type": "complementary-products", "settings": { "heading": "Complete the bed", "limit": 4 } },
+    "related": { "type": "product-recommendations", "settings": { "heading": "You may also like", "intent": "related", "limit": 8 } }
+  },
+  "order": ["main", "complementary", "related"]
+}
