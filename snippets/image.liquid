@@ -48,7 +48,7 @@
     assign srcset = ''
     for w in widths_arr
       assign wn = w | strip | plus: 0
-      if wn <= max_w
+      if wn < max_w
         if crop_ratio > 0
           assign hn = wn | times: crop_ratio | round
           assign src_w = img | image_url: width: wn, height: hn, crop: crop
