@@ -19,7 +19,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] Footer (shad-2d) 0c1ca23, merged to integration
 - [~] Homepage sections + index.json (shad-2d)
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
-- [~] Collection template + facets + sort + mobile filter drawer (shad-d8, milestone c; verifying on preview)
+- [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
 - [~] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8, milestone d)
 - [x] Cart drawer + search drawer (shad-d8) 06b8930 c3e93ee, merged to integration
 - [ ] Search drawer + results (shad-d8)
