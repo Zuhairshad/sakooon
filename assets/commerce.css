@@ -450,3 +450,6 @@ predictive-search.is-loading .search-drawer__body { opacity: .6; }
 .product-accordion__rte table { width: 100%; }
 .product-accordion__rte td:first-child { padding-left: 0; }
 .product-accordion__rte td:last-child { padding-right: 0; }
+/* Accordion blocks read as one list: empty sources take no space, and consecutive blocks cancel the buybox gap. */
+.main-product__accordion:not(:has(> *)) { display: none; }
+.main-product__accordion ~ .main-product__accordion { margin-top: calc(-1 * var(--buybox-gap, var(--space-4))); }

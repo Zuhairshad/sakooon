@@ -134,19 +134,20 @@
 
     {%- when 'care' -%}
       {%- assign default_heading = 'products.product.care' | t -%}
-      {%- comment -%} A "Care" heading in the description is already its own row (description_sections); keep only the guide link here. {%- endcomment -%}
+      {%- comment -%} A "Care" heading in the description is already its own row (description_sections): this row then stays empty. {%- endcomment -%}
       {%- assign description_care = false -%}
       {%- if product.description contains '>Care</h3>' or product.description contains '>Care</h2>' -%}{%- assign description_care = true -%}{%- endif -%}
-      {%- if mf.care_instructions != blank -%}
-        <div class="rte">{{ mf.care_instructions | metafield_tag }}</div>
-      {%- elsif description_care -%}
-      {%- elsif fabric.care != blank -%}
-        <div class="rte">{{ fabric.care | metafield_tag }}</div>
-      {%- endif -%}
-      {%- if mf.drying_instructions != blank -%}<div class="rte">{{ mf.drying_instructions | metafield_tag }}</div>{%- endif -%}
-      {%- if fabric.care_symbols.value != blank -%}{%- render 'care-icons', symbols: fabric.care_symbols.value, show_labels: true -%}{%- endif -%}
-      {%- assign care_page = mf.care_guide.value | default: fabric.care_guide.value -%}
-      {%- if care_page != blank -%}<a class="link product-accordion__link" href="{{ care_page.url }}">{{ 'products.product.care_guide' | t }}</a>{%- endif -%}
+      {%- unless description_care -%}
+        {%- if mf.care_instructions != blank -%}
+          <div class="rte">{{ mf.care_instructions | metafield_tag }}</div>
+        {%- elsif fabric.care != blank -%}
+          <div class="rte">{{ fabric.care | metafield_tag }}</div>
+        {%- endif -%}
+        {%- if mf.drying_instructions != blank -%}<div class="rte">{{ mf.drying_instructions | metafield_tag }}</div>{%- endif -%}
+        {%- if fabric.care_symbols.value != blank -%}{%- render 'care-icons', symbols: fabric.care_symbols.value, show_labels: true -%}{%- endif -%}
+        {%- assign care_page = mf.care_guide.value | default: fabric.care_guide.value -%}
+        {%- if care_page != blank -%}<a class="link product-accordion__link" href="{{ care_page.url }}">{{ 'products.product.care_guide' | t }}</a>{%- endif -%}
+      {%- endunless -%}
 
     {%- when 'shipping_returns' -%}
       {%- assign default_heading = 'products.product.shipping_returns' | t -%}
