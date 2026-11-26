@@ -64,3 +64,6 @@ Lighthouse mobile on the preview: / 76-78, PDP 75, FAQ 84 (a11y/BP/SEO 100/100/1
 
 ## 2026-11-26 Phase 2 integration check (head 028abe0, clean run)
 14 templates x 7 viewports: test-responsive 98/98. test-a11y default set (15 pages x 2 viewports, drawers open): 30/30 PASS, 0 violations. Theme Check clean. Later merges (storefront 95f8bb1, editorial b5faf86, commerce M4 1d31ba9, D19 leftovers) each passed Theme Check; final suite re-run after commerce M5.
+
+## 2026-11-26 Phase 2 closing run (head 37de3d7)
+Interactions 9/9, responsive 112/112 (16 templates x 7 viewports), axe 30/30 with 0 violations, Theme Check clean. Lighthouse mobile: home 79, bed-sheets 79, PDP 82/87, fabric guide 85, about 90, FAQ 94, journal 92; a11y/BP/SEO 100 everywhere.

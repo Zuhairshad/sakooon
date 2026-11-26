@@ -1,4 +1,4 @@
-# Phase 2 report: Sakooon identity (draft, auto mode)
+# Phase 2 report: Sakooon identity (auto mode, pending user review)
 
 Status date: 2026-11-26. Deliverable branch: `sakooon/integration` (head in git log). Nothing has been uploaded to the Shopify store; the live theme is untouched.
 Phase 2 ran autonomously while the user was away; every decision that needs the user is listed in §7 and in `docs/reference/phase2-inputs.md` §"Still needed".
@@ -20,20 +20,32 @@ D17 palette from the logo; D18 live sakooon.com copy is not a fact source; D19 p
 ## 3. Facts policy, applied
 Only `docs/reference/phase2-inputs.md` §Verified feeds the storefront: the five products' own titles, descriptions, options, prices and images, the five live collections, the logo, and the brand email (flagged). Everything else renders conditionally and is empty today: phone, WhatsApp, address, social links, policies, certifications, thread counts, ratings, customer counts.
 
-## 4. Quality gates on the integrated head
-(filled in from the final run; see docs/visual-qa-log.md for every intermediate check)
+## 4. Quality gates on the integrated head (37de3d7, closing run)
 - Theme Check: 135 files, no offenses.
-- test-interactions: 9/9.
-- test-responsive: see log.
-- test-a11y (axe, WCAG 2.1 AA + best practice, drawers open): see log.
-- Lighthouse mobile (preview; a11y/BP/SEO 100 everywhere): home 76–87 across runs, PDP 75, fabric guide 78–85, care 85, size 90, FAQ 84–93, about 86, contact 95, journal 88, article 90. The preview is a floor: fonts come from a Google CSS request here but from Shopify's CDN on the store, and assets are unminified here. LCP render delay (not image bytes) is the remaining cost; next lever is inlining critical CSS, to be judged on the development theme.
+- test-interactions: 9/9 PASS (mobile nav, sticky header, mega menu, search drawer, cart add + drawer, variant change, facets, accordions, skip link).
+- test-responsive: 112/112 PASS (16 templates x 7 viewports: no horizontal overflow, one visible h1, image alt, 24px targets, no console errors).
+- test-a11y (axe-core WCAG 2.1 AA + best practice, drawers open): 30/30 PASS, 0 violations.
+- Lighthouse mobile on the preview (a11y / best practices / SEO = 100 on every page):
+
+| Page | Perf | LCP |
+| --- | --- | --- |
+| Home | 79 | 4.9 s |
+| Collection bed-sheets | 79 | 5.1 s |
+| PDP quilted set | 82 | 4.1 s |
+| PDP pillow (sold out) | 87 | 3.7 s |
+| Fabric guide | 85 | 4.0 s |
+| About | 90 | 3.4 s |
+| FAQ | 94 | 2.8 s |
+| Journal | 92 | 3.1 s |
+
+The preview is a floor: fonts come from a Google CSS request here but from Shopify's CDN on the store, assets are unminified and uncompressed here, and all four sessions shared the CPU during the run. Image bytes are no longer the LCP cost (deferred drawer/menu images, cropped banners, resized packshots); render delay from the blocking CSS chain is. Next lever, to be judged on the development theme: inline the critical base/header CSS.
 
 ## 5. Screenshots
 /Users/shad/sakooon-qa/theme/p2-{home,product,soldout,collection,about,fabric,faq,journal}/{1440,390}-full.png; storefront's own set under /Users/shad/sakooon-qa/theme/phase2/.
 
-## 6. Open work (in flight at the time of writing)
-- shad-d8 M4: price format sweep (D19), long titles in cart/search, deferred search-drawer idle images. M5: swatches (option swatch -> sakooon.swatch_color -> variant image -> text).
-- Lead: final QA run, this report's numbers, Phase 2 handoff notes.
+## 6. Open work
+- Homepage lower half redesign requested by the user on return (Why Sakooon as photo + text block, Sukoon statement block in deep green, newsletter band and service strip removed, 1440px text width cap at 1920): shad-2d, in progress.
+- Everything else in Phase 2 scope is delivered; workers idle pending the user's answers in §7.
 
 ## 7. Needs the user (nothing proceeds on guesses)
 1. Palette sign-off, or hex values of your own (D17 is a proposal; `config/settings_data.json` is the only place to change).
