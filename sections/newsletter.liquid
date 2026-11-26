@@ -1,0 +1,57 @@
+{%- comment -%}
+  Newsletter sign-up. Owner: shad-2d. Shopify customer form (tags: newsletter) with success and error states.
+  Layout: centred, or text left / form right on desktop.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign button_label = s.button_label
+  if button_label == blank
+    assign button_label = 'storefront.footer.newsletter_submit' | t
+  endif
+-%}
+<div class="section newsletter newsletter--{{ s.layout }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px">
+  <div class="page-width newsletter__inner">
+    <div class="newsletter__copy">
+      {%- if s.heading != blank -%}<h2 class="newsletter__heading {{ s.heading_size }}">{{ s.heading | escape }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="newsletter__text rte">{{ s.text }}</div>{%- endif -%}
+    </div>
+    <div class="newsletter__form-wrap">
+      {%- form 'customer', id: 'NewsletterForm', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter__field">
+          <label class="visually-hidden" for="Newsletter-email-{{ section.id }}">{{ 'storefront.footer.newsletter_label' | t }}</label>
+          <input id="Newsletter-email-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required
+            placeholder="{{ 'storefront.footer.newsletter_label' | t }}"{% if form.errors %} aria-invalid="true" aria-describedby="Newsletter-error-{{ section.id }}"{% endif %}>
+          <button type="submit" class="button">{{ button_label | escape }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="field__error" id="Newsletter-error-{{ section.id }}">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- elsif form.posted_successfully? -%}
+          <p class="form__message form__message--success" role="status">{{ 'storefront.footer.newsletter_success' | t }}</p>
+        {%- endif -%}
+      {%- endform -%}
+      {%- if s.disclaimer != blank -%}<div class="newsletter__disclaimer rte">{{ s.disclaimer }}</div>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "section-newsletter",
+  "settings": [
+    { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [ { "value": "split", "label": "Text beside the form" }, { "value": "center", "label": "Centred" } ] },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stay in touch" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Sign up for news, new arrivals and offers.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "richtext", "id": "disclaimer", "label": "Small print", "default": "<p>You can unsubscribe at any time.</p>" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "sand" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [ { "name": "Newsletter" } ]
+}
+{% endschema %}

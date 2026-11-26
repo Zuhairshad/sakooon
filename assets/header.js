@@ -4,6 +4,10 @@
    <header-menu>          desktop mega menu (hover intent, click, keyboard)
    <mobile-nav-levels>    level-2 panels inside <theme-drawer id="mobile-nav">
    <announcement-bar>     rotating messages, pause, dismiss
+   Storefront section helpers (this is the storefront area's one deferred script):
+   <scroll-rail>          horizontal rails with prev/next buttons (featured collection, tiles, discovery)
+   <hero-video>           autoplay muted video with a pause control; paused under reduced motion and off screen
+   <hotspot-pin>          shoppable image hotspots (button + popover card)
    Depends on window.theme from global.js (pubsub, trapFocus); every use is guarded.
    ========================================================================= */
 (function () {
@@ -319,4 +323,131 @@
     }
   }
   if (!customElements.get('announcement-bar')) customElements.define('announcement-bar', AnnouncementBar);
+
+  /* ---------- <scroll-rail> ----------
+     <scroll-rail><div data-rail-track>…items…</div><button data-rail-prev><button data-rail-next></scroll-rail>
+     Buttons may live anywhere inside the element (e.g. in the section heading row). They scroll by one page of
+     whole items and are disabled at either end; hidden when everything fits. */
+  class ScrollRail extends HTMLElement {
+    connectedCallback() {
+      this.track = this.querySelector('[data-rail-track]');
+      if (!this.track) return;
+      this.prev = this.querySelector('[data-rail-prev]');
+      this.next = this.querySelector('[data-rail-next]');
+      this._onClick = (e) => {
+        if (e.target.closest('[data-rail-prev]')) this.page(-1);
+        else if (e.target.closest('[data-rail-next]')) this.page(1);
+      };
+      this._update = () => {
+        if (this._raf) return;
+        this._raf = requestAnimationFrame(() => { this._raf = null; this.update(); });
+      };
+      this.addEventListener('click', this._onClick);
+      this.track.addEventListener('scroll', this._update, { passive: true });
+      if ('ResizeObserver' in window) { this._ro = new ResizeObserver(this._update); this._ro.observe(this.track); }
+      this.update();
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('click', this._onClick);
+      if (this.track) this.track.removeEventListener('scroll', this._update);
+      if (this._ro) this._ro.disconnect();
+    }
+
+    page(dir) {
+      const item = this.track.firstElementChild;
+      const gap = parseFloat(getComputedStyle(this.track).columnGap) || 0;
+      const step = item ? item.getBoundingClientRect().width + gap : this.track.clientWidth;
+      const perPage = Math.max(1, Math.floor((this.track.clientWidth + gap) / step));
+      this.track.scrollBy({ left: dir * perPage * step * (document.dir === 'rtl' ? -1 : 1), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    }
+
+    update() {
+      const max = this.track.scrollWidth - this.track.clientWidth;
+      const x = Math.abs(this.track.scrollLeft);
+      const scrollable = max > 2;
+      this.toggleAttribute('data-scrollable', scrollable);
+      if (this.prev) this.prev.disabled = !scrollable || x <= 2;
+      if (this.next) this.next.disabled = !scrollable || x >= max - 2;
+    }
+  }
+  if (!customElements.get('scroll-rail')) customElements.define('scroll-rail', ScrollRail);
+
+  /* ---------- <hero-video> ----------
+     Wraps a muted, looping <video>. Autoplays only without reduced motion, pauses off screen, and exposes a
+     pause/play button ([data-video-toggle]) so moving content can be stopped (WCAG 2.2.2). */
+  class HeroVideo extends HTMLElement {
+    connectedCallback() {
+      this.video = this.querySelector('video');
+      this.toggle = this.querySelector('[data-video-toggle]');
+      if (!this.video) return;
+      this.video.muted = true;
+      this.video.playsInline = true;
+      this.userPaused = reducedMotion.matches;
+      this._onToggle = () => { this.userPaused = !this.video.paused; this.sync(); };
+      if (this.toggle) this.toggle.addEventListener('click', this._onToggle);
+      this._onPlayState = () => this.render();
+      this.video.addEventListener('play', this._onPlayState);
+      this.video.addEventListener('pause', this._onPlayState);
+      if ('IntersectionObserver' in window) {
+        this._io = new IntersectionObserver(([entry]) => { this.visible = entry.isIntersecting; this.sync(); }, { threshold: 0.1 });
+        this._io.observe(this);
+      } else { this.visible = true; }
+      this.sync();
+    }
+
+    disconnectedCallback() {
+      if (this.toggle) this.toggle.removeEventListener('click', this._onToggle);
+      if (this.video) { this.video.removeEventListener('play', this._onPlayState); this.video.removeEventListener('pause', this._onPlayState); }
+      if (this._io) this._io.disconnect();
+    }
+
+    sync() {
+      if (!this.userPaused && this.visible !== false) { const p = this.video.play(); if (p && p.catch) p.catch(() => this.render()); }
+      else this.video.pause();
+      this.render();
+    }
+
+    render() {
+      if (!this.toggle) return;
+      const playing = !this.video.paused;
+      this.toggle.setAttribute('aria-pressed', String(!playing));
+      this.toggle.setAttribute('aria-label', playing ? this.toggle.dataset.labelPause : this.toggle.dataset.labelPlay);
+      this.toggle.querySelectorAll('[data-icon]').forEach((i) => { i.hidden = i.dataset.icon !== (playing ? 'pause' : 'play'); });
+    }
+  }
+  if (!customElements.get('hero-video')) customElements.define('hero-video', HeroVideo);
+
+  /* ---------- <hotspot-pin> ----------
+     <hotspot-pin><button aria-expanded aria-controls="id">…</button><div id="id" class="hotspot__card">…</div></hotspot-pin>
+     One open at a time; closes on Escape (focus back to the pin) and on outside click. */
+  class HotspotPin extends HTMLElement {
+    connectedCallback() {
+      this.button = this.querySelector('[aria-controls]');
+      this.card = this.button && document.getElementById(this.button.getAttribute('aria-controls'));
+      if (!this.button || !this.card) return;
+      this._onClick = (e) => { e.stopPropagation(); this.set(this.button.getAttribute('aria-expanded') !== 'true'); };
+      this._onKey = (e) => { if (e.key === 'Escape' && this.open) { this.set(false); this.button.focus(); } };
+      this._onDoc = (e) => { if (this.open && !this.contains(e.target)) this.set(false); };
+      this.button.addEventListener('click', this._onClick);
+      document.addEventListener('keydown', this._onKey);
+      document.addEventListener('click', this._onDoc);
+    }
+
+    disconnectedCallback() {
+      if (this.button) this.button.removeEventListener('click', this._onClick);
+      document.removeEventListener('keydown', this._onKey);
+      document.removeEventListener('click', this._onDoc);
+    }
+
+    get open() { return this.button.getAttribute('aria-expanded') === 'true'; }
+
+    set(open) {
+      if (open) this.closest('.shopify-section')?.querySelectorAll('hotspot-pin').forEach((p) => { if (p !== this && p.open) p.set(false); });
+      this.button.setAttribute('aria-expanded', String(open));
+      this.card.hidden = !open;
+      this.toggleAttribute('data-open', open);
+    }
+  }
+  if (!customElements.get('hotspot-pin')) customElements.define('hotspot-pin', HotspotPin);
 })();

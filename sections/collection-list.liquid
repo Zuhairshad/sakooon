@@ -1,0 +1,78 @@
+{%- comment -%}
+  Collection list / shop by category. Owner: shad-2d. Pattern: Parachute category grid (4 equal tiles, 8px gap,
+  ~0.72 ratio, label as a light chip bottom-left; hidden below 768 there, a setting here) or labels below (Tekla).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.image_ratio
+    when 'portrait'
+      assign aspect = '3/4'
+    when 'tall'
+      assign aspect = '4/5'
+    when 'square'
+      assign aspect = '1/1'
+    else
+      assign aspect = '3/4'
+  endcase
+  assign col_vw = 100 | divided_by: s.columns_desktop
+  assign sizes = '(min-width: 1024px) ' | append: col_vw | append: 'vw, (min-width: 768px) 33vw, 60vw'
+-%}
+<div class="section collection-list collection-list--{{ s.label_style }} collection-list--mobile-{{ s.mobile_layout }} color-scheme-{{ s.color_scheme }}"
+  style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --tile-columns: {{ s.columns_desktop }}; --tile-gap: 8px;">
+  <div class="page-width page-width--full">
+    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, link_label: s.link_label, link_url: routes.collections_url -%}
+    <ul class="collection-list__grid list-unstyled{% if s.mobile_layout == 'scroll' %} no-scrollbar{% endif %}" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign collection = block.settings.collection
+          assign image = block.settings.image | default: collection.featured_image | default: collection.image
+          assign label = block.settings.label | default: collection.title
+          if label == blank
+            assign label = 'onboarding.collection_title' | t
+          endif
+        -%}
+        <li class="collection-list__item" {{ block.shopify_attributes }}>
+          <a class="collection-list__link" href="{{ collection.url | default: routes.collections_url }}">
+            <div class="media collection-list__media" style="--aspect: {{ aspect }}">
+              {%- render 'image', image: image, sizes: sizes, aspect: aspect, placeholder: 'collection-1', class: 'collection-list__img' -%}
+            </div>
+            <span class="collection-list__label">{{ label | escape }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "tag": "section",
+  "class": "section-collection-list",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "text", "id": "link_label", "label": "Link to all collections label" },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "select", "id": "image_ratio", "label": "Image shape", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait 3:4" }, { "value": "tall", "label": "Portrait 4:5" }, { "value": "square", "label": "Square" } ] },
+    { "type": "select", "id": "label_style", "label": "Label", "default": "chip", "options": [ { "value": "chip", "label": "Button over the image" }, { "value": "below", "label": "Text below the image" } ] },
+    { "type": "select", "id": "mobile_layout", "label": "Mobile layout", "default": "scroll", "options": [ { "value": "grid", "label": "Two columns" }, { "value": "scroll", "label": "Swipe" }, { "value": "hide", "label": "Hide on mobile" } ] },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "white" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "category", "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the collection image." },
+        { "type": "text", "id": "label", "label": "Label", "info": "Defaults to the collection title." }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Shop by category", "blocks": [ { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" } ] } ]
+}
+{% endschema %}

@@ -1,0 +1,62 @@
+{%- comment -%}
+  Service info strip (delivery, returns, care, support). Owner: shad-2d.
+  3–4 columns of icon + heading + text + optional link, with hairline dividers; stacks to 2 columns, then 1.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<div class="section service-info{% if s.dividers %} service-info--dividers{% endif %} service-info--{{ s.align }} color-scheme-{{ s.color_scheme }}" style="--section-pt: {{ s.padding_top }}px; --section-pb: {{ s.padding_bottom }}px; --service-columns: {{ s.columns }};">
+  <div class="page-width page-width--full">
+    {%- render 'section-heading', heading: s.heading, heading_size: s.heading_size, align: s.align -%}
+    <ul class="service-info__list list-unstyled" role="list">
+      {%- for block in section.blocks -%}
+        <li class="service-info__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != 'none' -%}<span class="service-info__icon">{% render 'icon', icon: block.settings.icon, size: 24 %}</span>{%- endif -%}
+          {%- if block.settings.heading != blank -%}<h3 class="service-info__heading">{{ block.settings.heading | escape }}</h3>{%- endif -%}
+          {%- if block.settings.text != blank -%}<div class="service-info__text rte">{{ block.settings.text }}</div>{%- endif -%}
+          {%- if block.settings.link_label != blank and block.settings.link != blank -%}
+            <a class="service-info__link link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Service info",
+  "tag": "section",
+  "class": "section-service-info",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "select", "id": "heading_size", "label": "t:sections.all.heading_size.label", "default": "h3", "options": [ { "value": "h2", "label": "t:sections.all.heading_size.options.h2" }, { "value": "h3", "label": "t:sections.all.heading_size.options.h3" } ] },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "select", "id": "align", "label": "Alignment", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "checkbox", "id": "dividers", "label": "Show dividers", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "paper" },
+    { "type": "header", "content": "t:sections.all.padding.header" },
+    { "type": "range", "id": "padding_top", "label": "t:sections.all.padding.padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.padding.padding_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "item", "name": "Item",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "none", "label": "None" }, { "value": "truck", "label": "Delivery" }, { "value": "refresh", "label": "Returns" }, { "value": "shield", "label": "Guarantee" },
+            { "value": "leaf", "label": "Natural" }, { "value": "drop", "label": "Care" }, { "value": "wash", "label": "Washing" }, { "value": "mail", "label": "Email" },
+            { "value": "phone", "label": "Phone" }, { "value": "map-pin", "label": "Store" }, { "value": "star", "label": "Reviews" }, { "value": "heart", "label": "Favourite" }
+          ]
+        },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Service point" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Short supporting detail.</p>" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Service info", "blocks": [ { "type": "item", "settings": { "icon": "truck", "heading": "Delivery" } }, { "type": "item", "settings": { "icon": "refresh", "heading": "Returns" } }, { "type": "item", "settings": { "icon": "drop", "heading": "Care" } }, { "type": "item", "settings": { "icon": "mail", "heading": "Support" } } ] } ]
+}
+{% endschema %}

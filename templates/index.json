@@ -1,6 +1,124 @@
 {
   "sections": {
-    "placeholder": { "type": "custom-liquid", "settings": { "custom_liquid": "<p class=\"eyebrow\">Foundation stub</p><h1 class=\"h1\">Homepage is owned by shad-2d (storefront)</h1><p class=\"text-muted\">This template is replaced by the storefront branch.</p>", "color_scheme": "paper", "padding_top": 96, "padding_bottom": 96 } }
+    "hero": {
+      "type": "hero-full",
+      "blocks": {
+        "heading": { "type": "heading", "settings": { "heading": "Headline for the season", "size": "h0", "tag": "h1" } },
+        "text": { "type": "text", "settings": { "text": "<p>A short line that sets up the campaign.</p>" } },
+        "buttons": { "type": "buttons", "settings": { "label_1": "Shop now", "link_1": "/collections/all", "style_1": "primary", "label_2": "", "link_2": "", "style_2": "secondary" } }
+      },
+      "block_order": ["heading", "text", "buttons"],
+      "settings": { "height": "screen", "content_position": "bottom-left", "content_width": 640, "text_color": "light", "overlay_opacity": 15, "allow_header_overlay": true, "color_scheme": "sand" }
+    },
+    "promo-band": {
+      "type": "rich-text",
+      "settings": {
+        "layout": "split", "width": "narrow", "eyebrow": "", "heading": "A short promotional message", "heading_size": "h3",
+        "text": "<p>Supporting detail for the offer or announcement, kept to one or two lines.</p>",
+        "button_label": "", "button_link": "", "button_style": "tertiary", "color_scheme": "ink", "padding_top": 48, "padding_bottom": 56
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "bed-sheets", "eyebrow": "", "heading": "Featured collection", "heading_size": "h3", "text": "", "link_label": "Shop the collection",
+        "products_to_show": 8, "layout": "carousel", "card_width": 256, "columns_desktop": 4, "image_ratio": "portrait",
+        "view_all_label": "View all", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
+      }
+    },
+    "campaign-tiles": {
+      "type": "editorial-grid",
+      "blocks": {
+        "tile-1": { "type": "tile", "settings": { "heading": "Campaign headline", "text": "", "button_label": "Shop now", "link": "/collections/all" } },
+        "tile-2": { "type": "tile", "settings": { "heading": "Second campaign", "text": "", "button_label": "Discover", "link": "/collections/all" } }
+      },
+      "block_order": ["tile-1", "tile-2"],
+      "settings": {
+        "heading": "", "heading_size": "h3", "columns": 2, "gap": "8", "full_bleed": false, "image_ratio": "portrait", "caption_position": "overlay",
+        "text_color": "light", "tile_heading_size": "h2", "mobile_layout": "stack", "color_scheme": "white", "padding_top": 64, "padding_bottom": 64
+      }
+    },
+    "bestsellers": {
+      "type": "product-highlights",
+      "blocks": {
+        "tab-all": { "type": "tab", "settings": { "label": "All", "collection": "bed-sheets" } },
+        "tab-bedding": { "type": "tab", "settings": { "label": "Bedding", "collection": "duvet-covers" } },
+        "tab-duvets": { "type": "tab", "settings": { "label": "Duvets", "collection": "duvets" } },
+        "tab-pillows": { "type": "tab", "settings": { "label": "Pillows", "collection": "pillows" } }
+      },
+      "block_order": ["tab-all", "tab-bedding", "tab-duvets", "tab-pillows"],
+      "settings": {
+        "eyebrow": "", "heading": "Bestsellers", "heading_size": "h3", "products_to_show": 8, "card_width": 256, "image_ratio": "portrait",
+        "view_all_label": "Shop all bestsellers", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
+      }
+    },
+    "lifestyle": {
+      "type": "image-banner",
+      "blocks": {
+        "hotspot-1": { "type": "hotspot", "settings": { "product": "duvet-comfort-filling-220-gsm", "x": 24, "y": 78, "label": "" } }
+      },
+      "block_order": ["hotspot-1"],
+      "settings": {
+        "desktop_ratio": "0.75", "mobile_ratio": "0.56", "inset": true, "heading": "Display\nheadline", "heading_size": "h0", "text": "",
+        "link_label": "Discover", "link": "/collections/all", "link_style": "primary", "content_position": "top-left", "text_color": "light",
+        "overlay_opacity": 10, "color_scheme": "white", "padding_top": 0, "padding_bottom": 64
+      }
+    },
+    "banner": {
+      "type": "image-banner",
+      "settings": {
+        "desktop_ratio": "1.84", "mobile_ratio": "1.78", "inset": true, "heading": "Campaign headline", "heading_size": "h3", "text": "",
+        "link_label": "Shop now", "link": "/collections/all", "link_style": "tertiary", "content_position": "bottom-left", "text_color": "light",
+        "overlay_opacity": 15, "color_scheme": "white", "padding_top": 0, "padding_bottom": 64
+      }
+    },
+    "new-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "duvet-covers", "eyebrow": "", "heading": "New arrivals", "heading_size": "h3", "text": "", "link_label": "",
+        "products_to_show": 8, "layout": "carousel", "card_width": 256, "columns_desktop": 4, "image_ratio": "portrait",
+        "view_all_label": "Shop new arrivals", "view_all_style": "primary", "color_scheme": "white", "padding_top": 64, "padding_bottom": 88
+      }
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "category-1": { "type": "category", "settings": { "collection": "bed-sheets", "label": "" } },
+        "category-2": { "type": "category", "settings": { "collection": "duvet-covers", "label": "" } },
+        "category-3": { "type": "category", "settings": { "collection": "duvets", "label": "" } },
+        "category-4": { "type": "category", "settings": { "collection": "pillows", "label": "" } }
+      },
+      "block_order": ["category-1", "category-2", "category-3", "category-4"],
+      "settings": { "heading": "", "heading_size": "h3", "link_label": "", "columns_desktop": 4, "image_ratio": "portrait", "label_style": "chip", "mobile_layout": "scroll", "color_scheme": "white", "padding_top": 64, "padding_bottom": 64 }
+    },
+    "discovery": {
+      "type": "fabric-discovery",
+      "blocks": {
+        "shade-1": { "type": "shade", "settings": { "name": "White", "color": "#F6F4F0", "link": "/collections/all" } },
+        "shade-2": { "type": "shade", "settings": { "name": "Sand", "color": "#D9CDBB", "link": "/collections/all" } },
+        "shade-3": { "type": "shade", "settings": { "name": "Stone", "color": "#B9B4AC", "link": "/collections/all" } },
+        "shade-4": { "type": "shade", "settings": { "name": "Sage", "color": "#A7B09A", "link": "/collections/all" } },
+        "shade-5": { "type": "shade", "settings": { "name": "Clay", "color": "#B98A6E", "link": "/collections/all" } },
+        "shade-6": { "type": "shade", "settings": { "name": "Slate", "color": "#5E6670", "link": "/collections/all" } },
+        "shade-7": { "type": "shade", "settings": { "name": "Ink", "color": "#2E3440", "link": "/collections/all" } }
+      },
+      "block_order": ["shade-1", "shade-2", "shade-3", "shade-4", "shade-5", "shade-6", "shade-7"],
+      "settings": {
+        "heading": "A considered palette", "heading_size": "h3", "text": "<p>Introduce your colours or fabrics and how they work together.</p>",
+        "swatch_label": "Discover by shade", "card_width": 344, "color_scheme": "white", "padding_top": 160, "padding_bottom": 104
+      }
+    },
+    "service": {
+      "type": "service-info",
+      "blocks": {
+        "item-1": { "type": "item", "settings": { "icon": "truck", "heading": "Delivery", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
+        "item-2": { "type": "item", "settings": { "icon": "refresh", "heading": "Returns", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
+        "item-3": { "type": "item", "settings": { "icon": "drop", "heading": "Care", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } },
+        "item-4": { "type": "item", "settings": { "icon": "mail", "heading": "Support", "text": "<p>Short supporting detail.</p>", "link_label": "", "link": "" } }
+      },
+      "block_order": ["item-1", "item-2", "item-3", "item-4"],
+      "settings": { "heading": "", "heading_size": "h3", "columns": 4, "align": "left", "dividers": true, "color_scheme": "paper", "padding_top": 48, "padding_bottom": 48 }
+    }
   },
-  "order": ["placeholder"]
+  "order": ["hero", "promo-band", "featured", "campaign-tiles", "bestsellers", "lifestyle", "banner", "new-arrivals", "categories", "discovery", "service"]
 }
