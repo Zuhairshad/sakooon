@@ -47,8 +47,10 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [ ] Shopify CLI login and development-theme verification pass (checklists in docs/reference/*-admin.md)
 
 ## Phase 2: Sakooon identity (starts after session compaction)
-- [ ] Phase 2 brief + inputs inventory (Fable): logo (Downloads/SAKOOON logo.png), live catalogue (juj1hc-qf), existing photography (/Users/shad/sakooon/public/images), live-site copy, Nocturne palette as a starting point
-- [ ] Brand palette + colour schemes, logo/favicon, fonts (Fable)
+- [x] Phase 2 brief + inputs inventory (Fable): docs/phase2-brief.md, docs/reference/phase2-inputs.md, D17/D18 (2f06acf)
+- [x] Brand palette + colour schemes (paper/white/sand/sage/ink from logo green #204830), logo artwork + favicon + brand-logo snippet, fonts unchanged (Fable, fd7bada)
+- [x] SEO foundations: og:image fallback to the stacked logo, Organization contactPoint (Fable)
+- [ ] Workers briefed 2026-11-26 (shad-2d storefront, shad-d8 commerce, shad-8b editorial); awaiting first milestones
 - [ ] Real catalogue data in the preview snapshot; product content + metafields plan (shad-d8)
 - [ ] Homepage with real photography and campaign copy (shad-2d)
 - [ ] Fabric metaobjects, care/size/FAQ/shipping/returns copy from verified Sakooon information (shad-8b)
