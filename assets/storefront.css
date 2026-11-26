@@ -500,3 +500,42 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav__level, .mega-menu { transition: none !important; }
 }
+
+/* ---------- Width discipline (wide screens) ----------
+   Text-only sections keep their content within 1440px, centred in the page, so copy never spreads across a 1920px
+   viewport. Media sections (hero, rails, grids, banners) stay full width. */
+.section-rich-text .page-width, .section-brand-values .page-width, .section-service-info .page-width, .section-newsletter .page-width {
+  max-width: calc(1440px + 2 * var(--page-gutter));
+}
+
+/* ---------- Rich text: statement layout (7/5 with the calligraphy mark) ---------- */
+.rich-text__statement { display: grid; gap: var(--space-6); align-items: center; }
+.rich-text__statement-copy > * + * { margin-top: var(--space-4); }
+.rich-text__statement-copy .rich-text__button { margin-top: var(--space-8); }
+.rich-text__statement .rich-text__text { max-width: 40ch; opacity: .85; }
+.rich-text__mark { order: -1; line-height: 0; }
+.rich-text__mark-img { width: 120px; height: auto; opacity: .9; }
+@media (min-width: 1024px) {
+  .rich-text__statement { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); }
+  .rich-text__statement-copy { grid-column: 1 / span 7; }
+  .rich-text__mark { order: 0; grid-column: 8 / span 5; justify-self: end; }
+  .rich-text__mark-img { width: 240px; }
+}
+
+/* ---------- Brand values: editorial split (photograph + rows with hairlines) ---------- */
+.brand-values__split { display: grid; gap: var(--space-10); align-items: center; }
+.brand-values__content { max-width: 48ch; }
+.brand-values__content .brand-values__lead { margin-top: var(--space-4); color: var(--color-foreground-muted); }
+.brand-values__rows { margin-top: var(--space-8); border-top: var(--border-width) solid var(--color-border); }
+.brand-values__row { display: grid; justify-items: start; gap: var(--space-2); padding-block: var(--space-5); border-bottom: var(--border-width) solid var(--color-border); }
+.brand-values__row-title { margin: 0; }
+.brand-values__link { font-size: var(--text-sm); margin-top: var(--space-1); }
+.brand-values__item .brand-values__link { justify-self: start; }
+@media (min-width: 1024px) {
+  .brand-values__split { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-16); }
+  .brand-values--media-right .brand-values__feature { order: 2; }
+  .brand-values--media-right .brand-values__content { justify-self: end; }
+}
+@media (max-width: 767px) {
+  .rich-text--statement.section, .brand-values--editorial.section { padding-top: calc(var(--section-pt) * .6); padding-bottom: calc(var(--section-pb) * .6); }
+}
