@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const SP = '/private/tmp/claude-501/-Users-shad/a350c532-bb9b-4e1a-bc19-ce54530650a2/scratchpad';
+const w = +(process.argv[2]||1440);
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: w, height: 900 } })).newPage();
+await p.goto('https://parachutehome.com/collections/sheet-sets', { waitUntil: 'domcontentloaded', timeout: 60000 });
+await p.waitForTimeout(7000);
+const vis = () => p.evaluate(() => [...document.querySelectorAll('dialog,[role=dialog],cv-drawer *,.cv-drawer__panel,[class*=drawer]')].filter(e => { const r=e.getBoundingClientRect(); const s=getComputedStyle(e); return r.width>150 && r.height>200 && s.visibility!=='hidden' && s.display!=='none' && r.x < innerWidth && r.right>0; }).slice(0,8).map(e => `${e.tagName}.${(e.className+'').replace(/\s+/g,' ').slice(0,70)} [${Math.round(e.getBoundingClientRect().x)},${Math.round(e.getBoundingClientRect().y)} ${Math.round(e.getBoundingClientRect().width)}x${Math.round(e.getBoundingClientRect().height)}] pos=${getComputedStyle(e).position} tr=${getComputedStyle(e).transition.slice(0,80)}`));
+await p.click('.cv-collection-filters .cv-drawer__button');
+await p.waitForTimeout(1200);
+console.log('FILTER', await vis());
+await p.screenshot({ path: `${SP}/filter-${w}.png` });
+const dlg = await p.evaluate(() => { const d=[...document.querySelectorAll('dialog[open],[open]')].map(e=>e.tagName+'.'+e.className); return d; });
+console.log('open els', dlg);
+const txt = await p.evaluate(() => { const d=document.querySelector('.cv-collection-filters dialog, .cv-collection-filters [class*=panel]'); return d ? d.innerText.slice(0,1500) : 'none'; });
+console.log(txt);
+await b.close();
