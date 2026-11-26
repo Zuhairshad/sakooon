@@ -17,7 +17,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
 - [x] Header, announcement, mega menu, mobile nav, sticky (shad-2d) 073f94c, merged to integration
 - [x] Footer (shad-2d) 0c1ca23, merged to integration
-- [~] Homepage sections + index.json (shad-2d)
+- [x] Homepage sections + index.json (shad-2d) 087ac7e, merged to integration; presets hero-split/image-with-text/comparison/room/brand-values in progress
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
 - [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
 - [~] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8, milestone d)
@@ -25,9 +25,9 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [ ] Search drawer + results (shad-d8)
 - [x] Editorial section library + page templates (shad-8b) 2519044, merged to integration
 - [x] Fabric metaobject template + fabric guide + compare (shad-8b) 993bc36, merged to integration
-- [~] Care guides (shad-8b, milestone d)
-- [ ] Brand pages, journal (shad-8b)
-- [ ] Size guide, measurement guide, FAQ, shipping, returns, contact (shad-8b)
+- [x] Care guides (shad-8b) fa01a08, merged to integration
+- [~] Brand pages done (about via editorial library); journal (shad-8b, milestone e)
+- [~] Size guide, measurement guide (shad-8b, milestone e); FAQ, shipping, returns, contact done in 2519044
 - [~] Integration merges + theme check (Fable, continuous): e515562 commerce+editorial, header merged; 0 errors
 - [ ] Visual comparison passes per template (Fable + owner)
 - [ ] Functional tests, a11y, Lighthouse (Fable)
