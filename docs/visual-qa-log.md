@@ -46,3 +46,6 @@ Format: date | template/state | viewport | observation | action | status.
 - parachute/product vs product | 1440 48% / 390 46% | reference 5378px includes a long editorial story, "Complete your set", reviews banner, materials and recently-viewed blocks below the fold; ours ends after two rails (2793px). The above-the-fold split, buy box and rails match. Below-fold editorial sections exist as presets (image-with-text, comparison-highlights, featured-collection) and can be added to product.json in Phase 2 content work. | Phase 2 | OK (documented)
 - tekla/size-guide vs size-guide | 1440 0.9% | reference 1033px shows only the index (tables open in a panel); ours 3536px shows the index plus inline tables. Index geometry matches (0.9% mismatch above the fold). | documented earlier | OK
 - tekla/stories vs journal | 1440 38% | page heights pass; 3-up grid and caption rhythm match, imagery differs. | none | OK
+
+## 2026-11-26 Mobile menu sheet (integration after storefront 2cd7e67)
+- home / mobile nav | 390 | Bottom sheet rising under the visible header, 61px rows with chevrons, Account row at the end; matches the measured Parachute sheet (582px, 61px rows). Earlier left-drawer note closed. | none | OK

@@ -29,7 +29,7 @@ Worker suites: commerce cart 34/34, search 28/28, collection 58/58, product 50/5
 
 ## 7. Performance
 scripts/lighthouse.mjs against the LiquidJS preview (indicative: the preview serves unresized images and imports Google Fonts; Shopify's CDN resizes srcset widths and fonts come from Shopify):
-see /Users/shad/sakooon-qa/lighthouse/summary.md. Trial PDP mobile: performance 71, accessibility 100, best practices 96, SEO 100; LCP driven by the unresized hero image in the preview.
+/Users/shad/sakooon-qa/lighthouse/summary.md. With the preview resizing images like the CDN (sharp): mobile home 89/100/100/100, collection 88/98/100/100 (a11y: heading-order, assigned), product 83/100/100/100; desktop performance 94-99 across templates. Remaining mobile gap is render-blocking CSS (four theme stylesheets) and the preview's Google Fonts import.
 
 ## 8. Implemented sections and templates
 (filled from `ls sections templates` at hand-off)

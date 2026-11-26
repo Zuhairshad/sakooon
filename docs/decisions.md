@@ -73,3 +73,8 @@ Defaults: page gutter 24 desktop / 16 mobile, grid gap 16 desktop / 8 mobile, se
 Parachute: nav left, logo+utilities right, 56px bar + 37px announcement, transparent over the homepage hero; Tekla: 52px bar,
 hide-on-scroll-down, 40px rotating announcement. Both exposed as header settings (shad-2d). Image ratios: 3:4 cards (Parachute),
 4:5 (Tekla everywhere); card ratio stays a theme setting (default portrait 3:4).
+
+## 2026-11-26 D15: Body weight stays 400 by default; text column 732px
+Tekla sets body at 300, Parachute at 400. At 14px a 300 weight loses contrast on lower-density screens, so the default body font stays
+regular (`inter_n4`); merchants who want the Tekla feel pick the Light variant in the body font picker (no code change). The editorial
+text column is 732px plus gutters (`.page-width--text`), matching Tekla's measured 732/700 columns.
