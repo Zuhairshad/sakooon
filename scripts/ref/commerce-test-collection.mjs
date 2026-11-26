@@ -22,9 +22,19 @@ for (const width of [1440, 768, 390]) {
   const cards0 = await page.locator('[data-facets-section] .product-card').count();
   check(`grid renders cards ${tag}`, cards0 > 0, `${cards0}`);
   const cols = await page.$eval('.product-grid', (g) => getComputedStyle(g).gridTemplateColumns.split(' ').length);
-  check(`grid columns ${tag}`, cols === (width >= 1024 ? 4 : width >= 768 ? 3 : 2), `${cols}`);
+  // Small catalogues narrow to max(count, 3) columns on desktop (main-collection).
+  const total = await page.locator('.product-grid > .product-grid__item').count();
+  const desk = Math.min(4, Math.max(total, 3));
+  check(`grid columns ${tag}`, cols === (width >= 1024 ? desk : width >= 768 ? 3 : 2), `${cols} for ${total} products`);
   check(`no horizontal scroll ${tag}`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
 
+  if (total <= 1) {
+    // One product: nothing can narrow it, so the Filter and sort button is hidden (main-collection useful_facets).
+    check(`no filter button for a single product ${tag}`, await page.locator('[data-drawer-open="facets-drawer"]').count() === 0);
+    check(`no console errors ${tag}`, errors.length === 0, errors.slice(0, 3).join(' | '));
+    await ctx.close();
+    continue;
+  }
   await page.locator('[data-drawer-open="facets-drawer"]').click();
   await page.waitForTimeout(500);
   check(`filter drawer opens ${tag}`, await page.locator('#facets-drawer[open]').count() === 1);

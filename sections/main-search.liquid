@@ -6,6 +6,19 @@
 {%- endcomment -%}
 {%- liquid
   assign per_page = section.settings.products_per_page
+  comment
+    Small result sets narrow the grid to max(count, 3) columns, like main-collection.
+  endcomment
+  assign columns = section.settings.columns_desktop
+  if search.results_count < columns
+    assign columns = search.results_count
+    if columns < 3
+      assign columns = 3
+    endif
+    if columns > section.settings.columns_desktop
+      assign columns = section.settings.columns_desktop
+    endif
+  endif
   assign active_count = 0
   for filter in search.filters
     if filter.type == 'price_range'
@@ -21,7 +34,7 @@
 -%}
 <div
   class="section main-search main-collection color-scheme-{{ section.settings.color_scheme }}"
-  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px; --collection-columns: {{ section.settings.columns_desktop }};"
+  style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px; --collection-columns: {{ columns }};"
   data-facets-section="{{ section.id }}"
 >
   <div class="main-search__header page-width page-width--full">
@@ -90,7 +103,7 @@
                 {%- if item.object_type == 'product' -%}
                   <li class="product-grid__item">
                     {%- assign lazy = true -%}{%- if forloop.index <= 4 -%}{%- assign lazy = false -%}{%- endif -%}
-                    {%- render 'product-card', product: item, columns_desktop: section.settings.columns_desktop, lazy: lazy -%}
+                    {%- render 'product-card', product: item, columns_desktop: columns, lazy: lazy -%}
                   </li>
                 {%- endif -%}
               {%- endfor -%}

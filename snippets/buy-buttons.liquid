@@ -51,10 +51,12 @@
         <span class="buy-buttons__label" data-add-label>
           {%- if current.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
         </span>
-        {%- if block.settings.price_in_button and current.available -%}
+        {%- comment -%} The price stays visible when sold out: the button is disabled, never hides what the item costs. {%- endcomment -%}
+        {%- if block.settings.price_in_button -%}
           <span class="buy-buttons__price">
+            {%- if current.compare_at_price > current.price -%}<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>{%- endif -%}
             {{- current.price | money -}}
-            {%- if current.compare_at_price > current.price -%} <s>{{ current.compare_at_price | money }}</s>{%- endif -%}
+            {%- if current.compare_at_price > current.price -%} <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span><s>{{ current.compare_at_price | money }}</s>{%- endif -%}
           </span>
         {%- endif -%}
       </button>

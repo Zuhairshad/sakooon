@@ -3,6 +3,7 @@
   {% render 'variant-picker', product: product, section_id: section.id, form_id: form_id, other_style: block.settings.other_style %}
   - Colour option (names in settings.swatch_option_names): radio swatches (option-value swatch -> named colour -> text chip).
   - Other options: native <select> styled as a filled row (reference) or radio pills (other_style: 'pills').
+  - An option with a single value (Bedding size: King on the sheet sets) renders as a plain "Name  Value" line.
   - Availability per value is relative to the other selected options: unavailable combinations are disabled, sold-out ones marked.
   - Without a colour option but with sakooon.siblings: sibling swatches as links (D10).
   The selected variant id lives in the product form's hidden `id` input; product.js keeps it in sync.
@@ -31,7 +32,17 @@
         assign selected_value = current.options[idx]
         assign input_name = section_id | append: '-' | append: option.position
       -%}
-      {%- if is_colour or other_style == 'pills' -%}
+      {%- if option.values.size == 1 -%}
+        {%- comment -%} One value (e.g. Bedding size: King): a plain line, plus a checked hidden radio so product.js still resolves the variant. {%- endcomment -%}
+        {%- assign only_value = option.values.first.name | default: option.values.first -%}
+        <div class="variant-picker__option variant-picker__option--static" data-option-index="{{ idx }}">
+          <p class="variant-picker__legend">
+            <span class="variant-picker__name">{{ option.name }}</span>
+            <span class="variant-picker__value">{{ only_value }}</span>
+          </p>
+          <input type="radio" name="{{ input_name }}" value="{{ only_value | escape }}" form="{{ form_id }}-options" checked hidden>
+        </div>
+      {%- elsif is_colour or other_style == 'pills' -%}
         <fieldset class="variant-picker__option{% if is_colour %} variant-picker__option--colour{% else %} variant-picker__option--pills{% endif %}" data-option-index="{{ idx }}">
           <legend class="variant-picker__legend">
             <span class="variant-picker__name">{{ option.name }}</span>

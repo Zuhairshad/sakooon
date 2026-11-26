@@ -8,6 +8,40 @@
 {%- liquid
   assign per_page = section.settings.products_per_page
   assign columns = section.settings.columns_desktop
+  comment
+    Small catalogues: fewer products than columns would leave a lonely row, so the grid narrows to max(count, 3) columns.
+  endcomment
+  assign grid_count = collection.all_products_count
+  if grid_count < columns
+    assign columns = grid_count
+    if columns < 3
+      assign columns = 3
+    endif
+    if columns > section.settings.columns_desktop
+      assign columns = section.settings.columns_desktop
+    endif
+  endif
+  comment
+    The Filter and sort button shows only when a sort or filter could change the results.
+  endcomment
+  assign useful_facets = 0
+  if section.settings.enable_sorting != false and grid_count > 1
+    assign useful_facets = 1
+  endif
+  for filter in collection.filters
+    assign live_values = 0
+    for value in filter.values
+      if value.count > 0 or value.active
+        assign live_values = live_values | plus: 1
+      endif
+    endfor
+    if filter.type == 'price_range'
+      assign live_values = grid_count
+    endif
+    if live_values > 1 and grid_count > 1
+      assign useful_facets = useful_facets | plus: 1
+    endif
+  endfor
   assign active_count = 0
   for filter in collection.filters
     if filter.type == 'price_range'
@@ -33,13 +67,13 @@
 >
   {%- paginate collection.products by per_page -%}
     <div class="main-collection__toolbar page-width page-width--full">
-      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}{%- if useful_facets > 0 or active_count > 0 -%}
         <button type="button" class="main-collection__filter-button" data-drawer-open="facets-drawer" aria-controls="facets-drawer">
           {%- render 'icon', icon: 'sliders', size: 16 -%}
           <span>{{ 'products.facets.filter_and_sort' | t }}</span>
           {%- if active_count > 0 -%}<span class="main-collection__filter-count">({{ active_count }})</span>{%- endif -%}
         </button>
-      {%- endif -%}
+      {%- endif -%}{%- endif -%}
       <p class="main-collection__count" id="ProductCount-{{ section.id }}" tabindex="-1" data-facets-count>
         {%- if active_count > 0 -%}
           {{ 'products.facets.product_count' | t: product_count: collection.products_count, count: collection.all_products_count }}
