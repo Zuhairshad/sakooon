@@ -8,22 +8,22 @@
         "announcement-1": {
           "type": "announcement",
           "settings": {
-            "text": "Complimentary delivery over a set order value",
-            "link": ""
+            "text": "Sukoon means calm: bedding for unhurried sleep",
+            "link": "/pages/about"
           }
         },
         "announcement-2": {
           "type": "announcement",
           "settings": {
-            "text": "Easy returns within a set number of days",
-            "link": ""
+            "text": "Two-tone reversible duvet cover sets in five colourways",
+            "link": "/products/two-tone-duvet-cover-set-king"
           }
         },
         "announcement-3": {
           "type": "announcement",
           "settings": {
-            "text": "Sign up for news and offers",
-            "link": ""
+            "text": "Not sure of your size? Read the size guide",
+            "link": "/pages/size-guide"
           }
         }
       },

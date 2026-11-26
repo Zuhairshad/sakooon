@@ -46,12 +46,12 @@ Pages the menus point to must exist in Admin (Online Store > Pages, with the the
 
 | Where | What to set |
 |---|---|
-| Announcement bar | Replace the three placeholder messages (text + optional link). Rotation 5s, pause button included; set "Rotate messages" off for a single message. |
+| Announcement bar | Three claim-free messages (sukoon → About, two-tone colourways → product, size guide). Add delivery or exchange messages only once those policies are confirmed. Rotation 5s with a pause button. |
 | Header > Mega menu promo blocks | 4 blocks: "Bedding" ×3 (Quilted Bed Sheet Set, Two-Tone Duvet Cover Set, Yarn-Dyed Cotton Satin Sheet Set, each linking to its product) and "Guides" ×1 (duvet insert, "Find your duvet size" → size guide). Images are the product packshots; upload the same files to Content > Files (names in `sections/header-group.json`) or re-pick them in the editor. **The "Menu item" field must match the top-level menu title** (compared as a handle). Rename it if you rename the menu item. |
 | Header | Transparent over the hero is on; it only applies when the first homepage section is the hero **with an image or video**. Set "Transparent header text" (light/dark) to suit the image, and optionally a light "Transparent header logo". |
 | Footer > Newsletter | Heading, text, small print. Sign-ups create customers tagged `newsletter` with email marketing consent (Shopify customer form). |
 | Footer | Legal menu handle, copyright text, show/hide logo and payment icons. |
-| Every homepage section | Images (see §4), headings, copy and links are placeholders. All links in `index.json` point to `/collections/all` until real targets exist. |
+| Home page | Real copy and product packshots (Phase 2). Image pickers reference files by name (`shopify://shop_images/<file>.webp`, the files in the headless repo `public/images`): upload them to Content > Files with the same names or re-pick them. No delivery/returns items: add them to "Service info" once the policies exist. |
 
 ## 4. Images per section
 
@@ -80,15 +80,15 @@ Always fill in image **alt text** in Admin (Files or product media); the theme u
 
 | Type | Handle | Section |
 |---|---|---|
-| Collection | `bed-sheets` | Featured collection; Bestsellers tab "All"; Shop by category |
-| Collection | `duvet-covers` | New arrivals; Bestsellers tab "Bedding"; Shop by category |
-| Collection | `duvets` | Bestsellers tab "Duvets"; Shop by category |
-| Collection | `pillows` | Bestsellers tab "Pillows"; Shop by category |
-| Product | `duvet-comfort-filling-220-gsm` | Lifestyle story hotspot |
-| Collection | `all` (built in) | default link target everywhere |
+| Collection | `bed-sheets` | Featured collection; Highlights tab "Sets"; Shop by category |
+| Collection | `duvet-covers`, `bed-covers`, `duvets`, `pillows` | Shop by category; Highlights tabs "Duvets", "Pillows"; campaign tile links |
+| Product | `two-tone-duvet-cover-set-king`, `quilted-bed-sheet-set-king`, `yarn-dyed-cotton-satin-bed-sheet-set-king` | Mega menu promos, announcement link |
+| Metaobject `fabric` | `cotton-satin`, `quilted-cotton`, `microfibre-fill`, `cotton-microfibre` | Fabric discovery (name, swatch, link, summary); entries owned by editorial |
+| Page | `about`, `size-guide`, `care-guide`, `contact` | Promo band, announcement, service info |
+| Collection | `all` (built in) | Hero and "Shop all" buttons |
 
 If a handle does not exist on the store, the section falls back to placeholder cards ("Example product title") or the default collection label; re-pick the collection or product in the editor.
-The handles come from the current preview catalogue and are expected to change for the real catalogue.
+Handles match the live store (snapshot 2026-11-19).
 
 ## 6. Pages and templates
 

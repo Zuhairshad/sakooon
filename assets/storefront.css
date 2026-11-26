@@ -381,7 +381,7 @@ body:has(.header--transparent-capable) .hero--under-header .hero__content { padd
 .fabric-discovery__swatches { display: grid; grid-template-columns: repeat(7, 28px); gap: var(--space-3); align-content: start; }
 @media (max-width: 767.98px) { .fabric-discovery__swatches { grid-template-columns: repeat(auto-fill, 28px); } }
 .fabric-discovery__swatch {
-  width: 28px; height: 28px; background: var(--swatch-image, none) center / cover, var(--swatch); border: var(--border-width) solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  width: 28px; height: 28px; background: var(--swatch-image, none) center / cover, var(--swatch, var(--color-border)); border: var(--border-width) solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
   outline-offset: 3px; transition: transform var(--duration-fast) var(--ease);
 }
 .fabric-discovery__swatch:hover { transform: scale(1.08); }
