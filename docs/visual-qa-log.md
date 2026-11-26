@@ -70,3 +70,6 @@ Interactions 9/9, responsive 112/112 (16 templates x 7 viewports), axe 30/30 wit
 
 ## 2026-11-26 Homepage redesign check (head 6a7a727)
 After the user review: storefront e8e0c43 (Sukoon statement, Why Sakooon split, newsletter/service strip removed, 1440 text cap) and 6a7a727 (rails fit). Home: Theme Check clean, interactions 9/9, responsive 7/7, axe 0 at 1920/390; capture /Users/shad/sakooon-qa/theme/p2-home-v3/1920-full.png.
+
+## 2026-11-26 D22 serif headings integrated (head 950c9d6)
+Playfair Display for headings, Inter for body/UI; small titles (cards, cart lines, drawers, labels) moved to Inter by each owner (storefront 06caffb, editorial 622d73c, commerce d4d3789). Theme Check clean, interactions 9/9; worker axe/responsive runs all clean.
