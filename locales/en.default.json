@@ -143,11 +143,6 @@
         "pick_up_unavailable_at_html": "Pickup currently unavailable at <span class=\"color-foreground\">{{ location_name }}</span>",
         "unavailable": "Couldn't load pickup availability",
         "refresh": "Refresh"
-      },
-      "badge_percent_off": "{{ percent }}% off",
-      "more_colours": {
-        "one": "{{ count }} more colour",
-        "other": "{{ count }} more colours"
       }
     },
     "facets": {

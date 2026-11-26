@@ -1192,6 +1192,35 @@
           }
         }
       }
+    },
+    "related-products-editorial": {
+      "name": "Related products",
+      "presets": {
+        "name": "Related products"
+      },
+      "settings": {
+        "heading": {
+          "info": "[fabric] is replaced with the fabric's name."
+        },
+        "link_url": {
+          "info": "Leave blank to link to the fabric's collection."
+        },
+        "products": {
+          "label": "Products",
+          "info": "Overrides the fabric's related products."
+        },
+        "collection": {
+          "label": "Fallback collection"
+        },
+        "limit": {
+          "label": "Maximum products"
+        },
+        "image_ratio": {
+          "options": {
+            "adapt": "Adapt to image"
+          }
+        }
+      }
     }
   }
 }

@@ -272,9 +272,14 @@ fabric-guide { display: block; }
 .fabric-detail__specs { margin: 0; border-top: var(--border-width) solid var(--color-border); }
 .fabric-detail__cert { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-sm); }
 .fabric-detail__cert + .fabric-detail__cert { margin-top: var(--space-4); }
-.fabric-detail__gallery { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fabric-detail__gallery { display: flex; gap: var(--space-2); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--page-gutter) * -1); padding-inline: var(--page-gutter); }
+.fabric-detail__gallery::-webkit-scrollbar { display: none; }
+.fabric-detail__gallery > li { flex: 0 0 80%; scroll-snap-align: start; }
 @media (min-width: 768px) {
-  .fabric-detail__gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* Column-width imagery: 2-up, 3-up on wide screens (Tekla percale / Parachute fabric tiles). */
+  .fabric-detail__gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); overflow: visible; margin-inline: 0; padding-inline: 0; }
+  .fabric-detail--columns .fabric-detail__body { grid-column: 2; }
+  .fabric-detail--columns .fabric-detail__block--gallery .fabric-detail__body { grid-column: 1 / -1; }
   .fabric-detail--columns .fabric-detail__block { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-8); padding-top: var(--space-5); border-top: var(--border-width) solid var(--color-border); }
   .fabric-detail--columns .fabric-detail__heading { margin-bottom: 0; }
   .fabric-detail--columns .fabric-detail__block + .fabric-detail__block { margin-top: var(--space-10); }
@@ -306,4 +311,13 @@ fabric-guide { display: block; }
   .care-guide--split .care-guide__content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-3) var(--space-8); }
   .care-guide--split .care-guide__content > :not(.care-guide__heading) { grid-column: 2; }
   .care-guide--split .care-guide__heading { grid-row: 1 / span 3; }
+}
+
+/* ---------- related-products-editorial ---------- */
+.related-editorial__list { display: grid; gap: var(--space-8) var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1024px) { .related-editorial__list { grid-template-columns: repeat(var(--ed-cols, 4), minmax(0, 1fr)); } }
+@media (max-width: 767.98px) {
+  .related-editorial__list--rail { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--page-gutter) * -1); padding-inline: var(--page-gutter); scroll-padding-inline: var(--page-gutter); }
+  .related-editorial__list--rail::-webkit-scrollbar { display: none; }
+  .related-editorial__list--rail > li { flex: 0 0 70%; scroll-snap-align: start; }
 }
