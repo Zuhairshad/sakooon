@@ -43,5 +43,14 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] docs/phase1-report.md final (Fable)
 
 ## Phase 1 gate
-- [ ] USER APPROVAL of the reference-based implementation (required before any Phase 2 branding work)
+- [x] USER APPROVAL of the reference-based implementation: approved 2026-11-26; typography stays grotesk (D16)
 - [ ] Shopify CLI login and development-theme verification pass (checklists in docs/reference/*-admin.md)
+
+## Phase 2: Sakooon identity (starts after session compaction)
+- [ ] Phase 2 brief + inputs inventory (Fable): logo (Downloads/SAKOOON logo.png), live catalogue (juj1hc-qf), existing photography (/Users/shad/sakooon/public/images), live-site copy, Nocturne palette as a starting point
+- [ ] Brand palette + colour schemes, logo/favicon, fonts (Fable)
+- [ ] Real catalogue data in the preview snapshot; product content + metafields plan (shad-d8)
+- [ ] Homepage with real photography and campaign copy (shad-2d)
+- [ ] Fabric metaobjects, care/size/FAQ/shipping/returns copy from verified Sakooon information (shad-8b)
+- [ ] Pakistani customer positioning, conversion strategy, SEO content (all; Fable coordinates)
+- [ ] CLI login + development theme push for real-store verification (user + Fable)
