@@ -112,3 +112,6 @@ User decision after seeing Parachute's serif promo headings: every heading (hero
 Playfair Display (Shopify font library, `playfair_display_n4`, heading weight 400) via the theme heading font setting; body, navigation,
 prices, buttons and form text stay Inter. Section-level font pickers (campaign tiles) default to the theme heading font.
 
+
+## 2026-11-26 D22a: Every heading in the serif
+User instruction (to shad-2d): use the heading font for all headings across the site, including small ones (footer column titles, product card titles, drawer titles, accordion questions, article card titles). Small serif headings get a minimum size of 16px (product cards) to 17-18px elsewhere with line-height 1.25-1.3. Body copy, prices, menus, buttons and labels stay Inter.
