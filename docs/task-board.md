@@ -17,7 +17,7 @@ Legend: [ ] todo, [~] in progress, [x] done, [!] blocked. Owner in brackets. Upd
 - [x] CONTRACTS READY sent 2026-11-26; workers rebase onto sakooon/foundation after finishing investigation
 - [x] Header, announcement, mega menu, mobile nav, sticky (shad-2d) 073f94c, merged to integration
 - [x] Footer (shad-2d) 0c1ca23, merged to integration
-- [x] Homepage sections + index.json (shad-2d) 087ac7e, merged to integration; presets hero-split/image-with-text/comparison/room/brand-values in progress
+- [x] Homepage sections + index.json (shad-2d) 087ac7e + presets f1566cd (hero-split, image-with-text, comparison-highlights, room-collection, brand-values, list-collections), merged to integration
 - [x] Product card, price, swatches (shad-d8) 4ca6ac1 + 66a70a2, reviewed
 - [x] Collection template + facets + sort + mobile filter drawer (shad-d8) 16f57cf 80abd92, merged to integration
 - [~] Product template: gallery, variant picker, buy buttons, sticky bar, accordions (shad-d8, milestone d)
