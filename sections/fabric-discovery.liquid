@@ -3,8 +3,9 @@
   A band of its own: section heading + intro, then large fabric tabs (heading serif + round texture swatch, a real
   tablist via <theme-tabs>: arrow keys, one tab stop, horizontal scroll row on phones). Each panel is a 5/7 split at
   >=1024: name at display size, the fabric's overview, hairline fact rows (composition, feel, care; only the ones that
-  exist), "Shop <fabric>" + "About this fabric"; beside it one 4:5 photograph of a product in that fabric (region_height
-  keeps only the main shot of a collage packshot) and up to two compact product links (title + price).
+  exist), "Shop <fabric>" + "About this fabric". The media side (7/12) leads with a large close-up of the fabric (a
+  detail tile of the packshot collage via `region`, or a separate detail image), then a smaller context shot of the
+  whole bed (region_height keeps the collage's main photo) and up to two compact product links (title + price).
   Data: each block picks a fabric metaobject (sakooon fabric definition). Block settings override name, image and products.
 {%- endcomment -%}
 {%- liquid
@@ -29,13 +30,27 @@
               assign fabric = shop.metaobjects.fabric[block.settings.fabric]
             endif
             assign tab_name = block.settings.name | default: fabric.name.value | default: fabric.name
-            assign swatch = block.settings.swatch_image | default: fabric.texture_image.value
+            comment
+              Swatch: explicit swatch image, else the panel's close-up crop (so the circle shows texture), else the fabric texture image.
+            endcomment
+            assign swatch = block.settings.swatch_image
+            assign swatch_region = nil
+            if swatch == blank and block.settings.closeup_image != blank
+              assign swatch = block.settings.closeup_image
+              assign swatch_region = block.settings.region | strip
+              if swatch_region == blank
+                assign swatch_region = nil
+              endif
+            endif
+            if swatch == blank
+              assign swatch = fabric.texture_image.value
+            endif
           -%}
           <button type="button" role="tab" class="fabric-discovery__tab" id="{{ base_id }}-tab-{{ forloop.index }}" aria-controls="{{ base_id }}-panel-{{ forloop.index }}"
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>
             <span class="fabric-discovery__swatch" aria-hidden="true">
               {%- if swatch != blank -%}
-                {%- render 'image', image: swatch, sizes: '48px', widths: '96,144', aspect: '1/1', crop: 'top', class: 'fabric-discovery__swatch-img', alt: '' -%}
+                {%- render 'image', image: swatch, sizes: '48px', widths: '96,144', aspect: '1/1', crop: 'center', region: swatch_region, class: 'fabric-discovery__swatch-img', alt: '' -%}
               {%- endif -%}
             </span>
             <span class="fabric-discovery__tab-label">{{ tab_name | escape }}</span>
@@ -106,9 +121,22 @@
           </div>
 
           <div class="fabric-discovery__media">
-            <a class="media fabric-discovery__photo" style="--aspect: 4/5" href="{{ shop_url | default: about_url }}" tabindex="-1" aria-hidden="true">
-              {%- render 'image', image: photo, sizes: '(min-width: 1440px) 560px, (min-width: 1024px) 40vw, 100vw', widths: '360,480,640,800,1000,1200', aspect: '4/5', crop: 'top', region_height: region, placeholder: 'lifestyle-1', alt: '' -%}
+            {%- liquid
+              assign closeup = b.closeup_image | default: photo
+              assign closeup_region = b.region | strip
+              if closeup_region == blank
+                assign closeup_region = nil
+              endif
+            -%}
+            <a class="media fabric-discovery__closeup" style="--aspect: 1/1" href="{{ shop_url | default: about_url }}" tabindex="-1" aria-hidden="true">
+              {%- render 'image', image: closeup, sizes: '(min-width: 1440px) 600px, (min-width: 1024px) 42vw, 100vw', widths: '360,480,600,800,1000,1200', aspect: '1/1', crop: 'center', region: closeup_region, placeholder: 'lifestyle-1', alt: '' -%}
             </a>
+            <div class="fabric-discovery__aside">
+              {%- if photo != blank and b.show_context -%}
+                <a class="media fabric-discovery__context" style="--aspect: 4/5" href="{{ shop_url | default: about_url }}" tabindex="-1" aria-hidden="true">
+                  {%- render 'image', image: photo, sizes: '(min-width: 1024px) 260px, 45vw', widths: '240,360,480,560', aspect: '4/5', crop: 'top', region_height: region, alt: '' -%}
+                </a>
+              {%- endif -%}
             {%- if products.size > 0 -%}
               <ul class="fabric-discovery__products list-unstyled" role="list">
                 {%- for product in products limit: 2 -%}
@@ -120,7 +148,7 @@
                       <span class="fabric-discovery__product-text">
                         <span class="fabric-discovery__product-title">{{ product.title | escape }}</span>
                         <span class="fabric-discovery__product-price">
-                          {%- if product.price_varies -%}{{ 'storefront.sections.price_from' | t: price: product.price_min | money_without_trailing_zeros }}{%- else -%}{{ product.price | money_without_trailing_zeros }}{%- endif -%}
+                          {%- if product.price_varies -%}{%- assign from_price = product.price_min | money_without_trailing_zeros -%}{{ 'storefront.sections.price_from' | t: price: from_price }}{%- else -%}{{ product.price | money_without_trailing_zeros }}{%- endif -%}
                         </span>
                       </span>
                     </a>
@@ -128,6 +156,7 @@
                 {%- endfor -%}
               </ul>
             {%- endif -%}
+            </div>
           </div>
         </div>
       {%- endfor -%}
@@ -157,9 +186,12 @@
       "settings": [
         { "type": "metaobject", "id": "fabric", "label": "Fabric", "metaobject_type": "fabric", "info": "Fills the name, overview, facts, swatch, products and link from the fabric entry." },
         { "type": "text", "id": "name", "label": "Tab name", "info": "Optional short name for the tab. The panel shows the fabric's full name." },
-        { "type": "image_picker", "id": "swatch_image", "label": "Swatch image", "info": "Optional. Defaults to the fabric's texture image." },
-        { "type": "image_picker", "id": "image", "label": "Photograph", "info": "Optional. Defaults to the first product's main image." },
-        { "type": "range", "id": "region_height", "label": "Use top part of image (%)", "min": 20, "max": 100, "step": 1, "default": 100, "info": "For collage packshots: the share of the image height that holds the main photo" },
+        { "type": "image_picker", "id": "swatch_image", "label": "Swatch image", "info": "Optional. Defaults to the close-up, then the fabric's texture image." },
+        { "type": "image_picker", "id": "closeup_image", "label": "Close-up image", "info": "Optional. Defaults to the context photograph. Use a detail or macro shot so the texture shows." },
+        { "type": "text", "id": "region", "label": "Close-up area", "info": "x,y,w,h in % of the image to show as the close-up" },
+        { "type": "image_picker", "id": "image", "label": "Context photograph", "info": "Optional. Defaults to the first product's main image." },
+        { "type": "checkbox", "id": "show_context", "label": "Show context photograph", "default": true },
+        { "type": "range", "id": "region_height", "label": "Context: use top part of image (%)", "min": 20, "max": 100, "step": 1, "default": 100, "info": "For collage packshots: the share of the image height that holds the main photo" },
         { "type": "product_list", "id": "products", "label": "Products", "limit": 2, "info": "Optional. Defaults to the fabric's related products." },
         { "type": "text", "id": "shop_label", "label": "Button label", "info": "Defaults to \"Shop <tab name>\"." },
         { "type": "url", "id": "shop_link", "label": "Button link", "info": "Defaults to the first product." }

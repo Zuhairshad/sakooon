@@ -233,12 +233,15 @@
           "settings": {
             "fabric": "cotton-satin",
             "name": "Cotton satin",
-            "swatch_image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
-            "image_1": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-plaid_09356759-f1d1-408e-8f60-4d06325cfa8e.webp",
-            "image_2": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-peach-floral_01f8c12b-438f-4474-8b38-361f24ce2887.webp",
-            "image_3": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-grey-white.webp",
-            "image_4": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-seashell_11507b5e-7015-4618-a3fe-cd9bad0088dd.webp",
-            "image_5": "shopify://shop_images/sakooon-two-tone-duvet-cover-set-royal-blue-sky-blue_2.webp"
+            "closeup_image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot_6a4871fb-0649-4c2d-b69f-a89007a3cfc8.webp",
+            "region": "67,76.6,33,23.4",
+            "image": "shopify://shop_images/sakooon-yarn-dyed-bed-sheet-set-blue-polka-dot_6a4871fb-0649-4c2d-b69f-a89007a3cfc8.webp",
+            "region_height": 54,
+            "show_context": true,
+            "products": [
+              "yarn-dyed-cotton-satin-bed-sheet-set-king",
+              "two-tone-duvet-cover-set-king"
+            ]
           }
         },
         "fabric-2": {
@@ -246,32 +249,44 @@
           "settings": {
             "fabric": "quilted-cotton",
             "name": "Quilted cotton",
-            "swatch_image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
-            "image_1": "shopify://shop_images/sakooon-quilted-bed-sheet-set-ivory.webp",
-            "image_2": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
-            "image_3": "shopify://shop_images/sakooon-quilted-bed-sheet-set-blush-pink.webp",
-            "image_4": "shopify://shop_images/sakooon-quilted-bed-sheet-set-charcoal-grey.webp",
-            "image_5": "shopify://shop_images/sakooon-quilted-bed-sheet-set-rust.webp",
-            "image_6": "shopify://shop_images/sakooon-quilted-bed-sheet-set-emerald-green.webp"
+            "closeup_image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "region": "35,71,30.5,29",
+            "image": "shopify://shop_images/sakooon-quilted-bed-sheet-set-sage-green.webp",
+            "region_height": 44,
+            "show_context": true,
+            "products": [
+              "quilted-bed-sheet-set-king"
+            ]
           }
         },
         "fabric-3": {
           "type": "shade",
           "settings": {
             "fabric": "microfibre-fill",
-            "name": "Microfibre duvet fill",
-            "swatch_image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
-            "image_1": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp"
+            "name": "Microfibre fill",
+            "closeup_image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "region": "30,28,65,44",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-filling-220-gsm.webp",
+            "region_height": 100,
+            "show_context": true,
+            "products": [
+              "duvet-comfort-filling-220-gsm"
+            ]
           }
         },
         "fabric-4": {
           "type": "shade",
           "settings": {
             "fabric": "cotton-microfibre",
-            "name": "Cotton cover, microfibre fill",
-            "swatch_image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
-            "image_1": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
-            "image_2": "shopify://shop_images/sakooon-duvet-comfort-pillow-piping-detail.webp"
+            "name": "Cotton & microfibre",
+            "closeup_image": "shopify://shop_images/sakooon-duvet-comfort-pillow-piping-detail.webp",
+            "region": "",
+            "image": "shopify://shop_images/sakooon-duvet-comfort-pillow-pack-of-2.webp",
+            "region_height": 100,
+            "show_context": true,
+            "products": [
+              "duvet-comfort-pillow-pack-of-2"
+            ]
           }
         }
       },
@@ -285,9 +300,8 @@
         "heading": "Choose by fabric",
         "heading_size": "h3",
         "text": "<p>Cotton satin, quilted cotton and soft microfibre fills. Pick one to see it up close.</p>",
-        "swatch_label": "Fabric",
-        "card_width": 344,
-        "color_scheme": "white",
+        "eyebrow": "Fabric",
+        "color_scheme": "sage",
         "padding_top": 96,
         "padding_bottom": 96
       }
